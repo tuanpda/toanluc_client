@@ -26,32 +26,42 @@
                 <div>
                     <table class="table is-responsive is-bordered is-narrow is-fullwidth">
                         <tr style="background-color: #faf0f5;">
-                            <td style="width: 20%">
-                                <div class="control has-icons-left">
-                                    <input @change="searhNhomsp" v-model="search_nhomsp" type="text" class="input is-small"
-                                        placeholder="Tìm theo nhóm sản phẩm">
-                                    <span class="icon is-small is-left">
-                                        <i style="color: #48c78e" class="fas fa-cog"></i>
-                                    </span>
-                                </div>
-                            </td>
-                            <td style="width: 20%">
-                                <div class="control has-icons-left">
-                                    <input @change="searhSanpham" v-model="search_sanpham" type="text"
-                                        class="input is-small" placeholder="Tìm theo mã sản phẩm">
-
-                                    <span class="icon is-small is-left">
-                                        <i style="color: #48c78e" class="far fa-credit-card"></i>
-                                    </span>
+                            <td style="width: 15%">
+                                <div class="field has-addons">
+                                    <p class="control">
+                                        <input v-model="search_nhomsp" class="input is-small is-fullwidth" type="text"
+                                            placeholder="Tìm theo nhóm sản phẩm">
+                                    </p>
+                                    <p class="control">
+                                        <a @click="searhNhomsp" class="button is-small">
+                                            Lọc
+                                        </a>
+                                    </p>
                                 </div>
                             </td>
                             <td style="width: 15%">
-                                <div class="control has-icons-left">
-                                    <input @change="searhTimeketthuc" v-model="search_timekt" type="date"
-                                        class="input is-small">
-                                    <span class="icon is-small is-left">
-                                        <i style="color: #48c78e" class="fas fa-calendar-alt"></i>
-                                    </span>
+                                <div class="field has-addons">
+                                    <p class="control">
+                                        <input v-model="search_sanpham" class="input is-small is-fullwidth" type="text"
+                                            placeholder="Tìm theo nhóm sản phẩm">
+                                    </p>
+                                    <p class="control">
+                                        <a @click="searhSanpham" class="button is-small">
+                                            Lọc
+                                        </a>
+                                    </p>
+                                </div>
+                            </td>
+                            <td style="width: 15%">
+                                <div class="field has-addons">
+                                    <p class="control">
+                                        <input v-model="search_timekt" type="date" class="input is-small">
+                                    </p>
+                                    <p class="control">
+                                        <a @click="searhTimeketthuc" class="button is-small">
+                                            Lọc
+                                        </a>
+                                    </p>
                                 </div>
                             </td>
                             <td style="width: 9%; text-align: center;">
@@ -378,7 +388,7 @@ export default {
             // search lô nhà máy
             search_nhomsp: "",
             search_sanpham: "",
-            search_timekt: "",
+            search_timekt: null,
             isphanxuong: 0,
             phieulosx: {},
             checkViewluong: false,
@@ -433,40 +443,49 @@ export default {
                 {
                     label: "Mã kế hoạch năm",
                     field: "makh",
+                    dataFormat: this.trimData
                 },
                 {
                     label: "Mã lô sản xuất",
                     field: "makhpx",
                     /* dataFormat: this.priceFormat */
+                    dataFormat: this.trimData
                 },
                 {
                     label: "Ngày bắt đầu",
                     field: "ngaybd",
+                    dataFormat: this.prefixformatDate
                 },
                 {
                     label: "Ngày kết thúc",
                     field: "ngaykt",
+                    dataFormat: this.prefixformatDate
                 },
                 {
                     label: "Mã sản phẩm",
                     field: "masp",
+                    dataFormat: this.trimData
                 },
                 {
                     label: "Tên sản phẩm",
                     field: "tensp",
+                    dataFormat: this.trimData
                 },
                 {
                     label: "Số lượng",
                     field: "soluong",
+                    dataFormat: this.trimData
                 },
 
                 {
                     label: "Nhóm sản phẩm",
                     field: "nhomsp",
+                    dataFormat: this.trimData
                 },
                 {
                     label: "Trạng thái",
                     field: "status",
+                    // dataFormat: this.trimData
                 },
             ],
         };
@@ -521,6 +540,19 @@ export default {
     },
 
     methods: {
+        // format trước khi xuất execl, ở đây là trim dữ liệu trước khi mang ra
+        trimData(value) {
+            return value.trim();
+        },
+        // format date
+        prefixformatDate(value) {
+            if (!value) {
+                return '';
+            }
+            value = new Date(value);
+            return value.getFullYear() + '-' + ('0' + (value.getMonth() + 1)).slice(-2) + '-' + ('0' + value.getDate()).slice(-2);
+        },
+
         currentDateTime() {
             const current = new Date();
             const date =
@@ -572,7 +604,7 @@ export default {
                 this.sllosx = await this.$axios.$get(
                     `/api/lokehoach/alllonhamay`
                 );
-            } else {
+            } else if (this.search_sanpham == '' && this.search_nhomsp != '') {
                 this.sllosx = await this.$axios.$get(
                     `/api/lokehoach/searchnhomsp?nhomsp=${this.search_nhomsp}`
                 );
@@ -597,7 +629,31 @@ export default {
                         `/api/lokehoach/alllonhamay`
                     );
                 }
+            } else {
+                this.sllosx = await this.$axios.$get(
+                    `/api/lokehoach/searchsanphamandnhomsp?nhomsp=${this.search_nhomsp}&masp=${this.search_sanpham}`
+                );
+                if (this.sllosx.length <= 0) {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 1000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener("mouseenter", Swal.stopTimer);
+                            toast.addEventListener("mouseleave", Swal.resumeTimer);
+                        },
+                    });
+                    Toast.fire({
+                        icon: "success",
+                        title: "Không tìm thấy số liệu với nhóm này",
+                    });
 
+                    this.sllosx = await this.$axios.$get(
+                        `/api/lokehoach/alllonhamay`
+                    );
+                }
             }
         },
 
@@ -674,6 +730,9 @@ export default {
 
         // Show all lô sản xuất nhà máy
         async getAlllonhamay() {
+            this.search_sanpham = ''
+            this.search_nhomsp = ''
+            this.search_timekt = null
             this.sllosx = await this.$axios.$get(
                 `/api/lokehoach/alllonhamay`
             );

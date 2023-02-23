@@ -27,20 +27,53 @@
           <div class="column">
             <table class="table is-responsive is-bordered is-narrow is-fullwidth">
               <tr style="background-color: #ebfffc">
-                <td><input @change="timNhomsp" v-model="searchnhomsp" type="text" class="input is-small"
-                    placeholder="Nhập Nhóm sản phẩm" />
+                <td style="width: 20%">
+                  <div class="field has-addons">
+                    <p class="control is-expanded">
+                      <input v-model="searchnhomsp" class="input is-small is-fullwidth" type="text"
+                        placeholder="Tìm theo nhóm thành phẩm phẩm">
+                    </p>
+                    <p class="control">
+                      <a @click="timNhomsp" class="button is-small">
+                        Lọc
+                      </a>
+                    </p>
+                  </div>
                 </td>
-                <td><input @change="timMasp" v-model="searchmasp" type="text" class="input is-small"
-                    placeholder="Nhập mã thành phẩm" />
+                <td style="width: 20%">
+                  <div class="field has-addons">
+                    <p class="control is-expanded">
+                      <input v-model="searchmasp" class="input is-small is-fullwidth" type="text"
+                        placeholder="Tìm theo mã thành phẩm">
+                    </p>
+                    <p class="control">
+                      <a @click="timMasp" class="button is-small">
+                        Lọc
+                      </a>
+                    </p>
+                  </div>
                 </td>
+                <td style="width: 15%">
+                  <div class="field has-addons">
+                    <p class="control">
+                      <input v-model="search_timekt" type="date" class="input is-small">
+                    </p>
+                    <p class="control">
+                      <a @click="searhTimeketthuc" class="button is-small">
+                        Lọc
+                      </a>
+                    </p>
+                  </div>
+                </td>
+
                 <td style="width: 10%"><button @click="resetAll" class="button is-danger is-small is-fullwidth">
                     <span>Refresh</span>
                   </button></td>
                 <td><input class="input is-small" type="date"></td>
                 <td><input class="input is-small" type="date"></td>
                 <td style="width: 9%; text-align: center;">
-                  <vue-excel-xlsx :data="phieulo" :columns="columns" :file-name="'muctieukehoachnam'"
-                    :file-type="'xlsx'" :sheet-name="'Mục tiêu kế hoạch năm'">
+                  <vue-excel-xlsx :data="phieulo" :columns="columns" :file-name="'muctieukehoachnam'" :file-type="'xlsx'"
+                    :sheet-name="'Mục tiêu kế hoạch năm'">
                     Download Excel
                   </vue-excel-xlsx>
                 </td>
@@ -68,16 +101,14 @@
                 <th @click="sort('nhomsp')" style="text-align: center; font-size: small; font-weight: bold; width: 5%;">
                   Nhóm sản phẩm
                 </th>
-                <th @click="sort('tgbatdau')"
-                  style="text-align: center; font-size: small; font-weight: bold; width: 5%;">
+                <th @click="sort('tgbatdau')" style="text-align: center; font-size: small; font-weight: bold; width: 5%;">
                   Ngày bắt đầu
                 </th>
                 <th @click="sort('tgketthuc')"
                   style="text-align: center; font-size: small; font-weight: bold; width: 5%;">
                   Ngày kết thúc
                 </th>
-                <th @click="sort('soluong')"
-                  style="text-align: center; font-size: small; font-weight: bold; width: 7%;">
+                <th @click="sort('soluong')" style="text-align: center; font-size: small; font-weight: bold; width: 7%;">
                   Số lượng
                 </th>
                 <th @click="sort('status')" style="text-align: center; font-size: small; font-weight: bold; width: 5%;">
@@ -122,8 +153,7 @@
                   {{ pl.nhomsp }}
                 </td>
                 <td style="background-color: #fffaeb;"><input class="input is-small" type="date"
-                    v-bind:value="pl.tgbatdau | inputDateFilter"
-                    v-on:input="pl.tgbatdau = getDate($event.target.value)">
+                    v-bind:value="pl.tgbatdau | inputDateFilter" v-on:input="pl.tgbatdau = getDate($event.target.value)">
                 </td>
                 <td style="background-color: #fffaeb;"><input class="input is-small" type="date"
                     v-bind:value="pl.tgketthuc | inputDateFilter"
@@ -152,7 +182,7 @@
                     class="input is-small"></td>
                 <td style="text-align: right; font-size: small;">
                   {{ parseInt(pl.soluong) - (parseInt(pl.soluongmuavup1) + parseInt(pl.soluongmuavup2) +
-                  parseInt(pl.soluongmuavup3)) | formatNumber}}
+                    parseInt(pl.soluongmuavup3)) | formatNumber }}
                 </td>
                 <td>
                   <button @click="onupdateKehoachmuavu(pl)" class="button is-success is-small is-fullwidth">
@@ -169,17 +199,17 @@
                 <td colspan="6" style="font-size: small; font-weight:800">Total</td>
                 <td style="font-size: small; font-weight:800; text-align: right; color: red;">
                   {{
-                  soluongTotal | formatNumber }}</td>
+                    soluongTotal | formatNumber }}</td>
                 <td colspan="2"></td>
                 <td style="font-size: small; font-weight:800; text-align: right; color: red;">
                   {{
-                  muavup1Total | formatNumber }}</td>
+                    muavup1Total | formatNumber }}</td>
                 <td style="font-size: small; font-weight:800; text-align: right; color: red;">
                   {{
-                  muavup2Total | formatNumber }}</td>
+                    muavup2Total | formatNumber }}</td>
                 <td style="font-size: small; font-weight:800; text-align: right; color: red;">
                   {{
-                  muavup3Total | formatNumber }}</td>
+                    muavup3Total | formatNumber }}</td>
                 <td colspan="3"></td>
               </tr>
             </tbody>
@@ -328,7 +358,7 @@
                 <td
                   style="text-align: right; font-size: small; background-color: whitesmoke; color: #f14668; font-weight: 900;">
                   {{ khmv.soluongmuavup2 | formatNumber }} | <span style="color: green">{{ soluongmuavuTotalMV2 |
-                  formatNumber }}</span></td>
+                    formatNumber }}</span></td>
                 <td style="background-color: whitesmoke;"><input type="text" class="input is-small"
                     v-model.trim="khmv.slthang5"></td>
                 <td style="background-color: whitesmoke;">
@@ -343,7 +373,7 @@
                 <td
                   style="text-align: right; font-size: small; background-color: #eef6f4ff; color: #f14668; font-weight: 900;">
                   {{ khmv.soluongmuavup3 | formatNumber }}| <span style="color: green">{{ soluongmuavuTotalMV3 |
-                  formatNumber }}</span></td>
+                    formatNumber }}</span></td>
                 <td style="background-color: #eef6f4ff;"><input type="text" class="input is-small"
                     v-model.trim="khmv.slthang9">
                 </td>
@@ -786,6 +816,7 @@ export default {
       pageSize: 10,
       currentPage: 1,
       filter: '',
+      search_timekt: null,
 
       // xuất execl
       columns: [
@@ -1330,6 +1361,42 @@ export default {
       }
     },
 
+    // tìm lọc số liệu lô nhà máy theo thời gian kết thúc
+    async searhTimeketthuc() {
+      // console.log(this.search_timekt)
+      if (this.search_timekt == '') {
+        this.sllosx = await this.$axios.$get(
+          `/api/lokehoach/alllonhamay`
+        );
+      } else {
+        this.sllosx = await this.$axios.$get(
+          `/api/lokehoach/searchtimektkhn?tgketthuc=${this.search_timekt}`
+        );
+        if (this.sllosx.length <= 0) {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 1000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
+          Toast.fire({
+            icon: "success",
+            title: "Không tìm thấy số liệu với nhóm này",
+          });
+
+          this.sllosx = await this.$axios.$get(
+            `/api/lokehoach/alllonhamay`
+          );
+        }
+
+      }
+    },
+
     async getPhanxuong() {
       this.phanxuong = await this.$axios.$get(`/api/phongban/allphanxuong`);
     },
@@ -1529,6 +1596,7 @@ export default {
     async resetAll() {
       this.searchmasp = ''
       this.searchnhomsp = ''
+      this.search_timekt = null
       this.kehoachmuavu = []
       this.kehoachphanxuong = []
       this.getAllPhieulo()
