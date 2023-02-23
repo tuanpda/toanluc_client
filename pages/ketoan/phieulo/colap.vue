@@ -113,10 +113,6 @@
                                 <td>
                                     <div
                                         style=" display: flex; gap: 10px; justify-content:space-around; align-items: center; width: 100%; height: 100%; margin-top: 5px;">
-                                        <span @click="setRowSelected(item)" class="icon is-small is-left">
-                                            <i v-if="rowSelected !== item" class="fa fa-plus"></i>
-                                            <i v-if="rowSelected === item" class="fa fa-minus"></i>
-                                        </span>
                                         <span @click="watchDetail(index)" class="icon is-small is-left">
                                             <i v-if="arrRowWatchDetail.findIndex(el => el === index) < 0"
                                                 class="fa fa-eye"></i>
@@ -140,16 +136,10 @@
                                 <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
                                     item.masp
                                 }}</td>
-                                <!-- <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
-                                item.ngaybdkhpx | formatDate
-                            }} -->
                                 <td style="background-color: #fffaeb;"><input class="input is-small" type="date"
                                         v-bind:value="item.ngaybd | inputDateFilter"
                                         v-on:input="item.ngaybd = getDate($event.target.value)">
                                 </td>
-                                <!-- <td style="font-size: small; text-align: center; background-color: #fffaeb;">{{
-                                item.ngayktkhpx | formatDate
-                            }}</td> -->
                                 <td style="background-color: #fffaeb;"><input class="input is-small" type="date"
                                         v-bind:value="item.ngaykt | inputDateFilter"
                                         v-on:input="item.ngaykt = getDate($event.target.value)"></td>
@@ -186,6 +176,7 @@
                                             <td style="text-align: center; font-size:small; font-weight:700; width: 6%">Thời
                                                 gian
                                                 kết thúc</td>
+                                                <td></td>
                                         </tr>
                                         <tr>
                                             <td style="font-size: small; text-align: center">
@@ -221,6 +212,34 @@
                                             </td>
                                             <td style="font-size: small; text-align: center">
                                                 1/1/2024
+                                            </td>
+                                        </tr>
+                                        <tr>
+                                            <td style="font-size: small; text-align:center">
+                                                10
+                                            </td>
+                                            <td style="font-size: small;">
+                                                <div class="select is-small is-fullwidth">
+                                                    <select>
+                                                        <option value="" selected>-- Chọn tổ --</option>
+                                                        <option v-for="item in tonhom" :value="item.mato">
+                                                            {{ item.mato }} -- {{ item.tento }}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </td>
+                                            <td><input v-model.trim="item.malosx" type="text" class="input is-small"></td>
+                                            <td><input v-model.trim="item.soluonglsx" type="text" class="input is-small">
+                                            </td>
+                                            <td><input class="input is-small" type="date"
+                                                    v-bind:value="item.ngaybd | inputDateFilter"
+                                                    v-on:input="item.ngaybd = getDate($event.target.value)"></td>
+                                            <td><input class="input is-small" type="date"
+                                                    v-bind:value="item.ngaykt | inputDateFilter"
+                                                    v-on:input="item.ngaykt = getDate($event.target.value)"></td>
+                                            <td >
+                                                <button style="width: 100px;" @click="copyadd(item)"
+                                                    class="button is-small is-success is-fullwidth">Xác Nhận Thêm</button>
                                             </td>
                                         </tr>
                                     </table>
@@ -262,95 +281,6 @@
                     </table>
                 </div>
                 <br />
-                <!-- Phần đăng ký -->
-                <br />
-                <div v-if="Object.keys(rowSelected).length > 0">
-                    <div class="">
-                        <table class="table is-responsive is-bordered is-narrow is-fullwidth">
-                            <tr style="background-color: #feecf0">
-                                <td colspan="6" style="font-weight: bold; font-size: small">
-                                    <span>Mã lô nhà máy: </span> <span style="color: red;">{{ rowSelected.makh }}</span>
-                                    |
-                                    <span>Mã phân xưởng: </span> <span style="color: red;">{{ rowSelected.mapx }}</span>
-                                    |
-                                    <span>Mã kế hoạch phân xưởng: </span> <span style="color: red;">{{ rowSelected.makhpx
-                                    }}</span>
-                                    |
-                                    <span>Mã sản phẩm: </span> <span style="color: red;">{{ rowSelected.masp }}</span>
-                                    |
-                                    <span>Ngày bắt đầu: </span> <span style="color: red;">{{ rowSelected.ngaybd | formatDate
-                                    }}</span> |
-                                    <span>Ngày kết thúc: </span> <span style="color: red;">{{ rowSelected.ngaykt |
-                                        formatDate }}</span> |
-                                    <span>Số lượng: </span> <span style="color: red;">{{ rowSelected.soluonglsx }}</span>
-                                </td>
-                                <td>
-                                    <button class="button is-small is-success is-fullwidth">Ghi dữ
-                                        liệu
-                                    </button>
-                                </td>
-                                <td>
-                                    <button class="button is-small is-info is-fullwidth">Đăng
-                                        ký</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: center; font-size:small; font-weight:700; width: 3%">STT</td>
-                                <!-- <td style="text-align: center; font-size:small; font-weight:700; width: 15%">Phân xưởng
-                                </td> -->
-                                <td style="text-align: center; font-size:small; font-weight:700; width: 20%">Tổ / nhóm
-                                </td>
-                                <td style="text-align: center; font-size:small; font-weight:700; width: 10%">Mã Lô sản
-                                    xuất</td>
-                                <td style="text-align: center; font-size:small; font-weight:700; width: 5%">Số lượng
-                                </td>
-                                <td style="text-align: center; font-size:small; font-weight:700; width: 6%">Thời gian
-                                    bắt đầu</td>
-                                <td style="text-align: center; font-size:small; font-weight:700; width: 6%">Thời gian
-                                    kết thúc</td>
-                                <td style="text-align: center; font-size:small; font-weight:700; width: 5%">
-                                    Copy / Update</td>
-                                <td style="text-align: center; font-size:small; font-weight:700; width: 5%">
-                                    Xóa</td>
-
-                            </tr>
-                            <!-- show ra các lô đã đăng ký -->
-                            <!-- <tr v-for="(item, index) in losanxuat" :key="index + 'ppp'">
-                                <td style="font-size: small; text-align: center">
-                                    {{ index + 1 }}
-                                </td>
-                                <td style="font-size: small;">
-                                    {{ item.mato }} -- {{ item.tento }}
-                                </td>
-                                <td style="font-size: small; text-align: center;"><input type="text" class="input is-small"
-                                        v-model="item.malosx"></td>
-                                <td style="font-size: small; text-align: center">
-                                    <input type="text" class="input is-small" v-model="item.soluonglsx" />
-                                </td>
-                                <td><input class="input is-small" type="date" v-bind:value="item.ngaybd | inputDateFilter"
-                                        v-on:input="item.ngaybd = getDate($event.target.value)"></td>
-                                <td><input class="input is-small" type="date" v-bind:value="item.ngaykt | inputDateFilter"
-                                        v-on:input="item.ngaykt = getDate($event.target.value)"></td>
-
-                                <td style="text-align: center; font-size: small">
-                                    <a @click="onUpdate(item)">
-                                        <span style="color: green" class="icon is-small">
-                                            <i class="far fa-check-circle"></i>
-                                        </span>
-                                    </a>
-                                </td>
-                                <td style="text-align: center; font-size: small">
-                                    <a @click="onDeleteK(item)">
-                                        <span style="color: red" class="icon is-small">
-                                            <i class="fas fa-times"></i>
-                                        </span>
-                                    </a>
-                                </td>
-                            </tr> -->
-                        </table>
-                    </div>
-                </div>
-                <br />
             </div>
         </div>
     </div>
@@ -368,7 +298,6 @@ export default {
     data() {
         return {
             arrRowWatchDetail: [],
-            rowSelected: {},
             // dữ liệu 
             lokehoachsx: [],
             phanxuong: [],
@@ -632,14 +561,6 @@ export default {
                 });
             }
         },
-
-        setRowSelected(value) {
-            if (value === this.rowSelected && Object.keys(this.rowSelected).length > 0) {
-                return this.rowSelected = {}
-            }
-            return this.rowSelected = value
-        }
-
     },
 };
 </script>
@@ -682,4 +603,5 @@ export default {
 tr:hover {
     cursor: pointer;
     background-color: #fffaeb;
-}</style>
+}
+</style>
