@@ -61,10 +61,10 @@
                             <td>
                                 <div class="control has-icons-left">
                                     <div class="select is-small is-fullwidth">
-                                        <select  v-model="selectedProduction" >
+                                        <select v-model="selectedProduction">
                                             <option :value="null" selected>-- Mã Sản Phẩm --</option>
                                             <option v-for="item in productions" :value="item.value" :key="item.value">
-                                                {{ item.label }} 
+                                                {{ item.label }}
                                             </option>
                                         </select>
                                     </div>
@@ -73,10 +73,10 @@
                                     </span>
                                 </div>
                             </td>
-                            
+
                             <td style="width: 13%">
                                 <div class="control has-icons-left">
-                                    <input @change="showData" v-model="search_timeend" type="date" class="input is-small">
+                                    <input v-model="search_timeend" type="date" class="input is-small">
                                     <span class="icon is-small is-left">
                                         <i style="color: #48c78e" class="fas fa-calendar-alt"></i>
                                     </span>
@@ -135,8 +135,7 @@
                             </td>
                             <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Ghi dữ liệu</td>
                         </tr>
-                        <tr v-for="(item, index) in sortedsllosx" :key="index + 'llllkiq'"
-                            @click="click_Add_Losanxuat(item)">
+                        <tr v-for="(item, index) in sortedsllosx" :key="index + 'l'">
                             <td style="font-size: small; text-align: center; background-color: #effaf5;">{{ index + 1 }}
                             </td>
                             <td style="font-size: small;">{{ item.makh }}
@@ -506,21 +505,12 @@ export default {
         sortedsllosx() {
             let newArr = this.filteredsllosx
 
-            if(this.search_maxuong) {
-                this.$axios.$get(
-                    `/api/lokehoach/getallkehoachpxwithpxorderbyngaykt?mapx=${this.search_maxuong}`
-                ).then(res=>{
-                    console.log('res', res)
-                })
-
-            }
-
             if (this.selectedGrProduction) {
                 newArr = newArr.filter(el => el.nhomsp === this.selectedGrProduction)
             }
 
             if (this.selectedProduction) {
-                newArr = newArr.filter(el => el.maspkhpx === this.selectedProduction) 
+                newArr = newArr.filter(el => el.maspkhpx === this.selectedProduction)
             }
 
 
@@ -540,8 +530,13 @@ export default {
 
     watch: {
         filter() {
-            console.log('reset to p1 due to filter');
             this.currentPage = 1;
+        },
+        search_maxuong(value) {
+            if (value) this.filterLoSX()
+        },
+        search_timeend(value) {
+            if (value) this.filterLoSX()
         }
     },
 
@@ -611,6 +606,15 @@ export default {
             );
             this.search_timestart = ""
             this.search_timeend = ""
+        },
+
+        async filterLoSX() {
+            this.lokehoachpx = await this.$axios.$post(
+                `/api/lokehoach/getallkehoachpxwithfiltermapxorngayktkhpx`, {
+                mapx: this.search_maxuong,
+                ngayktkhpx: this.search_timeend
+            }
+            )
         },
 
         // get all phân xưởng 
@@ -915,7 +919,7 @@ export default {
 
         // update lô kế hoạch phân xưởng
         async onUpdate_lokhpx(data) {
-            // console.log(data)
+            console.log('data', data)
             try {
                 data.status = this.status
                 this.$axios.$patch(
