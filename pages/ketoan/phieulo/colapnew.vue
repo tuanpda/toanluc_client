@@ -236,7 +236,7 @@
                                         <tr>
                                             <td style="text-align: center; font-size:small; font-weight:700; width: 3%">STT
                                             </td>
-                                            <td style="text-align: center; font-size:small; font-weight:700; width: 20%">Tổ
+                                            <td style="text-align: center; font-size:small; font-weight:700; min-width: 25%;">Tổ
                                                 / nhóm
                                             </td>
                                             <td style="text-align: center; font-size:small; font-weight:700; width: 10%">Mã
@@ -262,9 +262,10 @@
                                                         {{ indexRow + 1 }}
                                                     </td>
                                                     <td style="font-size: small;">
-                                                     {{ item.tento }}
+                                                        {{ item.tento }}
                                                     </td>
-                                                    <td style="font-size: small; text-align: center;"> {{ item.mato }}</td>
+                                                    <td style="font-size: small; text-align: center;"> {{ item.malosx }}
+                                                    </td>
                                                     <td style="font-size: small; text-align: center">
                                                         {{ item.soluong }}
                                                     </td>
@@ -280,14 +281,17 @@
 
                                         <tr>
                                             <td style="font-size: small; text-align:center">
-                                                {{ arrRowWatchDetail.length > 0 && arrRowWatchDetail.findIndex(el => el.key === index) > -1 ? (arrRowWatchDetail.find(el => el.key === index).dataChildren.length + 1 || 1) : 1}}
+                                                {{ arrRowWatchDetail.length > 0 && arrRowWatchDetail.findIndex(el => el.key
+                                                    === index) > -1 ? (arrRowWatchDetail.find(el => el.key ===
+                                                        index).dataChildren.length + 1 || 1) : 1 }}
                                             </td>
                                             <td style="font-size: small;">
                                                 <div class="select is-small is-fullwidth">
-                                                    <select>
-                                                        <option value="" selected>-- Chọn tổ --</option>
-                                                        <option v-for="item in tonhom" :value="item.mato">
-                                                            {{ item.mato }} -- {{ item.tento }}
+                                                    <select
+                                                        :disabled="!arrRowWatchDetail.find(el => el.key === index) || ((arrRowWatchDetail.find(el => el.key === index) || []).grWork || []).length === 0">
+                                                        <option :value="null" selected>-- Chọn tổ --</option>
+                                                        <option v-for="item in (arrRowWatchDetail.find(el => el.key === index) || []).grWork" :value="item.value">
+                                                            {{ item.label }} 
                                                         </option>
                                                     </select>
                                                 </div>
@@ -633,10 +637,21 @@ export default {
             const dataChildren = await this.$axios.$get(
                 `/api/lokehoach/getalllsxinkhpx?makh=${data.makh}&makhpx=${data.makhpx}&mapx=${data.mapx}`
             );
+
+            const grWorkTemp = await this.$axios.$get(
+                `/api/phongban/alltoinxuong?mapx=${data.mapx}`
+            );
+
+            const grWork = grWorkTemp.length > 0 ? grWorkTemp.map(el => ({
+                label: `${el.mato} - ${el.tento}`,
+                value: el.mato,
+            })) : []
+
             this.arrRowWatchDetail.push({
                 key: value,
                 dataParent: data,
-                dataChildren: dataChildren
+                dataChildren: dataChildren,
+                grWork: grWork,
             })
         },
         // các hàm phục vụ tính toán
@@ -1157,5 +1172,4 @@ export default {
 tr:hover {
     cursor: pointer;
     background-color: #fffaeb;
-}
-</style>
+}</style>
