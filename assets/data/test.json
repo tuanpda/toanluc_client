@@ -1,0 +1,36 @@
+{
+  "data": [
+    {
+      "madonvi": "HW0009Z",
+      "tendonvi": "BHXH tỉnh",
+      "mahuyen": "4200",
+      "sodinhdanh": "4212004473",
+      "hoten": "Phan Đình Anh Tuấn",
+      "gioitinh": "Nam",
+      "ngaysinh": "07/02/1986",
+      "cmt": "183189898",
+      "sohoso": "HGHBBHDJH",
+      "ngaytao": "20/12/2020",
+      "diachi": "Hà Tĩnh",
+      "nguoilienhe": "Phan Đình Anh Tuấn",
+      "sodienthoai": "0946366683",
+      "ghichu": ""
+    },
+    {
+      "madonvi": "HW0009Z",
+      "tendonvi": "BHXH tỉnh",
+      "mahuyen": "4200",
+      "sodinhdanh": "4212004473",
+      "hoten": "Phan Đình Anh Tuấn",
+      "gioitinh": "Nam",
+      "ngaysinh": "07/02/1986",
+      "cmt": "183189898",
+      "sohoso": "",
+      "ngaytao": "",
+      "diachi": "",
+      "nguoilienhe": "",
+      "sodienthoai": "",
+      "ghichu": ""
+    }
+  ]
+}
