@@ -154,74 +154,163 @@
                             </td>
                             <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Ghi dữ liệu</td>
                         </tr>
-                        <tr v-for="(item, index) in sortedsllosx" :key="index + 'llllkiq'"
-                            @click="click_Add_Losanxuat(item)">
-                            <td style="font-size: small; text-align: center; background-color: #effaf5;">{{ index + 1 }}
-                            </td>
-                            <td style="font-size: small;">{{ item.makh }}
-                            </td>
-                            <td style="font-size: small; background-color: #effaf5; text-align: center;">{{ item.mapx }}
-                            </td>
-                            <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
-                                item.makhpx
-                            }}
-                            </td>
-                            <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
-                                item.nhomsp
-                            }}</td>
-                            <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
-                                item.maspkhpx
-                            }}</td>
-                            <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
-                                item.ngaybdkhpx | formatDate
-                            }}</td>
-                            <!-- <td style="background-color: #fffaeb;"><input class="input is-small" type="date"
-                                    v-bind:value="item.ngaybdkhpx | inputDateFilter"
-                                    v-on:input="item.ngaybdkhpx = getDate($event.target.value)">
-                            </td> -->
-                            <td style="font-size: small; text-align: center; background-color: #fffaeb;">{{
-                                item.ngayktkhpx | formatDate
-                            }}</td>
-                            <!-- <td style="background-color: #fffaeb;"><input class="input is-small" type="date"
-                                    v-bind:value="item.ngayktkhpx | inputDateFilter"
-                                    v-on:input="item.ngayktkhpx = getDate($event.target.value)"></td> -->
-                            <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
-                                item.soluongkhpx | formatNumber
-                            }}</td>
-                            <template>
-                                <td v-if="item.status == 0"
-                                    style="font-size: small; text-align: center; background-color: whitesmoke;">0</td>
-                                <td v-else-if="item.status == 1" style="font-size: small; text-align: center; "><span
-                                        style="color: white; font-weight: bold; background-color: red; padding-left: 7px; padding-right: 7px;">DK</span>
+                        <template v-for="(item, index) in sortedsllosx.filter(el => el.status !== 3)">
+                            <tr>
+                                <td>
+                                    <div
+                                        style=" display: flex; gap: 10px; justify-content:space-around; align-items: center; width: 100%; height: 100%; margin-top: 5px;">
+                                        <span @click="watchDetail(index, item)" class="icon is-small is-left">
+                                            <i v-if="arrRowWatchDetail.findIndex(el => el.key === index) < 0"
+                                                class="fa fa-eye"></i>
+                                            <i v-if="arrRowWatchDetail.length > 0 && arrRowWatchDetail.findIndex(el => el.key === index) > -1"
+                                                class="fa fa-eye-slash"></i>
+                                        </span>
+                                    </div>
                                 </td>
-                                <td v-else-if="item.status == 2" style="font-size: small; text-align: center;">
-                                    <span
-                                        style="color: red; font-weight: bold; background-color: yellow; padding-left: 7px; padding-right: 7px;">SX</span>
+                                <td style="font-size: small; text-align: center; background-color: #effaf5;">{{ index + 1 }}
                                 </td>
-                                <td v-else style="font-size: small; text-align: center;">
-                                    <span
-                                        style="color: white; font-weight: bold; background-color: green; padding-left: 7px; padding-right: 7px;">HT</span>
+                                <td style="font-size: small;">{{ item.makh }}
                                 </td>
-                            </template>
+                                <td style="font-size: small; background-color: #effaf5; text-align: center;">{{ item.mapx }}
+                                </td>
+                                <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
+                                    item.makhpx
+                                }}
+                                </td>
+                                <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
+                                    item.nhomsp
+                                }}</td>
+                                <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
+                                    item.maspkhpx
+                                }}</td>
+                                <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
+                                    item.ngaybdkhpx | formatDate
+                                }}</td>
+                                <td style="font-size: small; text-align: center; background-color: #fffaeb;">{{
+                                    item.ngayktkhpx | formatDate
+                                }}</td>
+                                <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
+                                    item.soluongkhpx | formatNumber
+                                }}</td>
+                                <template>
+                                    <td v-if="item.status == 0"
+                                        style="font-size: small; text-align: center; background-color: whitesmoke;">0</td>
+                                    <td v-else-if="item.status == 1" style="font-size: small; text-align: center; "><span
+                                            style="color: white; font-weight: bold; background-color: red; padding-left: 7px; padding-right: 7px;">DK</span>
+                                    </td>
+                                    <td v-else-if="item.status == 2" style="font-size: small; text-align: center;">
+                                        <span
+                                            style="color: red; font-weight: bold; background-color: yellow; padding-left: 7px; padding-right: 7px;">SX</span>
+                                    </td>
+                                    <td v-else style="font-size: small; text-align: center;">
+                                        <span
+                                            style="color: white; font-weight: bold; background-color: green; padding-left: 7px; padding-right: 7px;">HT</span>
+                                    </td>
+                                </template>
 
-                            <td style="font-size: small; width: 10%;">
-                                <div class="select is-small is-fullwidth">
-                                    <select id="" @change="onChange_status($event)" v-model="item.status">
-                                        <option selected>-- Trạng thái --</option>
-                                        <option value="3">HT</option>
-                                        <option value="2">SX</option>
-                                        <option value="1">DK</option>
-                                        <option value="0">0</option>
-                                    </select>
-                                </div>
-                            </td>
-                            <td style="font-size: small; text-align: center; background-color: #effaf5;">111</td>
-                            <td style="font-size: small; text-align: center; background-color: #effaf5;">0101</td>
-                            <td style="font-size: small; text-align: center; background-color: #effaf5;">0101</td>
-                            <td><button @click="onUpdate_lokhpx(item)"
-                                    class="button is-small is-success is-fullwidth">Ghi</button>
-                            </td>
-                        </tr>
+                                <td style="font-size: small; width: 10%;">
+                                    <div class="select is-small is-fullwidth">
+                                        <select id="" @change="onChange_status($event)" v-model="item.status">
+                                            <option selected>-- Trạng thái --</option>
+                                            <option value="3">HT</option>
+                                            <option value="2">SX</option>
+                                            <option value="1">DK</option>
+                                            <option value="0">0</option>
+                                        </select>
+                                    </div>
+                                </td>
+                                <td style="font-size: small; text-align: center; background-color: #effaf5;">111</td>
+                                <td style="font-size: small; text-align: center; background-color: #effaf5;">0101</td>
+                                <td style="font-size: small; text-align: center; background-color: #effaf5;">0101</td>
+                                <td><button @click="onUpdate_lokhpx(item)"
+                                        class="button is-small is-success is-fullwidth">Ghi</button>
+                                </td>
+                            </tr>
+                            <!-- open row -->
+                            <tr style="display: none" :style="{
+                                'display': arrRowWatchDetail.length > 0 && arrRowWatchDetail.findIndex(el => el.key === index) > -1 ? 'table-row' :
+                                    'none'
+                            }">
+                                <td colspan="11" style="padding: 10px 20px; background: #209cee0f;">
+                                    <table class="table is-responsive is-bordered is-narrow is-fullwidth">
+                                        <tr>
+                                            <td style="text-align: center; font-size:small; font-weight:700; width: 3%">STT
+                                            </td>
+                                            <td style="text-align: center; font-size:small; font-weight:700; width: 20%">Tổ
+                                                / nhóm
+                                            </td>
+                                            <td style="text-align: center; font-size:small; font-weight:700; width: 10%">Mã
+                                                Lô sản
+                                                xuất</td>
+                                            <td style="text-align: center; font-size:small; font-weight:700; width: 5%">Số
+                                                lượng
+                                            </td>
+                                            <td style="text-align: center; font-size:small; font-weight:700; width: 6%">Thời
+                                                gian
+                                                bắt đầu</td>
+                                            <td style="text-align: center; font-size:small; font-weight:700; width: 6%">Thời
+                                                gian
+                                                kết thúc</td>
+                                            <td></td>
+                                        </tr>
+                                        <template
+                                            v-if="arrRowWatchDetail.length > 0 && arrRowWatchDetail.findIndex(el => el.key === index) > -1">
+                                            <template
+                                                v-for="(item, indexRow) in (arrRowWatchDetail.find(el => el.key === index).dataChildren || []) ">
+                                                <tr>
+                                                    <td style="font-size: small; text-align: center">
+                                                        {{ indexRow + 1 }}
+                                                    </td>
+                                                    <td style="font-size: small;">
+                                                     {{ item.tento }}
+                                                    </td>
+                                                    <td style="font-size: small; text-align: center;"> {{ item.mato }}</td>
+                                                    <td style="font-size: small; text-align: center">
+                                                        {{ item.soluong }}
+                                                    </td>
+                                                    <td style="font-size: small; text-align: center">
+                                                        {{ item.ngaybd | formatDate }}
+                                                    </td>
+                                                    <td style="font-size: small; text-align: center">
+                                                        {{ item.ngaykt | formatDate }}
+                                                    </td>
+                                                </tr>
+                                            </template>
+                                        </template>
+
+                                        <tr>
+                                            <td style="font-size: small; text-align:center">
+                                                {{ arrRowWatchDetail.length > 0 && arrRowWatchDetail.findIndex(el => el.key === index) > -1 ? (arrRowWatchDetail.find(el => el.key === index).dataChildren.length + 1 || 1) : 1}}
+                                            </td>
+                                            <td style="font-size: small;">
+                                                <div class="select is-small is-fullwidth">
+                                                    <select>
+                                                        <option value="" selected>-- Chọn tổ --</option>
+                                                        <option v-for="item in tonhom" :value="item.mato">
+                                                            {{ item.mato }} -- {{ item.tento }}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </td>
+                                            <td><input v-model.trim="item.malosx" type="text" class="input is-small"></td>
+                                            <td><input v-model.trim="item.soluonglsx" type="text" class="input is-small">
+                                            </td>
+                                            <td><input class="input is-small" type="date"
+                                                    v-bind:value="item.ngaybd | inputDateFilter"
+                                                    v-on:input="item.ngaybd = getDate($event.target.value)"></td>
+                                            <td><input class="input is-small" type="date"
+                                                    v-bind:value="item.ngaykt | inputDateFilter"
+                                                    v-on:input="item.ngaykt = getDate($event.target.value)"></td>
+                                            <td>
+                                                <button style="width: 100px;" @click="copyadd(item)"
+                                                    class="button is-small is-success is-fullwidth">Xác Nhận Thêm</button>
+                                            </td>
+                                        </tr>
+                                    </table>
+                                </td>
+                            </tr>
+                        </template>
+
                     </table>
                     <table class="table is-responsive is-bordered is-narrow is-fullwidth">
                         <tr>
@@ -417,6 +506,7 @@ export default {
     },
     data() {
         return {
+            arrRowWatchDetail: [],
             // dữ liệu 
             lokehoachpx: [],
             phanxuong: [],
@@ -534,6 +624,21 @@ export default {
 
 
     methods: {
+        async watchDetail(value, data) {
+            const indexValue = this.arrRowWatchDetail.findIndex(el => el?.key === value)
+            if (indexValue > -1) {
+                this.arrRowWatchDetail.splice(indexValue, 1)
+                return
+            }
+            const dataChildren = await this.$axios.$get(
+                `/api/lokehoach/getalllsxinkhpx?makh=${data.makh}&makhpx=${data.makhpx}&mapx=${data.mapx}`
+            );
+            this.arrRowWatchDetail.push({
+                key: value,
+                dataParent: data,
+                dataChildren: dataChildren
+            })
+        },
         // các hàm phục vụ tính toán
         // hàm bind v-model input type date
         getDate(value) {
@@ -606,11 +711,13 @@ export default {
             this.lokehoachpx = await this.$axios.$get(
                 `/api/lokehoach/getallkehoachpxwithmapx?mapx=${this.search_maxuong}`
             );
+            this.arrRowWatchDetail = []
         },
 
         // click vào ô mã kế hoạch
         async click_Add_Losanxuat(data) {
             this.checkViewRegLsx = true;
+            // khi click vào ô mã lô đó thì cái biến this.showLophanxuong chính là dữ liệu của row đó, dữ liệu lô kế hoạch đó
             this.showLophanxuong = data
             // console.log(this.showLophanxuong)
             let turn = 1;
