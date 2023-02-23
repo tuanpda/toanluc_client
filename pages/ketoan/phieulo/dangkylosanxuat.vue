@@ -31,7 +31,7 @@
                                     <div class="select is-small is-fullwidth">
                                         <select @change="getWithPX($event)">
                                             <option selected>-- Phân xưởng --</option>
-                                            <option v-for="item in phanxuong" :value="item.mapx">
+                                            <option v-for="item in phanxuong" :value="item.mapx" :key="item.mapx">
                                                 {{ item.mapx }} -- {{ item.tenpx }}
                                             </option>
                                         </select>
@@ -42,14 +42,38 @@
                                 </div>
                             </td>
 
-                            <td style="width: 13%">
+                            <td>
                                 <div class="control has-icons-left">
-                                    <input v-model="search_timestart" type="date" class="input is-small">
+                                    <div class="select is-small is-fullwidth">
+                                        <select v-model="selectedGrProduction">
+                                            <option :value="null" selected>-- Nhóm Sản Phẩm --</option>
+                                            <option v-for="item in grProductions" :value="item.value" :key="item.value">
+                                                {{ item.label }}
+                                            </option>
+                                        </select>
+                                    </div>
                                     <span class="icon is-small is-left">
-                                        <i style="color: #48c78e" class="fas fa-calendar-alt"></i>
+                                        <i style="color: #48c78e" class="fas fa-kaaba"></i>
                                     </span>
                                 </div>
                             </td>
+
+                            <td>
+                                <div class="control has-icons-left">
+                                    <div class="select is-small is-fullwidth">
+                                        <select  v-model="selectedProduction" >
+                                            <option :value="null" selected>-- Mã Sản Phẩm --</option>
+                                            <option v-for="item in productions" :value="item.value" :key="item.value">
+                                                {{ item.label }} 
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <span class="icon is-small is-left">
+                                        <i style="color: #48c78e" class="fas fa-kaaba"></i>
+                                    </span>
+                                </div>
+                            </td>
+                            
                             <td style="width: 13%">
                                 <div class="control has-icons-left">
                                     <input @change="showData" v-model="search_timeend" type="date" class="input is-small">
@@ -436,7 +460,9 @@ export default {
                 },
             ],
             tonhom: [], // lưu lại tổ nhóm
-            nhomluong: [] // lưu nhóm lương
+            nhomluong: [], // lưu nhóm lương
+            selectedGrProduction: null,
+            selectedProduction: null,
         };
     },
 
@@ -453,8 +479,52 @@ export default {
                 return c.name.toLowerCase().indexOf(this.filter.toLowerCase()) >= 0;
             })
         },
+        grProductions() {
+            return (this.lokehoachpx.map(el => ({
+                label: el.nhomsp,
+                value: el.nhomsp,
+            }) || []).reduce((acc, curr) => {
+                const found = acc.find((item) => item.value === curr.value);
+                if (!found) {
+                    acc.push(curr);
+                }
+                return acc;
+            }, []))
+        },
+        productions() {
+            return (this.lokehoachpx.map(el => ({
+                label: el.maspkhpx,
+                value: el.maspkhpx,
+            }) || []).reduce((acc, curr) => {
+                const found = acc.find((item) => item.value === curr.value);
+                if (!found) {
+                    acc.push(curr);
+                }
+                return acc;
+            }, []))
+        },
         sortedsllosx() {
-            return this.filteredsllosx.sort((a, b) => {
+            let newArr = this.filteredsllosx
+
+            if(this.search_maxuong) {
+                this.$axios.$get(
+                    `/api/lokehoach/getallkehoachpxwithpxorderbyngaykt?mapx=${this.search_maxuong}`
+                ).then(res=>{
+                    console.log('res', res)
+                })
+
+            }
+
+            if (this.selectedGrProduction) {
+                newArr = newArr.filter(el => el.nhomsp === this.selectedGrProduction)
+            }
+
+            if (this.selectedProduction) {
+                newArr = newArr.filter(el => el.maspkhpx === this.selectedProduction) 
+            }
+
+
+            return newArr.sort((a, b) => {
                 let modifier = 1;
                 if (this.currentSortDir === 'desc') modifier = -1;
                 if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
