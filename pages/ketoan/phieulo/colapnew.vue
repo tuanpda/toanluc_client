@@ -155,7 +155,7 @@
                             <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Ghi dữ liệu</td>
                         </tr>
                         <template v-for="(item, index) in sortedsllosx.filter(el => el.status !== 3)">
-                            <tr>
+                            <tr @click="click_Add_Losanxuat(item)">
                                 <td>
                                     <div
                                         style=" display: flex; gap: 10px; justify-content:space-around; align-items: center; width: 100%; height: 100%; margin-top: 5px;">
@@ -236,7 +236,9 @@
                                         <tr>
                                             <td style="text-align: center; font-size:small; font-weight:700; width: 3%">STT
                                             </td>
-                                            <td style="text-align: center; font-size:small; font-weight:700; min-width: 25%;">Tổ
+                                            <td
+                                                style="text-align: center; font-size:small; font-weight:700; min-width: 25%;">
+                                                Tổ
                                                 / nhóm
                                             </td>
                                             <td style="text-align: center; font-size:small; font-weight:700; width: 10%">Mã
@@ -285,30 +287,41 @@
                                                     === index) > -1 ? (arrRowWatchDetail.find(el => el.key ===
                                                         index).dataChildren.length + 1 || 1) : 1 }}
                                             </td>
-                                            <td style="font-size: small;">
-                                                <div class="select is-small is-fullwidth">
-                                                    <select
-                                                        :disabled="!arrRowWatchDetail.find(el => el.key === index) || ((arrRowWatchDetail.find(el => el.key === index) || []).grWork || []).length === 0">
-                                                        <option :value="null" selected>-- Chọn tổ --</option>
-                                                        <option v-for="item in (arrRowWatchDetail.find(el => el.key === index) || []).grWork" :value="item.value">
-                                                            {{ item.label }} 
-                                                        </option>
-                                                    </select>
-                                                </div>
-                                            </td>
-                                            <td><input v-model.trim="item.malosx" type="text" class="input is-small"></td>
-                                            <td><input v-model.trim="item.soluonglsx" type="text" class="input is-small">
-                                            </td>
-                                            <td><input class="input is-small" type="date"
-                                                    v-bind:value="item.ngaybd | inputDateFilter"
-                                                    v-on:input="item.ngaybd = getDate($event.target.value)"></td>
-                                            <td><input class="input is-small" type="date"
-                                                    v-bind:value="item.ngaykt | inputDateFilter"
-                                                    v-on:input="item.ngaykt = getDate($event.target.value)"></td>
-                                            <td>
-                                                <button style="width: 100px;" @click="copyadd(item)"
-                                                    class="button is-small is-success is-fullwidth">Xác Nhận Thêm</button>
-                                            </td>
+
+                                            <template
+                                                v-if="arrRowWatchDetail.length > 0 && arrRowWatchDetail.findIndex(el => el.key === index) > -1">
+                                                <td style="font-size: small;">
+                                                    <div class="select is-small is-fullwidth">
+                                                        <select v-model.trim="arrRowWatchDetail.find(el => el.key ===
+                                                            index).input.inputMaTo"
+                                                            :disabled="!arrRowWatchDetail.find(el => el.key === index) || ((arrRowWatchDetail.find(el => el.key === index) || []).grWork || []).length === 0">
+                                                            <option :value="null" selected>-- Chọn tổ --</option>
+                                                            <option
+                                                                v-for="item in (arrRowWatchDetail.find(el => el.key === index) || []).grWork"
+                                                                :value="item.value">
+                                                                {{ item.label }}
+                                                            </option>
+                                                        </select>
+                                                    </div>
+                                                </td>
+                                                <td><input v-model.trim="arrRowWatchDetail.find(el => el.key ===
+                                                    index).input.inputMaLo" type="text" class="input is-small">
+                                                </td>
+                                                <td><input v-model.trim="arrRowWatchDetail.find(el => el.key ===
+                                                    index).input.inputSoLuong" type="text" class="input is-small">
+                                                </td>
+                                                <td><input class="input is-small" type="date" v-model="arrRowWatchDetail.find(el => el.key ===
+                                                    index).input.inputDateOpen">
+                                                </td>
+                                                <td><input class="input is-small" type="date" v-model="arrRowWatchDetail.find(el => el.key ===
+                                                    index).input.inputDateEnd"></td>
+                                                <td>
+                                                    <button style="width: 100px;" @click="() => {
+                                                        addRowChildren(index)
+                                                    }" class="button is-small is-success is-fullwidth">Xác Nhận
+                                                        Thêm</button>
+                                                </td>
+                                            </template>
                                         </tr>
                                     </table>
                                 </td>
@@ -634,7 +647,7 @@ export default {
                 this.arrRowWatchDetail.splice(indexValue, 1)
                 return
             }
-            const dataChildren = await this.$axios.$get(
+            let dataChildren = await this.$axios.$get(
                 `/api/lokehoach/getalllsxinkhpx?makh=${data.makh}&makhpx=${data.makhpx}&mapx=${data.mapx}`
             );
 
@@ -645,6 +658,7 @@ export default {
             const grWork = grWorkTemp.length > 0 ? grWorkTemp.map(el => ({
                 label: `${el.mato} - ${el.tento}`,
                 value: el.mato,
+                dataCur: el
             })) : []
 
             this.arrRowWatchDetail.push({
@@ -652,8 +666,51 @@ export default {
                 dataParent: data,
                 dataChildren: dataChildren,
                 grWork: grWork,
+                input: {
+                    inputMaTo: '',
+                    inputMaLo: '',
+                    inputSoLuong: '',
+                    inputDateOpen: null,
+                    inputDateEnd: null,
+                }
             })
         },
+        async addRowChildren(
+            valueIndex
+        ) {
+            const dataTemp = this.arrRowWatchDetail.find(el => el.key === valueIndex)
+            const grWotkTemp = dataTemp.grWork.find((el) => el.value === dataTemp.input.inputMaTo)
+            const newData = {
+                ...dataTemp.dataParent, malosx: dataTemp.input.inputMaLo,
+                soluonglsx: dataTemp.input.inputSoLuong, ngaybd: dataTemp.input.inputDateOpen,
+                ngaykt: dataTemp.input.inputDateEnd,
+                nhomto: [
+                    {
+                        maxuong: grWotkTemp?.dataCur?.mapx || "", tenpx: grWotkTemp?.dataCur?.mapx || "",
+                        tento: grWotkTemp?.dataCur?.tento || "", mato: grWotkTemp?.dataCur?.mato || ""
+                    }
+                ]
+            }
+            const { _id, ...res } = newData
+            this.$axios.$post("/api/ketoan/addphieulosx", res).then(async () => {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener("mouseenter", Swal.stopTimer);
+                        toast.addEventListener("mouseleave", Swal.resumeTimer);
+                    },
+                });
+                Toast.fire({
+                    icon: "success",
+                    title: "Tạo phiếu lô sản xuất thành công",
+                });
+            })
+        },
+
         // các hàm phục vụ tính toán
         // hàm bind v-model input type date
         getDate(value) {
@@ -1010,6 +1067,7 @@ export default {
         async ghidulieu() {
             // console.log(this.items)
             for (let i = 0; i < this.items.length; i++) {
+                console.log('this.items[i]', this.items[i]);
                 this.$axios.$post("/api/ketoan/addphieulosx", this.items[i]);
 
                 const Toast = Swal.mixin({
@@ -1172,4 +1230,5 @@ export default {
 tr:hover {
     cursor: pointer;
     background-color: #fffaeb;
-}</style>
+}
+</style>
