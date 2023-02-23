@@ -28,7 +28,7 @@
                         <tr style="background-color: #faf0f5;">
                             <td style="width: 15%">
                                 <div class="field has-addons">
-                                    <p class="control">
+                                    <p class="control is-expanded">
                                         <input v-model="search_nhomsp" class="input is-small is-fullwidth" type="text"
                                             placeholder="Tìm theo nhóm sản phẩm">
                                     </p>
@@ -41,7 +41,7 @@
                             </td>
                             <td style="width: 15%">
                                 <div class="field has-addons">
-                                    <p class="control">
+                                    <p class="control is-expanded">
                                         <input v-model="search_sanpham" class="input is-small is-fullwidth" type="text"
                                             placeholder="Tìm theo nhóm sản phẩm">
                                     </p>
@@ -54,7 +54,7 @@
                             </td>
                             <td style="width: 15%">
                                 <div class="field has-addons">
-                                    <p class="control">
+                                    <p class="control is-expanded">
                                         <input v-model="search_timekt" type="date" class="input is-small">
                                     </p>
                                     <p class="control">
@@ -89,7 +89,7 @@
                                 style="font-size: small; text-align: center; font-weight: 600; width: 10%">Lô nhà máy
                             </td>
                             <td @click="sort('nhomsp')"
-                                style="font-size: small; text-align: center; font-weight: 600; width: 6%">Nhóm SP
+                                style="font-size: small; text-align: center; font-weight: 600; width: 6%">Nhóm thành phẩm
                             </td>
                             <td @click="sort('masp')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 7%">Mã thành phẩm
