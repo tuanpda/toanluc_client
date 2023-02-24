@@ -111,6 +111,7 @@
                 <div class="table_wrapper">
                     <table class="table is-responsive is-bordered is-narrow is-fullwidth">
                         <tr style="background-color: #f4f2f8">
+                            <td style="font-size: small; text-align: center; font-weight: 600; width: 3%">--</td>
                             <td style="font-size: small; text-align: center; font-weight: 600; width: 3%">STT</td>
                             <td @click="sort('makh')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 5%">Mã lô nhà máy
@@ -140,9 +141,9 @@
                             <td @click="sort('status')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Trạng thái
                             </td>
-                            <td @click="sort('soluongkhpx')"
+                            <!-- <td @click="sort('soluongkhpx')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Chọn Trạng thái
-                            </td>
+                            </td> -->
                             <td @click="sort('soluongkhpx')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Số lượng HT
                             </td>
@@ -152,18 +153,19 @@
                             <td @click="sort('soluongkhpx')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Ngày KTTT
                             </td>
-                            <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Ghi dữ liệu</td>
+                            <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Chọn</td>
                         </tr>
                         <template v-for="(item, index) in sortedsllosx.filter(el => el.status !== 3)">
                             <tr @click="click_Add_Losanxuat(item)">
                                 <td>
                                     <div
                                         style=" display: flex; gap: 10px; justify-content:space-around; align-items: center; width: 100%; height: 100%; margin-top: 5px;">
-                                        <span @click="watchDetail(index, item)" class="icon is-small is-left">
+                                        <span @click="watchDetail(index, item)" class="icon is-small is-left"
+                                            style="color: #55acee">
                                             <i v-if="arrRowWatchDetail.findIndex(el => el.key === index) < 0"
-                                                class="fa fa-eye"></i>
+                                                class="	far fa-arrow-alt-circle-down"></i>
                                             <i v-if="arrRowWatchDetail.length > 0 && arrRowWatchDetail.findIndex(el => el.key === index) > -1"
-                                                class="fa fa-eye-slash"></i>
+                                                class="	far fa-arrow-alt-circle-left"></i>
                                         </span>
                                     </div>
                                 </td>
@@ -208,7 +210,7 @@
                                     </td>
                                 </template>
 
-                                <td style="font-size: small; width: 10%;">
+                                <!-- <td style="font-size: small; width: 10%;">
                                     <div class="select is-small is-fullwidth">
                                         <select id="" @change="onChange_status($event)" v-model="item.status">
                                             <option selected>-- Trạng thái --</option>
@@ -218,12 +220,13 @@
                                             <option value="0">0</option>
                                         </select>
                                     </div>
-                                </td>
+                                </td> -->
                                 <td style="font-size: small; text-align: center; background-color: #effaf5;">111</td>
                                 <td style="font-size: small; text-align: center; background-color: #effaf5;">0101</td>
                                 <td style="font-size: small; text-align: center; background-color: #effaf5;">0101</td>
-                                <td><button @click="onUpdate_lokhpx(item)"
-                                        class="button is-small is-success is-fullwidth">Ghi</button>
+                                <td>
+                                    <!-- <button @click="onUpdate_lokhpx(item)"
+                                        class="button is-small is-success is-fullwidth">Ghi</button> -->
                                 </td>
                             </tr>
                             <!-- open row -->
@@ -231,29 +234,28 @@
                                 'display': arrRowWatchDetail.length > 0 && arrRowWatchDetail.findIndex(el => el.key === index) > -1 ? 'table-row' :
                                     'none'
                             }">
-                                <td colspan="11" style="padding: 10px 20px; background: #209cee0f;">
+                                <td colspan="13" style="padding: 10px 20px; background: #209cee0f;">
                                     <table class="table is-responsive is-bordered is-narrow is-fullwidth">
                                         <tr>
-                                            <td style="text-align: center; font-size:small; font-weight:700; width: 3%">STT
+                                            <td style="text-align: center; font-size:small; width: 3%">STT
                                             </td>
-                                            <td
-                                                style="text-align: center; font-size:small; font-weight:700; min-width: 25%;">
+                                            <td style="text-align: center; font-size:small; min-width: 25%;">
                                                 Tổ
                                                 / nhóm
                                             </td>
-                                            <td style="text-align: center; font-size:small; font-weight:700; width: 10%">Mã
+                                            <td style="text-align: center; font-size:small; width: 10%">Mã
                                                 Lô sản
                                                 xuất</td>
-                                            <td style="text-align: center; font-size:small; font-weight:700; width: 5%">Số
+                                            <td style="text-align: center; font-size:small; width: 5%">Số
                                                 lượng
                                             </td>
-                                            <td style="text-align: center; font-size:small; font-weight:700; width: 6%">Thời
+                                            <td style="text-align: center; font-size:small; width: 6%">Thời
                                                 gian
                                                 bắt đầu</td>
-                                            <td style="text-align: center; font-size:small; font-weight:700; width: 6%">Thời
+                                            <td style="text-align: center; font-size:small; width: 6%">Thời
                                                 gian
                                                 kết thúc</td>
-                                            <td></td>
+                                            <td style="text-align: center; font-size:small; width: 5%">Thêm</td>
                                         </tr>
                                         <template
                                             v-if="arrRowWatchDetail.length > 0 && arrRowWatchDetail.findIndex(el => el.key === index) > -1">
@@ -319,7 +321,7 @@
                                                     <button style="width: 100px;" @click="() => {
                                                         addRowChildren(index)
                                                     }" class="button is-small is-success is-fullwidth">Xác Nhận
-                                                        Thêm</button>
+                                                    </button>
                                                 </td>
                                             </template>
                                         </tr>

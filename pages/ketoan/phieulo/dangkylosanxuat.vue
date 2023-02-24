@@ -25,8 +25,16 @@
 
                 <div>
                     <table class="table is-responsive is-bordered is-narrow is-fullwidth">
+                        <!-- tìm theo các điều kiện riêng lẻ -->
                         <tr style="background-color: #faf0f5;">
-                            <!-- tìm theo các điều kiện riêng lẻ -->
+                            <td style="width: 12%; font-size: small; font-weight: bold;">
+                                <div class="icon-text">
+                                    <span class="icon has-text-info">
+                                        <i class="fas fa-info-circle"></i>
+                                    </span>
+                                    <span style="color: #296fa8;">Lọc đơn lẻ</span>
+                                </div>
+                            </td>
                             <!-- 1. theo phân xưởng -->
                             <td style="width: 15%;">
                                 <div class="control has-icons-left">
@@ -44,67 +52,93 @@
                                 </div>
                             </td>
                             <!-- 2. theo nhóm sản phẩm -->
-                            <td style="width: 10%">
+                            <td style="width: 15%">
                                 <div class="field has-addons">
                                     <p class="control is-expanded">
                                         <input v-model="search_nhomsp" class="input is-small is-fullwidth" type="text"
                                             placeholder="Tìm theo nhóm sản phẩm">
                                     </p>
                                     <p class="control">
-                                        <a @click="searhNhomsp" class="button is-small">
+                                        <a @click="searhNhomsp" class="button is-small"
+                                            style="color:darkblue; font-weight: 600;">
                                             Lọc
                                         </a>
                                     </p>
                                 </div>
                             </td>
                             <!-- 3. theo sản phẩm -->
-                            <td style="width: 10%">
+                            <td style="width: 15%">
                                 <div class="field has-addons">
                                     <p class="control is-expanded">
                                         <input v-model="search_sanpham" class="input is-small is-fullwidth" type="text"
                                             placeholder="Tìm theo sản phẩm">
                                     </p>
                                     <p class="control">
-                                        <a @click="searhSanpham" class="button is-small">
+                                        <a @click="searhSanpham" class="button is-small"
+                                            style="color:darkblue; font-weight: 600;">
                                             Lọc
                                         </a>
                                     </p>
                                 </div>
                             </td>
-                            <!-- 4. theo thời gian kết thúc -->
+                            <!-- 4. Mã lô nhà máy -->
                             <td style="width: 15%">
+                                <div class="field has-addons">
+                                    <p class="control is-expanded">
+                                        <input v-model="search_malonm" class="input is-small is-fullwidth" type="text"
+                                            placeholder="Tìm mã lô nhà máy">
+                                    </p>
+                                    <p class="control">
+                                        <a @click="searhMalonm" class="button is-small"
+                                            style="color:darkblue; font-weight: 600;">
+                                            Lọc
+                                        </a>
+                                    </p>
+                                </div>
+                            </td>
+                            <!-- 5. theo thời gian kết thúc -->
+                            <td style="width: 10%">
                                 <div class="field has-addons">
                                     <p class="control is-expanded">
                                         <input v-model="search_timeend" type="date" class="input is-small">
                                     </p>
                                     <p class="control">
-                                        <a @click="searhtgketthuc" class="button is-small">
+                                        <a @click="searhtgketthuc" class="button is-small"
+                                            style="color:darkblue; font-weight: 600;">
                                             Lọc
                                         </a>
                                     </p>
                                 </div>
                             </td>
-
-                            <td style="width: 13%">
-                                <div class="control has-icons-left">
-                                    <input v-model="search_timestart" type="date" class="input is-small">
-                                    <span class="icon is-small is-left">
-                                        <i style="color: #48c78e" class="fas fa-calendar-alt"></i>
-                                    </span>
-                                </div>
-                            </td>
-                            <td style="width: 13%">
-                                <div class="control has-icons-left">
-                                    <input @change="showData" v-model="search_timeend" type="date" class="input is-small">
-                                    <span class="icon is-small is-left">
-                                        <i style="color: #48c78e" class="fas fa-calendar-alt"></i>
-                                    </span>
-                                </div>
-                            </td>
-                            <td style="width: 7.3%">
+                            <td style="width: 5%">
                                 <button @click="showAllLokhpx"
                                     class="button is-small is-danger is-fullwidth">Refresh</button>
                             </td>
+                            <td style="font-size: small; font-weight: bold; text-align: right;"><span>Có: <span
+                                        style="color: red;">{{
+                                            lokehoachpx.length }}</span> bản
+                                    ghi</span></td>
+                        </tr>
+                        <!-- tìm theo điều kiện multi -->
+                        <tr style="background-color: #eff5fb;">
+                            <td style="width: 12%; font-size: small; font-weight: bold;">
+                                <div class="icon-text">
+                                    <span class="icon has-text-success">
+                                        <i class="fas fa-check-square"></i>
+                                    </span>
+                                    <span style="color: #296fa8;">Lọc nhiều tiêu chí</span>
+                                </div>
+                            </td>
+                            <td>
+                                <button @click="filterMulti" class="button is-small is-fullwidth">Lọc Lô nhà máy theo
+                                    TTQT</button>
+                            </td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                         </tr>
                     </table>
                 </div>
@@ -137,6 +171,9 @@
                             <td @click="sort('soluongkhpx')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Số lượng
                             </td>
+                            <td @click="sort('ttqt')"
+                                style="font-size: small; text-align: center; font-weight: 600; width: 7%;">TTQT
+                            </td>
                             <td @click="sort('status')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Trạng thái
                             </td>
@@ -154,7 +191,7 @@
                             </td>
                             <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Ghi dữ liệu</td>
                         </tr>
-                        <tr v-for="(item, index) in sortedsllosx" :key="index + 'llllkiq'"
+                        <tr v-for="(item, index) in lokehoachpx" :key="index + 'llllkiq'"
                             @click="click_Add_Losanxuat(item)">
                             <td style="font-size: small; text-align: center; background-color: #effaf5;">{{ index + 1 }}
                             </td>
@@ -187,6 +224,9 @@
                                     v-on:input="item.ngayktkhpx = getDate($event.target.value)"></td> -->
                             <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
                                 item.soluongkhpx | formatNumber
+                            }}</td>
+                            <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
+                                item.ttqt
                             }}</td>
                             <template>
                                 <td v-if="item.status == 0"
@@ -426,11 +466,14 @@ export default {
             // các biến tìm kiếm
             search_maxuong: "",
             search_tenxuong: "",
-            search_timestart: "",
             search_timeend: "",
             search_nhomsp: "",
             search_sanpham: "",
             search_status: "",
+            search_malonm: "",
+
+            search_maxuong_multi: "",
+            search_tenxuong_multi: "",
 
             // lọc talble
             currentSort: 'mapx',
@@ -585,8 +628,10 @@ export default {
             this.lokehoachpx = await this.$axios.$get(
                 `/api/lokehoach/getallkehoachphanxuong`
             );
-            this.search_timestart = ""
-            this.search_timeend = ""
+            this.search_timeend = null
+            this.search_malonm = ""
+            this.search_nhomsp = ""
+            this.search_sanpham = ""
         },
 
         // get all phân xưởng 
@@ -594,7 +639,7 @@ export default {
             this.phanxuong = await this.$axios.$get(`/api/phongban/allphanxuong`);
         },
 
-        // bấm vào chọn phân xưởng khi lọc
+        // bấm vào chọn phân xưởng khi lọc khi lọc đơn
         async getWithPX(e) {
             var name = e.target.options[e.target.options.selectedIndex].text;
             // console.log(name)
@@ -605,6 +650,13 @@ export default {
             this.search_tenxuong = p2;
             this.lokehoachpx = await this.$axios.$get(
                 `/api/lokehoach/getallkehoachpxwithmapx?mapx=${this.search_maxuong}`
+            );
+        },
+
+        // Lọc sắp xếp các lô nhà máy và sort theo thứ tự quy trình
+        async filterMulti(e) {
+            this.lokehoachpx = await this.$axios.$get(
+                `/api/lokehoach/sortmalonmsortttqt`
             );
         },
 
@@ -805,6 +857,7 @@ export default {
                     icon: "success",
                     title: "Không tìm thấy số liệu với nhóm này",
                 });
+                this.showAllLokhpx()
             }
         },
         // tìm lọc số liệu lô kế hoạch phân xưởng theo sản phẩm 
@@ -828,8 +881,35 @@ export default {
                     icon: "success",
                     title: "Không tìm thấy số liệu với sản phẩm này",
                 });
+                this.showAllLokhpx()
             }
         },
+        // tìm lọc số liệu lô kế hoạch phân xưởng theo mã lô nhà máy
+        async searhMalonm() {
+            this.lokehoachpx = await this.$axios.$get(
+                `/api/lokehoach/searchmalonmlokhpx?makh=${this.search_malonm}`
+            );
+            if (this.lokehoachpx.length <= 0) {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 1000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener("mouseenter", Swal.stopTimer);
+                        toast.addEventListener("mouseleave", Swal.resumeTimer);
+                    },
+                });
+                Toast.fire({
+                    icon: "success",
+                    title: "Không tìm thấy số liệu với mã lô nhà máy này",
+                });
+
+                this.showAllLokhpx()
+            }
+        },
+
         // tìm lọc số liệu lô kế hoạch phân xưởng theo thời gian kết thúc của lô kế hoạch phân xưởng
         // tìm tất cả các lô có ngày kết thúc bé thua ngày cần tìm
         async searhtgketthuc() {
@@ -852,6 +932,7 @@ export default {
                     icon: "success",
                     title: "Không tìm thấy số liệu với thời gian này",
                 });
+                this.showAllLokhpx()
             }
         },
 
