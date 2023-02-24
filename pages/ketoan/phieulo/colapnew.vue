@@ -649,7 +649,7 @@ export default {
                 this.arrRowWatchDetail.splice(indexValue, 1)
                 return
             }
-            let dataChildren = await this.$axios.$get(
+            const dataChildren = await this.$axios.$get(
                 `/api/lokehoach/getalllsxinkhpx?makh=${data.makh}&makhpx=${data.makhpx}&mapx=${data.mapx}`
             );
 
@@ -710,6 +710,25 @@ export default {
                     icon: "success",
                     title: "Tạo phiếu lô sản xuất thành công",
                 });
+                const dataChildren = await this.$axios.$get(
+                    `/api/lokehoach/getalllsxinkhpx?makh=${dataTemp?.dataParent?.makh}&makhpx=${dataTemp?.dataParent?.makhpx}&mapx=${dataTemp?.dataParent?.mapx}`
+                );
+                const dataNew = {
+                    ...dataTemp,
+                    dataChildren: dataChildren,
+                    input: {
+                        inputMaTo: '',
+                        inputMaLo: '',
+                        inputSoLuong: '',
+                        inputDateOpen: null,
+                        inputDateEnd: null,
+                    }
+                }
+                let index = this.arrRowWatchDetail.findIndex(el => el.key === valueIndex);
+
+                if (index !== -1) {
+                    this.arrRowWatchDetail.splice(index, 1, dataNew);
+                }
             })
         },
 
