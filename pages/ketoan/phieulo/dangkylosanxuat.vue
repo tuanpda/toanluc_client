@@ -191,7 +191,7 @@
                             </td>
                             <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Ghi dữ liệu</td>
                         </tr>
-                        <tr v-for="(item, index) in lokehoachpx" :key="index + 'llllkiq'"
+                        <tr v-for="(item, index) in sortedsllosx" :key="index + 'llllkiq'"
                             @click="click_Add_Losanxuat(item)">
                             <td style="font-size: small; text-align: center; background-color: #effaf5;">{{ index + 1 }}
                             </td>

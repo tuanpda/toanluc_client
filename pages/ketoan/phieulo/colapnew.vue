@@ -221,9 +221,9 @@
                                         </select>
                                     </div>
                                 </td> -->
-                                <td style="font-size: small; text-align: center; background-color: #effaf5;">111</td>
-                                <td style="font-size: small; text-align: center; background-color: #effaf5;">0101</td>
-                                <td style="font-size: small; text-align: center; background-color: #effaf5;">0101</td>
+                                <td style="font-size: small; text-align: center; background-color: #effaf5;">107</td>
+                                <td style="font-size: small; text-align: center; background-color: #effaf5;">01/01/2023</td>
+                                <td style="font-size: small; text-align: center; background-color: #effaf5;">31/01/2023</td>
                                 <td>
                                     <!-- <button @click="onUpdate_lokhpx(item)"
                                         class="button is-small is-success is-fullwidth">Ghi</button> -->
@@ -234,28 +234,43 @@
                                 'display': arrRowWatchDetail.length > 0 && arrRowWatchDetail.findIndex(el => el.key === index) > -1 ? 'table-row' :
                                     'none'
                             }">
-                                <td colspan="13" style="padding: 10px 20px; background: #209cee0f;">
+                                <td colspan="12" style="padding: 10px 20px; background: #209cee0f;">
                                     <table class="table is-responsive is-bordered is-narrow is-fullwidth">
                                         <tr>
-                                            <td style="text-align: center; font-size:small; width: 3%">STT
+                                            <td
+                                                style="text-align: center; font-size:small; font-weight: 600; width: 3%; color: red;">
+                                                STT
                                             </td>
-                                            <td style="text-align: center; font-size:small; min-width: 25%;">
+                                            <td
+                                                style="text-align: center; font-size:small; font-weight: 600; width: 30%; color: red;">
                                                 Tổ
                                                 / nhóm
                                             </td>
-                                            <td style="text-align: center; font-size:small; width: 10%">Mã
+                                            <td
+                                                style="text-align: center; font-size:small; font-weight: 600; width: 15%; color: red;">
+                                                Mã
                                                 Lô sản
                                                 xuất</td>
-                                            <td style="text-align: center; font-size:small; width: 5%">Số
+                                            <td
+                                                style="text-align: center; font-size:small; font-weight: 600; width: 7%; color: red;">
+                                                Số
                                                 lượng
                                             </td>
-                                            <td style="text-align: center; font-size:small; width: 6%">Thời
+                                            <td
+                                                style="text-align: center; font-size:small; font-weight: 600; width: 5%; color: red;">
+                                                Thời
                                                 gian
                                                 bắt đầu</td>
-                                            <td style="text-align: center; font-size:small; width: 6%">Thời
+                                            <td
+                                                style="text-align: center; font-size:small; font-weight: 600; width: 5%; color: red;">
+                                                Thời
                                                 gian
                                                 kết thúc</td>
-                                            <td style="text-align: center; font-size:small; width: 5%">Thêm</td>
+                                            <td
+                                                style="text-align: center; font-size:small; font-weight: 600; width: 4%; color: red;">
+                                                Thêm</td>
+                                            <td style="text-align: center; font-size:small; font-weight: 600; color: red;">
+                                                In</td>
                                         </tr>
                                         <template
                                             v-if="arrRowWatchDetail.length > 0 && arrRowWatchDetail.findIndex(el => el.key === index) > -1">
@@ -279,6 +294,8 @@
                                                     <td style="font-size: small; text-align: center">
                                                         {{ item.ngaykt | formatDate }}
                                                     </td>
+                                                    <td></td>
+                                                    <td style="text-align: center;"><input type="checkbox" /></td>
                                                 </tr>
                                             </template>
                                         </template>
@@ -289,7 +306,6 @@
                                                     === index) > -1 ? (arrRowWatchDetail.find(el => el.key ===
                                                         index).dataChildren.length + 1 || 1) : 1 }}
                                             </td>
-
                                             <template
                                                 v-if="arrRowWatchDetail.length > 0 && arrRowWatchDetail.findIndex(el => el.key === index) > -1">
                                                 <td style="font-size: small;">
@@ -327,10 +343,13 @@
                                         </tr>
                                     </table>
                                 </td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
                             </tr>
                         </template>
-
                     </table>
+                    <!-- end table -->
                     <table class="table is-responsive is-bordered is-narrow is-fullwidth">
                         <tr>
                             <td style="font-size: small; width: 13.1%;">
