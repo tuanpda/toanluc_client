@@ -255,9 +255,9 @@
                                     </select>
                                 </div>
                             </td>
-                            <td style="font-size: small; text-align: center; background-color: #effaf5;">111</td>
-                            <td style="font-size: small; text-align: center; background-color: #effaf5;">0101</td>
-                            <td style="font-size: small; text-align: center; background-color: #effaf5;">0101</td>
+                            <td style="font-size: small; text-align: center; background-color: #effaf5;">107</td>
+                            <td style="font-size: small; text-align: center; background-color: #effaf5;">01/01/2023</td>
+                            <td style="font-size: small; text-align: center; background-color: #effaf5;">31/01/2023</td>
                             <td><button @click="onUpdate_lokhpx(item)"
                                     class="button is-small is-success is-fullwidth">Ghi</button>
                             </td>
