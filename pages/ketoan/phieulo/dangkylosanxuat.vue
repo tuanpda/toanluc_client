@@ -52,11 +52,11 @@
                                 </div>
                             </td>
                             <!-- 2. theo nhóm sản phẩm -->
-                            <td style="width: 15%">
+                            <td style="width: 14%">
                                 <div class="field has-addons">
                                     <p class="control is-expanded">
                                         <input v-model="search_nhomsp" class="input is-small is-fullwidth" type="text"
-                                            placeholder="Tìm theo nhóm sản phẩm">
+                                            placeholder="Theo nhóm sản phẩm">
                                     </p>
                                     <p class="control">
                                         <a @click="searhNhomsp" class="button is-small"
@@ -67,11 +67,11 @@
                                 </div>
                             </td>
                             <!-- 3. theo sản phẩm -->
-                            <td style="width: 15%">
+                            <td style="width: 12%">
                                 <div class="field has-addons">
                                     <p class="control is-expanded">
                                         <input v-model="search_sanpham" class="input is-small is-fullwidth" type="text"
-                                            placeholder="Tìm theo sản phẩm">
+                                            placeholder="Theo sản phẩm">
                                     </p>
                                     <p class="control">
                                         <a @click="searhSanpham" class="button is-small"
@@ -82,11 +82,11 @@
                                 </div>
                             </td>
                             <!-- 4. Mã lô nhà máy -->
-                            <td style="width: 15%">
+                            <td style="width: 12%">
                                 <div class="field has-addons">
                                     <p class="control is-expanded">
                                         <input v-model="search_malonm" class="input is-small is-fullwidth" type="text"
-                                            placeholder="Tìm mã lô nhà máy">
+                                            placeholder="Mã lô nhà máy">
                                     </p>
                                     <p class="control">
                                         <a @click="searhMalonm" class="button is-small"
@@ -94,6 +94,17 @@
                                             Lọc
                                         </a>
                                     </p>
+                                </div>
+                            </td>
+                            <td>
+                                <div class="select is-small is-fullwidth">
+                                    <select id="" @change="onChange_search_status($event)">
+                                        <option value="0" selected>-- Trạng thái --</option>
+                                        <option value="3">HT</option>
+                                        <option value="2">SX</option>
+                                        <option value="1">DK</option>
+                                        <option value="12">SX & DK</option>
+                                    </select>
                                 </div>
                             </td>
                             <!-- 5. theo thời gian kết thúc -->
@@ -114,31 +125,76 @@
                                 <button @click="showAllLokhpx"
                                     class="button is-small is-danger is-fullwidth">Refresh</button>
                             </td>
-                            <td style="font-size: small; font-weight: bold; text-align: right;"><span>Có: <span
+                            <!-- <td style="font-size: small; font-weight: bold; text-align: right;"><span>Có: <span
                                         style="color: red;">{{
                                             lokehoachpx.length }}</span> bản
-                                    ghi</span></td>
+                                    ghi</span></td> -->
                         </tr>
                         <!-- tìm theo điều kiện multi -->
                         <tr style="background-color: #eff5fb;">
                             <td style="width: 12%; font-size: small; font-weight: bold;">
                                 <div class="icon-text">
-                                    <span class="icon has-text-success">
-                                        <i class="fas fa-check-square"></i>
-                                    </span>
+                                    <input type="checkbox" v-model="showLuachon">
                                     <span style="color: #296fa8;">Lọc nhiều tiêu chí</span>
                                 </div>
                             </td>
-                            <td>
+                            <!-- <td>
                                 <button @click="filterMulti" class="button is-small is-fullwidth">Lọc Lô nhà máy theo
                                     TTQT</button>
+                            </td> -->
+                            <td colspan="5"></td>
+                            <td colspan="2" style="font-size: small; font-weight: bold; text-align: right;"><span>Có: <span
+                                        style="color: red;">{{
+                                            lokehoachpx.length }}</span> bản
+                                    ghi</span></td>
+                        </tr>
+                        <tr v-if="showLuachon == true" style="background-color: #feecf0;">
+                            <td style="width: 12%; font-size: small; font-weight: bold;">
+                                <div class="icon-text">
+                                    <span class="icon has-text-success">
+                                        <i class="fas fa-check-square"></i>
+                                    </span>
+                                    <span style="color: #296fa8;">Chọn các tiêu chí lọc</span>
+                                </div>
                             </td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
-                            <td></td>
+                            <td style="font-size: x-small;">
+                                <div class="select-wrapper">
+                                    <div class="select-header" @click="isOpen = !isOpen">
+                                        {{ selectedOptions.length > 0 ? selectedOptions.join(', ') : 'Chọn Phân xưởng' }}
+                                        <span class="arrow" :class="{ 'open': isOpen }"></span>
+                                    </div>
+                                    <div class="select-options" :class="{ 'open': isOpen }">
+                                        <label v-for="option in phanxuong">
+                                            <input type="checkbox" :value="option.mapx" v-model="selectedOptions">
+                                            {{ option.mapx }} &nbsp;
+                                        </label>
+                                    </div>
+                                </div>
+
+                            </td>
+                            <td><button @click="resetOp" class="button is-small is-fullwidth"> - Refresh all phân
+                                    xưởng - </button></td>
+                            <td><input v-model="multiSearch_nhomsp" type="text" class="input is-small"
+                                    placeholder="Nhóm sản phẩm"></td>
+                            <td><input v-model="multiSearch_masp" type="text" class="input is-small"
+                                    placeholder="Mã sản phẩm"></td>
+                            <td style="font-size: x-small;">
+                                <div class="select-wrapper">
+                                    <div class="select-header" @click="isOpenst = !isOpenst">
+                                        {{ Options_status.length > 0 ? Options_status.join(', ') : 'Trạng thái' }}
+                                        <span class="arrow" :class="{ 'open': isOpenst }"></span>
+                                    </div>
+                                    <div class="select-options" :class="{ 'open': isOpenst }">
+                                        <label v-for="option in statusArr">
+                                            <input type="checkbox" :value="option.masta" v-model="Options_status">
+                                            {{ option.tensta }} &nbsp;
+                                        </label>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                            </td>
+                            <td><button @click="filterData" class="button is-small is-fullwidth">Lọc</button></td>
                         </tr>
                     </table>
                 </div>
@@ -229,18 +285,18 @@
                                 item.ttqt
                             }}</td>
                             <template>
-                                <td v-if="item.status == 0"
-                                    style="font-size: small; text-align: center; background-color: whitesmoke;">0</td>
-                                <td v-else-if="item.status == 1" style="font-size: small; text-align: center; "><span
+                                <td v-if="item.status == 1" style="font-size: small; text-align: center; "><span
                                         style="color: white; font-weight: bold; background-color: red; padding-left: 7px; padding-right: 7px;">DK</span>
                                 </td>
                                 <td v-else-if="item.status == 2" style="font-size: small; text-align: center;">
                                     <span
                                         style="color: red; font-weight: bold; background-color: yellow; padding-left: 7px; padding-right: 7px;">SX</span>
                                 </td>
-                                <td v-else style="font-size: small; text-align: center;">
+                                <td v-else-if="item.status == 3" style="font-size: small; text-align: center;">
                                     <span
                                         style="color: white; font-weight: bold; background-color: green; padding-left: 7px; padding-right: 7px;">HT</span>
+                                </td>
+                                <td v-else style="font-size: small; text-align: center;">
                                 </td>
                             </template>
 
@@ -447,6 +503,7 @@
 </template>
 
 <script>
+import { join } from "path";
 import Swal from "sweetalert2";
 import { ModelListSelect } from "vue-search-select";
 import "vue-search-select/dist/VueSearchSelect.css";
@@ -484,6 +541,17 @@ export default {
 
             // gán biến status
             status: 0,
+
+            // check nhiều phân xưởng
+            showLuachon: false,
+            options: ['Option 1', 'Option 2', 'Option 3', 'Option 4'],
+            selectedOptions: [],
+            Options_status: [],
+            isOpen: false,
+            isOpenst: false,
+            statusArr: [{ masta: 1, tensta: "DK" }, { masta: 2, tensta: "SX" }, { masta: 3, tensta: "HT" }],
+            multiSearch_masp: "",
+            multiSearch_nhomsp: "",
 
             // hiển thị đăng ký lô sản xuất
             checkViewRegLsx: false,
@@ -632,6 +700,12 @@ export default {
             this.search_malonm = ""
             this.search_nhomsp = ""
             this.search_sanpham = ""
+            this.multiSearch_masp = ""
+            this.multiSearch_nhomsp = ""
+            this.Options_status = []
+            this.isOpen = false
+            this.isOpenst = false
+            this.selectedOptions = []
         },
 
         // get all phân xưởng 
@@ -658,6 +732,36 @@ export default {
             this.lokehoachpx = await this.$axios.$get(
                 `/api/lokehoach/sortmalonmsortttqt`
             );
+        },
+
+        resetOp() {
+            this.selectedOptions = []
+        },
+
+        // thay đổi status
+        async onChange_search_status(e) {
+            // 0: chưa đk; 1: dự kiến đăng ký (DK); 2: sản xuất (SX); 3: hoàn thành (HT)
+            var id = e.target.value;
+            // var name = e.target.options[e.target.options.selectedIndex].text;
+            // console.log('id ',id );
+            // console.log('name ',name );
+            // this.pageSize = id;
+            let dt = id
+            console.log(dt)
+            // this.status = dt
+            if (dt == 12) {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/searchstatus12`
+                );
+            } else if (dt == 0) {
+                this.showAllLokhpx()
+            }
+            else {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/searchstatus?status=${dt}`
+                );
+            }
+
         },
 
         // click vào ô mã kế hoạch
@@ -966,6 +1070,65 @@ export default {
             }
         },
 
+        // lọc nhiều tiêu chí
+        async filterData() {
+            // console.log(this.selectedOptions)
+            // console.log(this.Options_status)
+            this.isOpen = false
+            this.isOpenst = false
+
+            const mapxList = this.selectedOptions
+            const masp = this.multiSearch_masp
+            const status = this.Options_status
+
+
+            // chọn lọc full
+            if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp != "") {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filterfulldk`, {
+                    params: {
+                        mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
+                        masp: masp,
+                        status: status,
+                    },
+                }
+                );
+            }
+            // chỉ có mã px
+            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_masp == "") {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlymapx`, {
+                    params: {
+                        mapx: mapxList,
+                    },
+                }
+                );
+            }
+            // chỉ có mã px và mã sp
+            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_masp != "") {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlymapxandmasp`, {
+                    params: {
+                        mapx: mapxList,
+                        masp: masp
+                    },
+                }
+                );
+            }
+            // chỉ có mã px và status
+            else if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp == "") {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlymapxandstatus`, {
+                    params: {
+                        mapx: mapxList,
+                        status: status
+                    },
+                }
+                );
+            }
+
+        },
+
         async ghidulieu() {
             // console.log(this.items)
             for (let i = 0; i < this.items.length; i++) {
@@ -1131,5 +1294,56 @@ export default {
 tr:hover {
     cursor: pointer;
     background-color: #fffaeb;
+}
+
+.select-wrapper {
+    position: relative;
+    width: 200px;
+}
+
+.select-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #f2f2f2;
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.arrow {
+    border-style: solid;
+    border-width: 0.15em 0.15em 0 0;
+    content: '';
+    display: inline-block;
+    height: 0.45em;
+    left: 0.25em;
+    position: relative;
+    top: 0.25em;
+    transform: rotate(-45deg);
+    vertical-align: top;
+    width: 0.45em;
+}
+
+.arrow.open {
+    transform: rotate(135deg);
+}
+
+.select-options {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    z-index: 1;
+    padding-top: 5px;
+    padding-left: 5px;
+    padding-bottom: 5px;
+}
+
+.select-options.open {
+    display: block;
 }
 </style>

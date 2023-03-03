@@ -26,7 +26,7 @@
                 <div>
                     <table class="table is-responsive is-bordered is-narrow is-fullwidth">
                         <tr style="background-color: #faf0f5;">
-                            <td>
+                            <td style="width: 25%;">
                                 <div class="control has-icons-left">
                                     <div class="select is-small is-fullwidth">
                                         <select @change="getWithPX($event)">
@@ -62,15 +62,13 @@
                                 <button @click="showAllLokhsx"
                                     class="button is-small is-danger is-fullwidth">Refresh</button>
                             </td>
-                            <td style="width: 7.3%">
-                                <button class="button is-small is-success is-fullwidth">
-                                    <vue-excel-xlsx :data="lokehoachsx" :columns="columns" :file-name="'lokehoachsx'"
-                                        :file-type="'xlsx'" :sheet-name="'Lô sản xuất'">
-                                        Download file Excel
-                                    </vue-excel-xlsx>
-
-                                </button>
+                            <td style="width: 10%; text-align: center;">
+                                <vue-excel-xlsx :data="lokehoachsx" :columns="columns" :file-name="'lokehoachsx'"
+                                    :file-type="'xlsx'" :sheet-name="'Lô sản xuất'">
+                                    Download Excel
+                                </vue-excel-xlsx>
                             </td>
+                            <td></td>
                         </tr>
                     </table>
                 </div>
@@ -103,9 +101,16 @@
                             <td @click="sort('soluonglsx')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Số lượng
                             </td>
-
+                            <td @click="sort('status')"
+                                style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Trạng thái
+                            </td>
+                            <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Chọn trạng thái
+                            </td>
+                            <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Số lượng HT
+                            </td>
                             <td style="font-size: small; text-align: center; font-weight: 600;">Cập nhật
                             </td>
+                            <td></td>
                         </tr>
                         <tr v-for="(item, index) in sortedsllosx" :key="index + 'llllkiq'">
                             <td style="font-size: small; text-align: center; background-color: #effaf5;">{{ index + 1 }}
@@ -140,7 +145,36 @@
                                 item.soluonglsx | formatNumber
                             }}</td>
 
-                            <td style="width: 5%"><button @click="onUpdateKehoachpx(item)"
+                            <template>
+                                <td v-if="item.status == 1" style="font-size: small; text-align: center; "><span
+                                        style="color: white; font-weight: bold; background-color: red; padding-left: 7px; padding-right: 7px;">DK</span>
+                                </td>
+                                <td v-else-if="item.status == 2" style="font-size: small; text-align: center;">
+                                    <span
+                                        style="color: red; font-weight: bold; background-color: yellow; padding-left: 7px; padding-right: 7px;">SX</span>
+                                </td>
+                                <td v-else-if="item.status == 3" style="font-size: small; text-align: center;">
+                                    <span
+                                        style="color: white; font-weight: bold; background-color: green; padding-left: 7px; padding-right: 7px;">HT</span>
+                                </td>
+                                <td v-else style="font-size: small; text-align: center;">
+
+                                </td>
+                            </template>
+
+                            <td style="font-size: small; width: 10%;">
+                                <div class="select is-small is-fullwidth">
+                                    <select id="" @change="onChange_status($event)" v-model="item.status">
+                                        <option selected>-- Trạng thái --</option>
+                                        <option value="3">HT</option>
+                                        <option value="2">SX</option>
+                                        <option value="1">DK</option>
+                                        <option value="0">0</option>
+                                    </select>
+                                </div>
+                            </td>
+                            <td><input class="input is-small" type="text" v-model="item.soluongkhsx"></td>
+                            <td style="width: 5%"><button @click="onUpdateLosx(item)"
                                     class="button is-small is-success is-fullwidth">Cập nhật</button></td>
                             <td></td>
                         </tr>
@@ -204,6 +238,9 @@ export default {
             search_tenxuong: "",
             search_timestart: "",
             search_timeend: "",
+
+            // gán biến status
+            status: 0,
 
             // lọc talble
             currentSort: 'mapx',
@@ -412,14 +449,26 @@ export default {
             }
         },
 
+        // thay đổi status
+        onChange_status(e) {
+            // 0: chưa đk; 1: dự kiến đăng ký (DK); 2: sản xuất (SX); 3: hoàn thành (HT)
+            var id = e.target.value;
+            // var name = e.target.options[e.target.options.selectedIndex].text;
+            // console.log('id ',id );
+            // console.log('name ',name );
+            // this.pageSize = id;
+            let dt = id
+            // console.log(dt)
+            this.status = dt
+        },
 
-        // update lô kế hoạch phân xưởng
-        async onUpdateKehoachpx(data) {
+
+        // update status, ngay bd, ngay kt của 1 lô sản xuất
+        async onUpdateLosx(data) {
             // console.log(data)
             try {
-                data.songay = parseInt(data.soluongkhpx) / parseInt(data.congsuat)
                 this.$axios.$patch(
-                    `/api/lokehoach/lokehoachphanxuong/${data._id}`,
+                    `/api/lokehoach/losanxuat/status/${data._id}`,
                     data
                 );
                 const Toast = Swal.mixin({
