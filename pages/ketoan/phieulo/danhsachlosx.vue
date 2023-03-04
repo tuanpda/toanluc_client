@@ -26,7 +26,7 @@
                 <div>
                     <table class="table is-responsive is-bordered is-narrow is-fullwidth">
                         <tr style="background-color: #faf0f5;">
-                            <td style="width: 25%;">
+                            <td colspan="2" style="width: 25%;">
                                 <div class="control has-icons-left">
                                     <div class="select is-small is-fullwidth">
                                         <select @change="getWithPX($event)">
@@ -58,12 +58,12 @@
                                     </span>
                                 </div>
                             </td>
-                            <td style="width: 7.3%">
+                            <td style="width: 5%">
                                 <button @click="showAllLokhsx"
                                     class="button is-small is-danger is-fullwidth">Refresh</button>
                             </td>
                             <td style="width: 10%; text-align: center;">
-                                <vue-excel-xlsx :data="lokehoachsx" :columns="columns" :file-name="'lokehoachsx'"
+                                <vue-excel-xlsx :data="lokehoachsx" :columns="columns" :file-name="'losanxuat'"
                                     :file-type="'xlsx'" :sheet-name="'Lô sản xuất'">
                                     Download Excel
                                 </vue-excel-xlsx>
@@ -84,7 +84,7 @@
                             </td> -->
                             <td colspan="5"></td>
                             <td colspan="2" style="font-size: small; font-weight: bold; text-align: right;"><span>Có: <span
-                                        style="color: red;">{{
+                                        style="color: red;">{{ lokehoachsx.length
                                         }}</span> bản
                                     ghi</span></td>
                         </tr>
@@ -114,11 +114,25 @@
                             </td>
                             <td><button @click="resetOp" class="button is-small is-fullwidth"> - Refresh all phân
                                     xưởng - </button></td>
-                            <td><input v-model="multiSearch_nhomsp" type="text" class="input is-small"
-                                    placeholder="Nhóm sản phẩm"></td>
-                            <td><input v-model="multiSearch_masp" type="text" class="input is-small"
-                                    placeholder="Mã sản phẩm"></td>
-                            <td style="font-size: x-small;">
+                            <td>
+                                <div class="control has-icons-left">
+                                    <div class="select is-small is-fullwidth">
+                                        <select id="selectBox" v-model="selected">
+                                            <!-- <option selected>-- Mã sản phẩm --</option>  -->
+                                            <option v-for="option in filteredOptions" :value="option.masp">
+                                                {{ option.masp }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <datalist id="options">
+                                        <option v-for="option in filteredOptions" :value="option.masp"></option>
+                                    </datalist>
+                                    <span class="icon is-small is-left">
+                                        <i style="color: #48c78e" class="fas fa-cog"></i>
+                                    </span>
+                                </div>
+                            </td>
+                            <td colspan="2" style="font-size: x-small;">
                                 <div class="select-wrapper">
                                     <div class="select-header" @click="isOpenst = !isOpenst">
                                         {{ Options_status.length > 0 ? Options_status.join(', ') : 'Trạng thái' }}
@@ -132,9 +146,11 @@
                                     </div>
                                 </div>
                             </td>
+                            <td style="width: 5%"><button @click="filterData"
+                                    class="button is-small is-fullwidth is-success">Lọc</button></td>
                             <td>
+
                             </td>
-                            <td><button @click="filterData" class="button is-small is-fullwidth">Lọc</button></td>
                         </tr>
                     </table>
                 </div>
@@ -322,59 +338,75 @@ export default {
             isOpenst: false,
             statusArr: [{ masta: 1, tensta: "DK" }, { masta: 2, tensta: "SX" }, { masta: 3, tensta: "HT" }],
             multiSearch_masp: "",
-            multiSearch_nhomsp: "",
+
+            // xử lý select mã sản phẩm
+            selected: '',
+            search: '',
+            maspinlosanxuat: [],
 
             // xuất execl
             columns: [
                 {
                     label: "Mã lô nhà máy",
                     field: "makh",
+                    dataFormat: this.trimData
                 },
                 {
                     label: "Mã kế hoạch phân xưởng",
                     field: "makhpx",
+                    dataFormat: this.trimData
                 },
                 {
                     label: "Mã lô sản xuất",
                     field: "malosx",
+                    dataFormat: this.trimData
                 },
                 {
                     label: "Mã phân xưởng",
                     field: "mapx",
+                    dataFormat: this.trimData
                     /* dataFormat: this.priceFormat */
                 },
                 {
                     label: "Tên phân xưởng",
                     field: "tenpx",
+                    dataFormat: this.trimData
                 },
                 {
                     label: "Mã tổ",
                     field: "mato",
+                    dataFormat: this.trimData
                 },
                 {
                     label: "Tên tổ",
                     field: "tento",
+                    dataFormat: this.trimData
                 },
                 {
                     label: "Mã sản phẩm",
                     field: "masp",
+                    dataFormat: this.trimData
                 },
                 {
                     label: "Tên sản phẩm",
                     field: "tensp",
+                    dataFormat: this.trimData
                 },
                 {
                     label: "Số lượng",
                     field: "soluonglsx",
+                    dataFormat: this.trimData
                 },
 
                 {
                     label: "Ngày bắt đầu",
                     field: "ngaybd",
+                    dataFormat: this.prefixformatDate
                 },
                 {
                     label: "Ngày kết thúc",
                     field: "ngaykt",
+                    dataFormat: this.prefixformatDate
                 },
                 {
                     label: "Đã tính lương",
@@ -391,6 +423,7 @@ export default {
     mounted() {
         this.showAllLokhsx()
         this.showAllPx()
+        this.maspinlsx()
     },
 
     computed: {
@@ -412,6 +445,11 @@ export default {
                 let end = this.currentPage * this.pageSize;
                 if (index >= start && index < end) return true;
             });
+        },
+        filteredOptions() {
+            return this.maspinlosanxuat.filter(option =>
+                option.masp.toLowerCase().includes(this.search.toLowerCase())
+            );
         }
     },
 
@@ -435,6 +473,18 @@ export default {
 
 
     methods: {
+        // format trước khi xuất execl, ở đây là trim dữ liệu trước khi mang ra
+        trimData(value) {
+            return value.trim();
+        },
+        // format date
+        prefixformatDate(value) {
+            if (!value) {
+                return '';
+            }
+            value = new Date(value);
+            return value.getFullYear() + '-' + ('0' + (value.getMonth() + 1)).slice(-2) + '-' + ('0' + value.getDate()).slice(-2);
+        },
         // các hàm phục vụ tính toán
         // hàm bind v-model input type date
         getDate(value) {
@@ -475,11 +525,20 @@ export default {
             );
             this.search_timestart = ""
             this.search_timeend = ""
+            this.multiSearch_masp = ""
+            this.Options_status = []
+            this.isOpen = false
+            this.isOpenst = false
+            this.selectedOptions = []
         },
 
         // get all phân xưởng 
         async showAllPx() {
             this.phanxuong = await this.$axios.$get(`/api/phongban/allphanxuong`);
+        },
+
+        async maspinlsx() {
+            this.maspinlosanxuat = await this.$axios.$get('/api/lokehoach/hmsanphamlosx')
         },
 
         // bấm vào chọn phân xưởng khi lọc
@@ -530,60 +589,83 @@ export default {
 
         // lọc nhiều tiêu chí -- get bookmark 1
         async filterData() {
-            console.log(this.selectedOptions)
-            console.log(this.Options_status)
-            // this.isOpen = false
-            // this.isOpenst = false
+            // console.log(this.selectedOptions)
+            // console.log(this.Options_status)
+            // console.log(this.selected)
+            this.isOpen = false
+            this.isOpenst = false
 
-            // const mapxList = this.selectedOptions
-            // const masp = this.multiSearch_masp
-            // const status = this.Options_status
+            const mapxList = this.selectedOptions
+            const masp = this.multiSearch_masp
+            const status = this.Options_status
 
 
-            // // chọn lọc full
-            // if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp != "") {
-            //     this.lokehoachpx = await this.$axios.$get(
-            //         `/api/lokehoach/filterfulldk`, {
-            //         params: {
-            //             mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
-            //             masp: masp,
-            //             status: status,
-            //         },
-            //     }
-            //     );
-            // }
-            // // chỉ có mã px
-            // else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_masp == "") {
-            //     this.lokehoachpx = await this.$axios.$get(
-            //         `/api/lokehoach/filteronlymapx`, {
-            //         params: {
-            //             mapx: mapxList,
-            //         },
-            //     }
-            //     );
-            // }
-            // // chỉ có mã px và mã sp
-            // else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_masp != "") {
-            //     this.lokehoachpx = await this.$axios.$get(
-            //         `/api/lokehoach/filteronlymapxandmasp`, {
-            //         params: {
-            //             mapx: mapxList,
-            //             masp: masp
-            //         },
-            //     }
-            //     );
-            // }
-            // // chỉ có mã px và status
-            // else if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp == "") {
-            //     this.lokehoachpx = await this.$axios.$get(
-            //         `/api/lokehoach/filteronlymapxandstatus`, {
-            //         params: {
-            //             mapx: mapxList,
-            //             status: status
-            //         },
-            //     }
-            //     );
-            // }
+            // chọn lọc full
+            if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp != "") {
+                this.lokehoachsx = await this.$axios.$get(
+                    `/api/lokehoach/filterfulldklosanxuat`, {
+                    params: {
+                        mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
+                        masp: masp,
+                        status: status,
+                    },
+                }
+                );
+                console.log(this.lokehoachsx)
+            }
+            // chỉ có mã px
+            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_masp == "") {
+                this.lokehoachsx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlymapxlosanxuat`, {
+                    params: {
+                        mapx: mapxList,
+                    },
+                }
+                );
+            }
+            // chỉ có mã px và mã sp
+            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_masp != "") {
+                this.lokehoachsx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlymapxandmasplosanxuat`, {
+                    params: {
+                        mapx: mapxList,
+                        masp: masp
+                    },
+                }
+                );
+            }
+            // chỉ có mã px và status
+            else if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp == "") {
+                this.lokehoachsx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlymapxandstatuslosanxuat`, {
+                    params: {
+                        mapx: mapxList,
+                        status: status
+                    },
+                }
+                );
+            }
+            // lọc mỗi trạng thái
+            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.multiSearch_masp == "") {
+                this.lokehoachsx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlystatuslosanxuat`, {
+                    params: {
+                        status: status
+                    },
+                }
+                );
+            }
+
+            // lọc mỗi mã sản phẩm
+            else if (!this.selectedOptions.length && !this.Options_status.length && this.multiSearch_masp != "") {
+                this.lokehoachsx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlymasplosanxuat`, {
+                    params: {
+                        masp: masp
+                    },
+                }
+                );
+            }
 
         },
 

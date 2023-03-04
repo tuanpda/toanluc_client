@@ -172,8 +172,24 @@
                                     xưởng - </button></td>
                             <td><input v-model="multiSearch_nhomsp" type="text" class="input is-small"
                                     placeholder="Nhóm sản phẩm"></td>
-                            <td><input v-model="multiSearch_masp" type="text" class="input is-small"
-                                    placeholder="Mã sản phẩm"></td>
+                            <td>
+                                <div class="control has-icons-left">
+                                    <div class="select is-small is-fullwidth">
+                                        <select id="selectBox" v-model="selected">
+                                            <!-- <option selected>-- Mã sản phẩm --</option>  -->
+                                            <option v-for="option in filteredOptions" :value="option.masp">
+                                                {{ option.masp }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <datalist id="options">
+                                        <option v-for="option in filteredOptions" :value="option.masp"></option>
+                                    </datalist>
+                                    <span class="icon is-small is-left">
+                                        <i style="color: #48c78e" class="fas fa-cog"></i>
+                                    </span>
+                                </div>
+                            </td>
                             <td style="font-size: x-small;">
                                 <div class="select-wrapper">
                                     <div class="select-header" @click="isOpenst = !isOpenst">
@@ -549,6 +565,11 @@ export default {
             multiSearch_masp: "",
             multiSearch_nhomsp: "",
 
+            // xử lý select mã sản phẩm
+            selected: '',
+            search: '',
+            maspinlokehoach: [],
+
             // hiển thị đăng ký lô sản xuất
             checkViewRegLsx: false,
             isaddlosx: 0,
@@ -597,6 +618,7 @@ export default {
         this.showAllLokhpx()
         this.showAllPx()
         this.deleteRow(0);
+        this.maspinlkh()
     },
 
     computed: {
@@ -618,6 +640,11 @@ export default {
                 let end = this.currentPage * this.pageSize;
                 if (index >= start && index < end) return true;
             });
+        },
+        filteredOptions() {
+            return this.maspinlokehoach.filter(option =>
+                option.masp.toLowerCase().includes(this.search.toLowerCase())
+            );
         }
     },
 
@@ -707,6 +734,10 @@ export default {
         // get all phân xưởng 
         async showAllPx() {
             this.phanxuong = await this.$axios.$get(`/api/phongban/allphanxuong`);
+        },
+
+        async maspinlkh() {
+            this.maspinlokehoach = await this.$axios.$get('/api/lokehoach/hmsanphamlokhpx')
         },
 
         // bấm vào chọn phân xưởng khi lọc khi lọc đơn
@@ -1118,6 +1149,27 @@ export default {
                     params: {
                         mapx: mapxList,
                         status: status
+                    },
+                }
+                );
+            }
+            // lọc mỗi trạng thái
+            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.multiSearch_masp == "") {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlystatus`, {
+                    params: {
+                        status: status
+                    },
+                }
+                );
+            }
+
+            // lọc mỗi mã sản phẩm
+            else if (!this.selectedOptions.length && !this.Options_status.length && this.multiSearch_masp != "") {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlymasp`, {
+                    params: {
+                        masp: masp
                     },
                 }
                 );
