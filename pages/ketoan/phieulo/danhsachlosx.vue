@@ -68,7 +68,73 @@
                                     Download Excel
                                 </vue-excel-xlsx>
                             </td>
-                            <td></td>
+                            <td colspan="2"></td>
+                        </tr>
+                        <!-- tìm theo điều kiện multi -->
+                        <tr style="background-color: #eff5fb;">
+                            <td style="width: 12%; font-size: small; font-weight: bold;">
+                                <div class="icon-text">
+                                    <input type="checkbox" v-model="optionclick">
+                                    <span style="color: #296fa8;">Lọc nhiều tiêu chí</span>
+                                </div>
+                            </td>
+                            <!-- <td>
+                                <button @click="filterMulti" class="button is-small is-fullwidth">Lọc Lô nhà máy theo
+                                    TTQT</button>
+                            </td> -->
+                            <td colspan="5"></td>
+                            <td colspan="2" style="font-size: small; font-weight: bold; text-align: right;"><span>Có: <span
+                                        style="color: red;">{{
+                                        }}</span> bản
+                                    ghi</span></td>
+                        </tr>
+                        <tr v-if="optionclick == true" style="background-color: #feecf0;">
+                            <td style="width: 12%; font-size: small; font-weight: bold;">
+                                <div class="icon-text">
+                                    <span class="icon has-text-success">
+                                        <i class="fas fa-check-square"></i>
+                                    </span>
+                                    <span style="color: #296fa8;">Chọn các tiêu chí lọc</span>
+                                </div>
+                            </td>
+                            <td style="font-size: x-small;">
+                                <div class="select-wrapper">
+                                    <div class="select-header" @click="isOpen = !isOpen">
+                                        {{ selectedOptions.length > 0 ? selectedOptions.join(', ') : 'Chọn Phân xưởng' }}
+                                        <span class="arrow" :class="{ 'open': isOpen }"></span>
+                                    </div>
+                                    <div class="select-options" :class="{ 'open': isOpen }">
+                                        <label v-for="option in phanxuong">
+                                            <input type="checkbox" :value="option.mapx" v-model="selectedOptions">
+                                            {{ option.mapx }} &nbsp;
+                                        </label>
+                                    </div>
+                                </div>
+
+                            </td>
+                            <td><button @click="resetOp" class="button is-small is-fullwidth"> - Refresh all phân
+                                    xưởng - </button></td>
+                            <td><input v-model="multiSearch_nhomsp" type="text" class="input is-small"
+                                    placeholder="Nhóm sản phẩm"></td>
+                            <td><input v-model="multiSearch_masp" type="text" class="input is-small"
+                                    placeholder="Mã sản phẩm"></td>
+                            <td style="font-size: x-small;">
+                                <div class="select-wrapper">
+                                    <div class="select-header" @click="isOpenst = !isOpenst">
+                                        {{ Options_status.length > 0 ? Options_status.join(', ') : 'Trạng thái' }}
+                                        <span class="arrow" :class="{ 'open': isOpenst }"></span>
+                                    </div>
+                                    <div class="select-options" :class="{ 'open': isOpenst }">
+                                        <label v-for="option in statusArr">
+                                            <input type="checkbox" :value="option.masta" v-model="Options_status">
+                                            {{ option.tensta }} &nbsp;
+                                        </label>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                            </td>
+                            <td><button @click="filterData" class="button is-small is-fullwidth">Lọc</button></td>
                         </tr>
                     </table>
                 </div>
@@ -158,7 +224,6 @@
                                         style="color: white; font-weight: bold; background-color: green; padding-left: 7px; padding-right: 7px;">HT</span>
                                 </td>
                                 <td v-else style="font-size: small; text-align: center;">
-
                                 </td>
                             </template>
 
@@ -248,6 +313,16 @@ export default {
             pageSize: 15,
             currentPage: 1,
             filter: '',
+
+            // check nhiều phân xưởng
+            optionclick: false,
+            selectedOptions: [],
+            Options_status: [],
+            isOpen: false,
+            isOpenst: false,
+            statusArr: [{ masta: 1, tensta: "DK" }, { masta: 2, tensta: "SX" }, { masta: 3, tensta: "HT" }],
+            multiSearch_masp: "",
+            multiSearch_nhomsp: "",
 
             // xuất execl
             columns: [
@@ -449,6 +524,69 @@ export default {
             }
         },
 
+        resetOp() {
+            this.selectedOptions = []
+        },
+
+        // lọc nhiều tiêu chí -- get bookmark 1
+        async filterData() {
+            console.log(this.selectedOptions)
+            console.log(this.Options_status)
+            // this.isOpen = false
+            // this.isOpenst = false
+
+            // const mapxList = this.selectedOptions
+            // const masp = this.multiSearch_masp
+            // const status = this.Options_status
+
+
+            // // chọn lọc full
+            // if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp != "") {
+            //     this.lokehoachpx = await this.$axios.$get(
+            //         `/api/lokehoach/filterfulldk`, {
+            //         params: {
+            //             mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
+            //             masp: masp,
+            //             status: status,
+            //         },
+            //     }
+            //     );
+            // }
+            // // chỉ có mã px
+            // else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_masp == "") {
+            //     this.lokehoachpx = await this.$axios.$get(
+            //         `/api/lokehoach/filteronlymapx`, {
+            //         params: {
+            //             mapx: mapxList,
+            //         },
+            //     }
+            //     );
+            // }
+            // // chỉ có mã px và mã sp
+            // else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_masp != "") {
+            //     this.lokehoachpx = await this.$axios.$get(
+            //         `/api/lokehoach/filteronlymapxandmasp`, {
+            //         params: {
+            //             mapx: mapxList,
+            //             masp: masp
+            //         },
+            //     }
+            //     );
+            // }
+            // // chỉ có mã px và status
+            // else if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp == "") {
+            //     this.lokehoachpx = await this.$axios.$get(
+            //         `/api/lokehoach/filteronlymapxandstatus`, {
+            //         params: {
+            //             mapx: mapxList,
+            //             status: status
+            //         },
+            //     }
+            //     );
+            // }
+
+        },
+
         // thay đổi status
         onChange_status(e) {
             // 0: chưa đk; 1: dự kiến đăng ký (DK); 2: sản xuất (SX); 3: hoàn thành (HT)
@@ -548,5 +686,56 @@ export default {
 tr:hover {
     cursor: pointer;
     background-color: #fffaeb;
+}
+
+.select-wrapper {
+    position: relative;
+    width: 200px;
+}
+
+.select-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #f2f2f2;
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.arrow {
+    border-style: solid;
+    border-width: 0.15em 0.15em 0 0;
+    content: '';
+    display: inline-block;
+    height: 0.45em;
+    left: 0.25em;
+    position: relative;
+    top: 0.25em;
+    transform: rotate(-45deg);
+    vertical-align: top;
+    width: 0.45em;
+}
+
+.arrow.open {
+    transform: rotate(135deg);
+}
+
+.select-options {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    z-index: 1;
+    padding-top: 5px;
+    padding-left: 5px;
+    padding-bottom: 5px;
+}
+
+.select-options.open {
+    display: block;
 }
 </style>

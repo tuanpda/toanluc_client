@@ -125,10 +125,6 @@
                                 <button @click="showAllLokhpx"
                                     class="button is-small is-danger is-fullwidth">Refresh</button>
                             </td>
-                            <!-- <td style="font-size: small; font-weight: bold; text-align: right;"><span>Có: <span
-                                        style="color: red;">{{
-                                            lokehoachpx.length }}</span> bản
-                                    ghi</span></td> -->
                         </tr>
                         <!-- tìm theo điều kiện multi -->
                         <tr style="background-color: #eff5fb;">

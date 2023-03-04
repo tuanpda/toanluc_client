@@ -64,8 +64,8 @@ module.exports = {
   }, */
   axios: {
     // baseURL: "http://10.42.240.200:9999",
-    baseURL: "http://localhost:8888",
-    // baseURL: "http://14.224.129.177:8888/"
+    // baseURL: "http://localhost:8888",
+    baseURL: "http://14.224.129.177:8888/",
   },
   server: {
     port: 8080, // default: 3000
