@@ -540,6 +540,7 @@ export default {
 
         async maspinlsx() {
             this.maspinlosanxuat = await this.$axios.$get('/api/lokehoach/hmsanphamlosx')
+            console.log(this.maspinlosanxuat)
         },
 
         // bấm vào chọn phân xưởng khi lọc
