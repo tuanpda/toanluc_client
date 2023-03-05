@@ -530,6 +530,7 @@ export default {
             this.isOpen = false
             this.isOpenst = false
             this.selectedOptions = []
+            this.selected = ""
         },
 
         // get all phân xưởng 
@@ -596,12 +597,12 @@ export default {
             this.isOpenst = false
 
             const mapxList = this.selectedOptions
-            const masp = this.multiSearch_masp
+            const masp = this.selected
             const status = this.Options_status
 
 
             // chọn lọc full
-            if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp != "") {
+            if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.selected != "") {
                 this.lokehoachsx = await this.$axios.$get(
                     `/api/lokehoach/filterfulldklosanxuat`, {
                     params: {
@@ -614,7 +615,7 @@ export default {
                 console.log(this.lokehoachsx)
             }
             // chỉ có mã px
-            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_masp == "") {
+            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.selected == "") {
                 this.lokehoachsx = await this.$axios.$get(
                     `/api/lokehoach/filteronlymapxlosanxuat`, {
                     params: {
@@ -624,7 +625,7 @@ export default {
                 );
             }
             // chỉ có mã px và mã sp
-            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_masp != "") {
+            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.selected != "") {
                 this.lokehoachsx = await this.$axios.$get(
                     `/api/lokehoach/filteronlymapxandmasplosanxuat`, {
                     params: {
@@ -635,7 +636,7 @@ export default {
                 );
             }
             // chỉ có mã px và status
-            else if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp == "") {
+            else if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.selected == "") {
                 this.lokehoachsx = await this.$axios.$get(
                     `/api/lokehoach/filteronlymapxandstatuslosanxuat`, {
                     params: {
@@ -646,7 +647,7 @@ export default {
                 );
             }
             // lọc mỗi trạng thái
-            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.multiSearch_masp == "") {
+            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.selected == "") {
                 this.lokehoachsx = await this.$axios.$get(
                     `/api/lokehoach/filteronlystatuslosanxuat`, {
                     params: {
@@ -657,7 +658,7 @@ export default {
             }
 
             // lọc mỗi mã sản phẩm
-            else if (!this.selectedOptions.length && !this.Options_status.length && this.multiSearch_masp != "") {
+            else if (!this.selectedOptions.length && !this.Options_status.length && this.selected != "") {
                 this.lokehoachsx = await this.$axios.$get(
                     `/api/lokehoach/filteronlymasplosanxuat`, {
                     params: {
