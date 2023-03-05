@@ -43,7 +43,7 @@
                                 <div class="field has-addons">
                                     <p class="control is-expanded">
                                         <input v-model="search_sanpham" class="input is-small is-fullwidth" type="text"
-                                            placeholder="Tìm theo nhóm sản phẩm">
+                                            placeholder="Tìm theo sản phẩm">
                                     </p>
                                     <p class="control">
                                         <a @click="searhSanpham" class="button is-small">
@@ -151,6 +151,21 @@
                                     <i style="color: #00947e" class="fa fa-circle"></i>
                                 </span>
                             </td>
+                            <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
+                                item.px1
+                            }}</td>
+                            <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
+                                item.px2
+                            }}</td>
+                            <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
+                                item.px3
+                            }}</td>
+                            <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
+                                item.px4
+                            }}</td>
+                            <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
+                                item.px5
+                            }}</td>
                         </tr>
                     </table>
                     <table class="table is-responsive is-bordered is-narrow is-fullwidth">
@@ -734,7 +749,7 @@ export default {
             this.search_nhomsp = ''
             this.search_timekt = null
             this.sllosx = await this.$axios.$get(
-                `/api/lokehoach/alllonhamay`
+                `/api/lokehoach/alllonhamaywithsoluonglokhpx`
             );
             if (this.sllosx.length <= 0) {
                 const Toast = Swal.mixin({
