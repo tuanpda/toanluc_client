@@ -32,23 +32,145 @@
                 <td></td>
             </tr>
             <tr style="background-color: antiquewhite;">
+                <td style=" width: 5%;"></td>
                 <td style="font-size: small; text-align: center; width: 3%;">ID</td>
                 <td style="font-size: small; text-align: center; width: 10%;">Mã sản phẩm</td>
                 <td style="font-size: small; text-align: center; width: 7%;">Mã PX</td>
                 <td style="font-size: small; text-align: center; width: 7%;">Nhóm SP</td>
-                <td></td>
             </tr>
             <template v-for="(row, index) in allproduct">
-                <tr @click="toggleAndshow(index, row.id, row.maspkhpx, row.mapx)"
-                    :class="{ opened: opened.includes(row.id) }">
+                <tr>
+                    <td @click="watchParent(index, row)" :class="{ opened: opened.includes(row.id) }">
+                        <div
+                            style=" display: flex; gap: 10px; justify-content:space-around; align-items: center; width: 100%; height: 100%; margin-top: 5px; cursor: pointer;">
+                            <span class="icon is-small is-left" style="color: #55acee">
+                                <i v-if="!getParent(index)" class="	far fa-arrow-alt-circle-down"></i>
+                                <i v-if="!!getParent(index)" class="	far fa-arrow-alt-circle-left"></i>
+                            </span>
+                        </div>
+                    </td>
                     <td style="font-size: small; text-align: center;">{{ row.id }}</td>
                     <td style="font-size: small;">{{ row.maspkhpx }}</td>
                     <td style="font-size: small; text-align: center;">{{ row.mapx }}</td>
                     <td style="font-size: small; text-align: center;">{{ row.nhomsp }}</td>
-                    <td></td>
+                </tr>
+                <!-- open row -->
+                <tr style="display: none" :style="{
+                    'display': !!getParent(index) ? 'table-row' :
+                        'none'
+                }">
+                    <td colspan="12" style="padding: 10px 20px; background: #209cee0f;">
+                        <div style="margin-top: 5px; margin-bottom: 5px; font-weight: 600; font-style: italic; font-size: 14px;" >{{ `Chi tiết mã Phân Xưởng: ${row.mapx}`  }}</div>
+                        <table class="table is-responsive is-bordered is-narrow is-fullwidth">
+                            <tr>
+                                <td style=" width: 5%;"></td>
+                                <td style="text-align: center; font-size:small; font-weight: 600; width: 15%; color: red;">
+                                    STT
+                                </td>
+                                <td style="text-align: center; font-size:small; font-weight: 600; width: 30%; color: red;">
+                                    Mã Phân Xưởng
+                                </td>
+                                <td style="text-align: center; font-size:small; font-weight: 600; width: 35%; color: red;">
+                                    Mã KH Phân Xưởng</td>
+                                <td style="text-align: center; font-size:small; font-weight: 600; width: 20%; color: red;">
+                                    Số
+                                    lượng
+                                </td>
+                            </tr>
+                            <template v-if="!!(getParent(index) || []).dataChildren">
+                                <template v-for="(item, indexRow) in (getParent(index).dataChildren || []) ">
+                                    <tr>
+                                        <td @click="watchChildren(index, indexRow, row, item)">
+                                            <div
+                                                style=" cursor: pointer;display: flex; gap: 10px; justify-content:space-around; align-items: center; width: 100%; height: 100%; margin-top: 5px;">
+                                                <span style="color: #55acee">
+                                                    <i v-if="!getChildren(index, indexRow)"
+                                                        class="	far fa-arrow-alt-circle-down"></i>
+                                                    <i v-if="!!getChildren(index, indexRow)"
+                                                        class="	far fa-arrow-alt-circle-left"></i>
+                                                </span>
+                                            </div>
+                                        </td>
+                                        <td style="font-size: small; text-align: center">
+                                            {{ indexRow + 1 }}
+                                        </td>
+                                        <td style="font-size: small;">
+                                            {{ item.mapx }}
+                                        </td>
+                                        <td style="font-size: small; text-align: center;"> {{ item.makhpx }}
+                                        </td>
+                                        <td style="font-size: small; text-align: center">
+                                            {{ item.soluongkhpx }}
+                                        </td>
+                                    </tr>
+                                    <!-- open row children -->
+                                    <tr style="display: none" :style="{
+                                        'display': !!getChildren(index, indexRow) ? 'table-row' :
+                                            'none'
+                                    }">
+                                        <td colspan="12" style="padding: 10px 20px; background: #209cee0f;">
+                                            <table class="table is-responsive is-bordered is-narrow is-fullwidth">
+                                                <tr>
+                                                    <td
+                                                        style="text-align: center; font-size:small; font-weight: 600; width: 15%; color: tan;">
+                                                        STT
+                                                    </td>
+                                                    <td
+                                                        style="text-align: center; font-size:small; font-weight: 600; width: 30%; color: tan;">
+                                                        Tên px
+                                                    </td>
+                                                    <td
+                                                        style="text-align: center; font-size:small; font-weight: 600; width: 35%; color: tan;">
+                                                        soluongkhsx</td>
+                                                    <td
+                                                        style="text-align: center; font-size:small; font-weight: 600; width: 20%; color: tan;">
+                                                        soluonglsx
+                                                    </td>
+                                                    <td
+                                                        style="text-align: center; font-size:small; font-weight: 600; width: 20%; color: tan;">
+                                                        Ngày bắt đầu
+                                                    </td>
+                                                    <td
+                                                        style="text-align: center; font-size:small; font-weight: 600; width: 20%; color: tan;">
+                                                        Ngày kết thúc
+                                                    </td>
+                                                </tr>
+                                                <template v-if="!!getChildren(index, indexRow) || [].dataChildren">
+                                                    <template
+                                                    v-if="(getChildren(index, indexRow).dataChildren || []).length > 0"
+                                                        v-for="(itemChildren, indexChildren) in (getChildren(index, indexRow).dataChildren || []) ">
+                                                        <tr>
+                                                            <td style="font-size: small; text-align: center">
+                                                                {{ indexChildren + 1 }}
+                                                            </td>
+                                                            <td style="font-size: small;">
+                                                                {{ itemChildren.tenpx }}
+                                                            </td>
+                                                            <td style="font-size: small; text-align: center;"> {{
+                                                                itemChildren.soluongkhsx }}
+                                                            </td>
+                                                            <td style="font-size: small; text-align: center">
+                                                                {{ itemChildren.soluonglsx }}
+                                                            </td>
+                                                            <td style="font-size: small; text-align: center">
+                                                                {{ itemChildren.ngaybd | formatDate }}
+                                                            </td>
+                                                            <td style="font-size: small; text-align: center">
+                                                                {{ itemChildren.ngaykt | formatDate }}
+                                                            </td>
+                                                        </tr>
+                                                    </template>
+                                                </template  >
+                                            </table>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </template>
+                        </table>
+                    </td>
                 </tr>
                 <!-- v-if tức là chỉ hiện ra khi mảng openned có phần tử (ví dụ 1) trùng với row.id (tức là id trong bảng allproduct) -->
-                <template v-for="(dt, index) in subData[index]">
+                <!-- <template v-for="(dt, index) in subData[index]">
                     <tr v-if="opened.includes(row.id) && openAll == false">
                         <td colspan=""></td>
                         <td style="font-size: small; text-align: center;"
@@ -65,7 +187,7 @@
                     </template>
 
 
-                </template>
+                </template> -->
 
             </template>
         </table>
@@ -87,6 +209,8 @@ export default {
             openAll: false,
             closeAll: false,
             phanxuong: [],
+            arrParent: [],
+            arrChildren: []
         }
     },
 
@@ -96,6 +220,58 @@ export default {
     },
 
     methods: {
+        async watchParent(index, data) {
+            const indexValue = this.arrParent.findIndex(el => el?.key === index)
+            if (indexValue > -1) {
+                this.arrParent.splice(indexValue, 1)
+                console.log('this.arrChildren', this.arrChildren)
+                const indexTemp = this.arrChildren.filter(el => el.keyParent === index)
+                console.log('indexTemp', indexTemp)
+                if ((indexTemp.length || []) > 0) {
+                    indexTemp.forEach(element => {
+                        const indexValue = this.arrChildren.findIndex(el => el.keyParent === element.keyParent && el.keyChildren === element.keyChildren)
+                        if (indexValue > -1) {
+                            this.arrChildren.splice(indexValue, 1)
+                            return
+                        }
+                    });
+                }
+                return
+            }
+            const { maspkhpx, mapx } = data
+            const dataChildren = await this.$axios.$get(
+                `api/lokehoach/pivotmakhpx?maspkhpx=${maspkhpx}&mapx=${mapx}`
+            );
+            this.arrParent.push({
+                key: index,
+                dataParent: data,
+                dataChildren: dataChildren,
+            })
+        },
+        async watchChildren(indexParent, indexChildren, dataParent, data) {
+            const indexValue = this.arrChildren.findIndex(el => el.keyParent === indexParent && el.keyChildren === indexChildren)
+            if (indexValue > -1) {
+                this.arrChildren.splice(indexValue, 1)
+                return
+            }
+            const { maspkhpx, mapx } = dataParent
+            const { makhpx } = data
+            const dataChildren = await this.$axios.$get(
+                `/api/lokehoach/pivotlosx?masp=${maspkhpx}&mapx=${mapx}&makhpx=${makhpx}`
+            );
+            this.arrChildren.push({
+                keyParent: indexParent,
+                keyChildren: indexChildren,
+                dataChildren: dataChildren,
+            })
+        },
+        getParent(index) {
+            return this.arrParent.find(el => el.key === index)
+        },
+        getChildren(indexParent, indexChildren) {
+            if (!this.getParent(indexParent)) return null
+            return this.arrChildren.find(el => el.keyParent === indexParent && el.keyChildren === indexChildren)
+        },
         // Toàn bộ mã sản phẩm load khi form được load ra.
         async showallproduct() {
             this.allproduct = await this.$axios.$get(
