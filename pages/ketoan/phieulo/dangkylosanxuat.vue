@@ -96,7 +96,7 @@
                                     </p>
                                 </div>
                             </td>
-                            <td>
+                            <td colspan="4">
                                 <div class="select is-small is-fullwidth">
                                     <select id="" @change="onChange_search_status($event)">
                                         <option value="0" selected>-- Trạng thái --</option>
@@ -138,7 +138,7 @@
                                 <button @click="filterMulti" class="button is-small is-fullwidth">Lọc Lô nhà máy theo
                                     TTQT</button>
                             </td> -->
-                            <td colspan="5"></td>
+                            <td colspan="8"></td>
                             <td colspan="2" style="font-size: small; font-weight: bold; text-align: right;"><span>Có: <span
                                         style="color: red;">{{
                                             lokehoachpx.length }}</span> bản
@@ -168,8 +168,8 @@
                                 </div>
 
                             </td>
-                            <td><button @click="resetOp" class="button is-small is-fullwidth"> - Refresh all phân
-                                    xưởng - </button></td>
+                            <!-- <td><button @click="resetOp" class="button is-small is-fullwidth"> - Refresh all phân
+                                    xưởng - </button></td> -->
                             <td><input v-model="multiSearch_nhomsp" type="text" class="input is-small"
                                     placeholder="Nhóm sản phẩm"></td>
                             <td>
@@ -205,8 +205,13 @@
                                 </div>
                             </td>
                             <td>
+                                <button @click="filterData" class="button is-small is-fullwidth is-success">Lọc</button>
                             </td>
-                            <td><button @click="filterData" class="button is-small is-fullwidth">Lọc</button></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                         </tr>
                     </table>
                 </div>
@@ -1171,6 +1176,18 @@ export default {
                     `/api/lokehoach/filteronlymasp`, {
                     params: {
                         masp: masp
+                    },
+                }
+                );
+            }
+
+            // lọc sản phẩm + trạng thái
+            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.selected != "") {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlymaspandstatus`, {
+                    params: {
+                        masp: masp,
+                        status: status
                     },
                 }
                 );

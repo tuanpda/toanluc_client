@@ -9,7 +9,7 @@
                     <input type="checkbox" v-model="closeAll">
                 </td>
             </tr> -->
-            <tr style="background-color: azure;">
+            <!-- <tr style="background-color: azure;">
                 <td style="width: 15%;" colspan="3 ">
                     <div class="control has-icons-left">
                         <div class="select is-small is-fullwidth">
@@ -29,58 +29,68 @@
                 <td style="width: 5%">
                     <button @click="showallproduct" class="button is-small is-danger is-fullwidth">Refresh</button>
                 </td>
-                <td></td>
-            </tr>
+            </tr> -->
             <tr style="background-color: antiquewhite;">
-                <td style=" width: 5%;"></td>
-                <td style="font-size: small; text-align: center; width: 3%;">ID</td>
+                <!-- <td style=" width: 2%;"></td> -->
+                <!-- <td style="font-size: small; text-align: center; width: 3%;">ID</td> -->
                 <td style="font-size: small; text-align: center; width: 10%;">Mã sản phẩm</td>
                 <td style="font-size: small; text-align: center; width: 7%;">Mã PX</td>
                 <td style="font-size: small; text-align: center; width: 7%;">Nhóm SP</td>
+                <th style="background-color: #f3fdec; font-size: small;" v-for="day in days" :key="day">
+                    {{ day | formatDate }}
+                </th>
+
             </tr>
             <template v-for="(row, index) in allproduct">
-                <tr>
-                    <td @click="watchParent(index, row)" :class="{ opened: opened.includes(row.id) }">
+                <tr @click="watchParent(index, row)" :class="{ opened: opened.includes(row.id) }">
+                    <!-- <td @click="watchParent(index, row)" :class="{ opened: opened.includes(row.id) }">
                         <div
                             style=" display: flex; gap: 10px; justify-content:space-around; align-items: center; width: 100%; height: 100%; margin-top: 5px; cursor: pointer;">
                             <span class="icon is-small is-left" style="color: #55acee">
                                 <i v-if="!getParent(index)" class="	far fa-arrow-alt-circle-down"></i>
-                                <i v-if="!!getParent(index)" class="	far fa-arrow-alt-circle-left"></i>
+                                <i v-if="!!getParent(index)" class="far fa-arrow-alt-circle-left"></i>
                             </span>
                         </div>
-                    </td>
-                    <td style="font-size: small; text-align: center;">{{ row.id }}</td>
+                    </td> -->
+                    <!-- <td style="font-size: small; text-align: center;">{{ row.id }}</td> -->
                     <td style="font-size: small;">{{ row.maspkhpx }}</td>
                     <td style="font-size: small; text-align: center;">{{ row.mapx }}</td>
                     <td style="font-size: small; text-align: center;">{{ row.nhomsp }}</td>
+                    <td style="font-size: small;" v-for="day in days" :key="day">
+
+                    </td>
                 </tr>
                 <!-- open row -->
                 <tr style="display: none" :style="{
                     'display': !!getParent(index) ? 'table-row' :
                         'none'
                 }">
-                    <td colspan="12" style="padding: 10px 20px; background: #209cee0f;">
-                        <div style="margin-top: 5px; margin-bottom: 5px; font-weight: 600; font-style: italic; font-size: 14px;" >{{ `Chi tiết mã Phân Xưởng: ${row.mapx}`  }}</div>
+                    <td colspan="17" style="padding: 0px 0px; background: #209cee0f;">
                         <table class="table is-responsive is-bordered is-narrow is-fullwidth">
-                            <tr>
-                                <td style=" width: 5%;"></td>
-                                <td style="text-align: center; font-size:small; font-weight: 600; width: 15%; color: red;">
+                            <tr style="background: aliceblue;">
+                                <!-- <td style=" width: 2%;"></td> -->
+                                <!-- <td style="text-align: center; font-size:small; font-weight: 600; width: 3%; color: red;">
                                     STT
-                                </td>
-                                <td style="text-align: center; font-size:small; font-weight: 600; width: 30%; color: red;">
-                                    Mã Phân Xưởng
-                                </td>
-                                <td style="text-align: center; font-size:small; font-weight: 600; width: 35%; color: red;">
-                                    Mã KH Phân Xưởng</td>
-                                <td style="text-align: center; font-size:small; font-weight: 600; width: 20%; color: red;">
+                                </td> -->
+                                <td style="font-size:small; font-weight: 600; width: 8.2%; color: red; text-align: right;">
+                                    Kế hoạch PX</td>
+                                <td
+                                    style="text-align: center; font-size:small; font-weight: 600; width: 6.35%; color: red;">
                                     Số
                                     lượng
+                                </td>
+                                <td
+                                    style="text-align: center; font-size:small; font-weight: 600; width: 5.82%; color: red; text-align: right;">
+                                </td>
+
+                                <td style="font-size: small;" v-for="day in days" :key="day">
+
                                 </td>
                             </tr>
                             <template v-if="!!(getParent(index) || []).dataChildren">
                                 <template v-for="(item, indexRow) in (getParent(index).dataChildren || []) ">
-                                    <tr>
-                                        <td @click="watchChildren(index, indexRow, row, item)">
+                                    <tr style="background: #f3fdec;" @click="watchChildren(index, indexRow, row, item)">
+                                        <!-- <td @click="watchChildren(index, indexRow, row, item)">
                                             <div
                                                 style=" cursor: pointer;display: flex; gap: 10px; justify-content:space-around; align-items: center; width: 100%; height: 100%; margin-top: 5px;">
                                                 <span style="color: #55acee">
@@ -90,17 +100,18 @@
                                                         class="	far fa-arrow-alt-circle-left"></i>
                                                 </span>
                                             </div>
-                                        </td>
-                                        <td style="font-size: small; text-align: center">
+                                        </td> -->
+                                        <!-- <td style="font-size: small; text-align: center">
                                             {{ indexRow + 1 }}
-                                        </td>
-                                        <td style="font-size: small;">
-                                            {{ item.mapx }}
-                                        </td>
-                                        <td style="font-size: small; text-align: center;"> {{ item.makhpx }}
+                                        </td> -->
+                                        <td style="font-size: small; text-align: right;"> {{ item.makhpx }}
                                         </td>
                                         <td style="font-size: small; text-align: center">
                                             {{ item.soluongkhpx }}
+                                        </td>
+                                        <td></td>
+                                        <td style="font-size: small;" v-for="day in days" :key="day">
+
                                         </td>
                                     </tr>
                                     <!-- open row children -->
@@ -108,21 +119,26 @@
                                         'display': !!getChildren(index, indexRow) ? 'table-row' :
                                             'none'
                                     }">
-                                        <td colspan="12" style="padding: 10px 20px; background: #209cee0f;">
+                                        <td colspan="17" style="padding: 0px 0px; background: #209cee0f;">
                                             <table class="table is-responsive is-bordered is-narrow is-fullwidth">
-                                                <tr>
-                                                    <td
-                                                        style="text-align: center; font-size:small; font-weight: 600; width: 15%; color: tan;">
+                                                <tr style="background-color: whitesmoke">
+                                                    <!-- <td
+                                                        style="text-align: center; font-size:small; font-weight: 600; width: 3%; color: tan;">
                                                         STT
+                                                    </td> -->
+                                                    <td
+                                                        style="font-size:small; font-weight: 600; width: 8.15%; text-align: right;">
+                                                        Mã lô sản xuất
                                                     </td>
                                                     <td
-                                                        style="text-align: center; font-size:small; font-weight: 600; width: 30%; color: tan;">
-                                                        Tên px
+                                                        style="text-align: center; font-size:small; font-weight: 600; width: 6.4%;">
+                                                        Số lượng</td>
+                                                    <td style="width: 5.8%; font-size: small; font-weight: 600;">
+                                                        Trạng thái</td>
+                                                    <td style="font-size: small;" v-for="day in days" :key="day">
+
                                                     </td>
-                                                    <td
-                                                        style="text-align: center; font-size:small; font-weight: 600; width: 35%; color: tan;">
-                                                        soluongkhsx</td>
-                                                    <td
+                                                    <!-- <td
                                                         style="text-align: center; font-size:small; font-weight: 600; width: 20%; color: tan;">
                                                         soluonglsx
                                                     </td>
@@ -133,23 +149,45 @@
                                                     <td
                                                         style="text-align: center; font-size:small; font-weight: 600; width: 20%; color: tan;">
                                                         Ngày kết thúc
-                                                    </td>
+                                                    </td> -->
                                                 </tr>
                                                 <template v-if="!!getChildren(index, indexRow) || [].dataChildren">
                                                     <template
-                                                    v-if="(getChildren(index, indexRow).dataChildren || []).length > 0"
+                                                        v-if="(getChildren(index, indexRow).dataChildren || []).length > 0"
                                                         v-for="(itemChildren, indexChildren) in (getChildren(index, indexRow).dataChildren || []) ">
                                                         <tr>
-                                                            <td style="font-size: small; text-align: center">
+                                                            <!-- <td style="font-size: small; text-align: center">
                                                                 {{ indexChildren + 1 }}
-                                                            </td>
-                                                            <td style="font-size: small;">
-                                                                {{ itemChildren.tenpx }}
+                                                            </td> -->
+                                                            <td style="font-size: small; text-align: right;">
+                                                                {{ itemChildren.malosx }}
                                                             </td>
                                                             <td style="font-size: small; text-align: center;"> {{
                                                                 itemChildren.soluongkhsx }}
                                                             </td>
-                                                            <td style="font-size: small; text-align: center">
+                                                            <template>
+                                                                <td v-if="itemChildren.status == 1"
+                                                                    style="font-size: small; text-align: center; "><span
+                                                                        style="color: white; font-weight: bold; background-color: red; padding-left: 7px; padding-right: 7px;">DK</span>
+                                                                </td>
+                                                                <td v-else-if="itemChildren.status == 2"
+                                                                    style="font-size: small; text-align: center;">
+                                                                    <span
+                                                                        style="color: red; font-weight: bold; background-color: yellow; padding-left: 7px; padding-right: 7px;">SX</span>
+                                                                </td>
+                                                                <td v-else-if="itemChildren.status == 3"
+                                                                    style="font-size: small; text-align: center;">
+                                                                    <span
+                                                                        style="color: white; font-weight: bold; background-color: green; padding-left: 7px; padding-right: 7px;">HT</span>
+                                                                </td>
+                                                                <td v-else style="font-size: small; text-align: center;">
+                                                                </td>
+                                                            </template>
+                                                            <td style="background-color: #f3fdec; font-size: small;"
+                                                                v-for="day in days" :key="day">
+                                                                <input type="text" class="input is-small">
+                                                            </td>
+                                                            <!-- <td style="font-size: small; text-align: center">
                                                                 {{ itemChildren.soluonglsx }}
                                                             </td>
                                                             <td style="font-size: small; text-align: center">
@@ -157,10 +195,11 @@
                                                             </td>
                                                             <td style="font-size: small; text-align: center">
                                                                 {{ itemChildren.ngaykt | formatDate }}
-                                                            </td>
+                                                            </td> -->
+
                                                         </tr>
                                                     </template>
-                                                </template  >
+                                                </template>
                                             </table>
                                         </td>
                                     </tr>
@@ -195,6 +234,8 @@
 </template>
  
 <script>
+import moment from 'moment';
+import { format } from 'path';
 export default {
     data() {
         return {
@@ -210,7 +251,27 @@ export default {
             closeAll: false,
             phanxuong: [],
             arrParent: [],
-            arrChildren: []
+            arrChildren: [],
+
+            // thời gian
+            start: '2023-03-01',
+            end: '2023-03-14',
+
+
+        }
+    },
+
+    computed: {
+        days() {
+            const start = moment(this.start);
+            const end = moment(this.end);
+            const days = [];
+
+            for (let date = start; date <= end; date = date.clone().add(1, 'days')) {
+                days.push(date);
+            }
+
+            return days;
         }
     },
 
@@ -220,6 +281,7 @@ export default {
     },
 
     methods: {
+
         async watchParent(index, data) {
             const indexValue = this.arrParent.findIndex(el => el?.key === index)
             if (indexValue > -1) {
@@ -375,15 +437,24 @@ export default {
 table {
     width: 100%;
     border: 1px solid #ccc;
+    border-collapse: collapse;
 }
+
+
+
+/* td {
+    padding: 2px;
+    border: 1px solid #ccc;
+} */
+
+.opened {
+    background-color: aliceblue;
+}
+
 
 td {
     padding: 2px;
     border: 1px solid #ccc;
-}
-
-.opened {
-    background-color: aliceblue;
 }
 </style>
 

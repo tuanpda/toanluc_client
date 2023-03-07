@@ -151,21 +151,31 @@
                                     <i style="color: #00947e" class="fa fa-circle"></i>
                                 </span>
                             </td>
-                            <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
-                                item.px1
-                            }}</td>
-                            <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
-                                item.px2
-                            }}</td>
-                            <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
-                                item.px3
-                            }}</td>
-                            <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
-                                item.px4
-                            }}</td>
-                            <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
-                                item.px5
-                            }}</td>
+                            <td
+                                style="font-size: small; text-align: center; background-color: #effaf5; color: red; font-weight: 600;">
+                                {{
+                                    item.px1
+                                }}</td>
+                            <td
+                                style="font-size: small; text-align: center; background-color: #effaf5; color: red; font-weight: 600;">
+                                {{
+                                    item.px2
+                                }}</td>
+                            <td
+                                style="font-size: small; text-align: center; background-color: #effaf5; color: red; font-weight: 600;">
+                                {{
+                                    item.px3
+                                }}</td>
+                            <td
+                                style="font-size: small; text-align: center; background-color: #effaf5; color: red; font-weight: 600;">
+                                {{
+                                    item.px4
+                                }}</td>
+                            <td
+                                style="font-size: small; text-align: center; background-color: #effaf5; color: red; font-weight: 600;">
+                                {{
+                                    item.px5
+                                }}</td>
                         </tr>
                     </table>
                     <table class="table is-responsive is-bordered is-narrow is-fullwidth">
@@ -1178,5 +1188,4 @@ export default {
 tr:hover {
     cursor: pointer;
     background-color: #fffaeb;
-}
-</style>
+}</style>

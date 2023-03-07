@@ -112,8 +112,8 @@
                                 </div>
 
                             </td>
-                            <td><button @click="resetOp" class="button is-small is-fullwidth"> - Refresh all phân
-                                    xưởng - </button></td>
+                            <!-- <td><button @click="resetOp" class="button is-small is-fullwidth"> - Refresh all phân
+                                    xưởng - </button></td> -->
                             <td>
                                 <div class="control has-icons-left">
                                     <div class="select is-small is-fullwidth">
@@ -149,7 +149,6 @@
                             <td style="width: 5%"><button @click="filterData"
                                     class="button is-small is-fullwidth is-success">Lọc</button></td>
                             <td>
-
                             </td>
                         </tr>
                     </table>
@@ -669,6 +668,18 @@ export default {
                 );
             }
 
+            // lọc mã sp + status
+            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.selected != "") {
+                this.lokehoachsx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlymaspandstatuslosx`, {
+                    params: {
+                        masp: masp,
+                        status: status
+                    },
+                }
+                );
+            }
+
         },
 
         // thay đổi status
@@ -811,7 +822,7 @@ tr:hover {
     top: 100%;
     left: 0;
     right: 0;
-    background-color: #fff;
+    background-color: #fffaeb;
     border: 1px solid #ddd;
     z-index: 1;
     padding-top: 5px;
