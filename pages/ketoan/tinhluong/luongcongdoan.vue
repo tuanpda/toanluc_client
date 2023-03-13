@@ -103,9 +103,9 @@
         <div class="columns" style="margin-top:1px;">
           <div class="table_wrapper table-height">
             <table class="
-                table
-                is-bordered is-striped is-narrow is-hoverable is-fullwidth
-              ">
+                      table
+                      is-bordered is-striped is-narrow is-hoverable is-fullwidth
+                    ">
               <tr>
                 <td style="font-size:small; font-weight: bold;">
                   Công ty cổ phần Toàn Lực
@@ -116,15 +116,15 @@
                   <template v-if="mato == ''">
                     BẢNG LƯƠNG
                     <span style="text-transform: uppercase;">{{
-    this.tenxuong
-}}</span>
+                      this.tenxuong
+                    }}</span>
                     THÁNG {{ thang }} NĂM {{ nam }}
                   </template>
                   <template v-else>
                     BẢNG LƯƠNG
                     <span style="text-transform: uppercase;">{{
-    this.tento
-}}</span>
+                      this.tento
+                    }}</span>
                     THÁNG {{ thang }} NĂM {{ nam }}
                   </template>
                 </td>
@@ -132,9 +132,9 @@
             </table>
 
             <table class="
-                table
-                is-bordered is-striped is-narrow is-hoverable is-fullwidth
-              ">
+                      table
+                      is-bordered is-striped is-narrow is-hoverable is-fullwidth
+                    ">
               <tr style="background-color: #fffaeb;">
                 <td rowspan="2" style="text-align: center; font-weight: bold; font-size:small;">
                   <input type="checkbox" v-model="selectAll" />
@@ -223,12 +223,12 @@
                 </td>
                 <td style="text-align: right; font-size:small; font-weight: bold;">
                   {{
-    parseFloat(dsl.luongqlsp) +
-    dsl.luongcb +
-    dsl.luongcd +
-    dsl.luongcn
-    | formatNumber
-}}
+                    parseFloat(dsl.luongqlsp) +
+                    dsl.luongcb +
+                    dsl.luongcd +
+                    dsl.luongcn
+                    | formatNumber
+                  }}
                 </td>
                 <td>
                   <input v-model.trim="dsl.antrua" type="number" class="input is-small" />
@@ -247,25 +247,25 @@
                 </td>
                 <td style="text-align: right; font-size:small; font-weight: bold;">
                   {{
-    (dsl.bhxh +
-      dsl.tienung +
-      dsl.cong_doan +
-      dsl.antrua * tienlunch)
-    | formatNumber
-}}
+                    (dsl.bhxh +
+                      dsl.tienung +
+                      dsl.cong_doan +
+                      dsl.antrua * tienlunch)
+                    | formatNumber
+                  }}
                 </td>
                 <td style="text-align: right; font-size:small; font-weight: bold;">
                   {{
-    (parseFloat(dsl.luongqlsp) +
-      dsl.luongcb +
-      dsl.luongcd +
-      dsl.luongcn -
-      (dsl.bhxh +
-        dsl.tienung +
-        dsl.cong_doan +
-        dsl.antrua * tienlunch))
-    | formatNumber
-}}
+                    (parseFloat(dsl.luongqlsp) +
+                      dsl.luongcb +
+                      dsl.luongcd +
+                      dsl.luongcn -
+                      (dsl.bhxh +
+                        dsl.tienung +
+                        dsl.cong_doan +
+                        dsl.antrua * tienlunch))
+                    | formatNumber
+                  }}
                 </td>
               </tr>
             </table>
@@ -382,10 +382,10 @@
                             {{ form.nhomluong }}
                           </td>
                           <td style="font-size: small; text-align: center; font-weight: 700;">
-                            {{ form.ngaybd }}
+                            {{ form.ngaybd | formatDate }}
                           </td>
                           <td style="font-size: small; text-align: center; font-weight: 700;">
-                            {{ form.ngaykt }}
+                            {{ form.ngaykt | formatDate }}
                           </td>
                         </tr>
                         <tr>
@@ -408,7 +408,7 @@
                           </td>
 
                           <td colspan="2" style="font-size: small; text-align: center; font-weight: 700;">
-                            <template v-if="form.status == false">
+                            <template v-if="form.status_tinhluong == false">
                               <span class="icon is-small is-left">
                                 <i style="color: #ffd863" class="fa fa-circle"></i>
                               </span>
@@ -1084,7 +1084,6 @@ export default {
                   // - Cập nhật cột đã tính lương trong bảng losanxuat thành 1 (lần sau sẽ k lấy bản ghi có trường này nếu bằng 1)
                   // - Cập nhật cột status = 1 từ bảng luongcongnhan và ghi ngày executedAt vào để biết ngày đã tính lương
 
-                  window.location.reload();
                 }
               } else {
                 const Toast = Swal.mixin({

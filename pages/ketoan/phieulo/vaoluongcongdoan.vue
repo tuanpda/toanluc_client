@@ -4,7 +4,7 @@
             <br />
             <div class="box" style="margin-left: 20px; margin-right: 20px">
                 <div class="columns">
-                    <div class="column is-9">
+                    <div class="column is-8">
                         <div class="control">
                             <span class="icon is-small is-left">
                                 <i style="color: #ff55acee" class="fas fa-broom"></i>
@@ -13,17 +13,15 @@
                         </div>
                     </div>
                     <div class="column" style="text-align: right">
-                        <nuxt-link :to="`/`">
-                            <button class="button is-warning is-fullwidth is-small">
-                                <span class="icon is-small">
-                                    <i class="fas fa-cart-arrow-down"></i>
-                                </span>
-                                <span>Hủy chốt toàn bộ</span>
-                            </button>
-                        </nuxt-link>
+                        <button @click="huychotallPhieulo" class="button is-warning is-fullwidth is-small">
+                            <span class="icon is-small">
+                                <i class="fas fa-cart-arrow-down"></i>
+                            </span>
+                            <span>Hủy chốt phiếu đã chọn</span>
+                        </button>
                     </div>
                     <div class="column" style="text-align: right">
-                        <button @click="chotallPhieulo" class="button is-danger is-fullwidth is-small">
+                        <button @click="chotPhieulo" class="button is-danger is-fullwidth is-small">
                             <span class="icon is-small">
                                 <i class="fas fa-key"></i>
                             </span>
@@ -42,7 +40,7 @@
 
                 <div>
                     <table class="table is-responsive is-bordered is-narrow is-fullwidth">
-                        <tr style="background-color: #faf0f5;">
+                        <!-- <tr style="background-color: #faf0f5;">
                             <td>
                                 <div class="control has-icons-left">
                                     <div class="select is-small is-fullwidth">
@@ -119,6 +117,93 @@
                                 <button @click="getSolieuLSX_ALl_cht"
                                     class="button is-small is-danger is-fullwidth">Refresh</button>
                             </td>
+                        </tr> -->
+                        <!-- tìm theo điều kiện multi -->
+                        <tr style="background-color: #eff5fb;">
+                            <td style="width: 12%; font-size: small; font-weight: bold;">
+                                <div class="icon-text">
+                                    <input type="checkbox" v-model="showLuachon">
+                                    <span style="color: #296fa8;">Lọc nhiều tiêu chí</span>
+                                </div>
+                            </td>
+                            <td style="width: 15%">
+                                <div class="select is-small is-fullwidth">
+                                    <select id="" @change="onChange_status_chot($event)">
+                                        <option selected>-- Trạng thái lô sản xuất --</option>
+                                        <option value="HT">Hoàn thành</option>
+                                        <option value="SX">Sản Xuất</option>
+                                        <option value="DK">Đăng ký</option>
+                                    </select>
+                                </div>
+                            </td>
+
+                            <td colspan="5" style="font-size: small; font-weight: bold; text-align: right;"><span>Có: <span
+                                        style="color: red;">{{
+                                            sllosx.length }}</span> bản
+                                    ghi</span></td>
+                        </tr>
+                        <tr v-if="showLuachon == true" style="background-color: #feecf0;">
+                            <td style="width: 12%; font-size: small; font-weight: bold;">
+                                <div class="icon-text">
+                                    <span class="icon has-text-success">
+                                        <i class="fas fa-check-square"></i>
+                                    </span>
+                                    <span style="color: #296fa8;">Chọn các tiêu chí lọc</span>
+                                </div>
+                            </td>
+                            <td style="font-size: x-small;">
+                                <div class="select-wrapper">
+                                    <div class="select-header" @click="isOpen = !isOpen">
+                                        {{ selectedOptions.length > 0 ? selectedOptions.join(', ') : 'Chọn Phân xưởng' }}
+                                        <span class="arrow" :class="{ 'open': isOpen }"></span>
+                                    </div>
+                                    <div class="select-options" :class="{ 'open': isOpen }">
+                                        <label v-for="option in phanxuong">
+                                            <input type="checkbox" :value="option.mapx" v-model="selectedOptions">
+                                            {{ option.mapx }} &nbsp;
+                                        </label>
+                                    </div>
+                                </div>
+
+                            </td>
+                            <!-- <td><button @click="resetOp" class="button is-small is-fullwidth"> - Refresh all phân
+                                    xưởng - </button></td> -->
+                            <td><input v-model="multiSearch_nhomsp" type="text" class="input is-small"
+                                    placeholder="Nhóm sản phẩm"></td>
+                            <td>
+                                <div class="control has-icons-left">
+                                    <div class="select is-small is-fullwidth">
+                                        <select id="selectBox" v-model="selected">
+                                            <option v-for="option in filteredOptions" :value="option.masp">
+                                                {{ option.masp }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <datalist id="options">
+                                        <option v-for="option in filteredOptions" :value="option.masp"></option>
+                                    </datalist>
+                                    <span class="icon is-small is-left">
+                                        <i style="color: #48c78e" class="fas fa-cog"></i>
+                                    </span>
+                                </div>
+                            </td>
+                            <td style="font-size: x-small;">
+                                <div class="select-wrapper">
+                                    <div class="select-header" @click="isOpenst = !isOpenst">
+                                        {{ Options_status.length > 0 ? Options_status.join(', ') : 'Trạng thái' }}
+                                        <span class="arrow" :class="{ 'open': isOpenst }"></span>
+                                    </div>
+                                    <div class="select-options" :class="{ 'open': isOpenst }">
+                                        <label v-for="option in statusArr">
+                                            <input type="checkbox" :value="option.masta" v-model="Options_status">
+                                            {{ option.tensta }} &nbsp;
+                                        </label>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <button @click="filterData" class="button is-small is-fullwidth is-success">Lọc</button>
+                            </td>
                         </tr>
                     </table>
                 </div>
@@ -142,9 +227,9 @@
                             <td @click="sort('masp')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 10%">Mã SP
                             </td>
-                            <td @click="sort('tensp')"
+                            <!-- <td @click="sort('tensp')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 17%">Tên SP
-                            </td>
+                            </td> -->
                             <td @click="sort('nhomluong')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 17%">Nhóm lương
                             </td>
@@ -158,6 +243,8 @@
                                 style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Số lượng
                             </td>
                             <td style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Trạng thái
+                            </td>
+                            <td style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Trạng thái chốt
                             </td>
                             <td style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Tổng đạt
                             </td>
@@ -185,7 +272,7 @@
                                     item.malosx
                                 }}</td>
                             <td style="font-size: small; background-color: #effaf5;">{{ item.masp }}</td>
-                            <td style="font-size: small; background-color: #effaf5;">{{ item.tensp }}</td>
+                            <!-- <td style="font-size: small; background-color: #effaf5;">{{ item.tensp }}</td> -->
                             <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
                                 item.nhomluong
                             }}</td>
@@ -198,8 +285,23 @@
                             <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
                                 item.soluong
                             }}</td>
+                            <template>
+                                <td v-if="item.status == 1" style="font-size: small; text-align: center; "><span
+                                        style="color: white; font-weight: bold; background-color: red; padding-left: 7px; padding-right: 7px;">DK</span>
+                                </td>
+                                <td v-else-if="item.status == 2" style="font-size: small; text-align: center;">
+                                    <span
+                                        style="color: red; font-weight: bold; background-color: yellow; padding-left: 7px; padding-right: 7px;">SX</span>
+                                </td>
+                                <td v-else-if="item.status == 3" style="font-size: small; text-align: center;">
+                                    <span
+                                        style="color: white; font-weight: bold; background-color: green; padding-left: 7px; padding-right: 7px;">HT</span>
+                                </td>
+                                <td v-else style="font-size: small; text-align: center;">
+                                </td>
+                            </template>
                             <td style="font-size: small; text-align: center">
-                                <span v-if="item.status == false">
+                                <span v-if="item.status_tinhluong == false">
                                     <i style="color: #ffd863" class="fa fa-circle"></i>
                                 </span>
                                 <span v-else>
@@ -208,7 +310,7 @@
                             </td>
                             <td style="font-size: small; text-align: center;">{{ item.tongdat }}</td>
                             <td style="font-size: small; text-align: center;">{{ item.tonghong }}</td>
-                            <td style="font-size: small; text-align: center;">{{ item.stopday_losx }}</td>
+                            <td style="font-size: small; text-align: center;">{{ item.stopday_losx | formatDate }}</td>
                             <td style="font-size: small; text-align: center;">
                                 <a @click="vaoPhieuluong(item)"><span>
                                         <i style="color: #9b6dff" class="fa fa-check-square-o"></i>
@@ -274,86 +376,20 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td
-                                    style="
-                                                                                                                                                                                                                        font-size: small;
-                                                                                                                                                                                                                        text-align: center;
-                                                                                                                                                                                                                        font-weight: bold;
-                                                                                                                                                                                                                        width: 5%;
-                                                                                                                                                                                                                      ">
+                                <td style="font-size: small; text-align: center; font-weight: bold; width: 5%;">
                                     STT
                                 </td>
-                                <td
-                                    style="
-                                                                                                                                                                                                                        font-size: small;
-                                                                                                                                                                                                                        text-align: center;
-                                                                                                                                                                                                                        font-weight: bold;
-                                                                                                                                                                                                                        width: 15%;
-                                                                                                                                                                                                                      ">
-                                    Nguyên công
+                                <td style="font-size: small; text-align: center; font-weight: bold; width: 5%;">Nguyên công
                                 </td>
-                                <td
-                                    style="
-                                                                                                                                                                                                                        font-size: small;
-                                                                                                                                                                                                                        text-align: center;
-                                                                                                                                                                                                                        font-weight: bold;
-                                                                                                                                                                                                                        width: 7%;
-                                                                                                                                                                                                                      ">
-                                    Đơn giá
+                                <td style="font-size: small; text-align: center; font-weight: bold; width: 7%;">Đơn giá</td>
+                                <td style="font-size: small; text-align: center; font-weight: bold; width: 10%;">PX / tổ
                                 </td>
-                                <td
-                                    style="
-                                                                                                                                                                                                                        font-size: small;
-                                                                                                                                                                                                                        text-align: center;
-                                                                                                                                                                                                                        font-weight: bold;
-                                                                                                                                                                                                                        width: 10%;
-                                                                                                                                                                                                                      ">
-                                    PX/Tổ
+                                <td style="font-size: small; text-align: center; font-weight: bold;">Người thực hiện</td>
+                                <td style="font-size: small; text-align: center; font-weight: bold; width: 7%;">Số đạt</td>
+                                <td style="font-size: small; text-align: center; font-weight: bold; width: 7%;">Số hỏng</td>
+                                <td style="font-size: small; text-align: center; font-weight: bold; width: 7%;">Cập nhật
                                 </td>
-                                <td
-                                    style="
-                                                                                                                                                                                                                        font-size: small;
-                                                                                                                                                                                                                        text-align: center;
-                                                                                                                                                                                                                        font-weight: bold;
-                                                                                                                                                                                                                      ">
-                                    Người thực hiện
-                                </td>
-                                <td
-                                    style="
-                                                                                                                                                                                                                        font-size: small;
-                                                                                                                                                                                                                        text-align: center;
-                                                                                                                                                                                                                        font-weight: bold;
-                                                                                                                                                                                                                        width: 7%;
-                                                                                                                                                                                                                      ">
-                                    Số đạt
-                                </td>
-                                <td
-                                    style="
-                                                                                                                                                                                                                        font-size: small;
-                                                                                                                                                                                                                        text-align: center;
-                                                                                                                                                                                                                        font-weight: bold;
-                                                                                                                                                                                                                        width: 7%;
-                                                                                                                                                                                                                      ">
-                                    Số hỏng
-                                </td>
-                                <td
-                                    style="
-                                                                                                                                                                                                                        text-align: center;
-                                                                                                                                                                                                                        font-size: small;
-                                                                                                                                                                                                                        font-weight: bold;
-                                                                                                                                                                                                                        width: 7%;
-                                                                                                                                                                                                                      ">
-                                    Cập nhật
-                                </td>
-                                <td
-                                    style="
-                                                                                                                                                                                                                        text-align: center;
-                                                                                                                                                                                                                        font-size: small;
-                                                                                                                                                                                                                        font-weight: bold;
-                                                                                                                                                                                                                        width: 5%;
-                                                                                                                                                                                                                      ">
-                                    Xóa
-                                </td>
+                                <td style="font-size: small; text-align: center; font-weight: bold; width: 5%;">Xóa</td>
                             </tr>
                             <tr v-for="(item, index) in pageOfitems_cd" :key="index + 'ppp'">
                                 <td style="font-size: small; text-align: center">
@@ -414,73 +450,15 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td
-                                    style="
-                                                                                                                                                                                                                        font-size: small;
-                                                                                                                                                                                                                        text-align: center;
-                                                                                                                                                                                                                        font-weight: bold;
-                                                                                                                                                                                                                        width: 5%;
-                                                                                                                                                                                                                      ">
-                                    STT
+                                <td style="font-size: small; text-align: center; font-weight: bold; width: 5%;">STT</td>
+                                <td style="font-size: small; text-align: center; font-weight: bold; width: 15%;">Tên công
+                                    nhật</td>
+                                <td style="font-size: small; text-align: center; font-weight: bold; width: 7%;">Đơn giá</td>
+                                <td style="font-size: small; text-align: center; font-weight: bold;">Người thực hiện</td>
+                                <td style="font-size: small; text-align: center; font-weight: bold; width: 14%;">Số giờ</td>
+                                <td style="font-size: small; text-align: center; font-weight: bold; width: 7%;">Cập nhật
                                 </td>
-                                <td
-                                    style="
-                                                                                                                                                                                                                        font-size: small;
-                                                                                                                                                                                                                        text-align: center;
-                                                                                                                                                                                                                        font-weight: bold;
-                                                                                                                                                                                                                        width: 15%;
-                                                                                                                                                                                                                      ">
-                                    Tên công nhật
-                                </td>
-                                <td
-                                    style="
-                                                                                                                                                                                                                        font-size: small;
-                                                                                                                                                                                                                        text-align: center;
-                                                                                                                                                                                                                        font-weight: bold;
-                                                                                                                                                                                                                        width: 7%;
-                                                                                                                                                                                                                      ">
-                                    Đơn giá
-                                </td>
-                                <!-- <td
-                                                                                                                                                                                                                      style="font-size: small; text-align: center; font-weight: bold; width: 10%;"
-                                                                                                                                                                                                                    >
-                                                                                                                                                                                                                      PX/Tổ
-                                                                                                                                                                                                                    </td> -->
-                                <td
-                                    style="
-                                                                                                                                                                                                                        font-size: small;
-                                                                                                                                                                                                                        text-align: center;
-                                                                                                                                                                                                                        font-weight: bold;
-                                                                                                                                                                                                                      ">
-                                    Người thực hiện
-                                </td>
-                                <td
-                                    style="
-                                                                                                                                                                                                                        font-size: small;
-                                                                                                                                                                                                                        text-align: center;
-                                                                                                                                                                                                                        font-weight: bold;
-                                                                                                                                                                                                                        width: 14%;
-                                                                                                                                                                                                                      ">
-                                    Số giờ
-                                </td>
-                                <td
-                                    style="
-                                                                                                                                                                                                                        text-align: center;
-                                                                                                                                                                                                                        font-size: small;
-                                                                                                                                                                                                                        font-weight: bold;
-                                                                                                                                                                                                                        width: 7%;
-                                                                                                                                                                                                                      ">
-                                    Cập nhật
-                                </td>
-                                <td
-                                    style="
-                                                                                                                                                                                                                        text-align: center;
-                                                                                                                                                                                                                        font-size: small;
-                                                                                                                                                                                                                        font-weight: bold;
-                                                                                                                                                                                                                        width: 5%;
-                                                                                                                                                                                                                      ">
-                                    Xóa
-                                </td>
+                                <td style="font-size: small; text-align: center; font-weight: bold; width: 5%;">Xóa</td>
                             </tr>
                             <tr v-for="(item, index) in pageOfitems_cn" :key="index + 'ppp'">
                                 <td style="font-size: small; text-align: center">
@@ -492,11 +470,7 @@
                                 <td style="font-size: small; text-align: right">
                                     {{ item.dongia | formatNumber }}
                                 </td>
-                                <!-- <template>
-                                                                                                                                                                                                                      <td v-if="item" style="font-size: small; text-align: center;">
-                                                                                                                                                                                                                        {{ item.dongia | formatNumber }}
-                                                                                                                                                                                                                      </td>
-                                                                                                                                                                                                                    </template> -->
+
 
                                 <td style="font-size: small">
                                     {{ item.nguoithuchien }}
@@ -587,29 +561,29 @@
                                     <!-- hiển thị thông tin về lô sản xuất -->
                                     <div style="margin-bottom: 3px; text-align: right">
                                         <table class="table is-responsive is-bordered is-narrow is-fullwidth">
-                                            <tr>
+                                            <tr style="background-color: #feecf0;">
                                                 <td
-                                                    style="font-size: small; width: 15%; text-align: center; font-weight: 500; color: red;">
+                                                    style="font-size: small; width: 15%; text-align: center; font-weight: 500; color: green;">
                                                     Mã kế hoạch nhà máy
                                                 </td>
                                                 <td
-                                                    style="font-size: small; width: 15%; text-align: center; font-weight: 500; color: red;">
+                                                    style="font-size: small; width: 15%; text-align: center; font-weight: 500; color: green;">
                                                     Mã lô kế hoạch
                                                 </td>
                                                 <td
-                                                    style="font-size: small; width: 10%; text-align: center; font-weight: 500; color: red;">
+                                                    style="font-size: small; width: 10%; text-align: center; font-weight: 500; color: green;">
                                                     Ngày bắt đầu
                                                 </td>
                                                 <td
-                                                    style="font-size: small; width: 10%; text-align: center; font-weight: 500; color: red;">
+                                                    style="font-size: small; width: 10%; text-align: center; font-weight: 500; color: green;">
                                                     Ngày kết thúc
                                                 </td>
                                                 <td
-                                                    style="font-size: small; width: 10%; text-align: center; font-weight: 500; color: red;">
+                                                    style="font-size: small; width: 10%; text-align: center; font-weight: 500; color: green;">
                                                     Số lượng của kế hoạch
                                                 </td>
                                                 <td
-                                                    style="font-size: small; width: 10%; text-align: center; font-weight: 500; color: red;">
+                                                    style="font-size: small; width: 10%; text-align: center; font-weight: 500; color: green;">
                                                     Mã sản phẩm
                                                 </td>
                                             </tr>
@@ -630,22 +604,30 @@
                                                 <td style="font-size: small; font-weight: bold; text-align: center;">{{
                                                     getinfoplsx.masp }}</td>
                                             </tr>
-                                            <tr>
+                                            <tr style="background-color: #feecf0;">
                                                 <td
-                                                    style="font-size: small; width: 15%; text-align: center; font-weight: 500; color: red;">
+                                                    style="font-size: small; width: 15%; text-align: center; font-weight: 500; color: green;">
                                                     Mã Lô sản xuất
                                                 </td>
                                                 <td
-                                                    style="font-size: small; width: 15%; text-align: center; font-weight: 500; color: red;">
+                                                    style="font-size: small; width: 15%; text-align: center; font-weight: 500; color: green;">
                                                     Số lượng lô sản xuất
                                                 </td>
                                                 <td
-                                                    style="font-size: small; width: 10%; text-align: center; font-weight: 500; color: red;">
+                                                    style="font-size: small; width: 10%; text-align: center; font-weight: 500; color: green;">
                                                     Ngày sản xuất
                                                 </td>
                                                 <td
-                                                    style="font-size: small; width: 10%; text-align: center; font-weight: 500; color: red;">
+                                                    style="font-size: small; width: 10%; text-align: center; font-weight: 500; color: green;">
                                                     Ngày hoàn thành
+                                                </td>
+                                                <td
+                                                    style="font-size: small; width: 10%; text-align: center; font-weight: 500; color: green;">
+                                                    Mã Phân xưởng
+                                                </td>
+                                                <td
+                                                    style="font-size: small; width: 10%; text-align: center; font-weight: 500; color: green;">
+                                                    Mã Tổ
                                                 </td>
                                             </tr>
                                             <tr>
@@ -659,6 +641,12 @@
                                                         type="date" class="input is-small"></td>
                                                 <td style="font-size: small; font-weight: bold; text-align: center;"><input
                                                         type="date" class="input is-small"></td>
+                                                <td style="font-size: small; font-weight: bold; text-align: center;">{{
+                                                    getinfoplsx.mapx }}
+                                                </td>
+                                                <td style="font-size: small; font-weight: bold; text-align: center;">{{
+                                                    getinfoplsx.mato }}
+                                                </td>
                                             </tr>
                                         </table>
                                     </div>
@@ -740,8 +728,8 @@
                                                 <td style="text-align: center; font-size: small; font-weight: bold;">
                                                     {{ index + 1 }}
                                                 </td>
-                                                <td>
-                                                    <div class="select is-small is-fullwidth">
+                                                <td style="font-size: small; font-weight: bold;">
+                                                    <!-- <div class="select is-small is-fullwidth">
                                                         <select v-model="item.nguyencong" @change="
                                                             getinfoNguyencong(
                                                                 $event,
@@ -754,7 +742,8 @@
                                                                 {{ item.congdoan }} -- {{ item.dongia }}
                                                             </option>
                                                         </select>
-                                                    </div>
+                                                    </div> -->
+                                                    {{ item.nguyencong }}
                                                 </td>
                                                 <td>
                                                     <input type="text" v-model="item.may" class="input is-small" />
@@ -820,10 +809,9 @@
                                             </tr>
                                             <tr>
                                                 <td colspan="7" style="font-size: small;">Tổng đạt / tổng hỏng</td>
-                                                <td style="font-size: small; font-weight: 600; text-align: center;">{{
-                                                    tongdatinlo }}</td>
                                                 <td style="font-size: small; font-weight: 600; text-align: center;"><input
                                                         v-model.trim="tongdatinlo" type="text" class="input is-small"></td>
+                                                <td style="font-size: small; font-weight: 600; text-align: center;"></td>
                                                 <td></td>
                                             </tr>
                                             <tr>
@@ -1009,6 +997,7 @@ export default {
                 mato: "",
                 tento: "",
                 id_losx: "",
+                excutedAt: ""
             },
             px: "",
             isphanxuong: 0,
@@ -1037,6 +1026,23 @@ export default {
             mato: "",
             tento: "",
             sllosx: [],
+
+            // check nhiều phân xưởng
+            showLuachon: false,
+            options: ['Option 1', 'Option 2', 'Option 3', 'Option 4'],
+            selectedOptions: [],
+            Options_status: [],
+            isOpen: false,
+            isOpenst: false,
+            statusArr: [{ masta: 1, tensta: "DK" }, { masta: 2, tensta: "SX" }, { masta: 3, tensta: "HT" }],
+            multiSearch_masp: "",
+            multiSearch_nhomsp: "",
+
+            // xử lý select mã sản phẩm
+            selected: '',
+            search: '',
+            maspinlosanxuat: [],
+
             // lọc talble
             currentSort: 'mapx',
             currentSortDir: 'asc',
@@ -1046,6 +1052,10 @@ export default {
             items: [
                 {
                     _id_losx: "",
+                    kehoachnam: "",
+                    makh: "",
+                    makhpx: "",
+                    malosx: this.malosx,
                     mapx: "",
                     mapxchoncn: "",
                     malosx: "",
@@ -1083,6 +1093,9 @@ export default {
             items_cn: [
                 {
                     _id_losx: "",
+                    kehoachnam: "",
+                    makh: "",
+                    makhpx: "",
                     malosx: this.malosx,
                     macongnhat: "",
                     tencongnhat: "",
@@ -1127,6 +1140,7 @@ export default {
         this.getSolieuLSX_ALl_cht()
         this.deleteRow(0);
         this.deleteRowCn(0);
+        this.maspinlsx()
     },
 
     isFormValid() {
@@ -1179,6 +1193,11 @@ export default {
                 let end = this.currentPage * this.pageSize;
                 if (index >= start && index < end) return true;
             });
+        },
+        filteredOptions() {
+            return this.maspinlosanxuat.filter(option =>
+                option.masp.toLowerCase().includes(this.search.toLowerCase())
+            );
         }
     },
 
@@ -1215,6 +1234,7 @@ export default {
                 current.getSeconds();
             this.namlsx = current.getFullYear();
             this.form.createdAt = date + " " + time;
+            this.form.excutedAt = date + " " + time
         },
 
         codeAndNameAndDesc(item) {
@@ -1234,6 +1254,14 @@ export default {
         },
         prevPage: function () {
             if (this.currentPage > 1) this.currentPage--;
+        },
+
+        async onChange_status_chot(e) {
+            var id = e.target.value;
+            var name = e.target.options[e.target.options.selectedIndex].text;
+            // console.log('id ', id);
+            console.log(id);
+
         },
 
         // tìm lọc số liệu lô sản xuất
@@ -1455,40 +1483,53 @@ export default {
         },
 
         async addCongdoan() {
-            // console.log(this.getinfoplsx)
+            // console.log(this.getinfoplsx) 
             let arrayCongdoan
             let px
+
             if (this.getinfoplsx.mapx.trim() == 'AL_PXD' || this.getinfoplsx.mapx.trim() == 'DV_PXD') {
                 px = 'PXD'
                 arrayCongdoan = await this.$axios.$get(
                     `/api/ketoan/getnguyencong?khsp=${this.getinfoplsx.nhomluong}&px=${px}`
                 );
-                console.log(arrayCongdoan)
+            } else {
+                arrayCongdoan = await this.$axios.$get(
+                    `/api/ketoan/getnguyencong?khsp=${this.getinfoplsx.nhomluong}&px=${this.getinfoplsx.mapx}`
+                );
             }
 
-            // arrayCongdoan = await this.$axios.$get(
-            //     `/api/ketoan/getnguyencong?px=${this.form.makh}`
-            // );
+            if (this.getinfoplsx.mapx && !this.getinfoplsx.mato) {
+                this.cong_nhan = await this.$axios.$get(
+                    `/api/congnhan/allcongnhanpx?mapx=${this.getinfoplsx.mapx}`
+                );
+            } else {
+                this.cong_nhan = await this.$axios.$get(
+                    `/api/congnhan/allcongnhanto?mato=${this.getinfoplsx.mato}`
+                );
+            }
 
             for (let i = 0; i < arrayCongdoan.length; i++) {
                 this.iscongdoan = 1;
                 this.items.push({
-                    _id_losx: "",
-                    malosx: this.malosx,
-                    nguyencong: "",
+                    _id_losx: this.getinfoplsx._id,
+                    kehoachnam: this.getinfoplsx.kehoachnam,
+                    makh: this.getinfoplsx.makh,
+                    makhpx: this.getinfoplsx.makhpx,
+                    malosx: this.getinfoplsx.malosx,
+                    mapx: this.getinfoplsx.mapx,
+                    mato: this.getinfoplsx.mato,
+                    masp: this.getinfoplsx.masp,
+                    tensp: this.getinfoplsx.tensp,
+                    nguyencong: arrayCongdoan[i].congdoan,
+                    dongia: arrayCongdoan[i].dongia,
                     may: "",
+                    mapxchoncn: "",
+                    to_cn: "",
                     congnhan: "",
+                    tencn: "",
                     sodat: "",
                     sohong: "",
                     ghichu: "",
-                    dongia: this.dongia_ns,
-                    tencn: "",
-                    makh: "",
-                    makhpx: "",
-                    tensp: "",
-                    mapx: "",
-                    to_cn: "",
-                    mapxchoncn: "",
                     stopday_losx: "",
                     status: 0,
                     ngaythuchien: "",
@@ -1511,7 +1552,28 @@ export default {
                         },
                     ],
                 });
+                // console.log(this.items)
             }
+
+            for (let i = 0; i < this.items.length; i++) {
+                // console.log(this.cong_nhan)
+                for (let k = 0; k < this.cong_nhan.length; k++) {
+                    let cn = {
+                        maxuong: this.cong_nhan[k].mapx,
+                        tenxuong: this.cong_nhan[k].tenpx,
+                        tento: this.cong_nhan[k].tento,
+                        mato: this.cong_nhan[k].mato,
+                        tencn: this.cong_nhan[k].tencn,
+                        macn: this.cong_nhan[k].macn,
+                    };
+                    this.items[i].nhomto_cnt.push(cn);
+                    // console.log(this.items[i].nhomto_cnt)
+                }
+
+
+            }
+
+            // console.log(this.items)
 
         },
 
@@ -1519,10 +1581,14 @@ export default {
             this.items.splice(index, 1);
         },
 
-        addCongnhat() {
+        async addCongnhat() {
+            this.dmcongnhat = await this.$axios.$get(`/api/ketoan/alldmcongnhat`);
             this.iscongnhat = 1;
             this.items_cn.push({
-                _id_losx: "",
+                _id_losx: this.getinfoplsx._id,
+                kehoachnam: this.getinfoplsx.kehoachnam,
+                makh: this.getinfoplsx.makh,
+                makhpx: this.getinfoplsx.makhpx,
                 malosx: this.malosx,
                 macongnhat: "",
                 tencongnhat: "",
@@ -1530,9 +1596,8 @@ export default {
                 nguoithuchien: "",
                 sogiocong: "",
                 ghichu: "",
-                makh: "",
-                makhpx: "",
-                tensp: "",
+                masp: this.getinfoplsx.masp,
+                tensp: this.getinfoplsx.tensp,
                 mapx: "",
                 mato: "",
                 to_cn: "",
@@ -1617,6 +1682,102 @@ export default {
             // console.log(name)
         },
 
+        async maspinlsx() {
+            this.maspinlosanxuat = await this.$axios.$get('/api/lokehoach/hmsanphamlosanxuat')
+        },
+
+        // lọc nhiều tiêu chí
+        async filterData() {
+            // console.log(this.selectedOptions)
+            // console.log(this.Options_status)
+            this.isOpen = false
+            this.isOpenst = false
+
+            const mapxList = this.selectedOptions
+            const masp = this.selected
+            const status = this.Options_status
+
+
+            // chọn lọc full
+            if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.selected != "") {
+                this.sllosx = await this.$axios.$get(
+                    `/api/lokehoach/filterfulldklosanxuat`, {
+                    params: {
+                        mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
+                        masp: masp,
+                        status: status,
+                    },
+                }
+                );
+            }
+            // chỉ có mã px
+            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.selected == "") {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlymapxlosanxuat`, {
+                    params: {
+                        mapx: mapxList,
+                    },
+                }
+                );
+            }
+            // chỉ có mã px và mã sp
+            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.selected != "") {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlymapxandmasplosanxuat`, {
+                    params: {
+                        mapx: mapxList,
+                        masp: masp
+                    },
+                }
+                );
+            }
+            // chỉ có mã px và status
+            else if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.selected == "") {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlymapxandstatuslosanxuat`, {
+                    params: {
+                        mapx: mapxList,
+                        status: status
+                    },
+                }
+                );
+            }
+            // lọc mỗi trạng thái
+            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.selected == "") {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlystatuslosanxuat`, {
+                    params: {
+                        status: status
+                    },
+                }
+                );
+            }
+
+            // lọc mỗi mã sản phẩm
+            else if (!this.selectedOptions.length && !this.Options_status.length && this.selected != "") {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlymasplosanxuat`, {
+                    params: {
+                        masp: masp
+                    },
+                }
+                );
+            }
+
+            // lọc sản phẩm + trạng thái
+            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.selected != "") {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlymaspandstatuslosx`, {
+                    params: {
+                        masp: masp,
+                        status: status
+                    },
+                }
+                );
+            }
+
+        },
+
         // Bấm vào chọn tổ
         async getWithTo(e, selectedIndex, index) {
             this.selectedIndex = selectedIndex;
@@ -1682,7 +1843,7 @@ export default {
         },
 
         // chốt phiếu
-        async chotallPhieulo(phieu) {
+        async chotPhieulo() {
             // Quy trình khi chốt phiếu lô sản xuất
             // 1. Chốt các mã lô sản xuất đã được chọn
             // 1.1. Chạy vòng lặp các selected đã chọn
@@ -1690,35 +1851,20 @@ export default {
             // 2. Chốt các lương công đoạn, công nhật trong nội tại từng lô đó
             // với status = 0 và ngày chốt
 
-            // console.log(this.selected)
-            for (let i = 0; i < this.selected.length; i++) {
-                let data = {
-                    stopday_losx: this.selected[i].ngaykt,
-                    status: 1,
-                };
-                // cập nhật status và stopday_losx cho từng lô sản xuất ứng với từng lô sản xuất theo kế hoạch trong xưởng đó
-                this.$axios.$patch(
-                    `/api/ketoan/capnhatstatuslosx?makh=${this.selected[i].makh}&makhpx=${this.selected[i].makhpx
-                    }&malosx=${this.selected[i].malosx.trim()}&mapx=${this.selected[
-                        i
-                    ].mapx.trim()}`,
-                    data
-                );
-                // cập nhật status và stopday_losx cho từng lương công đoạn có trong mỗi lô sản xuất ứng với kế hoạch tại xưởng
-                this.$axios.$patch(
-                    `/api/ketoan/capnhatstatuslcd?makh=${this.selected[i].makh.trim()}&makhpx=${this.selected[i].makhpx.trim()}&mapx=${this.selected[i].mapx.trim()}&malosx=${this.selected[
-                        i
-                    ].malosx.trim()}`,
-                    data
-                );
-                // cập nhật status và stopday_losx cho từng lương công nhật có trong mỗi lô sản xuất ứng với kế hoạch tại xưởng
-                this.$axios.$patch(
-                    `/api/ketoan/capnhatstatusluongcnhat?makh=${this.selected[i].makh.trim()}&makhpx=${this.selected[i].makhpx.trim()}&mapx=${this.selected[i].mapx.trim()}&malosx=${this.selected[
-                        i
-                    ].malosx.trim()}`,
-                    data
-                );
+            // console.log(this.selected.length)
 
+            const listPhieulo = []
+            for (let i = 0; i < this.selected.length; i++) {
+                listPhieulo.push(this.selected[i].malosx)
+            }
+            // console.log(listPhieulo)
+            var message = `${listPhieulo.join(", ")}`;
+            Swal.fire(
+                message,
+                'success'
+            )
+
+            if (this.selected.length < 1) {
                 const Toast = Swal.mixin({
                     toast: true,
                     position: "top-end",
@@ -1732,57 +1878,109 @@ export default {
                 });
                 Toast.fire({
                     icon: "success",
-                    title: "Đã chốt toàn bộ  phiếu lô",
+                    title: "Không có phiếu nào được tích chọn",
+                });
+                return;
+            } else {
+                Swal.fire({
+                    title: `Bạn chắc chắn chốt các phiếu lô sản xuất: ${message}?`,
+                    icon: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#3085d6",
+                    cancelButtonColor: "#d33",
+                    confirmButtonText: "Chắc chắn",
+                    customClass: {
+                        title: "custom-swal"
+                    }
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        try {
+                            for (let i = 0; i < this.selected.length; i++) {
+                                let data = {
+                                    stopday_losx: this.selected[i].ngaykt,
+                                    status: 1,
+                                };
+                                let data_losanxuat = {
+                                    status: 3,
+                                    stopday_losx: this.selected[i].ngaykt,
+                                    status_tinhluong: 1,
+                                };
+                                // cập nhật status và stopday_losx cho từng lô sản xuất ứng với từng lô sản xuất theo kế hoạch trong xưởng đó
+                                // status đổi thành số 3 là hoàn thành
+                                this.$axios.$patch(
+                                    `/api/ketoan/capnhatstatuslosx/${this.selected[i]._id}`,
+                                    data_losanxuat
+                                );
+                                // cập nhật status và stopday_losx cho từng lương công đoạn có trong mỗi lô sản xuất ứng với kế hoạch tại xưởng
+
+                                this.$axios.$patch(
+                                    `/api/ketoan/capnhatstatuslcd/${this.selected[i]._id}`,
+                                    data
+                                );
+                                // cập nhật status và stopday_losx cho từng lương công nhật có trong mỗi lô sản xuất ứng với kế hoạch tại xưởng
+                                // kiểm tra có công nhật trong lô hay không?
+                                var check_congdoan = []
+                                this.$axios.$get(`/api/ketoan/checkcongnhat?_id_losx=${this.selected[i]._id}`)
+                                    .then(resp => {
+                                        // console.log(resp);
+                                        check_congdoan = resp
+                                        // console.log(check_congdoan);
+                                    })
+                                    .catch(err => {
+                                        // Handle Error Here
+                                        console.error(err);
+                                    });
+                                if (check_congdoan.length > 0) {
+                                    this.$axios.$patch(
+                                        `/api/ketoan/capnhatstatusluongcnhat/${this.selected[i]._id}`,
+                                        data
+                                    );
+                                }
+
+                            }
+
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: "top-end",
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener("mouseenter", Swal.stopTimer);
+                                    toast.addEventListener("mouseleave", Swal.resumeTimer);
+                                },
+                            });
+                            Toast.fire({
+                                icon: "success",
+                                title: "Đã chốt thành công",
+                            });
+
+                            this.getSolieuLSX_ALl_cht()
+
+                        } catch (error) {
+                            console.log(error);
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: "top-end",
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener("mouseenter", Swal.stopTimer);
+                                    toast.addEventListener("mouseleave", Swal.resumeTimer);
+                                },
+                            });
+                            Toast.fire({
+                                icon: "error",
+                                title: "Có lỗi xảy ra !!!",
+                            });
+                        }
+                    }
                 });
             }
 
-            // let data_lsx;
-            // data_lsx = await this.$axios.$get(
-            //     `/api/lokehoach/getlosxinluongcongnhan?makh=${phieu.makh.trim()}&makhpx=${phieu.makhpx.trim()}&mapx=${phieu.mapx.trim()}`
-            // );
-            // // console.log(data_lsx);
-            // for (let i = 0; i < data_lsx.length; i++) {
-            //     let data = {
-            //         stopday_losx: data_lsx[i].ngaykt,
-            //         status: 1,
-            //     };
-            //     // cập nhật status và stopday_losx
-            //     this.$axios.$patch(
-            //         `/api/ketoan/capnhatstatuslosx?makh=${data_lsx[i].makh}&makhpx=${data_lsx[i].makhpx
-            //         }&malosx=${data_lsx[i].malosx.trim()}&mapx=${data_lsx[
-            //             i
-            //         ].mapx.trim()}`,
-            //         data
-            //     );
-            //     // console.log(data_lsx[i].ngaykt);
-            //     this.$axios.$patch(
-            //         `/api/ketoan/capnhatstatuslcd?makh=${phieu.makh.trim()}&makhpx=${phieu.makhpx.trim()}&mapx=${phieu.mapx.trim()}&malosx=${data_lsx[
-            //             i
-            //         ].malosx.trim()}`,
-            //         data
-            //     );
-            //     this.$axios.$patch(
-            //         `/api/ketoan/capnhatstatusluongcnhat?makh=${phieu.makh.trim()}&makhpx=${phieu.makhpx.trim()}&mapx=${phieu.mapx.trim()}&malosx=${data_lsx[
-            //             i
-            //         ].malosx.trim()}`,
-            //         data
-            //     );
-            // }
-            // const Toast = Swal.mixin({
-            //     toast: true,
-            //     position: "top-end",
-            //     showConfirmButton: false,
-            //     timer: 3000,
-            //     timerProgressBar: true,
-            //     didOpen: (toast) => {
-            //         toast.addEventListener("mouseenter", Swal.stopTimer);
-            //         toast.addEventListener("mouseleave", Swal.resumeTimer);
-            //     },
-            // });
-            // Toast.fire({
-            //     icon: "success",
-            //     title: "Đã chốt toan bo phiếu lô",
-            // });
+
+
         },
 
         // hủy từng phiếu
@@ -1791,18 +1989,41 @@ export default {
                 stopday_losx: this.form.stopday_losx,
                 status: 0,
             };
+            let data_lsx = {
+                status: 2,
+                stopday_losx: this.form.stopday_losx,
+                status_tinhluong: 0,
+            };
+            // console.log(this.getinfoplsx)
+            // cập nhật lại status lô sản xuất theo _id của lô sản xuất
             this.$axios.$patch(
-                `/api/ketoan/capnhatstatuslcd?makh=${this.form.makh.trim()}&makhpx=${this.form.makhpx.trim()}&malosx=${this.form.malosx.trim()}&mapx=${this.form.mapx.trim()}`,
+                `/api/ketoan/capnhatstatuslosx/${this.getinfoplsx._id}`,
+                data_lsx
+            );
+            // cập nhật lại status của các đoạn lương công đoạn, công nhật ứng với lô sản xuất đó thông qua _id_losx
+            this.$axios.$patch(
+                `/api/ketoan/capnhatstatuslcd/${this.getinfoplsx._id}`,
                 data
             );
-            this.$axios.$patch(
-                `/api/ketoan/capnhatstatuslosx?makh=${this.form.makh.trim()}&makhpx=${this.form.makhpx.trim()}&malosx=${this.form.malosx.trim()}&mapx=${this.form.mapx.trim()}`,
-                data
-            );
-            this.$axios.$patch(
-                `/api/ketoan/capnhatstatusluongcnhat?makh=${this.form.makh.trim()}&makhpx=${this.form.makhpx.trim()}&malosx=${this.form.malosx.trim()}&mapx=${this.form.mapx.trim()}`,
-                data
-            );
+            // cập nhật status và stopday_losx cho từng lương công nhật có trong mỗi lô sản xuất ứng với kế hoạch tại xưởng
+            // kiểm tra có công nhật trong lô hay không?
+            var check_congdoan = []
+            this.$axios.$get(`/api/ketoan/checkcongnhat?_id_losx=${this.selected[i]._id}`)
+                .then(resp => {
+                    // console.log(resp);
+                    check_congdoan = resp
+                    // console.log(check_congdoan);
+                })
+                .catch(err => {
+                    // Handle Error Here
+                    console.error(err);
+                });
+            if (check_congdoan.length > 0) {
+                this.$axios.$patch(
+                    `/api/ketoan/capnhatstatusluongcnhat/${this.selected[i]._id}`,
+                    data
+                );
+            }
             const Toast = Swal.mixin({
                 toast: true,
                 position: "top-end",
@@ -1818,53 +2039,53 @@ export default {
                 icon: "success",
                 title: "Đã hủy chốt phiếu",
             });
+
+            this.getSolieuLSX_ALl_cht()
         },
 
         // hủy chốt toàn bộ phiếu
         async huychotallPhieulo() {
+            // console.log(this.selected)
             for (let i = 0; i < this.selected.length; i++) {
                 let data = {
                     stopday_losx: "",
                     status: 0,
                 };
-                // cập nhật status và stopday_losx cho từng lô sản xuất ứng với từng lô sản xuất theo kế hoạch trong xưởng đó
+                let data_losx = {
+                    status: 2,
+                    stopday_losx: "",
+                    status_tinhluong: 0,
+                };
+                // cập nhật status và stopday_losx cho từng lô sản xuất ứng với _id
                 this.$axios.$patch(
-                    `/api/ketoan/capnhatstatuslosx?makh=${this.selected[i].makh}&makhpx=${this.selected[i].makhpx
-                    }&malosx=${this.selected[i].malosx.trim()}&mapx=${this.selected[
-                        i
-                    ].mapx.trim()}`,
-                    data
+                    `/api/ketoan/capnhatstatuslosx/${this.selected[i]._id}`,
+                    data_losx
                 );
                 // cập nhật status và stopday_losx cho từng lương công đoạn có trong mỗi lô sản xuất ứng với kế hoạch tại xưởng
                 this.$axios.$patch(
-                    `/api/ketoan/capnhatstatuslcd?makh=${this.selected[i].makh.trim()}&makhpx=${this.selected[i].makhpx.trim()}&mapx=${this.selected[i].mapx.trim()}&malosx=${this.selected[
-                        i
-                    ].malosx.trim()}`,
+                    `/api/ketoan/capnhatstatuslcd/${this.selected[i]._id}`,
                     data
                 );
                 // cập nhật status và stopday_losx cho từng lương công nhật có trong mỗi lô sản xuất ứng với kế hoạch tại xưởng
-                this.$axios.$patch(
-                    `/api/ketoan/capnhatstatusluongcnhat?makh=${this.selected[i].makh.trim()}&makhpx=${this.selected[i].makhpx.trim()}&mapx=${this.selected[i].mapx.trim()}&malosx=${this.selected[
-                        i
-                    ].malosx.trim()}`,
-                    data
-                );
-
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: "top-end",
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                        toast.addEventListener("mouseenter", Swal.stopTimer);
-                        toast.addEventListener("mouseleave", Swal.resumeTimer);
-                    },
-                });
-                Toast.fire({
-                    icon: "success",
-                    title: "Đã chốt toàn bộ  phiếu lô",
-                });
+                // cập nhật status và stopday_losx cho từng lương công nhật có trong mỗi lô sản xuất ứng với kế hoạch tại xưởng
+                // kiểm tra có công nhật trong lô hay không?
+                var check_congdoan = []
+                this.$axios.$get(`/api/ketoan/checkcongnhat?_id_losx=${this.selected[i]._id}`)
+                    .then(resp => {
+                        // console.log(resp);
+                        check_congdoan = resp
+                        // console.log(check_congdoan);
+                    })
+                    .catch(err => {
+                        // Handle Error Here
+                        console.error(err);
+                    });
+                if (check_congdoan.length > 0) {
+                    this.$axios.$patch(
+                        `/api/ketoan/capnhatstatusluongcnhat/${this.selected[i]._id}`,
+                        data
+                    );
+                }
             }
 
             const Toast = Swal.mixin({
@@ -1880,8 +2101,11 @@ export default {
             });
             Toast.fire({
                 icon: "success",
-                title: "Đã chốt toan bo phiếu lô",
+                title: "Đã hủy chốt toàn bộ phiếu đã chọn",
             });
+
+            this.getSolieuLSX_ALl_cht()
+
         },
 
         // Bấm vào mã lô sản xuất sẽ ra thông tin lương đã nhập
@@ -1901,7 +2125,7 @@ export default {
             this.form.tento = infoPhieulo.tento.trim();
 
             this.allluongcongdoan = await this.$axios.$get(
-                `/api/ketoan/getallluongcongdoaninlsx?makh=${this.form.makh}&makhpx=${this.form.makhpx}&malosx=${this.form.malosx}&mapx=${this.form.mapx}`
+                `/api/ketoan/getallluongcongdoaninlsx?_id_losx=${infoPhieulo._id}`
             );
             this.allluongcongnhat = await this.$axios.$get(
                 `/api/ketoan/getallluongcongnhatinlsx?makh=${this.form.makh}&makhpx=${this.form.makhpx}&malosx=${this.form.malosx}&mapx=${this.form.mapx}`
@@ -1941,18 +2165,19 @@ export default {
         async vaoPhieuluong(infoPhieulo) {
             this.isActive = true;
             // console.log(infoPhieulo)
+            this.items = []
             this.iscongdoan = 1;
             this.getinfoplsx = infoPhieulo;
             // console.log(this.getinfoplsx);
             this.form.id_losx = this.getinfoplsx._id
-            this.form.nhomluong = infoPhieulo.nhomluong.trim();
-            this.form.mapx = infoPhieulo.mapx.trim();
-            this.form.malosx = infoPhieulo.malosx.trim();
-            this.form.makh = infoPhieulo.makh.trim();
-            this.form.makhpx = infoPhieulo.makhpx.trim();
-            this.form.tensp = infoPhieulo.tensp.trim();
-            this.form.mato = infoPhieulo.mato.trim();
-            this.form.tento = infoPhieulo.tento.trim();
+            this.form.nhomluong = infoPhieulo.nhomluong;
+            this.form.mapx = infoPhieulo.mapx;
+            this.form.malosx = infoPhieulo.malosx;
+            this.form.makh = infoPhieulo.makh;
+            this.form.makhpx = infoPhieulo.makhpx;
+            this.form.tensp = infoPhieulo.tensp;
+            this.form.mato = infoPhieulo.mato;
+            this.form.tento = infoPhieulo.tento;
 
             // this.allluongcongdoan = await this.$axios.$get(
             //     `/api/ketoan/getallluongcongdoaninlsx?makh=${this.form.makh}&makhpx=${this.form.makhpx}&malosx=${this.form.malosx}&mapx=${this.form.mapx}`
@@ -2187,6 +2412,8 @@ export default {
             }
         },
 
+
+
         getTencn(event, selectedIndex, index) {
             // console.log(this.cong_nhan[this.selectedIndex])
             this.selectedIndex = selectedIndex;
@@ -2328,6 +2555,17 @@ export default {
 
         },
 
+        taophieuluong() {
+            if (this.items.length > 0) {
+                for (let i = 0; i < this.items.length; i++) {
+                    this.$axios.$post(
+                        "/api/ketoan/addluongcongdoan",
+                        this.items[i]
+                    );
+                }
+            }
+        },
+
         // create phiếu trong model popup
         onTaophieu() {
             // console.log(this.masp);
@@ -2344,13 +2582,9 @@ export default {
                         // console.log(this.getinfoplsx._id);
                         if (this.items.length > 0) {
                             for (let i = 0; i < this.items.length; i++) {
-                                this.items[i].createdAt = this.form.createdAt;
-                                this.items[i].createdBy = this.form.createdBy;
-
                                 if (
-                                    this.items[i].malosx == "" ||
-                                    this.items[i].soluong == "" ||
-                                    this.items[i].ngaybd == ""
+                                    this.items[i].ngaythuchien == "" ||
+                                    this.items[i].tencn == ""
                                 ) {
                                     const Toast = Swal.mixin({
                                         toast: true,
@@ -2367,58 +2601,31 @@ export default {
                                         icon: "error",
                                         title: "Yêu cầu nhập đủ thông tin !!!",
                                     });
+                                    return;
                                 } else {
-                                    if (this.items[i].malosx.length == this.checkMalosx) {
-                                        const Toast = Swal.mixin({
-                                            toast: true,
-                                            position: "top-end",
-                                            showConfirmButton: false,
-                                            timer: 3000,
-                                            timerProgressBar: true,
-                                            didOpen: (toast) => {
-                                                toast.addEventListener("mouseenter", Swal.stopTimer);
-                                                toast.addEventListener("mouseleave", Swal.resumeTimer);
-                                            },
-                                        });
-                                        Toast.fire({
-                                            icon: "error",
-                                            title: "Tạo mã Lô sản xuất",
-                                        });
-                                    } else {
-                                        // Nếu chưa chốt đơn thì status trong luongcongnhan = 0
-                                        // Nếu chốt rồi thì status trong luongcongnhan = 1
-                                        // if (this.form.status == false) {
-                                        //   this.items[i].status = 0;
-                                        // } else {
-                                        //   this.items[i].status = 1;
-                                        // }
-                                        // // Nếu có ngày chốt thì sẽ ghi ngày chốt vào
-                                        // this.items[i].stopday_losx = this.form.stopday_losx;
+                                    // cập nhật lương công đoạn
+                                    this.$axios.$post(
+                                        "/api/ketoan/addluongcongdoan",
+                                        this.items[i]
+                                    );
 
-                                        // cập nhật lương công đoạn
-                                        this.$axios.$post(
-                                            "/api/ketoan/addluongcongdoan",
-                                            this.items[i]
-                                        );
+                                    const Toast = Swal.mixin({
+                                        toast: true,
+                                        position: "top-end",
+                                        showConfirmButton: false,
+                                        timer: 3000,
+                                        timerProgressBar: true,
+                                        didOpen: (toast) => {
+                                            toast.addEventListener("mouseenter", Swal.stopTimer);
+                                            toast.addEventListener("mouseleave", Swal.resumeTimer);
+                                        },
+                                    });
+                                    Toast.fire({
+                                        icon: "success",
+                                        title: "Đã thêm công đoạn lương",
+                                    });
 
-                                        const Toast = Swal.mixin({
-                                            toast: true,
-                                            position: "top-end",
-                                            showConfirmButton: false,
-                                            timer: 3000,
-                                            timerProgressBar: true,
-                                            didOpen: (toast) => {
-                                                toast.addEventListener("mouseenter", Swal.stopTimer);
-                                                toast.addEventListener("mouseleave", Swal.resumeTimer);
-                                            },
-                                        });
-                                        Toast.fire({
-                                            icon: "success",
-                                            title: "Đã thêm công đoạn lương",
-                                        });
 
-                                        //   window.location.reload();
-                                    }
                                 }
                             }
 
@@ -2428,6 +2635,8 @@ export default {
                                 this.deleteRow(this.items.length - turn);
                                 turn += 1;
                             }
+
+
                         }
 
                         if (this.items_cn.length > 0) {
@@ -2482,51 +2691,29 @@ export default {
                             }
                         }
 
-                        this.$axios.$get(`/api/ketoan/getallluongcongdoaninlsx?makh=${this.form.makh.trim()}&makhpx=${this.form.makhpx.trim()}&malosx=${this.form.malosx.trim()}&mapx=${this.form.mapx.trim()}`)
-                            .then(resp => {
-                                // console.log(resp);
-                                this.allluongcongdoan = resp
-                            })
-                            .catch(err => {
-                                // Handle Error Here
-                                console.error(err);
-                            });
-
-                        this.$axios.$get(`/api/ketoan/getallluongcongnhatinlsx?makh=${this.form.makh.trim()}&makhpx=${this.form.makhpx.trim()}&malosx=${this.form.malosx.trim()}&mapx=${this.form.mapx.trim()}`)
-                            .then(resp => {
-                                // console.log(resp);
-                                this.allluongcongnhat = resp
-                            })
-                            .catch(err => {
-                                // Handle Error Here
-                                console.error(err);
-                            });
-
-                        // this.$axios.$get(`/api/ketoan/sumtonghong?_id_losx=${this.getinfoplsx._id}`)
+                        // this.$axios.$get(`/api/ketoan/getallluongcongdoaninlsx?makh=${this.form.makh.trim()}&makhpx=${this.form.makhpx.trim()}&malosx=${this.form.malosx.trim()}&mapx=${this.form.mapx.trim()}`)
                         //     .then(resp => {
                         //         // console.log(resp);
-                        //         this.tonghonginlo = resp[0].tonghong
+                        //         this.allluongcongdoan = resp
                         //     })
                         //     .catch(err => {
                         //         // Handle Error Here
                         //         console.error(err);
                         //     });
 
-                        // console.log(this.tonghonginlo)
-                        // let sumhong = this.tonghonginlo
-                        // let sumdat = this.tongdatinlo
-                        // // console.log(`mã lô: ${this.showlsxpx[i]._id} có tổng hỏng là: ${sumhong}`)
-                        // let dt = { tonghong: sumhong, tongdat: sumdat }
-                        // this.$axios.$patch(
-                        //     `/api/ketoan/updatetonghong?_id=${this.getinfoplsx._id}`,
-                        //     dt
-                        // );
+                        // this.$axios.$get(`/api/ketoan/getallluongcongnhatinlsx?makh=${this.form.makh.trim()}&makhpx=${this.form.makhpx.trim()}&malosx=${this.form.malosx.trim()}&mapx=${this.form.mapx.trim()}`)
+                        //     .then(resp => {
+                        //         // console.log(resp);
+                        //         this.allluongcongnhat = resp
+                        //     })
+                        //     .catch(err => {
+                        //         // Handle Error Here
+                        //         console.error(err);
+                        //     });
 
-                        // // refresh table luong cong doan da thuc hien
-                        // this.allluongcongdoan = []
-                        // this.allluongcongnhat = []
+
                         this.updateImdi()
-                        this.getSolieuLSX()
+                        // this.getSolieuLSX()
 
                     } catch (error) {
                         console.log(error);
@@ -2682,6 +2869,11 @@ export default {
 </script>
 
 <style scoped>
+.custom-swal {
+    font-size: 6px;
+    font-family: Arial, sans-serif;
+}
+
 .table_wrapper {
     display: block;
     overflow-x: auto;
@@ -2727,5 +2919,56 @@ export default {
 tr:hover {
     cursor: pointer;
     background-color: #fffaeb;
+}
+
+.select-wrapper {
+    position: relative;
+    width: 200px;
+}
+
+.select-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #f2f2f2;
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.arrow {
+    border-style: solid;
+    border-width: 0.15em 0.15em 0 0;
+    content: '';
+    display: inline-block;
+    height: 0.45em;
+    left: 0.25em;
+    position: relative;
+    top: 0.25em;
+    transform: rotate(-45deg);
+    vertical-align: top;
+    width: 0.45em;
+}
+
+.arrow.open {
+    transform: rotate(135deg);
+}
+
+.select-options {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    z-index: 1;
+    padding-top: 5px;
+    padding-left: 5px;
+    padding-bottom: 5px;
+}
+
+.select-options.open {
+    display: block;
 }
 </style>

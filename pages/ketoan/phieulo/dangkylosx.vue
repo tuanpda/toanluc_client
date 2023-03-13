@@ -105,6 +105,85 @@
                                 <button @click="showAllLokhpx"
                                     class="button is-small is-danger is-fullwidth">Refresh</button>
                             </td>
+                            <td></td>
+                        </tr>
+                        <tr style="background-color: #eff5fb;">
+                            <td style="width: 12%; font-size: small; font-weight: bold;">
+                                <div class="icon-text">
+                                    <input type="checkbox" v-model="showLuachon">
+                                    <span style="color: #296fa8;">Lọc nhiều tiêu chí</span>
+                                </div>
+                            </td>
+
+                            <td colspan="7" style="font-size: small; font-weight: bold; text-align: right;"><span>Có: <span
+                                        style="color: red;">{{
+                                            lokehoachpx.length }}</span> bản
+                                    ghi</span></td>
+                        </tr>
+                        <tr v-if="showLuachon == true" style="background-color: #feecf0;">
+                            <td style="width: 12%; font-size: small; font-weight: bold;">
+                                <div class="icon-text">
+                                    <span class="icon has-text-success">
+                                        <i class="fas fa-check-square"></i>
+                                    </span>
+                                    <span style="color: #296fa8;">Chọn các tiêu chí lọc</span>
+                                </div>
+                            </td>
+                            <td style="font-size: x-small;">
+                                <div class="select-wrapper">
+                                    <div class="select-header" @click="isOpen = !isOpen">
+                                        {{ selectedOptions.length > 0 ? selectedOptions.join(', ') : 'Chọn Phân xưởng' }}
+                                        <span class="arrow" :class="{ 'open': isOpen }"></span>
+                                    </div>
+                                    <div class="select-options" :class="{ 'open': isOpen }">
+                                        <label v-for="option in phanxuong">
+                                            <input type="checkbox" :value="option.mapx" v-model="selectedOptions">
+                                            {{ option.mapx }} &nbsp;
+                                        </label>
+                                    </div>
+                                </div>
+
+                            </td>
+                            <!-- <td><button @click="resetOp" class="button is-small is-fullwidth"> - Refresh all phân
+                                    xưởng - </button></td> -->
+                            <td><input v-model="multiSearch_nhomsp" type="text" class="input is-small"
+                                    placeholder="Nhóm sản phẩm"></td>
+                            <td>
+                                <div class="control has-icons-left">
+                                    <div class="select is-small is-fullwidth">
+                                        <select id="selectBox" v-model="selected">
+                                            <option v-for="option in filteredOptions" :value="option.masp">
+                                                {{ option.masp }}
+                                            </option>
+                                        </select>
+                                    </div>
+                                    <datalist id="options">
+                                        <option v-for="option in filteredOptions" :value="option.masp"></option>
+                                    </datalist>
+                                    <span class="icon is-small is-left">
+                                        <i style="color: #48c78e" class="fas fa-cog"></i>
+                                    </span>
+                                </div>
+                            </td>
+                            <td style="font-size: x-small;">
+                                <div class="select-wrapper">
+                                    <div class="select-header" @click="isOpenst = !isOpenst">
+                                        {{ Options_status.length > 0 ? Options_status.join(', ') : 'Trạng thái' }}
+                                        <span class="arrow" :class="{ 'open': isOpenst }"></span>
+                                    </div>
+                                    <div class="select-options" :class="{ 'open': isOpenst }">
+                                        <label v-for="option in statusArr">
+                                            <input type="checkbox" :value="option.masta" v-model="Options_status">
+                                            {{ option.tensta }} &nbsp;
+                                        </label>
+                                    </div>
+                                </div>
+                            </td>
+                            <td>
+                                <button @click="filterData" class="button is-small is-fullwidth is-success">Lọc</button>
+                            </td>
+                            <td></td>
+                            <td></td>
                         </tr>
                     </table>
                 </div>
@@ -156,7 +235,7 @@
                             <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Chọn</td>
                         </tr>
                         <template v-for="(item, index) in sortedsllosx.filter(el => el.status !== 3)">
-                            <tr @click="click_Add_Losanxuat(item)">
+                            <tr @click="watchDetail(index, item)">
                                 <td>
                                     <div
                                         style=" display: flex; gap: 10px; justify-content:space-around; align-items: center; width: 100%; height: 100%; margin-top: 5px;">
@@ -286,7 +365,7 @@
                                                     <td style="font-size: small; text-align: center;"> {{ item.malosx }}
                                                     </td>
                                                     <td style="font-size: small; text-align: center">
-                                                        {{ item.soluong }}
+                                                        {{ item.soluonglsx }}
                                                     </td>
                                                     <td style="font-size: small; text-align: center">
                                                         {{ item.ngaybd | formatDate }}
@@ -570,9 +649,30 @@ export default {
             // gán biến status
             status: 0,
 
+            // check nhiều phân xưởng
+            showLuachon: false,
+            options: ['Option 1', 'Option 2', 'Option 3', 'Option 4'],
+            selectedOptions: [],
+            Options_status: [],
+            isOpen: false,
+            isOpenst: false,
+            statusArr: [{ masta: 1, tensta: "DK" }, { masta: 2, tensta: "SX" }, { masta: 3, tensta: "HT" }],
+            multiSearch_masp: "",
+            multiSearch_nhomsp: "",
+
+            // xử lý select mã sản phẩm
+            selected: '',
+            search: '',
+            maspinlokehoach: [],
+
             // hiển thị đăng ký lô sản xuất
             checkViewRegLsx: false,
             isaddlosx: 0,
+
+            form: {
+                createdAt: null,
+                createdBy: this.$auth.$state.user.username,
+            },
             // items lô sản xuất
             items: [
                 {
@@ -615,9 +715,11 @@ export default {
     },
 
     mounted() {
+        this.currentDateTime();
         this.showAllLokhpx()
         this.showAllPx()
         this.deleteRow(0);
+        this.maspinlkh()
     },
 
     computed: {
@@ -639,6 +741,11 @@ export default {
                 let end = this.currentPage * this.pageSize;
                 if (index >= start && index < end) return true;
             });
+        },
+        filteredOptions() {
+            return this.maspinlokehoach.filter(option =>
+                option.masp.toLowerCase().includes(this.search.toLowerCase())
+            );
         }
     },
 
@@ -662,6 +769,23 @@ export default {
 
 
     methods: {
+        currentDateTime() {
+            const current = new Date();
+            const date =
+                current.getFullYear() +
+                "-" +
+                (current.getMonth() + 1) +
+                "-" +
+                current.getDate();
+            const time =
+                current.getHours() +
+                ":" +
+                current.getMinutes() +
+                ":" +
+                current.getSeconds();
+            this.form.createdAt = date + " " + time;
+        },
+
         async watchDetail(value, data) {
             const indexValue = this.arrRowWatchDetail.findIndex(el => el?.key === value)
             if (indexValue > -1) {
@@ -688,7 +812,7 @@ export default {
                 dataChildren: dataChildren,
                 grWork: grWork,
                 input: {
-                    inputMaTo: '',
+                    inputMaTo: 'data.maspkhpx + ' - ' + data.makhpx',
                     inputMaLo: '',
                     inputSoLuong: '',
                     inputDateOpen: null,
@@ -713,7 +837,68 @@ export default {
                 ]
             }
             const { _id, ...res } = newData
-            this.$axios.$post("/api/ketoan/addphieulosx", res).then(async () => {
+            // console.log(res)
+
+            let formData
+            if (grWotkTemp) {
+                // console.log(grWotkTemp.value)
+
+                formData = {
+                    kehoachnam: res.kehoachnam,
+                    makh: res.makh,
+                    makhpx: res.makhpx,
+                    malosx: dataTemp.input.inputMaLo,
+                    mapx: res.mapx,
+                    tenpx: res.tenpx,
+                    mato: grWotkTemp.value,
+                    tento: grWotkTemp.label,
+                    masp: res.maspkhpx,
+                    tensp: res.tenspkhpx,
+                    soluong: res.soluongkhpx,
+                    nhomluong: res.nhomluong,
+                    soluonglsx: dataTemp.input.inputSoLuong,
+                    soluongkhsx: "",
+                    ngaybd: dataTemp.input.inputDateOpen,
+                    ngaykt: dataTemp.input.inputDateEnd,
+                    createdAt: this.form.createdAt,
+                    createdBy: this.form.createdBy,
+                    status: 0,
+                    datinhluong: 0,
+                    stopday_losx: "",
+                    tongdat: 0,
+                    tonghong: 0,
+                    ghichu: "",
+                }
+            } else {
+                formData = {
+                    kehoachnam: res.kehoachnam,
+                    makh: res.makh,
+                    makhpx: res.makhpx,
+                    malosx: dataTemp.input.inputMaLo,
+                    mapx: res.mapx,
+                    tenpx: res.tenpx,
+                    mato: "",
+                    tento: "",
+                    masp: res.maspkhpx,
+                    tensp: res.tenspkhpx,
+                    soluong: res.soluongkhpx,
+                    nhomluong: res.nhomluong,
+                    soluonglsx: dataTemp.input.inputSoLuong,
+                    soluongkhsx: "",
+                    ngaybd: dataTemp.input.inputDateOpen,
+                    ngaykt: dataTemp.input.inputDateEnd,
+                    createdAt: this.form.createdAt,
+                    createdBy: this.form.createdBy,
+                    status: 0,
+                    datinhluong: 0,
+                    stopday_losx: "",
+                    tongdat: 0,
+                    tonghong: 0,
+                    ghichu: "",
+                }
+            }
+
+            this.$axios.$post("/api/ketoan/addphieulosx", formData).then(async () => {
                 const Toast = Swal.mixin({
                     toast: true,
                     position: "top-end",
@@ -749,6 +934,102 @@ export default {
                     this.arrRowWatchDetail.splice(index, 1, dataNew);
                 }
             })
+        },
+
+        async maspinlkh() {
+            this.maspinlokehoach = await this.$axios.$get('/api/lokehoach/hmsanphamlokhpx')
+        },
+
+        // lọc nhiều tiêu chí
+        async filterData() {
+            // console.log(this.selectedOptions)
+            // console.log(this.Options_status)
+            this.isOpen = false
+            this.isOpenst = false
+
+            const mapxList = this.selectedOptions
+            const masp = this.selected
+            const status = this.Options_status
+
+
+            // chọn lọc full
+            if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.selected != "") {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filterfulldk`, {
+                    params: {
+                        mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
+                        masp: masp,
+                        status: status,
+                    },
+                }
+                );
+            }
+            // chỉ có mã px
+            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.selected == "") {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlymapx`, {
+                    params: {
+                        mapx: mapxList,
+                    },
+                }
+                );
+            }
+            // chỉ có mã px và mã sp
+            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.selected != "") {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlymapxandmasp`, {
+                    params: {
+                        mapx: mapxList,
+                        masp: masp
+                    },
+                }
+                );
+            }
+            // chỉ có mã px và status
+            else if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.selected == "") {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlymapxandstatus`, {
+                    params: {
+                        mapx: mapxList,
+                        status: status
+                    },
+                }
+                );
+            }
+            // lọc mỗi trạng thái
+            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.selected == "") {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlystatus`, {
+                    params: {
+                        status: status
+                    },
+                }
+                );
+            }
+
+            // lọc mỗi mã sản phẩm
+            else if (!this.selectedOptions.length && !this.Options_status.length && this.selected != "") {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlymasp`, {
+                    params: {
+                        masp: masp
+                    },
+                }
+                );
+            }
+
+            // lọc sản phẩm + trạng thái
+            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.selected != "") {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlymaspandstatus`, {
+                    params: {
+                        masp: masp,
+                        status: status
+                    },
+                }
+                );
+            }
+
         },
 
         // các hàm phục vụ tính toán
@@ -804,6 +1085,13 @@ export default {
             );
             this.search_timestart = ""
             this.search_timeend = ""
+            this.multiSearch_masp = ""
+            this.multiSearch_nhomsp = ""
+            this.Options_status = []
+            this.isOpen = false
+            this.isOpenst = false
+            this.selectedOptions = []
+            this.selected = ""
         },
 
         // get all phân xưởng 
@@ -1270,5 +1558,56 @@ export default {
 tr:hover {
     cursor: pointer;
     background-color: #fffaeb;
+}
+
+.select-wrapper {
+    position: relative;
+    width: 200px;
+}
+
+.select-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #f2f2f2;
+    border: 1px solid #ddd;
+    cursor: pointer;
+}
+
+.arrow {
+    border-style: solid;
+    border-width: 0.15em 0.15em 0 0;
+    content: '';
+    display: inline-block;
+    height: 0.45em;
+    left: 0.25em;
+    position: relative;
+    top: 0.25em;
+    transform: rotate(-45deg);
+    vertical-align: top;
+    width: 0.45em;
+}
+
+.arrow.open {
+    transform: rotate(135deg);
+}
+
+.select-options {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    background-color: #fff;
+    border: 1px solid #ddd;
+    z-index: 1;
+    padding-top: 5px;
+    padding-left: 5px;
+    padding-bottom: 5px;
+}
+
+.select-options.open {
+    display: block;
 }
 </style>

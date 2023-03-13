@@ -123,7 +123,13 @@
                     </span>
                     &ensp; Chọn Lô kế hoạch để sản xuất
                   </nav-link>
-                  <nav-link to="/ketoan/phieulo/danhsachlosx" class="navbar-item">
+                  <!-- <nav-link to="/ketoan/phieulo/danhsachlosx" class="navbar-item">
+                    <span style="color: #f14668" class="icon is-small is-left">
+                      <i class="fas fa-file-contract"></i>
+                    </span>
+                    &ensp; Tạo danh sách lô sản xuất
+                  </nav-link> -->
+                  <nav-link to="/ketoan/phieulo/dangkylosx" class="navbar-item">
                     <span style="color: #f14668" class="icon is-small is-left">
                       <i class="fas fa-file-contract"></i>
                     </span>

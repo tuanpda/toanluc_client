@@ -280,7 +280,7 @@
                                 <td style="font-size: small">{{ item.maspkhpx }}</td>
                                 <td style="font-size: small; text-align: center">
                                     <!-- <input type="text" class="input is-small" v-model="item.makhpx" /> -->
-                                    {{ item.makhpx }}
+                                    <input type="text" class="input is-small" v-model="item.makhpx" />
                                 </td>
                                 <td style="font-size: small; text-align: center">
                                     <input type="text" class="input is-small" v-model="item.soluongkhpx" />
@@ -1188,4 +1188,5 @@ export default {
 tr:hover {
     cursor: pointer;
     background-color: #fffaeb;
-}</style>
+}
+</style>

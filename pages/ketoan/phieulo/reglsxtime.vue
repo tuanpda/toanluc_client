@@ -1,74 +1,24 @@
 <template>
-    <div id="app" style="margin-left: 10px; margin-right: 10px;">
-        <table class="table is-responsive is-bordered is-narrow is-fullwidth">
-            <tr style="background-color: azure;">
-                <td style="width: 23.1%;" colspan="3 ">
-                    <div class="control has-icons-left">
-                        <div class="select is-small is-fullwidth">
-                            <select @change="getWithPX($event)">
-                                <option selected>-- Phân xưởng --</option>
-                                <option v-for="item in phanxuong" :value="item.mapx">
-                                    {{ item.mapx }} -- {{ item.tenpx }}
-                                </option>
-                            </select>
-                        </div>
-                        <span class="icon is-small is-left">
-                            <i style="color: #48c78e" class="fas fa-kaaba"></i>
-                        </span>
-                    </div>
-                </td>
-                <td style="width: 6%; font-size: small; font-weight: 700;">Chọn ngày</td>
-                <td style="width: 10%; font-size: small; font-weight: 600;"><input type="date" class="input is-small"
-                        @change="timelinereg" v-model="chonngay"></td>
-                <td></td>
-                <td style="width: 5%">
-                    <button @click="showallproduct" class="button is-small is-danger is-fullwidth">Refresh</button>
-                </td>
-            </tr>
-        </table>
-        <table class="table is-responsive is-bordered is-narrow is-fullwidth">
-            <!-- <tr style="background-color: antiquewhite;">
-                <td style="font-size: small; text-align: center;">
-                    <input type="checkbox" v-model="openAll">
-                </td>
-                <td style="font-size: small; text-align: center;">
-                    <input type="checkbox" v-model="closeAll">
-                </td>
-            </tr> -->
-            <!-- <tr style="background-color: azure;">
-                <td style="width: 15%;" colspan="3 ">
-                    <div class="control has-icons-left">
-                        <div class="select is-small is-fullwidth">
-                            <select @change="getWithPX($event)">
-                                <option selected>-- Phân xưởng --</option>
-                                <option v-for="item in phanxuong" :value="item.mapx">
-                                    {{ item.mapx }} -- {{ item.tenpx }}
-                                </option>
-                            </select>
-                        </div>
-                        <span class="icon is-small is-left">
-                            <i style="color: #48c78e" class="fas fa-kaaba"></i>
-                        </span>
-                    </div>
-                </td>
-                <td><input type="text" class="input is-small"></td>
-                <td style="width: 5%">
-                    <button @click="showallproduct" class="button is-small is-danger is-fullwidth">Refresh</button>
-                </td>
-            </tr> -->
-            <tr style="background-color: antiquewhite;">
-                <!-- <td style=" width: 2%;"></td> -->
-                <!-- <td style="font-size: small; text-align: center; width: 3%;">ID</td> -->
-                <td style="font-size: small; text-align: center; width: 10%;">Mã sản phẩm</td>
-                <td style="font-size: small; text-align: center; width: 7%;">Mã PX</td>
-                <td style="font-size: small; text-align: center; width: 7%;">Nhóm SP</td>
-                <td style="font-size: small; text-align: center; width: 4%;">Thêm</td>
-                <td style="font-size: small; text-align: center; width: 5%;">Cập nhật</td>
-                <th style="background-color: #f3fdec; font-size: small;" v-for="day in days" :key="day + 'wqeq'">
-                    {{ day | formatDate }}
-                </th>
-
-            </tr>
+    <div class="table_wrapper" style="margin-right: 10px;" ref="wrapper">
+        <table class="table is-responsive is-bordered is-narrow is-fullwidth" ref="table">
+            <thead>
+                <tr class="">
+                    <th style="background-color: aliceblue; font-size: small; text-align: center;" class="headcol headcol0">
+                        Mã sản phẩm
+                    </th>
+                    <th style="background-color: aliceblue; font-size: small; text-align: center;" class="headcol headcol1">
+                        Mã PX
+                    </th>
+                    <th style="background-color: aliceblue; font-size: small; text-align: center;" class="headcol headcol2">
+                        Nhóm SP
+                    </th>
+                    <th style="background-color: #f3fdec; font-size: small;" v-for="week in numberOfWeeks" :key="week">
+                        Tuần {{ week }}
+                        <br>
+                        {{ getWeekStartDate(week) }} - {{ getWeekEndDate(week) }}
+                    </th>
+                </tr>
+            </thead>
             <template v-for="(row, index) in allproduct">
                 <tr @click="watchParent(index, row)" :class="{ opened: opened.includes(row.id) }">
                     <!-- <td @click="watchParent(index, row)" :class="{ opened: opened.includes(row.id) }">
@@ -81,11 +31,9 @@
                         </div>
                     </td> -->
                     <!-- <td style="font-size: small; text-align: center;">{{ row.id }}</td> -->
-                    <td style="font-size: small;">{{ row.maspkhpx }}</td>
-                    <td style="font-size: small; text-align: center;">{{ row.mapx }}</td>
-                    <td style="font-size: small; text-align: center;">{{ row.nhomsp }}</td>
-                    <td></td>
-                    <td></td>
+                    <td style="font-size: small;" class="headcol headcol0">{{ row.maspkhpx }}</td>
+                    <td style="font-size: small; text-align: center;" class="headcol headcol1">{{ row.mapx }}</td>
+                    <td style="font-size: small; text-align: center;" class="headcol headcol2">{{ row.nhomsp }}</td>
                     <td style="f ont-size: small;" v-for="day in days" :key="day">
 
                     </td>
@@ -95,32 +43,25 @@
                     'display': !!getParent(index) ? 'table-row' :
                         'none'
                 }">
-                    <td colspan="17" style="padding: 0px 0px; background: #209cee0f;">
+                    <td class="headcol headcol0" colspan="17" style="padding: 0px 0px; background: #209cee0f;">
                         <table class="table is-responsive is-bordered is-narrow is-fullwidth">
                             <tr style="background: aliceblue;">
                                 <!-- <td style=" width: 2%;"></td> -->
                                 <!-- <td style="text-align: center; font-size:small; font-weight: 600; width: 3%; color: red;">
                                     STT
                                 </td> -->
-                                <td style="font-size:small; font-weight: 600; width: 9.5%; color: red; text-align: right;">
+                                <td style="font-size:small; font-weight: 600; width: 8.2%; color: red; text-align: right;">
                                     Kế hoạch PX</td>
                                 <td
-                                    style="text-align: center; font-size:small; font-weight: 600; width: 6.84%; color: red;">
+                                    style="text-align: center; font-size:small; font-weight: 600; width: 6.35%; color: red;">
                                     Số
                                     lượng
                                 </td>
-                                <td style="text-align: center; font-size:small; font-weight: 600; width: 6.7%; color: red;">
-
-                                </td>
-                                <td style="text-align: center; font-size:small; font-weight: 600; width: 3.9%; color: red;">
-
-                                </td>
                                 <td
-                                    style="text-align: center; font-size:small; font-weight: 600; width: 4.85%; color: red;">
-
+                                    style="text-align: center; font-size:small; font-weight: 600; width: 5.82%; color: red; text-align: right;">
                                 </td>
 
-                                <td style="font-size: small;" v-for="day in days" :key="day + 'sadsad'">
+                                <td style="font-size: small;" v-for="day in days" :key="day">
 
                                 </td>
                             </tr>
@@ -147,11 +88,7 @@
                                             {{ item.soluongkhpx }}
                                         </td>
                                         <td></td>
-                                        <td></td>
-                                        <td></td>
-
-
-                                        <td style="font-size: small;" v-for="day in days" :key="day + 'pop'">
+                                        <td style="font-size: small;" v-for="day in days" :key="day">
 
                                         </td>
                                     </tr>
@@ -168,20 +105,15 @@
                                                         STT
                                                     </td> -->
                                                     <td
-                                                        style="font-size:small; font-weight: 600; width: 9.45%; text-align: right;">
+                                                        style="font-size:small; font-weight: 600; width: 8.15%; text-align: right;">
                                                         Mã lô sản xuất
                                                     </td>
                                                     <td
-                                                        style="text-align: center; font-size:small; font-weight: 600; width: 6.85%;">
+                                                        style="text-align: center; font-size:small; font-weight: 600; width: 6.4%;">
                                                         Số lượng</td>
-                                                    <td style="width: 6.75%; font-size: small; font-weight: 600;">
+                                                    <td style="width: 5.8%; font-size: small; font-weight: 600;">
                                                         Trạng thái</td>
-                                                    <td style="width: 3.9%; font-size: small; font-weight: 600;">
-
-                                                    </td>
-                                                    <td style="width: 4.8%; font-size: small; font-weight: 600;">
-                                                    </td>
-                                                    <td style="font-size: small;" v-for="day in days" :key="day + 'jfksd'">
+                                                    <td style="font-size: small;" v-for="day in days" :key="day">
 
                                                     </td>
                                                     <!-- <td
@@ -229,14 +161,6 @@
                                                                 <td v-else style="font-size: small; text-align: center;">
                                                                 </td>
                                                             </template>
-                                                            <td style="text-align: center;"><a><span>
-                                                                        <i style="color: #9b6dff"
-                                                                            class="fas fa-clipboard-check"></i>
-                                                                    </span></a></td>
-                                                            <td style="text-align: center;"><a><span>
-                                                                        <i style="color: #9b6dff"
-                                                                            class="fa fa-check-square-o"></i>
-                                                                    </span></a></td>
                                                             <td style="background-color: #f3fdec; font-size: small;"
                                                                 v-for="day in days" :key="day">
                                                                 <input type="text" class="input is-small">
@@ -262,16 +186,41 @@
                         </table>
                     </td>
                 </tr>
+                <!-- v-if tức là chỉ hiện ra khi mảng openned có phần tử (ví dụ 1) trùng với row.id (tức là id trong bảng allproduct) -->
+                <!-- <template v-for="(dt, index) in subData[index]">
+                    <tr v-if="opened.includes(row.id) && openAll == false">
+                        <td colspan=""></td>
+                        <td style="font-size: small; text-align: center;"
+                            @click="toggleShowLosx(index, dt.id, row.maspkhpx, dt.mapx, dt.makhpx)"> {{ dt.makhpx }} | {{
+                                dt.soluongkhpx }}</td>
+                        <td></td>
+                    </tr>
+                    <template v-if="openedLsx.includes(dt.id)" v-for="item in subDataLosx[index]">
+                        <tr>
+                            <td colspan=""></td>
+                            <td style="font-size: small; text-align: center;"> {{ item.malosx }}</td>
+                            <td></td>
+                        </tr>
+                    </template>
+
+
+                </template> -->
+
             </template>
         </table>
     </div>
 </template>
- 
+
 <script>
 import moment from 'moment';
 export default {
+    name: 'YearTimeline',
     data() {
         return {
+            year: 2023,
+            numberOfWeeks: 52,
+            months: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+
             opened: [],
             openedLsx: [],
             allproduct: [],
@@ -287,14 +236,13 @@ export default {
             arrChildren: [],
 
             // thời gian
-            chonngay: "",
-            start: '',
-            end: '',
-
-
-        }
+            start: '2023-03-01',
+            end: '2023-03-14',
+        };
     },
-
+    mounted() {
+        this.showallproduct()
+    },
     computed: {
         days() {
             const start = moment(this.start);
@@ -308,57 +256,38 @@ export default {
             return days;
         }
     },
-
-    mounted() {
-        this.showallproduct()
-        this.showAllPx()
-        this.setnowDate()
-    },
-
     methods: {
-        // chọn ngày
-        timelinereg() {
-            // console.log(this.chonngay)
-            this.start = this.chonngay
-            const current = new Date();
-            const future = new Date(current.getTime() + 12 * 24 * 60 * 60 * 1000);
-            const date =
-                current.getFullYear() +
-                "-" +
-                (current.getMonth() + 1) +
-                "-" +
-                current.getDate();
-
-            const dateFuture =
-                future.getFullYear() +
-                "-" +
-                (future.getMonth() + 1) +
-                "-" +
-                future.getDate();
-
-            this.start = date;
-            this.end = dateFuture
+        getWeekStartDate(week) {
+            const d = new Date(this.year, 0, 1);
+            const dayOffset = d.getDay();
+            const diff = (week - 1) * 7 - dayOffset;
+            return new Date(this.year, 0, 1 + diff).toLocaleDateString();
+        },
+        getWeekEndDate(week) {
+            const d = new Date(this.year, 0, 1);
+            const dayOffset = d.getDay();
+            const diff = (week - 1) * 7 - dayOffset;
+            return new Date(this.year, 0, 1 + diff + 7).toLocaleDateString();
+        },
+        getWeeksInMonth(month) {
+            const weeks = [];
+            const d = new Date(this.year, month - 1, 1);
+            const firstWeek = this.getWeekNumber(d);
+            for (let i = firstWeek; i < firstWeek + 5; i++) {
+                weeks.push(i);
+            }
+            return weeks;
+        },
+        getWeekNumber(date) {
+            const onejan = new Date(date.getFullYear(), 0, 1);
+            return Math.ceil(((date - onejan) / 86400000 + onejan.getDay() + 1) / 7);
         },
 
-        // now date
-        setnowDate() {
-            const current = new Date();
-            const future = new Date(current.getTime() + 12 * 24 * 60 * 60 * 1000);
-            const date =
-                current.getFullYear() +
-                "-" +
-                (current.getMonth() + 1) +
-                "-" +
-                current.getDate();
-            const dateFuture =
-                future.getFullYear() +
-                "-" +
-                (future.getMonth() + 1) +
-                "-" +
-                future.getDate();
-
-            this.start = date;
-            this.end = dateFuture
+        // Toàn bộ mã sản phẩm load khi form được load ra.
+        async showallproduct() {
+            this.allproduct = await this.$axios.$get(
+                `/api/lokehoach/pivotproduct`
+            );
         },
 
         async watchParent(index, data) {
@@ -419,124 +348,70 @@ export default {
                 `/api/lokehoach/pivotproduct`
             );
         },
-
-        // Lọc theo mã phân xưởng
-        // async showallprodutc() {
-        //     this.allproduct = await this.$axios.$get(
-        //         `/api/lokehoach/pivotproductmapx?mapx=${}`
-        //     );
-        // },
-
-        // get all phân xưởng 
-        async showAllPx() {
-            this.phanxuong = await this.$axios.$get(`/api/phongban/allphanxuong`);
-        },
-
-        // bấm vào chọn phân xưởng khi lọc khi lọc
-        async getWithPX(e) {
-            var name = e.target.options[e.target.options.selectedIndex].text;
-            // console.log(name)
-            let position = name.split("--");
-            let p1 = position[0].trim();
-            let p2 = position[1].trim();
-            this.allproduct = await this.$axios.$get(
-                `/api/lokehoach/pivotproductmapx?mapx=${p1}`
-            );
-        },
-
-        async toggleAndshow(index, id, maspkhpx, mapx) {
-            // id ở đây là id của cột id trong bảng all sản phẩm
-            // console.log(id)
-            // gọi api theo maspkhpx
-            // kiểm tra xem mảng groupmakhpx với mã trên có tồn tại không? nếu không sẽ gọi api đó ra
-            // if (!this.groupmakhpx[maspkhpx, mapx]) {
-            const data = await this.$axios.$get(`/api/lokehoach/pivotmakhpx?maspkhpx=${maspkhpx}&mapx=${mapx}`);
-            // console.log(data)
-            this.groupmakhpx[maspkhpx, mapx] = data;
-            // alert(data[0].makhpx, data[1].makhpx) 
-            // }
-            // gán dữ liệu nhận dc từ api đẩy vào mảng phụ subData theo chỉ mục index
-            this.subData[index] = this.groupmakhpx[maspkhpx, mapx];
-            // console.log(this.subData[index])
-            // kiểm tra xem chỉ mục của id sẩn phẩm trong bảng sản phẩm ở vị trí bao nhiêu?
-            const indexRow = this.opened.indexOf(id);
-            // console.log(indexRow)
-            // nếu index > -1 tức là đã có vị trí trong mảng thì sẽ tiến hành xóa nó khỏi vị trí đó
-            // sau đó đóng sub-row
-            if (indexRow > -1) {
-                this.opened.splice(indexRow, 1)
-                // console.log(this.opened)
-            }
-            // ngược lại chưa có thì đẩy id vào mảng openned và mở sub-row
-            else {
-                this.opened.push(id)
-                // console.log(this.opened)
-            }
-            console.log(this.subDataLosx)
-        },
-
-        async toggleShowLosx(index, id, masp, mapx, makhpx) {
-            // giờ phải lập luận kiểu khác để tonggle hiện ra
-            // console.log(index + '-' + id + '-' + masp + '-' + mapx + '-' + makhpx)
-            const data = await this.$axios.$get(`/api/lokehoach/pivotlosx?masp=${masp}&mapx=${mapx}&makhpx=${makhpx}`);
-            console.log(id)
-            this.grouplosx[masp, mapx, makhpx] = data;
-            console.log(this.grouplosx)
-            // gán dữ liệu nhận dc từ api đẩy vào mảng phụ subData theo chỉ mục index
-            this.subDataLosx[index] = this.grouplosx[masp, mapx, makhpx];
-            var tmptrbugcontent = ``;
-            for (var i = 0; i < data.length; i++) {
-                tmptrbugcontent += i + `<br/>`;
-            }
-            // $("#tmptrbug").html(tmptrbugcontent);
-            // console.log(this.subDataLosx)
-            // console.log(this.subDataLosx[index])
-            // kiểm tra xem chỉ mục của id sẩn phẩm trong bảng sản phẩm ở vị trí bao nhiêu?
-            const indexRowLsx = this.openedLsx.indexOf(id);
-            if (indexRowLsx > -1) {
-                // console.log(this.openedLsx)
-                this.openedLsx.splice(indexRowLsx, 1)
-                // alert(`xóa id ${id} ra khỏi mảng`) 
-                console.log(this.openedLsx)
-            }
-            // ngược lại chưa có thì đẩy id vào mảng openned và mở sub-row
-            else {
-                this.openedLsx.push(id)
-                // console.log(this.opened)
-                // alert(`push ${id} vao mag`)
-                console.log(this.openedLsx)
-            }
-            // console.log(this.openedLsx)
-        }
-    },
-}
+    }
+};
 </script>
-
 <style scoped>
+th,
+td {
+    /* border: solid black; */
+}
+
+th {
+    height: 90px;
+}
+
+td {
+    min-height: 19px;
+    height: 33px;
+}
+
 table {
-    width: 100%;
-    border: 1px solid #ccc;
     border-collapse: collapse;
 }
 
-
-
-/* td {
-    padding: 2px;
-    border: 1px solid #ccc;
-} */
-
-.opened {
-    background-color: aliceblue;
+.headcol {
+    position: absolute;
+    width: 70px;
+    top: auto;
 }
 
+.headcol0 {
+    left: 10px;
+    width: 180px;
+}
 
-td {
-    padding: 2px;
-    border: 1px solid #ccc;
+.headcol1 {
+    left: 189.5px;
+    width: 120px;
+}
+
+.headcol2 {
+    left: 309px;
+    width: 120px;
+}
+
+.headcol3 {
+    left: 590px;
+}
+
+.headcol4 {
+    left: 520px;
+}
+
+.headcol5 {
+    left: 660px;
+}
+
+.headcol6 {
+    left: 420px;
+    width: 100px;
+}
+
+.table_wrapper {
+    overflow-x: scroll;
+    margin-left: 732px;
+    overflow-y: visible;
+    padding: 0;
 }
 </style>
-
-
-
-
