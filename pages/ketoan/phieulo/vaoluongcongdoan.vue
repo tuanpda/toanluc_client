@@ -2,7 +2,7 @@
     <div class="columns">
         <div class="column">
             <br />
-            <div class="box" style="margin-left: 20px; margin-right: 20px">
+            <div class="box" style="margin-left: 5px; margin-right: 5px">
                 <div class="columns">
                     <div class="column is-8">
                         <div class="control">
@@ -40,118 +40,8 @@
 
                 <div>
                     <table class="table is-responsive is-bordered is-narrow is-fullwidth">
-                        <!-- <tr style="background-color: #faf0f5;">
-                            <td>
-                                <div class="control has-icons-left">
-                                    <div class="select is-small is-fullwidth">
-                                        <select @change="getWithPX($event)">
-                                            <option selected>-- Phân xưởng --</option>
-                                            <option v-for="item in phanxuongsl" :value="item.mapx">
-                                                {{ item.mapx }} -- {{ item.tenpx }}
-                                            </option>
-                                        </select>
-                                    </div>
-                                    <span class="icon is-small is-left">
-                                        <i style="color: #48c78e" class="fas fa-kaaba"></i>
-                                    </span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="control has-icons-left">
-                                    <div class="select is-small is-fullwidth">
-                                        <select @change="getWithTo($event)">
-                                            <option selected>-- Tổ --</option>
-                                            <option v-for="item in tonhomsl" :value="item.mapx">
-                                                {{ item.mato }} -- {{ item.tento }}
-                                            </option>
-                                        </select>
-                                    </div>
-                                    <span class="icon is-small is-left">
-                                        <i style="color: #48c78e" class="fas fa-kaaba"></i>
-                                    </span>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="select is-small is-fullwidth">
-                                    <select id="" @change="onChange_Thang($event)">
-                                        <option selected>-- Chọn tháng --</option>
-                                        <option value="01">Tháng 1</option>
-                                        <option value="02">Tháng 2</option>
-                                        <option value="03">Tháng 3</option>
-                                        <option value="04">Tháng 4</option>
-                                        <option value="05">Tháng 5</option>
-                                        <option value="06">Tháng 6</option>
-                                        <option value="07">Tháng 7</option>
-                                        <option value="08">Tháng 8</option>
-                                        <option value="09">Tháng 9</option>
-                                        <option value="10">Tháng 10</option>
-                                        <option value="11">Tháng 11</option>
-                                        <option value="12">Tháng 12</option>
-                                    </select>
-                                </div>
-                            </td>
-                            <td>
-                                <div class="select is-small is-fullwidth">
-                                    <select id="" @change="onChange_Nam($event)">
-                                        <option selected>-- Chọn năm --</option>
-                                        <option value="2022">Tháng 2022</option>
-                                        <option value="2023">Tháng 2023</option>
-                                        <option value="2024">Tháng 2024</option>
-                                        <option value="2025">Tháng 2025</option>
-                                        <option value="2026">Tháng 2026</option>
-                                        <option value="2027">Tháng 2027</option>
-                                        <option value="2028">Tháng 2028</option>
-                                        <option value="2029">Tháng 2029</option>
-                                        <option value="2030">Tháng 2030</option>
-                                        <option value="2031">Tháng 2031</option>
-                                        <option value="2032">Tháng 2032</option>
-                                        <option value="2033">Tháng 2033</option>
-                                    </select>
-                                </div>
-                            </td>
-                            <td>
-                                <button @click="getSolieuLSX" class="button is-small is-success is-fullwidth">Xem thông
-                                    tin</button>
-                            </td>
-                            <td>
-                                <button @click="getSolieuLSX_ALl_cht"
-                                    class="button is-small is-danger is-fullwidth">Refresh</button>
-                            </td>
-                        </tr> -->
-                        <!-- tìm theo điều kiện multi -->
-                        <tr style="background-color: #eff5fb;">
-                            <td style="width: 12%; font-size: small; font-weight: bold;">
-                                <div class="icon-text">
-                                    <input type="checkbox" v-model="showLuachon">
-                                    <span style="color: #296fa8;">Lọc nhiều tiêu chí</span>
-                                </div>
-                            </td>
-                            <td style="width: 15%">
-                                <div class="select is-small is-fullwidth">
-                                    <select id="" @change="onChange_status_chot($event)">
-                                        <option selected>-- Trạng thái lô sản xuất --</option>
-                                        <option value="HT">Hoàn thành</option>
-                                        <option value="SX">Sản Xuất</option>
-                                        <option value="DK">Đăng ký</option>
-                                    </select>
-                                </div>
-                            </td>
-
-                            <td colspan="5" style="font-size: small; font-weight: bold; text-align: right;"><span>Có: <span
-                                        style="color: red;">{{
-                                            sllosx.length }}</span> bản
-                                    ghi</span></td>
-                        </tr>
-                        <tr v-if="showLuachon == true" style="background-color: #feecf0;">
-                            <td style="width: 12%; font-size: small; font-weight: bold;">
-                                <div class="icon-text">
-                                    <span class="icon has-text-success">
-                                        <i class="fas fa-check-square"></i>
-                                    </span>
-                                    <span style="color: #296fa8;">Chọn các tiêu chí lọc</span>
-                                </div>
-                            </td>
-                            <td style="font-size: x-small;">
+                        <tr style="background-color: #feecf0;">
+                            <td style="font-size: small; width: 15%;">
                                 <div class="select-wrapper">
                                     <div class="select-header" @click="isOpen = !isOpen">
                                         {{ selectedOptions.length > 0 ? selectedOptions.join(', ') : 'Chọn Phân xưởng' }}
@@ -166,28 +56,19 @@
                                 </div>
 
                             </td>
-                            <!-- <td><button @click="resetOp" class="button is-small is-fullwidth"> - Refresh all phân
-                                    xưởng - </button></td> -->
-                            <td><input v-model="multiSearch_nhomsp" type="text" class="input is-small"
-                                    placeholder="Nhóm sản phẩm"></td>
-                            <td>
-                                <div class="control has-icons-left">
-                                    <div class="select is-small is-fullwidth">
-                                        <select id="selectBox" v-model="selected">
-                                            <option v-for="option in filteredOptions" :value="option.masp">
-                                                {{ option.masp }}
-                                            </option>
-                                        </select>
+                            <td style="width: 15%;">
+                                <div class="autocomplete">
+                                    <input class="input is-small is-danger" type="text" v-model="multiSearch_masp"
+                                        @input="onInput" placeholder="Chọn sản phẩm">
+                                    <div class="autocomplete-items" v-if="suggestions.length">
+                                        <div class="autocomplete-item" v-for="suggestion in suggestions"
+                                            @click="selectSuggestion(suggestion)">
+                                            {{ suggestion }}
+                                        </div>
                                     </div>
-                                    <datalist id="options">
-                                        <option v-for="option in filteredOptions" :value="option.masp"></option>
-                                    </datalist>
-                                    <span class="icon is-small is-left">
-                                        <i style="color: #48c78e" class="fas fa-cog"></i>
-                                    </span>
                                 </div>
                             </td>
-                            <td style="font-size: x-small;">
+                            <td style="font-size: small; width: 15%;">
                                 <div class="select-wrapper">
                                     <div class="select-header" @click="isOpenst = !isOpenst">
                                         {{ Options_status.length > 0 ? Options_status.join(', ') : 'Trạng thái' }}
@@ -201,9 +82,21 @@
                                     </div>
                                 </div>
                             </td>
-                            <td>
+                            <td style="width: 7%;">
                                 <button @click="filterData" class="button is-small is-fullwidth is-success">Lọc</button>
                             </td>
+                            <td style="width: 7%;">
+                                <button @click="getSolieuLSX_ALl_cht"
+                                    class="button is-small is-fullwidth is-danger">Refresh</button>
+                            </td>
+                            <td style="font-size: small; width: 5.5%; font-weight: 600;">
+                                Số dòng
+                            </td>
+                            <td style="font-size: small; width: 7.6%;">
+                                <input class="input is-danger is-small" type="number" id="itemsPerPage"
+                                    v-model.number="itemsPerPage" min="1" max="10" />
+                            </td>
+                            <td></td>
                         </tr>
                     </table>
                 </div>
@@ -215,48 +108,39 @@
                             <td style="font-size: small; text-align: center; font-weight: 600; width: 3%">STT</td>
                             <td style="font-size: small; text-align: center; font-weight: 600; width: 10%">Mã PX
                             </td>
-                            <td @click="sort('makh')"
-                                style="font-size: small; text-align: center; font-weight: 600; width: 10%">KH nhà máy
+                            <td style="font-size: small; text-align: center; font-weight: 600; width: 10%">KH nhà máy
                             </td>
-                            <td @click="sort('makhpx')"
-                                style="font-size: small; text-align: center; font-weight: 600; width: 10%">Lô KH phân
-                                xưởng</td>
-                            <td @click="sort('malosx')"
-                                style="font-size: small; text-align: center; font-weight: 600; width: 13%">Lô sản xuất
+                            <td style="font-size: small; text-align: center; font-weight: 600; width: 10%">Lô KHPX</td>
+                            <td style="font-size: small; text-align: center; font-weight: 600; width: 13%">Lô sản xuất
                             </td>
-                            <td @click="sort('masp')"
-                                style="font-size: small; text-align: center; font-weight: 600; width: 10%">Mã SP
+                            <td style="font-size: small; text-align: center; font-weight: 600; width: 10%">Mã SP
                             </td>
-                            <!-- <td @click="sort('tensp')"
-                                style="font-size: small; text-align: center; font-weight: 600; width: 17%">Tên SP
+                            <td style="font-size: small; text-align: center; font-weight: 600; width: 17%">Nhóm lương
+                            </td>
+                            <td style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Ngày bắt đầu
+                            </td>
+                            <!-- <td style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Ngày kết thúc
                             </td> -->
-                            <td @click="sort('nhomluong')"
-                                style="font-size: small; text-align: center; font-weight: 600; width: 17%">Nhóm lương
-                            </td>
-                            <td @click="sort('ngaybd')"
-                                style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Ngày bắt đầu
-                            </td>
-                            <td @click="sort('ngaykt')"
-                                style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Ngày kết thúc
-                            </td>
-                            <td @click="sort('soluong')"
-                                style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Số lượng
+                            <td style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Số lượng
                             </td>
                             <td style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Trạng thái
                             </td>
-                            <td style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Trạng thái chốt
+                            <td style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Chốt?
                             </td>
                             <td style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Tổng đạt
                             </td>
                             <td style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Tổng hỏng
                             </td>
-                            <td style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Ngày hoàn
-                                thành
+                            <td style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Ngày BĐTT
+                            </td>
+                            <td style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Ngày HTTT
+                            </td>
+                            <td style="font-size: small; text-align: center; font-weight: 600; width: 5%;">SL nhanh
                             </td>
                             <td style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Nhập lương
                             </td>
                         </tr>
-                        <tr v-for="(item, index) in sortedsllosx" :key="index + 'llllkiq'"
+                        <tr v-for="(item, index) in paginatedTable" :key="index + 'llllkiq'"
                             :class="{ highlight: item._id == phieulosx }">
                             <td style="text-align: center">
                                 <input v-model="selected" :value="item" type="checkbox" />
@@ -265,7 +149,8 @@
                             </td>
                             <td style="font-size: small; background-color: #effaf5;">{{ item.mapx }}</td>
                             <td style="font-size: small; background-color: #effaf5;">{{ item.makh }}</td>
-                            <td style="font-size: small; background-color: #effaf5;">{{ item.makhpx }}</td>
+                            <td style="font-size: small; background-color: #effaf5; text-align: center;">{{ item.makhpx }}
+                            </td>
                             <td @click="getInfoLosx(item)"
                                 style="font-size: small; background-color: #fffaeb; font-weight: 600;">
                                 {{
@@ -279,11 +164,11 @@
                             <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
                                 item.ngaybd | formatDate
                             }}</td>
-                            <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
+                            <!-- <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
                                 item.ngaykt | formatDate
-                            }}</td>
+                            }}</td> -->
                             <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
-                                item.soluong
+                                item.soluonglsx
                             }}</td>
                             <template>
                                 <td v-if="item.status == 1" style="font-size: small; text-align: center; "><span
@@ -310,7 +195,11 @@
                             </td>
                             <td style="font-size: small; text-align: center;">{{ item.tongdat }}</td>
                             <td style="font-size: small; text-align: center;">{{ item.tonghong }}</td>
-                            <td style="font-size: small; text-align: center;">{{ item.stopday_losx | formatDate }}</td>
+                            <!-- <td style="font-size: small; text-align: center;">{{ item.stopday_losx | formatDate }}</td> -->
+                            <td style="font-size: small; text-align: center;">{{ item.ngaybatdautt | formatDate }}</td>
+                            <td style="font-size: small; text-align: center;">{{ item.ngayhoanthanhtt | formatDate }}</td>
+                            <td style="font-size: small; text-align: center;"><input @change="updateStatus(item)"
+                                    type="text" class="input is-small is-danger" v-model="item.soluongkhsx"></td>
                             <td style="font-size: small; text-align: center;">
                                 <a @click="vaoPhieuluong(item)"><span>
                                         <i style="color: #9b6dff" class="fa fa-check-square-o"></i>
@@ -319,40 +208,17 @@
                             </td>
                         </tr>
                     </table>
-                    <table class="table is-responsive is-bordered is-narrow is-fullwidth">
-                        <tr>
-                            <td style="font-size: small; width: 12%;">
-                                <div class="select is-small is-fullwidth">
-                                    <select id="" @change="onChange_pageSize($event)">
-                                        <option selected>-- Số dòng hiển thị --</option>
-                                        <option value="5">5 dòng dữ liệu</option>
-                                        <option value="10">10 dòng dữ liệu</option>
-                                        <option value="15">15 dòng dữ liệu</option>
-                                        <option value="20">20 dòng dữ liệu</option>
-                                        <option value="30">30 dòng dữ liệu</option>
-                                        <option value="40">40 dòng dữ liệu</option>
-                                        <option value="50">50 dòng dữ liệu</option>
-                                    </select>
-                                </div>
-                            </td>
-                            <td style="font-size: small; width: 6%;">Đang Sort theo: {{ currentSort }}</td>
-                            <td style="font-size: small; width: 6%;">Thứ tự: {{ currentSortDir }} (asc: Tăng - desc:
-                                Giảm)</td>
-                            <td style="font-size: small;">Đang ở trang: {{ currentPage }}</td>
-                            <td style="text-align: right;">
-                                <a @click="prevPage"><span class="icon is-small">
-                                        <i class="fas fa-angle-double-left"></i>
-                                    </span></a>
-                                {{ currentPage }}
-                                <a @click="nextPage"><span class="icon is-small">
-                                        <i class="fas fa-angle-double-right"></i>
-                                    </span></a>
-                            </td>
-                        </tr>
-                    </table>
-
-
-
+                    <div class="pagination"> <button class="button is-small is-success" @click="changePage(1)"
+                            :disabled="currentPage === 1">Đầu tiên</button>
+                        <button class="button is-small is-info" @click="changePage(currentPage - 1)"
+                            :disabled="currentPage === 1">Trước</button> <button class="button is-small"
+                            v-for="page in pages" @click="changePage(page)" :class="{ active: page === currentPage }"> {{
+                                page }}
+                        </button> <button class="button is-small is-info" @click="changePage(currentPage + 1)"
+                            :disabled="currentPage === pageCount">Sau</button>
+                        <button class="button is-small is-success" @click="changePage(pageCount)"
+                            :disabled="currentPage === pageCount">Cuối</button>
+                    </div>
                 </div>
                 <br />
                 <label class="checkbox">
@@ -391,7 +257,7 @@
                                 </td>
                                 <td style="font-size: small; text-align: center; font-weight: bold; width: 5%;">Xóa</td>
                             </tr>
-                            <tr v-for="(item, index) in pageOfitems_cd" :key="index + 'ppp'">
+                            <tr v-for="(item, index) in allluongcongdoan" :key="index + 'ppp'">
                                 <td style="font-size: small; text-align: center">
                                     {{ index + 1 }}
                                 </td>
@@ -433,12 +299,27 @@
                                     </a>
                                 </td>
                             </tr>
+                            <tr>
+                                <td colspan="9" style="font-size: small; font-weight: 700; background-color: #effaf5;">Tổng
+                                    cộng</td>
+                            </tr>
+                            <tr v-for="(group, nguyencong) in groups" :key="nguyencong">
+                                <td style="text-align: center; font-size: small"></td>
+                                <td style="font-size: small">{{ nguyencong }}</td>
+                                <td style="text-align: right; font-size: small">{{ group.dongia | formatNumber }}</td>
+                                <td></td>
+                                <td></td>
+                                <td style="text-align: right; font-size: small">{{ group.sodat | formatNumber }}</td>
+                                <td style="text-align: right; font-size: small">{{ group.sohong | formatNumber }}</td>
+                                <td colspan="2"></td>
+                            </tr>
+                            <!-- <tr>
+                                <td colspan="2">sum</td>
+                                <td>{{ totals.dongia }}</td>
+                                <td>{{ totals.sodat }}</td>
+                                <td>{{ totals.sohong }}</td>
+                            </tr> -->
                         </table>
-                        <div style="text-align: right">
-                            <jw-pagination :pageSize="10" :items="allluongcongdoan" @changePage="onChangePage_CD">
-
-                            </jw-pagination>
-                        </div>
                     </div>
                     <br />
                     <!-- công nhật -->
@@ -460,7 +341,7 @@
                                 </td>
                                 <td style="font-size: small; text-align: center; font-weight: bold; width: 5%;">Xóa</td>
                             </tr>
-                            <tr v-for="(item, index) in pageOfitems_cn" :key="index + 'ppp'">
+                            <tr v-for="(item, index) in allluongcongnhat" :key="index + 'ppp'">
                                 <td style="font-size: small; text-align: center">
                                     {{ index + 1 }}
                                 </td>
@@ -494,11 +375,6 @@
                                 </td>
                             </tr>
                         </table>
-                        <div style="text-align: right">
-                            <jw-pagination :pageSize="10" :items="allluongcongnhat" @changePage="onChangePage_CN">
-
-                            </jw-pagination>
-                        </div>
                     </div>
                 </div>
                 <br />
@@ -590,7 +466,8 @@
                                             <tr>
                                                 <td style="font-size: small; font-weight: bold;">{{ getinfoplsx.makh }}
                                                 </td>
-                                                <td style="font-size: small; font-weight: bold;">{{ getinfoplsx.makhpx }}
+                                                <td style="font-size: small; font-weight: bold; text-align: center;">{{
+                                                    getinfoplsx.makhpx }}
                                                 </td>
                                                 <td style="font-size: small; font-weight: bold; text-align: center;">{{
                                                     getinfoplsx.ngaybd |
@@ -670,12 +547,12 @@
                                     <div>
                                         <table class="table is-responsive is-bordered is-narrow is-fullwidth">
                                             <tr style="background-color: #fffaeb">
-                                                <td colspan="10" style="font-weight: bold; font-size: small">
+                                                <td colspan="11" style="font-weight: bold; font-size: small">
                                                     Cập nhật công đoạn lương trong lô sản xuất
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td colspan="10">
+                                                <td colspan="11">
                                                     <button @click="addCongdoan()" class="button is-small is-info">
                                                         Thêm công đoạn
                                                     </button>
@@ -717,6 +594,10 @@
                                                 <td
                                                     style="text-align: center; font-size: small; font-weight: bold; width: 7%;">
                                                     Số hỏng
+                                                </td>
+                                                <td
+                                                    style="text-align: center; font-size: small; font-weight: bold; width: 7%;">
+                                                    Copy
                                                 </td>
                                                 <td
                                                     style="text-align: center; font-size: small; font-weight: bold; width: 7%;">
@@ -793,13 +674,23 @@
                                                         </select>
                                                     </div>
                                                 </td>
-                                                <td><input type="date" class="input is-small" v-model="item.ngaythuchien">
-                                                </td>
+                                                <!-- <td><input type="date" class="input is-small" v-model="item.ngaythuchien">
+                                                </td> -->
+                                                <td><input class="input is-small" type="date"
+                                                        v-bind:value="item.ngaythuchien | inputDateFilter"
+                                                        v-on:input="item.ngaythuchien = getDate($event.target.value)"></td>
                                                 <td>
                                                     <input type="text" v-model="item.sodat" class="input is-small" />
                                                 </td>
                                                 <td>
                                                     <input type="text" v-model="item.sohong" class="input is-small" />
+                                                </td>
+
+                                                <td style="text-align: center">
+                                                    <button @click="copyCongdoan(item, index)"
+                                                        class="button is-small is-danger">
+                                                        Copy
+                                                    </button>
                                                 </td>
                                                 <td style="text-align: center">
                                                     <button @click="deleteRow(index)" class="button is-small is-danger">
@@ -811,11 +702,13 @@
                                                 <td colspan="7" style="font-size: small;">Tổng đạt / tổng hỏng</td>
                                                 <td style="font-size: small; font-weight: 600; text-align: center;"><input
                                                         v-model.trim="tongdatinlo" type="text" class="input is-small"></td>
-                                                <td style="font-size: small; font-weight: 600; text-align: center;"></td>
+                                                <td style="font-size: small; font-weight: 600; text-align: center;">
+                                                    {{ tonghonginlo }}</td>
+                                                <td></td>
                                                 <td></td>
                                             </tr>
                                             <tr>
-                                                <td colspan="10">
+                                                <td colspan="11">
                                                     <button @click="addCongnhat()" class="button is-small is-info">
                                                         Thêm công nhật
                                                     </button>
@@ -847,6 +740,9 @@
                                                 </td>
                                                 <td style="text-align: center; font-size: small;font-weight: bold;">
                                                     Ghi chú
+                                                </td>
+                                                <td style="text-align: center;font-size: small;font-weight: bold;">
+                                                    Copy
                                                 </td>
                                                 <td style="text-align: center;font-size: small;font-weight: bold;">
                                                     Xóa
@@ -920,6 +816,12 @@
                                                 </td>
                                                 <td></td>
                                                 <td style="text-align: center; font-size: small">
+                                                    <button @click="copyCongnhat(item, index)"
+                                                        class="button is-small is-danger">
+                                                        Copy
+                                                    </button>
+                                                </td>
+                                                <td style="text-align: center; font-size: small">
                                                     <button @click="deleteRowCn(index)" class="button is-small is-danger">
                                                         Xóa
                                                     </button>
@@ -939,13 +841,8 @@
 
 <script>
 import Swal from "sweetalert2";
-import { ModelListSelect } from "vue-search-select";
-import "vue-search-select/dist/VueSearchSelect.css";
 export default {
     middleware: "auth",
-    components: {
-        ModelListSelect,
-    },
     data() {
         return {
             selected: [],
@@ -1012,7 +909,6 @@ export default {
             allluongcongdoan: [],
             allluongcongnhat: [],
             isActive: false,
-            yourCondition: true,
             tonhomid: [],
             phanxuong_cn: "",
             checkCongdoandathuchien: false,
@@ -1028,7 +924,6 @@ export default {
             sllosx: [],
 
             // check nhiều phân xưởng
-            showLuachon: false,
             options: ['Option 1', 'Option 2', 'Option 3', 'Option 4'],
             selectedOptions: [],
             Options_status: [],
@@ -1038,10 +933,16 @@ export default {
             multiSearch_masp: "",
             multiSearch_nhomsp: "",
 
-            // xử lý select mã sản phẩm
-            selected: '',
-            search: '',
+            // input suggest
+            suggestions: [],
+            suggestions_nhomsp: [],
             maspinlosanxuat: [],
+
+            // lọc talble lô sản xuất đang được sản xuất
+            sortDirection: 1,
+            sortKey: "malosx",
+            currentPage: 1,
+            itemsPerPage: 10,
 
             // lọc talble
             currentSort: 'mapx',
@@ -1049,6 +950,11 @@ export default {
             pageSize: 10,
             currentPage: 1,
             filter: '',
+
+            // nhóm nguyên công trong chi tiết lương
+            groups: {},
+            totals: {},
+
             items: [
                 {
                     _id_losx: "",
@@ -1140,7 +1046,7 @@ export default {
         this.getSolieuLSX_ALl_cht()
         this.deleteRow(0);
         this.deleteRowCn(0);
-        this.maspinlsx()
+        this.maspinlsx();
     },
 
     isFormValid() {
@@ -1148,15 +1054,9 @@ export default {
     },
 
     computed: {
-        isDisabled() {
-            // you can  check your form is filled or not here.
-            return this.yourCondition == true;
-        },
-
         totalhong() {
             return this.allluongcongdoan.reduce((sohong) => sohong += sohong, 0)
         },
-
         selectAll: {
             get: function () {
                 return this.sllosx
@@ -1175,49 +1075,67 @@ export default {
                 this.selected = selected;
             },
         },
-        filteredsllosx() {
-            return this.sllosx.filter(c => {
-                if (this.filter == '') return true;
-                return c.name.toLowerCase().indexOf(this.filter.toLowerCase()) >= 0;
-            })
-        },
-        sortedsllosx() {
-            return this.filteredsllosx.sort((a, b) => {
-                let modifier = 1;
-                if (this.currentSortDir === 'desc') modifier = -1;
-                if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
-                if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
+        // phân trang và sắp xếp
+        sortedTable() {
+            return this.sllosx.sort((a, b) => {
+                if (a[this.sortKey] < b[this.sortKey]) return -1 * this.sortDirection;
+                if (a[this.sortKey] > b[this.sortKey]) return 1 * this.sortDirection;
                 return 0;
-            }).filter((row, index) => {
-                let start = (this.currentPage - 1) * this.pageSize;
-                let end = this.currentPage * this.pageSize;
-                if (index >= start && index < end) return true;
             });
         },
-        filteredOptions() {
-            return this.maspinlosanxuat.filter(option =>
-                option.masp.toLowerCase().includes(this.search.toLowerCase())
-            );
-        }
+        pageCount() {
+            return Math.ceil(this.sortedTable.length / this.itemsPerPage);
+        },
+        startIndex() {
+            return (this.currentPage - 1) * this.itemsPerPage;
+        },
+        endIndex() {
+            return this.startIndex + this.itemsPerPage;
+        },
+        paginatedTable() {
+            return this.sortedTable.slice(this.startIndex, this.endIndex);
+        },
+        pages() {
+            const startPage = Math.max(1, this.currentPage - 2);
+            const endPage = Math.min(this.pageCount, this.currentPage + 2);
+
+            let pages = [];
+            for (let i = startPage; i <= endPage; i++) {
+                pages.push(i);
+            }
+
+            if (startPage > 1) {
+                pages.unshift("...");
+                pages.unshift(1);
+            }
+
+            if (endPage < this.pageCount) {
+                pages.push("...");
+                pages.push(this.pageCount);
+            }
+
+            return pages;
+        },
     },
 
     watch: {
-        filter() {
-            console.log('reset to p1 due to filter');
+        itemsPerPage() {
             this.currentPage = 1;
-        }
+        },
+    },
+
+    // dùng để bind dữ liệu ngày tháng vào input mang kiểu date (type="date" trong thẻ input)
+    filters: {
+        inputDateFilter: function (date) {
+            if (!date) {
+                return '';
+            }
+            date = new Date(date);
+            return date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
+        },
     },
 
     methods: {
-        onChangePage(pageOfitems) {
-            this.pageOfitems = pageOfitems
-        },
-        onChangePage_CD(pageOfitems_cd) {
-            this.pageOfitems_cd = pageOfitems_cd
-        },
-        onChangePage_CN(pageOfitems_cn) {
-            this.pageOfitems_cn = pageOfitems_cn
-        },
         currentDateTime() {
             const current = new Date();
             const date =
@@ -1237,32 +1155,112 @@ export default {
             this.form.excutedAt = date + " " + time
         },
 
-        codeAndNameAndDesc(item) {
-            return `${item.mapx} - ${item.mavt} - ${item.tenvt}`;
-        },
 
-        // search in table
-        sort: function (s) {
-            //if s == current sort, reverse
-            if (s === this.currentSort) {
-                this.currentSortDir = this.currentSortDir === 'asc' ? 'desc' : 'asc';
+        // suggest input mã sản phẩm
+        onInput() {
+            if (!this.multiSearch_masp) {
+                this.suggestions = [];
+                return;
             }
-            this.currentSort = s;
+            const MAX_SUGGESTIONS = 5; // Số lượng suggest tối đa
+            this.suggestions = this.maspinlosanxuat
+                .map((c) => c.masp)
+                .filter((masp) => masp.toLowerCase().includes(this.multiSearch_masp.toLowerCase()))
+                .map((masp) => masp.trim())
+                .slice(0, MAX_SUGGESTIONS);
         },
-        nextPage: function () {
-            if ((this.currentPage * this.pageSize) < this.filteredsllosx.length) this.currentPage++;
+        selectSuggestion(suggestion) {
+            this.multiSearch_masp = suggestion;
+            this.suggestions = [];
         },
-        prevPage: function () {
-            if (this.currentPage > 1) this.currentPage--;
+        // end suggest mã sản phẩm
+        // sắp xếp và phân trang
+        sortTable(key) {
+            if (key === this.sortKey) {
+                this.sortDirection *= -1;
+            } else {
+                this.sortDirection = 1;
+                this.sortKey = key;
+            }
+        },
+        changePage(pageNumber) {
+            if (pageNumber >= 1 && pageNumber <= this.pageCount) {
+                this.currentPage = pageNumber;
+            }
         },
 
-        async onChange_status_chot(e) {
-            var id = e.target.value;
-            var name = e.target.options[e.target.options.selectedIndex].text;
-            // console.log('id ', id);
-            console.log(id);
+        // calculateTotals() {
+        //     // console.log(this.allluongcongdoan)
+        //     const groups = {};
+        //     this.allluongcongdoan.forEach(item => {
+        //         if (!groups[item.nguyencong]) {
+        //             groups[item.nguyencong] = {
+        //                 dongia: item.dongia,
+        //                 sodat: item.sodat,
+        //                 sohong: item.sohong
+        //             };
+        //         } else {
+        //             groups[item.nguyencong].dongia +=  item.dongia;
+        //             groups[item.nguyencong].sodat += item.sodat;
+        //             groups[item.nguyencong].sohong += item.sohong;
+        //         }
+        //     });
 
+        //     const totals = {
+        //         dongia: 0,
+        //         sodat: 0,
+        //         sohong: 0,
+        //     };
+        //     this.items.forEach(item => {
+        //         totals.dongia += item.dongia;
+        //         totals.sodat += item.sodat;
+        //         totals.sohong += item.sohong;
+        //     });
+
+        //     this.groups = groups;
+        //     this.totals = totals;
+        // },
+
+        calculateTotals() {
+            const groups = {};
+            this.allluongcongdoan.forEach(item => {
+                const dongia = parseFloat(item.dongia);
+                const sodat = parseInt(item.sodat);
+                const sohong = parseInt(item.sohong);
+
+                if (!groups[item.nguyencong]) {
+                    groups[item.nguyencong] = {
+                        dongia: dongia,
+                        sodat: sodat,
+                        sohong: sohong
+                    };
+                } else {
+                    groups[item.nguyencong].dongia += dongia;
+                    groups[item.nguyencong].sodat += sodat;
+                    groups[item.nguyencong].sohong += sohong;
+                }
+            });
+
+            const totals = {
+                dongia: 0,
+                sodat: 0,
+                sohong: 0,
+            };
+            this.items.forEach(item => {
+                const dongia = parseFloat(item.dongia);
+                const sodat = parseInt(item.sodat);
+                const sohong = parseInt(item.sohong);
+
+                totals.dongia += dongia;
+                totals.sodat += sodat;
+                totals.sohong += sohong;
+            });
+
+            this.groups = groups;
+            this.totals = totals;
         },
+
+
 
         // tìm lọc số liệu lô sản xuất
         async getSolieuLSX() {
@@ -1290,6 +1288,12 @@ export default {
 
         // Show all Lo sản xuất vào lương
         async getSolieuLSX_ALl_cht() {
+            this.multiSearch_masp = ""
+            this.multiSearch_nhomsp = ""
+            this.Options_status = []
+            this.isOpen = false
+            this.isOpenst = false
+            this.selectedOptions = []
             this.sllosx = await this.$axios.$get(
                 `/api/ketoan/getallphieulocht`
             );
@@ -1392,6 +1396,66 @@ export default {
             // console.log(this.one_lokh[0].masp);
             // console.log(this.form.masp);
             this.checkMalosx = this.form.malosx.length;
+        },
+
+        copyCongdoan(data, index) {
+            // console.log(index)
+            // this.items.push({
+            //     _id_losx: data._id_losx,
+            //     kehoachnam: data.kehoachnam,
+            //     makh: data.makh,
+            //     makhpx: data.makhpx,
+            //     malosx: data.malosx,
+            //     mapx: data.mapx,
+            //     mapxchoncn: "",
+            //     malosx: data.malosx,
+            //     nguyencong: data.nguyencong,
+            //     may: 0,
+            //     congnhan: data.congnhan,
+            //     sodat: data.sodat,
+            //     sohong: data.sohong,
+            //     ghichu: data.ghichu,
+            //     masp: data.masp,
+            //     dongia: data.dongia,
+            //     tencn: data.tencn,
+            //     stopday_losx: data.stopday_losx,
+            //     status: data.status,
+            //     to_cn: data.to_cn,
+            //     ngaythuchien: data.ngaythuchien,
+            // });
+            data = { ...this.items[index] };
+            this.items.splice(index + 1, 0, data);
+            // console.log(this.items)
+        },
+
+        copyCongnhat(data, index) {
+            // console.log(index)
+            // this.items.push({
+            //     _id_losx: data._id_losx,
+            //     kehoachnam: data.kehoachnam,
+            //     makh: data.makh,
+            //     makhpx: data.makhpx,
+            //     malosx: data.malosx,
+            //     mapx: data.mapx,
+            //     mapxchoncn: "",
+            //     malosx: data.malosx,
+            //     nguyencong: data.nguyencong,
+            //     may: 0,
+            //     congnhan: data.congnhan,
+            //     sodat: data.sodat,
+            //     sohong: data.sohong,
+            //     ghichu: data.ghichu,
+            //     masp: data.masp,
+            //     dongia: data.dongia,
+            //     tencn: data.tencn,
+            //     stopday_losx: data.stopday_losx,
+            //     status: data.status,
+            //     to_cn: data.to_cn,
+            //     ngaythuchien: data.ngaythuchien,
+            // });
+            data = { ...this.items_cn[index] };
+            this.items_cn.splice(index + 1, 0, data);
+            // console.log(this.items)
         },
 
         // get all phân xưởng
@@ -1532,7 +1596,7 @@ export default {
                     ghichu: "",
                     stopday_losx: "",
                     status: 0,
-                    ngaythuchien: "",
+                    ngaythuchien: this.getinfoplsx.ngaybd,
                     nhomto_cnt: [
                         {
                             maxuong: "",
@@ -1552,7 +1616,7 @@ export default {
                         },
                     ],
                 });
-                // console.log(this.items)
+                console.log(this.items)
             }
 
             for (let i = 0; i < this.items.length; i++) {
@@ -1694,12 +1758,12 @@ export default {
             this.isOpenst = false
 
             const mapxList = this.selectedOptions
-            const masp = this.selected
+            const masp = this.multiSearch_masp
             const status = this.Options_status
 
 
             // chọn lọc full
-            if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.selected != "") {
+            if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp != "") {
                 this.sllosx = await this.$axios.$get(
                     `/api/lokehoach/filterfulldklosanxuat`, {
                     params: {
@@ -1711,8 +1775,8 @@ export default {
                 );
             }
             // chỉ có mã px
-            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.selected == "") {
-                this.lokehoachpx = await this.$axios.$get(
+            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_masp == "") {
+                this.sllosx = await this.$axios.$get(
                     `/api/lokehoach/filteronlymapxlosanxuat`, {
                     params: {
                         mapx: mapxList,
@@ -1721,8 +1785,8 @@ export default {
                 );
             }
             // chỉ có mã px và mã sp
-            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.selected != "") {
-                this.lokehoachpx = await this.$axios.$get(
+            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_masp != "") {
+                this.sllosx = await this.$axios.$get(
                     `/api/lokehoach/filteronlymapxandmasplosanxuat`, {
                     params: {
                         mapx: mapxList,
@@ -1732,8 +1796,8 @@ export default {
                 );
             }
             // chỉ có mã px và status
-            else if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.selected == "") {
-                this.lokehoachpx = await this.$axios.$get(
+            else if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp == "") {
+                this.sllosx = await this.$axios.$get(
                     `/api/lokehoach/filteronlymapxandstatuslosanxuat`, {
                     params: {
                         mapx: mapxList,
@@ -1743,8 +1807,8 @@ export default {
                 );
             }
             // lọc mỗi trạng thái
-            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.selected == "") {
-                this.lokehoachpx = await this.$axios.$get(
+            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.multiSearch_masp == "") {
+                this.sllosx = await this.$axios.$get(
                     `/api/lokehoach/filteronlystatuslosanxuat`, {
                     params: {
                         status: status
@@ -1754,8 +1818,8 @@ export default {
             }
 
             // lọc mỗi mã sản phẩm
-            else if (!this.selectedOptions.length && !this.Options_status.length && this.selected != "") {
-                this.lokehoachpx = await this.$axios.$get(
+            else if (!this.selectedOptions.length && !this.Options_status.length && this.multiSearch_masp != "") {
+                this.sllosx = await this.$axios.$get(
                     `/api/lokehoach/filteronlymasplosanxuat`, {
                     params: {
                         masp: masp
@@ -1765,8 +1829,8 @@ export default {
             }
 
             // lọc sản phẩm + trạng thái
-            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.selected != "") {
-                this.lokehoachpx = await this.$axios.$get(
+            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.multiSearch_masp != "") {
+                this.sllosx = await this.$axios.$get(
                     `/api/lokehoach/filteronlymaspandstatuslosx`, {
                     params: {
                         masp: masp,
@@ -2110,7 +2174,15 @@ export default {
 
         // Bấm vào mã lô sản xuất sẽ ra thông tin lương đã nhập
         async getInfoLosx(infoPhieulo) {
+            this.allluongcongdoan = await this.$axios.$get(
+                `/api/ketoan/getallluongcongdoaninlsx?_id_losx=${infoPhieulo._id}`
+            );
+            this.allluongcongnhat = await this.$axios.$get(
+                `/api/ketoan/getallluongcongnhatinlsx?makh=${this.form.makh}&makhpx=${this.form.makhpx}&malosx=${this.form.malosx}&mapx=${this.form.mapx}`
+            );
             // this.isActive = true;
+            this.calculateTotals();
+            // console.log(this.groups)
             this.iscongdoan = 1;
             this.getinfoplsx = infoPhieulo;
             // console.log(this.getinfoplsx);
@@ -2123,13 +2195,6 @@ export default {
             this.form.tensp = infoPhieulo.tensp.trim();
             this.form.mato = infoPhieulo.mato.trim();
             this.form.tento = infoPhieulo.tento.trim();
-
-            this.allluongcongdoan = await this.$axios.$get(
-                `/api/ketoan/getallluongcongdoaninlsx?_id_losx=${infoPhieulo._id}`
-            );
-            this.allluongcongnhat = await this.$axios.$get(
-                `/api/ketoan/getallluongcongnhatinlsx?makh=${this.form.makh}&makhpx=${this.form.makhpx}&malosx=${this.form.malosx}&mapx=${this.form.mapx}`
-            );
 
             // lấy mã nhóm lương dựa vào mã sp và mã phân xưởng
             if (
@@ -2864,6 +2929,53 @@ export default {
                 }
             });
         },
+
+        async updateStatus(data) {
+            try {
+                if (parseFloat(data.soluongkhsx) > 0) {
+                    data.status = 3
+                } else {
+                    data.status = 1
+                }
+                this.$axios.$patch(
+                    `/api/lokehoach/losanxuat/status/${data._id}`,
+                    data
+                );
+
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener("mouseenter", Swal.stopTimer);
+                        toast.addEventListener("mouseleave", Swal.resumeTimer);
+                    },
+                });
+                Toast.fire({
+                    icon: "success",
+                    title: "Đã cập nhật",
+                });
+            } catch (error) {
+                // console.log(error);
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener("mouseenter", Swal.stopTimer);
+                        toast.addEventListener("mouseleave", Swal.resumeTimer);
+                    },
+                });
+                Toast.fire({
+                    icon: "error",
+                    title: "Có lỗi xảy ra !!!",
+                });
+            }
+        }
     },
 };
 </script>
@@ -2875,8 +2987,8 @@ export default {
 }
 
 .table_wrapper {
-    display: block;
-    overflow-x: auto;
+    /* display: block;
+    overflow-x: auto; */
     white-space: nowrap;
 }
 
@@ -2934,6 +3046,10 @@ tr:hover {
     background-color: #f2f2f2;
     border: 1px solid #ddd;
     cursor: pointer;
+    height: 29px;
+    text-align: center;
+    color: #cb4b10;
+    font-weight: 700;
 }
 
 .arrow {
@@ -2966,9 +3082,57 @@ tr:hover {
     padding-top: 5px;
     padding-left: 5px;
     padding-bottom: 5px;
+    text-align: left;
 }
 
 .select-options.open {
     display: block;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 5px;
+    padding-bottom: 10px;
+}
+
+.pagination button {
+    margin: 0 5px;
+    padding: 5px 10px;
+    border: none;
+    background-color: #ccc;
+    color: #fff;
+    cursor: pointer;
+}
+
+.pagination button.active {
+    background-color: #cb4b10;
+}
+
+.autocomplete {
+    position: relative;
+}
+
+.autocomplete-items {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #d4d4d4;
+    border-bottom: none;
+    border-top: none;
+    z-index: 99;
+    top: 100%;
+    left: 0;
+    right: 0;
+}
+
+.autocomplete-item {
+    padding: 4px;
+    cursor: pointer;
+    border-bottom: 1px solid #d4d4d4;
+    font-size: small;
+}
+
+.autocomplete-item:hover {
+    background-color: #fffaeb;
 }
 </style>

@@ -7,9 +7,9 @@
                     <div class="column is-11">
                         <div class="control">
                             <span class="icon is-small is-left">
-                                <i style="color: #ff55acee" class="far fa-calendar-alt"></i>
+                                <i style="color: #ff55acee" class="fas fa-calendar-alt"></i>
                             </span>
-                            <span style="color: #3850b7; font-size: 17px; font-weight: bold">Danh sách lô sản
+                            <span style="color: #3850b7; font-size: 17px; font-weight: bold">Chọn lô kế hoạch để sản
                                 xuất</span>
                         </div>
                     </div>
@@ -25,16 +25,8 @@
 
                 <div>
                     <table class="table is-responsive is-bordered is-narrow is-fullwidth">
-                        <!-- <tr style="background-color: #eff5fb;">
-
-                            <td colspan="5"></td>
-                            <td colspan="2" style="font-size: small; font-weight: bold; text-align: right;"><span>Có: <span
-                                        style="color: red;">{{ lokehoachsx.length
-                                        }}</span> bản
-                                    ghi</span></td>
-                        </tr> -->
                         <tr style="background-color: #feecf0;">
-                            <td style="font-size: small; width: 15.15%;">
+                            <td style="font-size: small; width: 14%;">
                                 <div class="select-wrapper">
                                     <div class="select-header" @click="isOpen = !isOpen">
                                         {{ selectedOptions.length > 0 ? selectedOptions.join(', ') : 'Chọn Phân xưởng' }}
@@ -47,9 +39,20 @@
                                         </label>
                                     </div>
                                 </div>
-
                             </td>
-                            <td style="width: 12.65%;">
+                            <td style="width: 10.5%;">
+                                <div class="autocomplete">
+                                    <input class="input is-small is-info" type="text" v-model="multiSearch_nhomsp"
+                                        @input="onInput_nhomsp" placeholder="Chọn nhóm sản phẩm">
+                                    <div class="autocomplete-items" v-if="suggestions_nhomsp.length">
+                                        <div class="autocomplete-item" v-for="suggestion_nhomsp in suggestions_nhomsp"
+                                            @click="selectSuggestion_nhomsp(suggestion_nhomsp)">
+                                            {{ suggestion_nhomsp }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="width: 12%;">
                                 <div class="autocomplete">
                                     <input class="input is-small is-danger" type="text" v-model="multiSearch_masp"
                                         @input="onInput" placeholder="Chọn sản phẩm">
@@ -61,7 +64,7 @@
                                     </div>
                                 </div>
                             </td>
-                            <td style="font-size: small; width: 15.27%;">
+                            <td style="font-size: small; width: 10%;">
                                 <div class="select-wrapper">
                                     <div class="select-header" @click="isOpenst = !isOpenst">
                                         {{ Options_status.length > 0 ? Options_status.join(', ') : 'Trạng thái' }}
@@ -75,43 +78,33 @@
                                     </div>
                                 </div>
                             </td>
-                            <td style="width: 7.7%"><button @click="filterData"
-                                    class="button is-small is-fullwidth is-success">Lọc</button></td>
-                            <td style="width: 7.7%">
-                                <button @click="showAllLokhsx"
-                                    class="button is-small is-danger is-fullwidth">Refresh</button>
+                            <td style="width: 5%">
+                                <button @click="filterData" class="button is-small is-success">Lọc dữ liệu</button>
                             </td>
-                            <!-- <td style="width: 7.7%">
-                                <button @click="printphieu" class="button is-small is-info is-fullwidth">In phiếu
-                                    lô</button>
-                            </td> -->
-                            <td style="width: 7.7%">
-                                <button @click="exportExcel" class="button is-small is-info is-fullwidth">Xuất phiếu
-                                </button>
-                            </td>
-                            <td style="width: 10.15%; text-align: center;">
-                                <vue-excel-xlsx :data="lokehoachsx" :columns="columns" :file-name="'losanxuat'"
-                                    :file-type="'xlsx'" :sheet-name="'Lô sản xuất'">
-                                    Download Excel
-                                </vue-excel-xlsx>
-                            </td>
-                            <td style="font-size: small; width: 5.5%; font-weight: 600;">
+                            <td style="text-align: center; width: 5%"><button @click="showAllLokhpx"
+                                    class="button is-small is-danger">Refresh</button></td>
+                            <td style="font-size: small; width: 6%; font-weight: 600;">
                                 Số dòng
                             </td>
-                            <td style="font-size: small; width: 7.6%;">
+                            <td style="font-size: small; width: 5.45%;">
                                 <input class="input is-danger is-small" type="number" id="itemsPerPage"
                                     v-model.number="itemsPerPage" min="1" max="10" />
                             </td>
-                            <td>
-                            </td>
+                            <td style="text-align: center; width: 12.8%"><vue-excel-xlsx :data="lokehoachpx"
+                                    :columns="columns" :file-name="'lokehoachphanxuong'" :file-type="'xlsx'"
+                                    :sheet-name="'Lô kế hoạch phân xưởng'">
+                                    Download Excel
+                                </vue-excel-xlsx></td>
+                            <td style="font-size: small; font-weight: bold; text-align: right;"><span>Có: <span
+                                        style="color: red;">{{
+                                            lokehoachpx.length }}</span> bản
+                                    ghi</span></td>
                         </tr>
                     </table>
                 </div>
                 <div class="table_wrapper">
                     <table class="table is-responsive is-bordered is-narrow is-fullwidth">
                         <tr style="background-color: #f4f2f8">
-                            <td style="font-size: small; font-weight: bold; text-align: center;"><input type="checkbox"
-                                    v-model="selectAll" /></td>
                             <td style="font-size: small; text-align: center; font-weight: 600; width: 3%">STT</td>
                             <td @click="sortTable('makh')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 5%">Mã lô nhà máy
@@ -123,39 +116,39 @@
                                 style="font-size: small; text-align: center; font-weight: 600; width: 4%">Mã kế hoạch
                                 PX
                             </td>
-                            <td @click="sortTable('malosx')"
-                                style="font-size: small; text-align: center; font-weight: 600; width: 7%">Mã lô sản xuất
+
+                            <td @click="sortTable('nhomsp')"
+                                style="font-size: small; text-align: center; font-weight: 600; width: 7%">Nhóm SP
                             </td>
-                            <td @click="sortTable('masp')"
+                            <td @click="sortTable('maspkhpx')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 7%">Mã sản phẩm
                             </td>
-                            <td @click="sortTable('ngaybd')"
+                            <td @click="sortTable('ngaybdkhpx')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 8%;">Ngày bắt đầu
                             </td>
-                            <td @click="sortTable('ngaykt')"
+                            <td @click="sortTable('ngayktkhpx')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 8%;">Ngày kết thúc
                             </td>
-                            <td @click="sortTable('soluonglsx')"
+                            <td @click="sortTable('soluongkhpx')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Số lượng
                             </td>
-                            <td @click="sortTable('soluongkhsx')"
-                                style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Cập nhật nhanh
+                            <td @click="sortTable('ttqt')"
+                                style="font-size: small; text-align: center; font-weight: 600; width: 7%;">TTQT
                             </td>
                             <td @click="sortTable('status')"
-                                style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Trạng thái
+                                style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Trạng thái
                             </td>
-                            <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Chọn trạng thái
+                            <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Chọn Trạng thái
                             </td>
-                            <!-- <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Số lượng HT
-                            </td> -->
-                            <td style="font-size: small; text-align: center; font-weight: 600;">Cập nhật
+                            <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Số lượng HT
                             </td>
-                            <td></td>
+                            <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Ngày BDTT
+                            </td>
+                            <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Ngày KTTT
+                            </td>
+                            <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Ghi dữ liệu</td>
                         </tr>
                         <tr v-for="(item, index) in paginatedTable" :key="index + 'llllkiq'">
-                            <td style="text-align: center; width: 1%;">
-                                <input v-model="selected_print" :value="item" type="checkbox" />
-                            </td>
                             <td style="font-size: small; text-align: center; background-color: #effaf5;">{{ index + 1 }}
                             </td>
                             <td style="font-size: small;">{{ item.makh }}
@@ -164,34 +157,33 @@
                             </td>
                             <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
                                 item.makhpx
-                            }}</td>
-                            <td style="font-size: small; background-color: #eff5fb; text-align: center; font-weight:600;">
-                                {{
-                                    item.malosx
-                                }}</td>
-                            <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
-                                item.masp
-                            }}</td>
-                            <!-- <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
-                                item.ngaybdkhpx | formatDate
-                            }} -->
-                            <td style="background-color: #fffaeb;"><input class="input is-small" type="date"
-                                    v-bind:value="item.ngaybd | inputDateFilter"
-                                    v-on:input="item.ngaybd = getDate($event.target.value)">
+                            }}
                             </td>
-                            <!-- <td style="font-size: small; text-align: center; background-color: #fffaeb;">{{
+                            <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
+                                item.nhomsp
+                            }}</td>
+                            <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
+                                item.maspkhpx
+                            }}</td>
+                            <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
+                                item.ngaybdkhpx | formatDate
+                            }}</td>
+                            <!-- <td style="background-color: #fffaeb;"><input class="input is-small" type="date"
+                                    v-bind:value="item.ngaybdkhpx | inputDateFilter"
+                                    v-on:input="item.ngaybdkhpx = getDate($event.target.value)">
+                            </td> -->
+                            <td style="font-size: small; text-align: center; background-color: #fffaeb;">{{
                                 item.ngayktkhpx | formatDate
-                            }}</td> -->
-                            <td style="background-color: #fffaeb;"><input class="input is-small" type="date"
-                                    v-bind:value="item.ngaykt | inputDateFilter"
-                                    v-on:input="item.ngaykt = getDate($event.target.value)"></td>
+                            }}</td>
+                            <!-- <td style="background-color: #fffaeb;"><input class="input is-small" type="date"
+                                    v-bind:value="item.ngayktkhpx | inputDateFilter"
+                                    v-on:input="item.ngayktkhpx = getDate($event.target.value)"></td> -->
                             <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
-                                item.soluonglsx | formatNumber
+                                item.soluongkhpx | formatNumber
                             }}</td>
                             <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
-                                item.soluongkhsx | formatNumber
+                                item.ttqt
                             }}</td>
-
                             <template>
                                 <td v-if="item.status == 1" style="font-size: small; text-align: center; "><span
                                         style="color: white; font-weight: bold; background-color: red; padding-left: 7px; padding-right: 7px;">DK</span>
@@ -210,7 +202,7 @@
 
                             <td style="font-size: small; width: 10%;">
                                 <div class="select is-small is-fullwidth">
-                                    <select id="" @change="onChange_status($event)" v-model="item.status">
+                                    <select id="" @change="onChange_status($event, item)" v-model="item.status">
                                         <option value="3">HT</option>
                                         <option value="2">SX</option>
                                         <option value="1">DK</option>
@@ -218,10 +210,12 @@
                                     </select>
                                 </div>
                             </td>
-                            <!-- <td><input class="input is-small" type="text" v-model="item.soluongkhsx"></td> -->
-                            <td style="width: 5%"><button @click="onUpdateLosx(item)"
-                                    class="button is-small is-success is-fullwidth">Cập nhật</button></td>
-                            <td></td>
+                            <td style="font-size: small; text-align: center; background-color: #effaf5;"></td>
+                            <td style="font-size: small; text-align: center; background-color: #effaf5;"></td>
+                            <td style="font-size: small; text-align: center; background-color: #effaf5;"></td>
+                            <td><button @click="onUpdate_lokhpx(item)"
+                                    class="button is-small is-success is-fullwidth">Ghi</button>
+                            </td>
                         </tr>
                     </table>
                     <div class="pagination"> <button class="button is-small is-success" @click="changePage(1)"
@@ -235,7 +229,6 @@
                         <button class="button is-small is-success" @click="changePage(pageCount)"
                             :disabled="currentPage === pageCount">Cuối</button>
                     </div>
-
                 </div>
             </div>
         </div>
@@ -244,29 +237,18 @@
 
 <script>
 import Swal from "sweetalert2";
-import jsPDF from "jspdf";
-import "jspdf-autotable";
-import "~/assets/font/OpenSans-Light-normal";
-import "~/assets/font/OpenSans-SemiBold-normal";
-import XLSX from 'xlsx'
 export default {
     middleware: "auth",
     data() {
         return {
-            // in ấn lô sx
-            selected_print: [],
             // dữ liệu 
-            lokehoachsx: [],
+            lokehoachpx: [],
             phanxuong: [],
+            showLophanxuong: [], // khi bấm vào lô kế hoạch phân xưởng nào đó sẽ lưu thông tin lô đó vào biến này
+            losanxuat: [], // lưu lô sản xuất
 
-            // các biến tìm kiếm
-            search_maxuong: "",
-            search_tenxuong: "",
-            search_timestart: "",
-            search_timeend: "",
-
-            // gán biến status
-            status: 0,
+            search_maxuong_multi: "",
+            search_tenxuong_multi: "",
 
             // lọc talble
             sortDirection: 1,
@@ -274,7 +256,10 @@ export default {
             currentPage: 1,
             itemsPerPage: 10,
 
-            // check nhiều phân xưởng
+            // gán biến status
+            status: 0,
+
+            // select custom
             selectedOptions: [],
             Options_status: [],
             isOpen: false,
@@ -283,40 +268,66 @@ export default {
             multiSearch_masp: "",
             multiSearch_nhomsp: "",
 
-            // input suggest
+            // suggest input nhóm sản phẩm và mã sản phẩm
             suggestions: [],
             suggestions_nhomsp: [],
-            maspinlosanxuat: [],
+            maspinlokehoach: [],
+            nhomspinlokehoach: [],
 
-            reportData: [
-                // ['Tháng', 'Doanh thu', 'Lợi nhuận'],
-                ['1', 1000000, 500000],
-                ['2', 1500000, 700000],
-                ['3', 2000000, 900000]
+            // hiển thị đăng ký lô sản xuất
+            checkViewRegLsx: false,
+            isaddlosx: 0,
+            // items lô sản xuất
+            items: [
+                {
+                    kehoachnam: "",
+                    makh: "",
+                    makhpx: "",
+                    malosx: "",
+                    mapx: "",
+                    tenpx: "",
+                    mato: "",
+                    tento: "",
+                    masp: "",
+                    tensp: "",
+                    soluong: "",
+                    nhomluong: "",
+                    soluonglsx: "",
+                    ngaybd: "",
+                    ngaykt: "",
+                    tongdat: "",
+                    tonghong: "",
+                    ghichu: "",
+                    createdAt: null,
+                    createdBy: "",
+                    status: 0,
+                    datinhluong: 0,
+                    stopday_losx: "",
+                    nhomto: [
+                        {
+                            maxuong: "",
+                            tenxuong: "",
+                            tento: "",
+                            mato: "",
+                        },
+                    ],
+                },
             ],
+            tonhom: [], // lưu lại tổ nhóm
+            nhomluong: [], // lưu nhóm lương
 
-            // xuất execl
+            // xuất execl lô nhà máy
             columns: [
                 {
                     label: "Mã lô nhà máy",
                     field: "makh",
-                    dataFormat: this.trimData
-                },
-                {
-                    label: "Mã kế hoạch phân xưởng",
-                    field: "makhpx",
-                    dataFormat: this.trimData
-                },
-                {
-                    label: "Mã lô sản xuất",
-                    field: "malosx",
+                    /* dataFormat: this.priceFormat */
                     dataFormat: this.trimData
                 },
                 {
                     label: "Mã phân xưởng",
                     field: "mapx",
                     dataFormat: this.trimData
-                    /* dataFormat: this.priceFormat */
                 },
                 {
                     label: "Tên phân xưởng",
@@ -324,82 +335,90 @@ export default {
                     dataFormat: this.trimData
                 },
                 {
-                    label: "Mã tổ",
-                    field: "mato",
+                    label: "Số lượng lô nhà máy",
+                    field: "soluonglonm",
                     dataFormat: this.trimData
                 },
                 {
-                    label: "Tên tổ",
-                    field: "tento",
-                    dataFormat: this.trimData
+                    label: "Ngày bắt đầu lô nhà máy",
+                    field: "ngaybdlonm",
+                    dataFormat: this.prefixformatDate
                 },
                 {
-                    label: "Mã sản phẩm",
-                    field: "masp",
-                    dataFormat: this.trimData
-                },
-                {
-                    label: "Tên sản phẩm",
-                    field: "tensp",
-                    dataFormat: this.trimData
-                },
-                {
-                    label: "Số lượng",
-                    field: "soluonglsx",
+                    label: "Ngày kết thúc lô nhà máy",
+                    field: "ngayktlonm",
                     dataFormat: this.trimData
                 },
 
                 {
-                    label: "Ngày bắt đầu",
-                    field: "ngaybd",
+                    label: "Mã sản phẩm lô nhà máy (Mã thành phẩm)",
+                    field: "masplonm",
+                    dataFormat: this.trimData
+                },
+                {
+                    label: "Tên sản phẩm lô nhà máy (Tên thành phẩm)",
+                    field: "tensplonm",
+                    dataFormat: this.trimData
+                },
+                {
+                    label: "Mã kế hoạch PX",
+                    field: "makhpx",
+                    dataFormat: this.trimData
+                },
+                {
+                    label: "Mã sản phẩm (KHPX)",
+                    field: "maspkhpx",
+                    dataFormat: this.trimData
+                },
+                {
+                    label: "Tên sản phẩm (KHPX)",
+                    field: "tenspkhpx",
+                    dataFormat: this.trimData
+                },
+                {
+                    label: "Số lượng KHPX",
+                    field: "soluongkhpx",
+                    dataFormat: this.trimData
+                },
+                {
+                    label: "Ngày bắt đầu (KHPX)",
+                    field: "ngaybdkhpx",
                     dataFormat: this.prefixformatDate
                 },
                 {
-                    label: "Ngày kết thúc",
-                    field: "ngaykt",
+                    label: "Ngày kết thúc (KHPX)",
+                    field: "ngayktkhpx",
                     dataFormat: this.prefixformatDate
                 },
                 {
-                    label: "Đã tính lương",
-                    field: "datinhluong",
-                },
-                {
-                    label: "Trạng thái",
+                    label: "status",
                     field: "status",
+                    // dataFormat: this.prefixformatDate
+                },
+                {
+                    label: "Thứ tự QT",
+                    field: "ttqt",
+                },
+                {
+                    label: "Nhóm sản phẩm",
+                    field: "nhomsp",
+                    dataFormat: this.trimData
                 },
             ],
         };
     },
 
     mounted() {
-        this.showAllLokhsx()
+        this.showAllLokhpx()
         this.showAllPx()
-        this.maspinlsx()
+        this.maspinlkh();
+        this.nhomspinlkh()
     },
 
     computed: {
-        selectAll: {
-            get: function () {
-                return this.lokehoachsx
-                    ? this.selected_print.length == this.lokehoachsx.length
-                    : false;
-            },
-            set: function (value) {
-                var selected_print = [];
-
-                if (value) {
-                    this.lokehoachsx.forEach(function (nv) {
-                        selected_print.push(nv);
-                    });
-                }
-
-                this.selected_print = selected_print;
-            },
-        },
-
         // phân trang và sắp xếp
         sortedTable() {
-            return this.lokehoachsx.sort((a, b) => {
+            return this.lokehoachpx.sort((a, b) => {
                 if (a[this.sortKey] < b[this.sortKey]) return -1 * this.sortDirection;
                 if (a[this.sortKey] > b[this.sortKey]) return 1 * this.sortDirection;
                 return 0;
@@ -440,12 +459,6 @@ export default {
         },
     },
 
-    watch: {
-        itemsPerPage() {
-            this.currentPage = 1;
-        },
-    },
-
 
     // bind v-model input type date
     filters: {
@@ -455,6 +468,12 @@ export default {
             }
             date = new Date(date);
             return date.getFullYear() + '-' + ('0' + (date.getMonth() + 1)).slice(-2) + '-' + ('0' + date.getDate()).slice(-2);
+        },
+    },
+
+    watch: {
+        itemsPerPage() {
+            this.currentPage = 1;
         },
     },
 
@@ -469,7 +488,7 @@ export default {
                 return;
             }
             const MAX_SUGGESTIONS = 5; // Số lượng suggest tối đa
-            this.suggestions = this.maspinlosanxuat
+            this.suggestions = this.maspinlokehoach
                 .map((c) => c.masp)
                 .filter((masp) => masp.toLowerCase().includes(this.multiSearch_masp.toLowerCase()))
                 .map((masp) => masp.trim())
@@ -480,6 +499,24 @@ export default {
             this.suggestions = [];
         },
         // end suggest mã sản phẩm
+        // suggest input nhóm sản phẩm
+        onInput_nhomsp() {
+            if (!this.multiSearch_nhomsp) {
+                this.suggestions_nhomsp = [];
+                return;
+            }
+            const MAX_SUGGESTIONS = 10; // Số lượng suggest tối đa
+            this.suggestions_nhomsp = this.nhomspinlokehoach
+                .map((c) => c.nhomsp)
+                .filter((nhomsp) => nhomsp.toLowerCase().includes(this.multiSearch_nhomsp.toLowerCase()))
+                .map((nhomsp) => nhomsp.trim())
+                .slice(0, MAX_SUGGESTIONS);
+        },
+        selectSuggestion_nhomsp(suggestion_nhomsp) {
+            this.multiSearch_nhomsp = suggestion_nhomsp;
+            this.suggestions_nhomsp = [];
+        },
+        // end suggest nhóm sản phẩm
         // sắp xếp và phân trang
         sortTable(key) {
             if (key === this.sortKey) {
@@ -506,7 +543,6 @@ export default {
             value = new Date(value);
             return value.getFullYear() + '-' + ('0' + (value.getMonth() + 1)).slice(-2) + '-' + ('0' + value.getDate()).slice(-2);
         },
-        // các hàm phục vụ tính toán
         // hàm bind v-model input type date
         getDate(value) {
             if (!value) {
@@ -514,168 +550,40 @@ export default {
             }
             return new Date(value);
         },
-        // hàm xuất execl
-        // exportExcel() {
-        //     const worksheet = XLSX.utils.aoa_to_sheet(this.reportData)
-        //     const wb = XLSX.utils.book_new()
-        //     XLSX.utils.book_append_sheet(wb, worksheet, 'Báo cáo doanh thu')
-        //     XLSX.writeFile(wb, 'bao-cao-doanh-thu.xlsx')
-        // },
-        exportExcel() {
-            const selectedColumns = this.selected_print.map(item => ({
-                masp: item.masp.trim(),
-                soluonglsx: item.soluonglsx.trim()
-            }))
-            const columnNames = [
-                { header: "Sản phẩm", key: "masp" },
-                { header: "Số lượng", key: "soluonglsx" },
-                { header: "Ca 1 / Số lượng CN", key: "" },
-                { header: "Ca 2 / Số lượng CN", key: "" },
-                { header: "Báo cáo hoàn thành", key: "" },
-                { header: "Ghi chú", key: "" },
-            ];
-            const data = selectedColumns.map(item => {
-                const row = {};
-                columnNames.forEach(column => {
-                    row[column.header] = item[column.key];
-                });
-                return row;
-            });
-
-            const worksheet = XLSX.utils.json_to_sheet(data);
-            const workbook = { Sheets: { 'data': worksheet }, SheetNames: ['data'] };
-            const excelBuffer = XLSX.write(workbook, { bookType: 'xlsx', type: 'array' });
-            const fileName = 'data.xlsx';
-            const blob = new Blob([excelBuffer], { type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8' });
-            const url = URL.createObjectURL(blob);
-            const link = document.createElement('a');
-            link.href = url;
-            link.setAttribute('download', fileName);
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
-        },
 
         // --------------------------------------------------------------------------------------
         // 2: Các hàm lấy dữ liệu từ server qua API
-        // lấy danh sách tất cả các lô sản xuất
-        async showAllLokhsx() {
-            this.lokehoachsx = await this.$axios.$get(
-                `/api/ketoan/getallphieulo`
+        // Lấy danh sách tất cả các lô kế hoạch phân xưởng sắp xếp theo phân xưởng
+        async showAllLokhpx() {
+            this.lokehoachpx = await this.$axios.$get(
+                `/api/lokehoach/getallkehoachphanxuong`
             );
             this.multiSearch_masp = ""
+            this.multiSearch_nhomsp = ""
             this.Options_status = []
+            this.selectedOptions = []
             this.isOpen = false
             this.isOpenst = false
-            this.selectedOptions = []
+
         },
-        // lấy danh sách phân xưởng 
+        // lấy thông tin phân xưởng 
         async showAllPx() {
             this.phanxuong = await this.$axios.$get(`/api/phongban/allphanxuong`);
         },
-        // lấy mã sản phẩm trong lô sản xuất
-        async maspinlsx() {
-            this.maspinlosanxuat = await this.$axios.$get('/api/lokehoach/hmsanphamlosx')
-            // console.log(this.maspinlosanxuat)
+        // lấy mã sản phẩm và nhóm sản phẩm trong lô kế hoạch phân xưởng
+        async maspinlkh() {
+            this.maspinlokehoach = await this.$axios.$get('/api/lokehoach/hmsanphamlokhpx')
         },
-        // Chế độ lọc multi
-        async filterData() {
-            // console.log(this.selectedOptions)
-            // console.log(this.Options_status)
-            // console.log(this.selected)
-            this.isOpen = false
-            this.isOpenst = false
-
-            const mapxList = this.selectedOptions
-            const masp = this.multiSearch_masp
-            const status = this.Options_status
-
-
-            // chọn lọc full
-            if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp != "") {
-                this.lokehoachsx = await this.$axios.$get(
-                    `/api/lokehoach/filterfulldklosanxuat`, {
-                    params: {
-                        mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
-                        masp: masp,
-                        status: status,
-                    },
-                }
-                );
-                console.log(this.lokehoachsx)
-            }
-            // chỉ có mã px
-            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_masp == "") {
-                this.lokehoachsx = await this.$axios.$get(
-                    `/api/lokehoach/filteronlymapxlosanxuat`, {
-                    params: {
-                        mapx: mapxList,
-                    },
-                }
-                );
-            }
-            // chỉ có mã px và mã sp
-            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_masp != "") {
-                this.lokehoachsx = await this.$axios.$get(
-                    `/api/lokehoach/filteronlymapxandmasplosanxuat`, {
-                    params: {
-                        mapx: mapxList,
-                        masp: masp
-                    },
-                }
-                );
-            }
-            // chỉ có mã px và status
-            else if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp == "") {
-                this.lokehoachsx = await this.$axios.$get(
-                    `/api/lokehoach/filteronlymapxandstatuslosanxuat`, {
-                    params: {
-                        mapx: mapxList,
-                        status: status
-                    },
-                }
-                );
-            }
-            // lọc mỗi trạng thái
-            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.multiSearch_masp == "") {
-                this.lokehoachsx = await this.$axios.$get(
-                    `/api/lokehoach/filteronlystatuslosanxuat`, {
-                    params: {
-                        status: status
-                    },
-                }
-                );
-            }
-
-            // lọc mỗi mã sản phẩm
-            else if (!this.selectedOptions.length && !this.Options_status.length && this.multiSearch_masp != "") {
-                this.lokehoachsx = await this.$axios.$get(
-                    `/api/lokehoach/filteronlymasplosanxuat`, {
-                    params: {
-                        masp: masp
-                    },
-                }
-                );
-            }
-
-            // lọc mã sp + status
-            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.multiSearch_masp != "") {
-                this.lokehoachsx = await this.$axios.$get(
-                    `/api/lokehoach/filteronlymaspandstatuslosx`, {
-                    params: {
-                        masp: masp,
-                        status: status
-                    },
-                }
-                );
-            }
-
+        async nhomspinlkh() {
+            this.nhomspinlokehoach = await this.$axios.$get('/api/lokehoach/nhomsanphamlokhpx')
+            // console.log(this.nhomspinlokehoach)
         },
 
         // --------------------------------------------------------------------------------------
         // 3: Các hàm chức năng
-        // thay đổi status
-        onChange_status(e) {
+        // Đổi trạng thái cho lô kế hoạch phân xưởng (sau này yêu cầu đổi toàn bộ lô cùng mã hiệu)
+        onChange_status(e, data) {
+            // console.log(data)
             // 0: chưa đk; 1: dự kiến đăng ký (DK); 2: sản xuất (SX); 3: hoàn thành (HT)
             var id = e.target.value;
             // var name = e.target.options[e.target.options.selectedIndex].text;
@@ -686,121 +594,177 @@ export default {
             // console.log(dt)
             this.status = dt
         },
-        // in PDF
-        async printphieu() {
-            // console.log(this.selected_print)
-            const columns = [
-                { title: "Mã lô sản xuất", dataKey: "malosx" },
-                { title: "Tên Sản phẩm", dataKey: "masp" },
-                { title: "Kế hoạch", dataKey: "soluonglsx" },
-                { title: "Ca1/Số lượng", },
-                { title: "Ca2/Số lượng", },
-                { title: "Báo cáo hoàn thành", },
-                { title: "Ghi chú", dataKey: "....." },
-            ];
+        // lọc nhiều tiêu chí
+        async filterData() {
+            // console.log(this.selectedOptions)
+            // console.log(this.Options_status)
+            this.isOpen = false
+            this.isOpenst = false
 
-            const columnWidths = [10, 10, 10, 10, 10, 10, 40]; // định dạng chiều rộng của các cột
+            const mapxList = this.selectedOptions
+            const masp = this.multiSearch_masp
+            const status = this.Options_status
+            const nhomsp = this.multiSearch_nhomsp
 
-            const rows = this.selected_print;
+            // chọn lọc full
+            if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp != "" && this.multiSearch_nhomsp != '') {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filterfulldk`, {
+                    params: {
+                        mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
+                        masp: masp,
+                        status: status,
+                        nhomsp: nhomsp
+                    },
+                }
+                );
+            }
+            // chỉ có mã px
+            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_masp == "" && this.multiSearch_nhomsp == '') {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlymapx`, {
+                    params: {
+                        mapx: mapxList,
+                    },
+                }
+                );
+            }
+            // chỉ có mã px và mã sp
+            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_masp != "" && this.multiSearch_nhomsp == '') {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlymapxandmasp`, {
+                    params: {
+                        mapx: mapxList,
+                        masp: masp
+                    },
+                }
+                );
+            }
+            // chỉ có mã px và nhomsp
+            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_masp == "" && this.multiSearch_nhomsp != '') {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlymapxandnhomsp`, {
+                    params: {
+                        mapx: mapxList,
+                        nhomsp: nhomsp
+                    },
+                }
+                );
+            }
+            // chỉ có mã px và status
+            else if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp == "" && this.multiSearch_nhomsp == '') {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlymapxandstatus`, {
+                    params: {
+                        mapx: mapxList,
+                        status: status
+                    },
+                }
+                );
+            }
+            // lọc mỗi trạng thái
+            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.multiSearch_masp == "" && this.multiSearch_nhomsp == '') {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlystatus`, {
+                    params: {
+                        status: status
+                    },
+                }
+                );
+            }
 
-            const doc = new jsPDF({
-                orientation: "l",
-                format: "a4",
-            });
+            // lọc mỗi mã sản phẩm
+            else if (!this.selectedOptions.length && !this.Options_status.length && this.multiSearch_masp != "" && this.multiSearch_nhomsp == '') {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlymasp`, {
+                    params: {
+                        masp: masp
+                    },
+                }
+                );
+            }
 
-            doc.addFont("OpenSans-Light-normal.ttf", "OpenSans-Light", "normal");
-            doc.setFont("OpenSans-Light");
-            doc.setFontSize(12);
-            doc.setFont("OpenSans-SemiBold");
-            doc.setFontSize(13);
-            doc.text("TOÀN LỰC JSC", 17, 19);
-            doc.addFont("OpenSans-Light-normal.ttf", "OpenSans-Light", "normal");
-            doc.setFont("OpenSans-Light");
-            doc.setFontSize(12);
-            doc.text("CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM", 200, 13);
-            doc.text("Độc lập - Tự do - Hạnh phúc", 212, 19);
+            // lọc sản phẩm + trạng thái
+            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.multiSearch_masp != "" && this.multiSearch_nhomsp == '') {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlymaspandstatus`, {
+                    params: {
+                        masp: masp,
+                        status: status
+                    },
+                }
+                );
+            }
 
-            doc.addFont(
-                "OpenSans-SemiBold-normal.ttf",
-                "OpenSans-SemiBold",
-                "normal"
-            );
-            doc.setFont("OpenSans-SemiBold");
-            doc.setFontSize(14);
-            doc.text(
-                "BẢNG KẾ HOẠCH SẢN XUẤT THEO NGÀY",
-                100,
-                32
-            );
-            doc.setFontSize(10);
-            doc.text(
-                "Phân xưởng: ..................................",
-                15,
-                45
-            );
-            doc.setFontSize(10);
-            doc.text(
-                "Ngày: ........................................",
-                15,
-                55
-            );
-            doc.setFontSize(10);
+            // lọc mỗi nhóm px
+            else if (!this.selectedOptions.length && !this.Options_status.length && this.multiSearch_masp == "" && this.multiSearch_nhomsp != '') {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlynhomsp`, {
+                    params: {
+                        nhomsp: nhomsp,
+                    },
+                }
+                );
+            }
 
-            doc.autoTable(columns, rows, {
-                startY: doc.lastAutoTable + 65, // Giúp cho trang 2 không bị lặp lại phần add text phía trên
-                styles: { font: "OpenSans-Light" | "Unicode" },
-                theme: "grid",
-                //margin: { top: 110 }, không dùng margin vì sẽ apply all page, như vậy không đúng
-                headerStyles: {
-                    fillColor: [246, 248, 255],
-                    textColor: 20,
-                    fontStyle: "bold", // normal, bold, italic, bolditalic
-                    lineColor: 200,
-                    lineWidth: 0.1,
-                    halign: "center", // left, center, right
-                    valign: "top", // top, middle, bottom
-                },
-                // Set the widths of the columns
-                setWidths: [200],
-                // drawHeaderCell: function (cell, data) {
-                //     if (cell.raw === "ID") {
-                //         //paint.Name header red
-                //         cell.styles.fontSize = 15;
-                //         cell.styles.textColor = [255, 0, 0];
-                //     } else {
-                //         cell.styles.textColor = 255;
-                //         cell.styles.fontSize = 10;
-                //     }
-                // },
-                // willDrawCell: (data) => {
-                //     if (
-                //         data.column.dataKey === "soluonglsx"
-                //     ) {
-                //         data.cell.styles.halign = "center";
-                //     }
-                // },
+            // lọc mỗi nhóm sp và sản phẩm
+            else if (!this.selectedOptions.length && !this.Options_status.length && this.multiSearch_masp != "" && this.multiSearch_nhomsp != '') {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlynhomspandmasp`, {
+                    params: {
+                        nhomsp: nhomsp,
+                        masp: masp
+                    },
+                }
+                );
+            }
 
-            });
-            doc.output("dataurlnewwindow");
-            this.isPdf = false;
+            // lọc mỗi nhóm sp và trạng thái
+            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.multiSearch_masp == "" && this.multiSearch_nhomsp != '') {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlynhomspandstatus`, {
+                    params: {
+                        nhomsp: nhomsp,
+                        status: status
+                    },
+                }
+                );
+            }
+
+            // lọc xưởng, nhóm sp và status
+            else if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp == "" && this.multiSearch_nhomsp != '') {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlypxandnhomspandstatus`, {
+                    params: {
+                        nhomsp: nhomsp,
+                        status: status,
+                        mapx: mapxList,
+                    },
+                }
+                );
+            }
+
         },
 
         // --------------------------------------------------------------------------------------
         // 4: Các hàm CRUD
-        // update status, ngay bd, ngay kt của 1 lô sản xuất
-        async onUpdateLosx(data) {
+        // update lô kế hoạch phân xưởng
+        async onUpdate_lokhpx(data) {
             // console.log(data)
+            // Tiến hành update cho table lokehoach - tức là lô Nhà máy
+            // Nếu bất kỳ phân xưởng nào trong lokehoachphanxuong có phát sinh SX hoặc ĐK thì tức là mã lô nhà máy đó thành đăng ký 
+            // status = 1 (DK)
+            // update theo mã lô nhà máy và _id
+
             try {
-                // if (parseFloat(data.soluongkhsx) > 0) {
-                //     data.status = 2
-                // } else {
-                //     data.status = 1
-                // }
+                this.$axios.$get(
+                    `/api/lokehoach/updatestatuslonhamay?status=${data.status}&makhpx=${data.makh}`
+                );
+                // data.status = this.status
                 this.$axios.$patch(
-                    `/api/lokehoach/losanxuat/status/${data._id}`,
+                    `/api/lokehoach/updatelokehoachpxatdangkylodesanxuat/${data._id}`,
                     data
                 );
-
                 const Toast = Swal.mixin({
                     toast: true,
                     position: "top-end",
@@ -842,8 +806,6 @@ export default {
 
 <style scoped>
 .table_wrapper {
-    /* display: block; */
-    /* overflow-x: auto; */
     white-space: nowrap;
 }
 

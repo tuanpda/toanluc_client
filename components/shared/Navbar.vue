@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- START NAV -->
-    <nav class="navbar" role="navigation" aria-label="main navigation">
+    <nav class="navbar is-transparent is-light" role="navigation" aria-label="main navigation">
       <div class="container">
         <div class="navbar-brand">
           <a class="navbar-item" href="/">
@@ -24,7 +24,7 @@
                   </span>
                   &ensp; Danh mục
                 </a>
-                <div class="navbar-dropdown">
+                <div class="navbar-dropdown is-boxed">
                   <nav-link to="/danhmuc/phongban/" class="navbar-item">
                     <span style="color: #3850b7" class="icon is-small is-left">
                       <i class="fas fa-fax"></i>
@@ -86,7 +86,7 @@
                   </span>
                   &ensp; Quản lý Lô phiếu
                 </a>
-                <div class="navbar-dropdown">
+                <div class="navbar-dropdown is-boxed">
                   <nav-link to="/ketoan/phieulo/importsolieu" class="navbar-item">
                     <span style="color: #f14668" class="icon is-small is-left">
                       <i class="far fa-arrow-alt-circle-down"></i>
@@ -111,36 +111,36 @@
                     </span>
                     &ensp; Đăng ký kế hoạch phân xưởng
                   </nav-link>
-                  <nav-link to="/ketoan/phieulo/lapkehoachlophanxuong" class="navbar-item">
+                  <!-- <nav-link to="/ketoan/phieulo/lapkehoachlophanxuong" class="navbar-item">
                     <span style="color: #f14668" class="icon is-small is-left">
                       <i class="far fa-clipboard"></i>
                     </span>
                     &ensp; Lập kế hoạch Lô phân xưởng (Tạm thời chưa sử dụng)
-                  </nav-link>
-                  <nav-link to="/ketoan/phieulo/dangkylosanxuat" class="navbar-item">
+                  </nav-link> -->
+                  <nav-link to="/ketoan/phieulo/chonlokhpxdesanxuat" class="navbar-item">
                     <span style="color: #f14668" class="icon is-small is-left">
                       <i class="far fa-copy"></i>
                     </span>
                     &ensp; Chọn Lô kế hoạch để sản xuất
                   </nav-link>
-                  <!-- <nav-link to="/ketoan/phieulo/danhsachlosx" class="navbar-item">
-                    <span style="color: #f14668" class="icon is-small is-left">
-                      <i class="fas fa-file-contract"></i>
-                    </span>
-                    &ensp; Tạo danh sách lô sản xuất
-                  </nav-link> -->
                   <nav-link to="/ketoan/phieulo/dangkylosx" class="navbar-item">
                     <span style="color: #f14668" class="icon is-small is-left">
                       <i class="fas fa-file-contract"></i>
                     </span>
-                    &ensp; Tạo danh sách lô sản xuất
+                    &ensp; Tạo Lô sản xuất
                   </nav-link>
-                  <nav-link to="/ketoan/phieulo/vaoluongcongdoan" class="navbar-item">
+                  <nav-link to="/ketoan/phieulo/danhsachlosx" class="navbar-item">
+                    <span style="color: #f14668" class="icon is-small is-left">
+                      <i class="fab fa-codepen"></i>
+                    </span>
+                    &ensp; Danh sách lô sản xuất
+                  </nav-link>
+                  <!-- <nav-link to="/ketoan/phieulo/vaoluongcongdoan" class="navbar-item">
                     <span style="color: #f14668" class="icon is-small is-left">
                       <i class="fas fa-clipboard-list"></i>
                     </span>
                     &ensp; Vào lương công đoạn sản xuất
-                  </nav-link>
+                  </nav-link> -->
                 </div>
               </div>
               <!-- Tài chính -->
@@ -151,7 +151,13 @@
                   </span>
                   &ensp; Lương
                 </a>
-                <div class="navbar-dropdown">
+                <div class="navbar-dropdown is-boxed">
+                  <nav-link to="/ketoan/phieulo/vaoluongcongdoan" class="navbar-item">
+                    <span style="color: #9b6dff" class="icon is-small is-left">
+                      <i class="fas fa-clipboard-list"></i>
+                    </span>
+                    &ensp; Vào lương công đoạn sản xuất
+                  </nav-link>
                   <div class="nested navbar-item dropdown">
                     <div class="dropdown-trigger">
                       <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
@@ -214,7 +220,7 @@
                   </span>
                   &ensp; Báo cáo
                 </a>
-                <div class="navbar-dropdown">
+                <div class="navbar-dropdown is-boxed">
                   <!-- <nav-link to="/report/nhansu" class="navbar-item">
                     <span style="color: #48c78e" class="icon is-small is-left">
                       <i class="fas fa-address-card"></i>
@@ -243,7 +249,7 @@
                   </span>
                   &ensp; Hệ thống
                 </a>
-                <div class="navbar-dropdown">
+                <div class="navbar-dropdown is-boxed">
                   <div class="nested navbar-item dropdown">
                     <div class="dropdown-trigger">
                       <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
@@ -327,7 +333,7 @@
                 <template v-else>
                   <a class="navbar-link"><img alt="" width="40" height="40" style="border-radius: 50%" />
                     &ensp; Mời đăng nhập !</a></template>
-                <div class="navbar-dropdown">
+                <div class="navbar-dropdown is-boxed">
                   <nav-link to="#" class="navbar-item">
                     <span class="icon is-small is-left" style="color: #3e8ed0">
                       <i class="fab fa-github-alt"></i>

@@ -149,7 +149,7 @@
                 <td style="font-size: small;">
                   {{ pl.masp }}
                 </td>
-                <td style="font-size: small;">
+                <td style="font-size: small; text-align: center;">
                   {{ pl.nhomsp }}
                 </td>
                 <td style="background-color: #fffaeb;"><input class="input is-small" type="date"
@@ -259,7 +259,7 @@
                 }}</span> </span>
               </td>
               <!-- <td colspan="2">
-                <button @click="addKehoachmuavu" class="button is-success is-small is-fullwidth">
+                <button @click="addKehoachmuavu" class="button is-success is-small is-fullwidth"> 
                   <span>Lập kế hoạch mùa vụ</span>
                 </button>
               </td>

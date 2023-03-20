@@ -7,10 +7,9 @@
                     <div class="column is-11">
                         <div class="control">
                             <span class="icon is-small is-left">
-                                <i style="color: #ff55acee" class="fas fa-calendar-alt"></i>
+                                <i style="color: #ff55acee" class="fas fa-cubes"></i>
                             </span>
-                            <span style="color: #3850b7; font-size: 17px; font-weight: bold">Chọn lô kế hoạch để sản
-                                xuất</span>
+                            <span style="color: #3850b7; font-size: 17px; font-weight: bold">Tạo Lô sản xuất</span>
                         </div>
                     </div>
                     <div class="column" style="text-align: right">
@@ -25,111 +24,8 @@
 
                 <div>
                     <table class="table is-responsive is-bordered is-narrow is-fullwidth">
-                        <tr style="background-color: #faf0f5;">
-                            <!-- tìm theo các điều kiện riêng lẻ -->
-                            <!-- 1. theo phân xưởng -->
-                            <td style="width: 15%;">
-                                <div class="control has-icons-left">
-                                    <div class="select is-small is-fullwidth">
-                                        <select @change="getWithPX($event)">
-                                            <option selected>-- Phân xưởng --</option>
-                                            <option v-for="item in phanxuong" :value="item.mapx">
-                                                {{ item.mapx }} -- {{ item.tenpx }}
-                                            </option>
-                                        </select>
-                                    </div>
-                                    <span class="icon is-small is-left">
-                                        <i style="color: #48c78e" class="fas fa-kaaba"></i>
-                                    </span>
-                                </div>
-                            </td>
-                            <!-- 2. theo nhóm sản phẩm -->
-                            <td style="width: 10%">
-                                <div class="field has-addons">
-                                    <p class="control is-expanded">
-                                        <input v-model="search_nhomsp" class="input is-small is-fullwidth" type="text"
-                                            placeholder="Tìm theo nhóm sản phẩm">
-                                    </p>
-                                    <p class="control">
-                                        <a @click="searhNhomsp" class="button is-small">
-                                            Lọc
-                                        </a>
-                                    </p>
-                                </div>
-                            </td>
-                            <!-- 3. theo sản phẩm -->
-                            <td style="width: 10%">
-                                <div class="field has-addons">
-                                    <p class="control is-expanded">
-                                        <input v-model="search_sanpham" class="input is-small is-fullwidth" type="text"
-                                            placeholder="Tìm theo sản phẩm">
-                                    </p>
-                                    <p class="control">
-                                        <a @click="searhSanpham" class="button is-small">
-                                            Lọc
-                                        </a>
-                                    </p>
-                                </div>
-                            </td>
-                            <!-- 4. theo thời gian kết thúc -->
-                            <td style="width: 15%">
-                                <div class="field has-addons">
-                                    <p class="control is-expanded">
-                                        <input v-model="search_timeend" type="date" class="input is-small">
-                                    </p>
-                                    <p class="control">
-                                        <a @click="searhtgketthuc" class="button is-small">
-                                            Lọc
-                                        </a>
-                                    </p>
-                                </div>
-                            </td>
-
-                            <td style="width: 13%">
-                                <div class="control has-icons-left">
-                                    <input v-model="search_timestart" type="date" class="input is-small">
-                                    <span class="icon is-small is-left">
-                                        <i style="color: #48c78e" class="fas fa-calendar-alt"></i>
-                                    </span>
-                                </div>
-                            </td>
-                            <td style="width: 13%">
-                                <div class="control has-icons-left">
-                                    <input @change="showData" v-model="search_timeend" type="date" class="input is-small">
-                                    <span class="icon is-small is-left">
-                                        <i style="color: #48c78e" class="fas fa-calendar-alt"></i>
-                                    </span>
-                                </div>
-                            </td>
-                            <td style="width: 7.3%">
-                                <button @click="showAllLokhpx"
-                                    class="button is-small is-danger is-fullwidth">Refresh</button>
-                            </td>
-                            <td></td>
-                        </tr>
-                        <tr style="background-color: #eff5fb;">
-                            <td style="width: 12%; font-size: small; font-weight: bold;">
-                                <div class="icon-text">
-                                    <input type="checkbox" v-model="showLuachon">
-                                    <span style="color: #296fa8;">Lọc nhiều tiêu chí</span>
-                                </div>
-                            </td>
-
-                            <td colspan="7" style="font-size: small; font-weight: bold; text-align: right;"><span>Có: <span
-                                        style="color: red;">{{
-                                            lokehoachpx.length }}</span> bản
-                                    ghi</span></td>
-                        </tr>
-                        <tr v-if="showLuachon == true" style="background-color: #feecf0;">
-                            <td style="width: 12%; font-size: small; font-weight: bold;">
-                                <div class="icon-text">
-                                    <span class="icon has-text-success">
-                                        <i class="fas fa-check-square"></i>
-                                    </span>
-                                    <span style="color: #296fa8;">Chọn các tiêu chí lọc</span>
-                                </div>
-                            </td>
-                            <td style="font-size: x-small;">
+                        <tr style="background-color: #feecf0;">
+                            <td style="font-size: small; width: 16.1%; text-align: center;">
                                 <div class="select-wrapper">
                                     <div class="select-header" @click="isOpen = !isOpen">
                                         {{ selectedOptions.length > 0 ? selectedOptions.join(', ') : 'Chọn Phân xưởng' }}
@@ -142,30 +38,32 @@
                                         </label>
                                     </div>
                                 </div>
-
                             </td>
-                            <!-- <td><button @click="resetOp" class="button is-small is-fullwidth"> - Refresh all phân
-                                    xưởng - </button></td> -->
-                            <td><input v-model="multiSearch_nhomsp" type="text" class="input is-small"
-                                    placeholder="Nhóm sản phẩm"></td>
-                            <td>
-                                <div class="control has-icons-left">
-                                    <div class="select is-small is-fullwidth">
-                                        <select id="selectBox" v-model="selected">
-                                            <option v-for="option in filteredOptions" :value="option.masp">
-                                                {{ option.masp }}
-                                            </option>
-                                        </select>
+                            <td style="width: 13.45%;">
+                                <div class="autocomplete">
+                                    <input class="input is-small is-info" type="text" v-model="multiSearch_nhomsp"
+                                        @input="onInput_nhomsp" placeholder="Chọn nhóm sản phẩm">
+                                    <div class="autocomplete-items" v-if="suggestions_nhomsp.length">
+                                        <div class="autocomplete-item" v-for="suggestion_nhomsp in suggestions_nhomsp"
+                                            @click="selectSuggestion_nhomsp(suggestion_nhomsp)">
+                                            {{ suggestion_nhomsp }}
+                                        </div>
                                     </div>
-                                    <datalist id="options">
-                                        <option v-for="option in filteredOptions" :value="option.masp"></option>
-                                    </datalist>
-                                    <span class="icon is-small is-left">
-                                        <i style="color: #48c78e" class="fas fa-cog"></i>
-                                    </span>
                                 </div>
                             </td>
-                            <td style="font-size: x-small;">
+                            <td style="width: 15.1%;">
+                                <div class="autocomplete">
+                                    <input class="input is-small is-danger" type="text" v-model="multiSearch_masp"
+                                        @input="onInput" placeholder="Chọn sản phẩm">
+                                    <div class="autocomplete-items" v-if="suggestions.length">
+                                        <div class="autocomplete-item" v-for="suggestion in suggestions"
+                                            @click="selectSuggestion(suggestion)">
+                                            {{ suggestion }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="font-size: small; width: 15%;">
                                 <div class="select-wrapper">
                                     <div class="select-header" @click="isOpenst = !isOpenst">
                                         {{ Options_status.length > 0 ? Options_status.join(', ') : 'Trạng thái' }}
@@ -179,11 +77,25 @@
                                     </div>
                                 </div>
                             </td>
-                            <td>
+                            <td style="width: 6%;">
                                 <button @click="filterData" class="button is-small is-fullwidth is-success">Lọc</button>
                             </td>
-                            <td></td>
-                            <td></td>
+                            <td style="width: 6.1%;">
+                                <button @click="showAllLokhpx"
+                                    class="button is-small is-danger is-fullwidth">Refresh</button>
+                            </td>
+                            <td style="font-size: small; width: 5.5%; font-weight: 600;">
+                                Số dòng
+                            </td>
+                            <td style="font-size: small; width: 7.6%;">
+                                <input class="input is-danger is-small" type="number" id="itemsPerPage"
+                                    v-model.number="itemsPerPage" min="1" max="10" />
+                            </td>
+                            <td colspan="2" style="font-size: small; font-weight: bold; text-align: right;"><span>Có: <span
+                                        style="color: red;">{{
+                                            lokehoachpx.length }}</span> bản
+                                    ghi</span></td>
+                            <!-- <td></td> -->
                         </tr>
                     </table>
                 </div>
@@ -192,49 +104,51 @@
                         <tr style="background-color: #f4f2f8">
                             <td style="font-size: small; text-align: center; font-weight: 600; width: 3%">--</td>
                             <td style="font-size: small; text-align: center; font-weight: 600; width: 3%">STT</td>
-                            <td @click="sort('makh')"
+                            <td @click="sortTable('makh')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 5%">Mã lô nhà máy
                             </td>
-                            <td @click="sort('mapx')"
+                            <td @click="sortTable('mapx')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 5%">Mã PX
                             </td>
-                            <td @click="sort('makhpx')"
+                            <td @click="sortTable('makhpx')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 4%">Mã kế hoạch
                                 PX
                             </td>
-                            <td @click="sort('nhomsp')"
+                            <td @click="sortTable('ttqt')"
+                                style="font-size: small; text-align: center; font-weight: 600; width: 4%">
+                                TTQT
+                            </td>
+                            <td @click="sortTable('nhomsp')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 7%">Nhóm SP
                             </td>
-                            <td @click="sort('maspkhpx')"
+                            <td @click="sortTable('maspkhpx')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 7%">Mã sản phẩm
                             </td>
-                            <td @click="sort('ngaybdkhpx')"
-                                style="font-size: small; text-align: center; font-weight: 600; width: 8%;">Ngày bắt đầu
+                            <td @click="sortTable('ngaybdkhpx')"
+                                style="font-size: small; text-align: center; font-weight: 600; width: 9%;">Ngày bắt đầu
                             </td>
-                            <td @click="sort('ngayktkhpx')"
-                                style="font-size: small; text-align: center; font-weight: 600; width: 8%;">Ngày kết thúc
+                            <td @click="sortTable('ngayktkhpx')"
+                                style="font-size: small; text-align: center; font-weight: 600; width: 9%;">Ngày kết thúc
                             </td>
-                            <td @click="sort('soluongkhpx')"
+                            <td @click="sortTable('soluongkhpx')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Số lượng
                             </td>
-                            <td @click="sort('status')"
+                            <td @click="sortTable('status')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Trạng thái
                             </td>
+
                             <!-- <td @click="sort('soluongkhpx')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Chọn Trạng thái
                             </td> -->
-                            <td @click="sort('soluongkhpx')"
-                                style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Số lượng HT
+                            <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Số lượng HT
                             </td>
-                            <td @click="sort('soluongkhpx')"
-                                style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Ngày BDTT
+                            <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Ngày BDTT
                             </td>
-                            <td @click="sort('soluongkhpx')"
-                                style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Ngày KTTT
+                            <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Ngày KTTT
                             </td>
-                            <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Chọn</td>
+
                         </tr>
-                        <template v-for="(item, index) in sortedsllosx.filter(el => el.status !== 3)">
+                        <template v-for="(item, index) in paginatedTable.filter(el => el.status !== 3)">
                             <tr @click="watchDetail(index, item)">
                                 <td>
                                     <div
@@ -257,6 +171,8 @@
                                 <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
                                     item.makhpx
                                 }}
+                                </td>
+                                <td style="font-size: small; background-color: #effaf5; text-align: center;">{{ item.ttqt }}
                                 </td>
                                 <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
                                     item.nhomsp
@@ -288,68 +204,68 @@
                                             style="color: white; font-weight: bold; background-color: green; padding-left: 7px; padding-right: 7px;">HT</span>
                                     </td>
                                 </template>
+                                <td style="font-size: small; text-align: center; background-color: #effaf5;"></td>
+                                <td style="font-size: small; text-align: center; background-color: #effaf5;"></td>
+                                <td style="font-size: small; text-align: center; background-color: #effaf5;"></td>
 
-                                <!-- <td style="font-size: small; width: 10%;">
-                                    <div class="select is-small is-fullwidth">
-                                        <select id="" @change="onChange_status($event)" v-model="item.status">
-                                            <option selected>-- Trạng thái --</option>
-                                            <option value="3">HT</option>
-                                            <option value="2">SX</option>
-                                            <option value="1">DK</option>
-                                            <option value="0">0</option>
-                                        </select>
-                                    </div>
-                                </td> -->
-                                <td style="font-size: small; text-align: center; background-color: #effaf5;">107</td>
-                                <td style="font-size: small; text-align: center; background-color: #effaf5;">01/01/2023</td>
-                                <td style="font-size: small; text-align: center; background-color: #effaf5;">31/01/2023</td>
-                                <td>
-                                    <!-- <button @click="onUpdate_lokhpx(item)"
-                                        class="button is-small is-success is-fullwidth">Ghi</button> -->
-                                </td>
                             </tr>
                             <!-- open row -->
                             <tr style="display: none" :style="{
                                 'display': arrRowWatchDetail.length > 0 && arrRowWatchDetail.findIndex(el => el.key === index) > -1 ? 'table-row' :
                                     'none'
                             }">
-                                <td colspan="12" style="padding: 10px 20px; background: #209cee0f;">
+                                <td colspan="14" style="padding: 10px 46px; background: #209cee0f;">
                                     <table class="table is-responsive is-bordered is-narrow is-fullwidth">
-                                        <tr>
+                                        <tr style="background-color: #f4f2f8;">
                                             <td
-                                                style="text-align: center; font-size:small; font-weight: 600; width: 3%; color: red;">
+                                                style="text-align: center; font-size:small; font-weight: 600; width: 3.53%; color: red;">
                                                 STT
                                             </td>
                                             <td
-                                                style="text-align: center; font-size:small; font-weight: 600; width: 30%; color: red;">
+                                                style="text-align: center; font-size:small; font-weight: 600; width: 15.9%; color: red;">
                                                 Tổ
                                                 / nhóm
                                             </td>
                                             <td
-                                                style="text-align: center; font-size:small; font-weight: 600; width: 15%; color: red;">
+                                                style="text-align: center; font-size:small; font-weight: 600; width: 16.7%; color: red;">
                                                 Mã
                                                 Lô sản
                                                 xuất</td>
                                             <td
-                                                style="text-align: center; font-size:small; font-weight: 600; width: 7%; color: red;">
+                                                style="text-align: center; font-size:small; font-weight: 600; width: 8.2%; color: red;">
                                                 Số
                                                 lượng
                                             </td>
                                             <td
-                                                style="text-align: center; font-size:small; font-weight: 600; width: 5%; color: red;">
-                                                Thời
-                                                gian
-                                                bắt đầu</td>
+                                                style="text-align: center; font-size:small; font-weight: 600; width: 8%; color: red;">
+                                                Ngày BĐ</td>
                                             <td
                                                 style="text-align: center; font-size:small; font-weight: 600; width: 5%; color: red;">
-                                                Thời
-                                                gian
-                                                kết thúc</td>
+                                                Ngày KT</td>
+                                            <td
+                                                style="text-align: center; font-size:small; font-weight: 600; width: 5%; color: red;">
+                                                Trạng thái</td>
                                             <td
                                                 style="text-align: center; font-size:small; font-weight: 600; width: 4%; color: red;">
-                                                Thêm</td>
-                                            <td style="text-align: center; font-size:small; font-weight: 600; color: red;">
-                                                In</td>
+                                                Cập nhật</td>
+                                            <td
+                                                style="text-align: center; font-size:small; font-weight: 600; width: 4.1%; color: red;">
+                                                Xóa</td>
+                                            <td
+                                                style="text-align: center; font-size:small; font-weight: 600; width: 4.1%; color: red;">
+                                                Copy</td>
+                                            <td
+                                                style="text-align: center; font-size:small; font-weight: 600; width: 4.1%; color: red;">
+                                                <button @click="addLosanxuat(item, index)"
+                                                    class="button is-small is-danger">Đăng
+                                                    ký</button>
+                                            </td>
+                                            <td
+                                                style="text-align: center; font-size:small; font-weight: 600; width: 4.1%; color: red;">
+                                                <button @click="ghidulieu(item)" class="button is-small is-success">Ghi dữ
+                                                    liệu</button>
+                                            </td>
+                                            <td></td>
                                         </tr>
                                         <template
                                             v-if="arrRowWatchDetail.length > 0 && arrRowWatchDetail.findIndex(el => el.key === index) > -1">
@@ -362,250 +278,122 @@
                                                     <td style="font-size: small;">
                                                         {{ item.tento }}
                                                     </td>
-                                                    <td style="font-size: small; text-align: center;"> {{ item.malosx }}
+                                                    <td style="font-size: small; text-align: center; font-weight: 600;">
+                                                        <input type="text" v-model="item.malosx" class="input is-small">
+                                                    </td>
+                                                    <td style="font-size: small; text-align: center;">
+                                                        <input type="text" v-model="item.soluonglsx" class="input is-small">
                                                     </td>
                                                     <td style="font-size: small; text-align: center">
-                                                        {{ item.soluonglsx }}
+                                                        <input class="input is-small" type="date"
+                                                            v-bind:value="item.ngaybd | inputDateFilter"
+                                                            v-on:input="item.ngaybd = getDate($event.target.value)">
                                                     </td>
                                                     <td style="font-size: small; text-align: center">
-                                                        {{ item.ngaybd | formatDate }}
+                                                        <input class="input is-small" type="date"
+                                                            v-bind:value="item.ngaykt | inputDateFilter"
+                                                            v-on:input="item.ngaykt = getDate($event.target.value)">
                                                     </td>
-                                                    <td style="font-size: small; text-align: center">
-                                                        {{ item.ngaykt | formatDate }}
-                                                    </td>
-                                                    <td></td>
-                                                    <td style="text-align: center;"><input type="checkbox" /></td>
+                                                    <template>
+                                                        <td v-if="item.status == 1"
+                                                            style="font-size: small; text-align: center; "><span
+                                                                style="color: white; font-weight: bold; background-color: red; padding-left: 7px; padding-right: 7px;">DK</span>
+                                                        </td>
+                                                        <td v-else-if="item.status == 2"
+                                                            style="font-size: small; text-align: center;">
+                                                            <span
+                                                                style="color: red; font-weight: bold; background-color: yellow; padding-left: 7px; padding-right: 7px;">SX</span>
+                                                        </td>
+                                                        <td v-else-if="item.status == 3"
+                                                            style="font-size: small; text-align: center;">
+                                                            <span
+                                                                style="color: white; font-weight: bold; background-color: green; padding-left: 7px; padding-right: 7px;">HT</span>
+                                                        </td>
+                                                        <td v-else style="font-size: small; text-align: center;">
+                                                        </td>
+                                                    </template>
+                                                    <td style="font-size: small; text-align: center;"><a
+                                                            @click="onUpdate(item)">
+                                                            <span style="color: green" class="icon is-small">
+                                                                <i class="far fa-check-circle"></i>
+                                                            </span>
+                                                        </a></td>
+                                                    <td style="font-size: small; text-align: center;"><a
+                                                            @click="onDeleteLsx(item)">
+                                                            <span style="color: red" class="icon is-small">
+                                                                <i class="fas fa-times"></i>
+                                                            </span>
+                                                        </a></td>
+                                                    <td style="font-size: small; text-align: center;"><a
+                                                            @click="copyadd(item)">
+                                                            <span style="color: blueviolet" class="icon is-small">
+                                                                <i class="fas fa-check-double"></i>
+                                                            </span>
+                                                        </a></td>
+                                                    <td colspan="2"></td>
+
                                                 </tr>
                                             </template>
                                         </template>
 
-                                        <tr>
+                                        <tr v-for="(item, index) in items" :key="index + 'kjkji'">
                                             <td style="font-size: small; text-align:center">
-                                                {{ arrRowWatchDetail.length > 0 && arrRowWatchDetail.findIndex(el => el.key
-                                                    === index) > -1 ? (arrRowWatchDetail.find(el => el.key ===
-                                                        index).dataChildren.length + 1 || 1) : 1 }}
+                                                {{ index + 1 }}
                                             </td>
-                                            <template
-                                                v-if="arrRowWatchDetail.length > 0 && arrRowWatchDetail.findIndex(el => el.key === index) > -1">
-                                                <td style="font-size: small;">
-                                                    <div class="select is-small is-fullwidth">
-                                                        <select v-model.trim="arrRowWatchDetail.find(el => el.key ===
-                                                            index).input.inputMaTo"
-                                                            :disabled="!arrRowWatchDetail.find(el => el.key === index) || ((arrRowWatchDetail.find(el => el.key === index) || []).grWork || []).length === 0">
-                                                            <option :value="null" selected>-- Chọn tổ --</option>
-                                                            <option
-                                                                v-for="item in (arrRowWatchDetail.find(el => el.key === index) || []).grWork"
-                                                                :value="item.value">
-                                                                {{ item.label }}
-                                                            </option>
-                                                        </select>
-                                                    </div>
-                                                </td>
-                                                <td><input v-model.trim="arrRowWatchDetail.find(el => el.key ===
-                                                    index).input.inputMaLo" type="text" class="input is-small">
-                                                </td>
-                                                <td><input v-model.trim="arrRowWatchDetail.find(el => el.key ===
-                                                    index).input.inputSoLuong" type="text" class="input is-small">
-                                                </td>
-                                                <td><input class="input is-small" type="date" v-model="arrRowWatchDetail.find(el => el.key ===
-                                                    index).input.inputDateOpen">
-                                                </td>
-                                                <td><input class="input is-small" type="date" v-model="arrRowWatchDetail.find(el => el.key ===
-                                                    index).input.inputDateEnd"></td>
-                                                <td>
-                                                    <button style="width: 100px;" @click="() => {
-                                                        addRowChildren(index)
-                                                    }" class="button is-small is-success is-fullwidth">Xác Nhận
-                                                    </button>
-                                                </td>
-                                            </template>
+                                            <td style="font-size: small;">
+                                                <div class="select is-small is-fullwidth">
+                                                    <select @change="
+                                                        getWithTo($event, $event.target.selectedIndex, index)
+                                                    ">
+                                                        <option value="" selected>-- Chọn tổ --</option>
+                                                        <option v-for="item in tonhom" :value="item.mato">
+                                                            {{ item.mato }} -- {{ item.tento }}
+                                                        </option>
+                                                    </select>
+                                                </div>
+                                            </td>
+                                            <td style="font-weight: 700;"><input v-model.trim="item.malosx" type="text"
+                                                    class="input is-small is-danger">
+                                            </td>
+                                            <td><input v-model.trim="item.soluonglsx" type="text" class="input is-small">
+                                            </td>
+                                            <td><input class="input is-small" type="date"
+                                                    v-bind:value="item.ngaybd | inputDateFilter"
+                                                    v-on:input="item.ngaybd = getDate($event.target.value)"></td>
+                                            <td><input class="input is-small" type="date"
+                                                    v-bind:value="item.ngaykt | inputDateFilter"
+                                                    v-on:input="item.ngaykt = getDate($event.target.value)"></td>
+
+                                            <td>
+                                            </td>
+                                            <td>
+                                            </td>
+                                            <td style="font-size: small; text-align: center;"><a @click="deleteRow(index)">
+                                                    <span style="color: red" class="icon is-small">
+                                                        <i class="fas fa-times"></i>
+                                                    </span>
+                                                </a></td>
+                                            <td></td>
+                                            <td colspan="2"></td>
                                         </tr>
                                     </table>
                                 </td>
-                                <td></td>
-                                <td></td>
-                                <td></td>
                             </tr>
                         </template>
                     </table>
                     <!-- end table -->
-                    <table class="table is-responsive is-bordered is-narrow is-fullwidth">
-                        <tr>
-                            <td style="font-size: small; width: 13.1%;">
-                                <div class="select is-small is-fullwidth">
-                                    <select id="" @change="onChange_pageSize($event)">
-                                        <option selected>-- Số dòng hiển thị --</option>
-                                        <option value="5">5 dòng dữ liệu</option>
-                                        <option value="10">10 dòng dữ liệu</option>
-                                        <option value="15">15 dòng dữ liệu</option>
-                                        <option value="20">20 dòng dữ liệu</option>
-                                        <option value="30">30 dòng dữ liệu</option>
-                                        <option value="40">40 dòng dữ liệu</option>
-                                        <option value="50">50 dòng dữ liệu</option>
-                                    </select>
-                                </div>
-                            </td>
-                            <td style="font-size: small; width: 9%;">Đang Sort theo: {{ currentSort }}</td>
-                            <td style="font-size: small; width: 6%;">Thứ tự: {{ currentSortDir }} (asc: Tăng - desc:
-                                Giảm)</td>
-                            <td style="font-size: small;">Đang ở trang: {{ currentPage }}</td>
-                            <td style="text-align: right;">
-                                <a @click="prevPage"><span class="icon is-small">
-                                        <i class="fas fa-angle-double-left"></i>
-                                    </span></a>
-                                {{ currentPage }}
-                                <a @click="nextPage"><span class="icon is-small">
-                                        <i class="fas fa-angle-double-right"></i>
-                                    </span></a>
-                            </td>
-                        </tr>
-                    </table>
-                </div>
-
-                <!-- Phần đăng ký -->
-                <br />
-                <div v-if="checkViewRegLsx == true">
-                    <div class="">
-                        <table class="table is-responsive is-bordered is-narrow is-fullwidth">
-                            <tr style="background-color: #feecf0">
-                                <td colspan="6" style="font-weight: bold; font-size: small">
-                                    <span>Mã lô nhà máy: </span> <span style="color: red;">{{
-                                        showLophanxuong.makh
-                                    }}</span>
-                                    |
-                                    <span>Mã phân xưởng: </span> <span style="color: red;">{{
-                                        showLophanxuong.mapx
-                                    }}</span>
-                                    |
-                                    <span>Mã kế hoạch phân xưởng: </span> <span style="color: red;">{{
-                                        showLophanxuong.makhpx
-                                    }}</span>
-                                    |
-                                    <span>Mã sản phẩm: </span> <span style="color: red;">{{
-                                        showLophanxuong.maspkhpx
-                                    }}</span>
-                                    |
-                                    <span>Ngày bắt đầu: </span> <span style="color: red;">{{
-                                        showLophanxuong.ngaybdkhpx |
-                                        formatDate
-                                    }}</span> |
-                                    <span>Ngày kết thúc: </span> <span style="color: red;">{{
-                                        showLophanxuong.ngayktkhpx |
-                                        formatDate
-                                    }}</span> |
-                                    <span>Số lượng: </span> <span style="color: red;">{{
-                                        showLophanxuong.soluongkhpx |
-                                        formatNumber
-                                    }}</span>
-                                </td>
-                                <td>
-                                    <button @click="ghidulieu" class="button is-small is-success is-fullwidth">Ghi dữ
-                                        liệu
-                                    </button>
-                                </td>
-                                <td>
-                                    <button @click="addLosanxuat" class="button is-small is-info is-fullwidth">Đăng
-                                        ký</button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td style="text-align: center; font-size:small; font-weight:700; width: 3%">STT</td>
-                                <!-- <td style="text-align: center; font-size:small; font-weight:700; width: 15%">Phân xưởng
-                                </td> -->
-                                <td style="text-align: center; font-size:small; font-weight:700; width: 20%">Tổ / nhóm
-                                </td>
-                                <td style="text-align: center; font-size:small; font-weight:700; width: 10%">Mã Lô sản
-                                    xuất</td>
-                                <td style="text-align: center; font-size:small; font-weight:700; width: 5%">Số lượng
-                                </td>
-                                <td style="text-align: center; font-size:small; font-weight:700; width: 6%">Thời gian
-                                    bắt đầu</td>
-                                <td style="text-align: center; font-size:small; font-weight:700; width: 6%">Thời gian
-                                    kết thúc</td>
-                                <td style="text-align: center; font-size:small; font-weight:700; width: 5%">
-                                    Copy / Update</td>
-                                <td style="text-align: center; font-size:small; font-weight:700; width: 5%">
-                                    Xóa</td>
-
-                            </tr>
-                            <!-- show ra các lô đã đăng ký -->
-                            <tr v-for="(item, index) in losanxuat" :key="index + 'ppp'">
-                                <td style="font-size: small; text-align: center">
-                                    {{ index + 1 }}
-                                </td>
-                                <td style="font-size: small;">
-                                    {{ item.mato }} -- {{ item.tento }}
-                                </td>
-                                <td style="font-size: small; text-align: center;"><input type="text" class="input is-small"
-                                        v-model="item.malosx"></td>
-                                <td style="font-size: small; text-align: center">
-                                    <input type="text" class="input is-small" v-model="item.soluonglsx" />
-                                </td>
-                                <!-- <td style="font-size: small; text-align: center">
-                                    {{ item.ngaybd | formatDate }}
-                                </td>
-                                <td style="font-size: small; text-align: center">
-                                    {{ item.ngaykt | formatDate }}
-                                </td> -->
-                                <td><input class="input is-small" type="date" v-bind:value="item.ngaybd | inputDateFilter"
-                                        v-on:input="item.ngaybd = getDate($event.target.value)"></td>
-                                <td><input class="input is-small" type="date" v-bind:value="item.ngaykt | inputDateFilter"
-                                        v-on:input="item.ngaykt = getDate($event.target.value)"></td>
-
-                                <td style="text-align: center; font-size: small">
-                                    <a @click="onUpdate(item)">
-                                        <span style="color: green" class="icon is-small">
-                                            <i class="far fa-check-circle"></i>
-                                        </span>
-                                    </a>
-                                </td>
-                                <td style="text-align: center; font-size: small">
-                                    <a @click="onDeleteK(item)">
-                                        <span style="color: red" class="icon is-small">
-                                            <i class="fas fa-times"></i>
-                                        </span>
-                                    </a>
-                                </td>
-                            </tr>
-                            <!-- add row đăng ký -->
-                            <template v-if="isaddlosx == 1">
-                                <tr v-for="(item, index) in items" :key="index + 'jhooplkmn'">
-                                    <td style="font-size: small; text-align:center">
-                                        {{ index + 1 }}
-                                    </td>
-                                    <td style="font-size: small;">
-                                        <div class="select is-small is-fullwidth">
-                                            <select @change="
-                                                getWithTo($event, $event.target.selectedIndex, index)
-                                            ">
-                                                <option value="" selected>-- Chọn tổ --</option>
-                                                <option v-for="item in tonhom" :value="item.mato">
-                                                    {{ item.mato }} -- {{ item.tento }}
-                                                </option>
-                                            </select>
-                                        </div>
-                                    </td>
-                                    <td><input v-model.trim="item.malosx" type="text" class="input is-small"></td>
-                                    <td><input v-model.trim="item.soluonglsx" type="text" class="input is-small"></td>
-                                    <td><input class="input is-small" type="date"
-                                            v-bind:value="item.ngaybd | inputDateFilter"
-                                            v-on:input="item.ngaybd = getDate($event.target.value)"></td>
-                                    <td><input class="input is-small" type="date"
-                                            v-bind:value="item.ngaykt | inputDateFilter"
-                                            v-on:input="item.ngaykt = getDate($event.target.value)"></td>
-                                    <td>
-                                        <button @click="copyadd(item)"
-                                            class="button is-small is-warning is-fullwidth">Copy</button>
-                                    </td>
-                                    <td><button @click="deleteRow(index)"
-                                            class="button is-small is-danger is-fullwidth">Xóa</button>
-                                    </td>
-                                </tr>
-                            </template>
-                        </table>
+                    <div class="pagination"> <button class="button is-small is-success" @click="changePage(1)"
+                            :disabled="currentPage === 1">Đầu tiên</button>
+                        <button class="button is-small is-info" @click="changePage(currentPage - 1)"
+                            :disabled="currentPage === 1">Trước</button> <button class="button is-small"
+                            v-for="page in pages" @click="changePage(page)" :class="{ active: page === currentPage }"> {{
+                                page }}
+                        </button> <button class="button is-small is-info" @click="changePage(currentPage + 1)"
+                            :disabled="currentPage === pageCount">Sau</button>
+                        <button class="button is-small is-success" @click="changePage(pageCount)"
+                            :disabled="currentPage === pageCount">Cuối</button>
                     </div>
                 </div>
-                <br />
 
             </div>
         </div>
@@ -614,37 +402,18 @@
 
 <script>
 import Swal from "sweetalert2";
-import { ModelListSelect } from "vue-search-select";
-import "vue-search-select/dist/VueSearchSelect.css";
 export default {
     middleware: "auth",
-    components: {
-        ModelListSelect,
-    },
     data() {
         return {
             arrRowWatchDetail: [],
+            dataLokehoachpx: [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30],
+            dataChildren: [],
             // dữ liệu 
             lokehoachpx: [],
             phanxuong: [],
             showLophanxuong: [], // khi bấm vào lô kế hoạch phân xưởng nào đó sẽ lưu thông tin lô đó vào biến này
             losanxuat: [], // lưu lô sản xuất
-
-            // các biến tìm kiếm
-            search_maxuong: "",
-            search_tenxuong: "",
-            search_timestart: "",
-            search_timeend: "",
-            search_nhomsp: "",
-            search_sanpham: "",
-            search_status: "",
-
-            // lọc talble
-            currentSort: 'mapx',
-            currentSortDir: 'asc',
-            pageSize: 15,
-            currentPage: 1,
-            filter: '',
 
             // gán biến status
             status: 0,
@@ -660,10 +429,27 @@ export default {
             multiSearch_masp: "",
             multiSearch_nhomsp: "",
 
+            // input suggest
+            suggestions: [],
+            suggestions_nhomsp: [],
+            maspinlokehoach: [],
+            nhomspinlokehoach: [],
+
             // xử lý select mã sản phẩm
+            // không sử dụng nữa mà sử dụng suggest input
             selected: '',
             search: '',
-            maspinlokehoach: [],
+
+            // lọc talble
+            sortDirection: 1,
+            sortKey: "ttqt",
+            currentPage: 1,
+            itemsPerPage: 10,
+
+            // tổng của số lượng lô khpx
+            sumSoluonglkhpx: 0,
+            sumItemssl: 0,
+            sumAll: 0,
 
             // hiển thị đăng ký lô sản xuất
             checkViewRegLsx: false,
@@ -716,44 +502,62 @@ export default {
 
     mounted() {
         this.currentDateTime();
-        this.showAllLokhpx()
-        this.showAllPx()
+        this.showAllLokhpx();
+        this.showAllPx();
         this.deleteRow(0);
-        this.maspinlkh()
+        this.maspinlkh();
+        this.nhomspinlkh();
     },
 
+
     computed: {
-        filteredsllosx() {
-            return this.lokehoachpx.filter(c => {
-                if (this.filter == '') return true;
-                return c.name.toLowerCase().indexOf(this.filter.toLowerCase()) >= 0;
-            })
-        },
-        sortedsllosx() {
-            return this.filteredsllosx.sort((a, b) => {
-                let modifier = 1;
-                if (this.currentSortDir === 'desc') modifier = -1;
-                if (a[this.currentSort] < b[this.currentSort]) return -1 * modifier;
-                if (a[this.currentSort] > b[this.currentSort]) return 1 * modifier;
+        // phân trang và sắp xếp
+        sortedTable() {
+            return this.lokehoachpx.sort((a, b) => {
+                if (a[this.sortKey] < b[this.sortKey]) return -1 * this.sortDirection;
+                if (a[this.sortKey] > b[this.sortKey]) return 1 * this.sortDirection;
                 return 0;
-            }).filter((row, index) => {
-                let start = (this.currentPage - 1) * this.pageSize;
-                let end = this.currentPage * this.pageSize;
-                if (index >= start && index < end) return true;
             });
         },
-        filteredOptions() {
-            return this.maspinlokehoach.filter(option =>
-                option.masp.toLowerCase().includes(this.search.toLowerCase())
-            );
-        }
+        pageCount() {
+            return Math.ceil(this.sortedTable.length / this.itemsPerPage);
+        },
+        startIndex() {
+            return (this.currentPage - 1) * this.itemsPerPage;
+        },
+        endIndex() {
+            return this.startIndex + this.itemsPerPage;
+        },
+        paginatedTable() {
+            return this.sortedTable.slice(this.startIndex, this.endIndex);
+        },
+        pages() {
+            const startPage = Math.max(1, this.currentPage - 2);
+            const endPage = Math.min(this.pageCount, this.currentPage + 2);
+
+            let pages = [];
+            for (let i = startPage; i <= endPage; i++) {
+                pages.push(i);
+            }
+
+            if (startPage > 1) {
+                pages.unshift("...");
+                pages.unshift(1);
+            }
+
+            if (endPage < this.pageCount) {
+                pages.push("...");
+                pages.push(this.pageCount);
+            }
+
+            return pages;
+        },
     },
 
     watch: {
-        filter() {
-            console.log('reset to p1 due to filter');
+        itemsPerPage() {
             this.currentPage = 1;
-        }
+        },
     },
 
     // bind v-model input type date
@@ -769,6 +573,59 @@ export default {
 
 
     methods: {
+        // --------------------------------------------------------------------------------------
+        // 1: Các hàm hỗ trợ tính toán; lọc ...
+        // suggest input mã sản phẩm
+        onInput() {
+            if (!this.multiSearch_masp) {
+                this.suggestions = [];
+                return;
+            }
+            const MAX_SUGGESTIONS = 5; // Số lượng suggest tối đa
+            this.suggestions = this.maspinlokehoach
+                .map((c) => c.masp)
+                .filter((masp) => masp.toLowerCase().includes(this.multiSearch_masp.toLowerCase()))
+                .map((masp) => masp.trim())
+                .slice(0, MAX_SUGGESTIONS);
+        },
+        selectSuggestion(suggestion) {
+            this.multiSearch_masp = suggestion;
+            this.suggestions = [];
+        },
+        // end suggest mã sản phẩm
+        // suggest input nhóm sản phẩm
+        onInput_nhomsp() {
+            if (!this.multiSearch_nhomsp) {
+                this.suggestions_nhomsp = [];
+                return;
+            }
+            const MAX_SUGGESTIONS = 10; // Số lượng suggest tối đa
+            this.suggestions_nhomsp = this.nhomspinlokehoach
+                .map((c) => c.nhomsp)
+                .filter((nhomsp) => nhomsp.toLowerCase().includes(this.multiSearch_nhomsp.toLowerCase()))
+                .map((nhomsp) => nhomsp.trim())
+                .slice(0, MAX_SUGGESTIONS);
+        },
+        selectSuggestion_nhomsp(suggestion_nhomsp) {
+            this.multiSearch_nhomsp = suggestion_nhomsp;
+            this.suggestions_nhomsp = [];
+        },
+        // end suggest nhóm sản phẩm
+        // sắp xếp và phân trang
+        sortTable(key) {
+            if (key === this.sortKey) {
+                this.sortDirection *= -1;
+            } else {
+                this.sortDirection = 1;
+                this.sortKey = key;
+            }
+        },
+        changePage(pageNumber) {
+            if (pageNumber >= 1 && pageNumber <= this.pageCount) {
+                this.currentPage = pageNumber;
+            }
+        },
+        // lấy ngày tháng, giờ để ghi vào csdl
         currentDateTime() {
             const current = new Date();
             const date =
@@ -785,16 +642,58 @@ export default {
                 current.getSeconds();
             this.form.createdAt = date + " " + time;
         },
+        // hàm bind v-model input type date
+        getDate(value) {
+            if (!value) {
+                return null;
+            }
+            return new Date(value);
+        },
 
+        // --------------------------------------------------------------------------------------
+        // 2: Các hàm lấy dữ liệu từ server qua API
+        // lấy mã sản phẩm và nhóm sản phẩm trong lô kế hoạch phân xưởng
+        async maspinlkh() {
+            this.maspinlokehoach = await this.$axios.$get('/api/lokehoach/hmsanphamlokhpx')
+            // console.log(this.maspinlokehoach)
+        },
+        async nhomspinlkh() {
+            this.nhomspinlokehoach = await this.$axios.$get('/api/lokehoach/nhomsanphamlokhpx')
+            // console.log(this.nhomspinlokehoach)
+        },
+        // lấy toàn phân xưởng
+        async showAllPx() {
+            this.phanxuong = await this.$axios.$get(`/api/phongban/allphanxuong`);
+        },
+        // lấy danh sách tất cả các lô kế hoạch phân xưởng sắp xếp theo phân xưởng
+        async showAllLokhpx() {
+            this.lokehoachpx = await this.$axios.$get(
+                `/api/lokehoach/getallkehoachphanxuong`
+            );
+            this.multiSearch_masp = ""
+            this.multiSearch_nhomsp = ""
+            this.Options_status = []
+            this.isOpen = false
+            this.isOpenst = false
+            this.selectedOptions = []
+        },
+
+        // --------------------------------------------------------------------------------------
+        // 3: Các hàm chức năng
+        // Hàm bấm vào lô kế hoạch phân xưởng sẽ expand ra dữ liệu lô sản xuất
         async watchDetail(value, data) {
+            this.dataLokehoachpx = data
             const indexValue = this.arrRowWatchDetail.findIndex(el => el?.key === value)
             if (indexValue > -1) {
                 this.arrRowWatchDetail.splice(indexValue, 1)
                 return
             }
-            const dataChildren = await this.$axios.$get(
+
+            this.dataChildren = await this.$axios.$get(
                 `/api/lokehoach/getalllsxinkhpx?makh=${data.makh}&makhpx=${data.makhpx}&mapx=${data.mapx}`
             );
+
+            // console.log(this.dataChildren)
 
             const grWorkTemp = await this.$axios.$get(
                 `/api/phongban/alltoinxuong?mapx=${data.mapx}`
@@ -806,25 +705,33 @@ export default {
                 dataCur: el
             })) : []
 
+            // console.log(data.tenspkhpx)
+            const malosx = `${data.maspkhpx.trim()}-${data.makhpx.trim()}-0`
+            // console.log(malosx)
+
             this.arrRowWatchDetail.push({
                 key: value,
                 dataParent: data,
-                dataChildren: dataChildren,
+                dataChildren: this.dataChildren,
                 grWork: grWork,
                 input: {
-                    inputMaTo: 'data.maspkhpx + ' - ' + data.makhpx',
-                    inputMaLo: '',
-                    inputSoLuong: '',
-                    inputDateOpen: null,
-                    inputDateEnd: null,
+                    inputMaTo: '',
+                    inputMaLo: malosx,
+                    inputSoLuong: 0,
+                    inputDateOpen: "",
+                    inputDateEnd: "",
                 }
             })
+            // console.log('stop')
         },
+
+        // đang tạm bỏ
         async addRowChildren(
             valueIndex
         ) {
             const dataTemp = this.arrRowWatchDetail.find(el => el.key === valueIndex)
             const grWotkTemp = dataTemp.grWork.find((el) => el.value === dataTemp.input.inputMaTo)
+            // console.log(dataTemp)
             const newData = {
                 ...dataTemp.dataParent, malosx: dataTemp.input.inputMaLo,
                 soluonglsx: dataTemp.input.inputSoLuong, ngaybd: dataTemp.input.inputDateOpen,
@@ -862,7 +769,8 @@ export default {
                     ngaykt: dataTemp.input.inputDateEnd,
                     createdAt: this.form.createdAt,
                     createdBy: this.form.createdBy,
-                    status: 0,
+                    status: 1,
+                    status_tinhluong: 0,
                     datinhluong: 0,
                     stopday_losx: "",
                     tongdat: 0,
@@ -889,7 +797,8 @@ export default {
                     ngaykt: dataTemp.input.inputDateEnd,
                     createdAt: this.form.createdAt,
                     createdBy: this.form.createdBy,
-                    status: 0,
+                    status: 1,
+                    status_tinhluong: 0,
                     datinhluong: 0,
                     stopday_losx: "",
                     tongdat: 0,
@@ -914,12 +823,12 @@ export default {
                     icon: "success",
                     title: "Tạo phiếu lô sản xuất thành công",
                 });
-                const dataChildren = await this.$axios.$get(
+                this.dataChildren = await this.$axios.$get(
                     `/api/lokehoach/getalllsxinkhpx?makh=${dataTemp?.dataParent?.makh}&makhpx=${dataTemp?.dataParent?.makhpx}&mapx=${dataTemp?.dataParent?.mapx}`
                 );
                 const dataNew = {
                     ...dataTemp,
-                    dataChildren: dataChildren,
+                    dataChildren: this.dataChildren,
                     input: {
                         inputMaTo: '',
                         inputMaLo: '',
@@ -936,36 +845,35 @@ export default {
             })
         },
 
-        async maspinlkh() {
-            this.maspinlokehoach = await this.$axios.$get('/api/lokehoach/hmsanphamlokhpx')
-        },
-
-        // lọc nhiều tiêu chí
+        // --------------------------------------------------------------------------------------
+        // Hàm lọc theo nhiều tiêu chí để cắt bớt độ dài dữ liệu
         async filterData() {
             // console.log(this.selectedOptions)
-            // console.log(this.Options_status)
+            // console.log(this.multiSearch_masp)
             this.isOpen = false
             this.isOpenst = false
 
             const mapxList = this.selectedOptions
-            const masp = this.selected
+            const masp = this.multiSearch_masp
             const status = this.Options_status
+            const nhomsp = this.multiSearch_nhomsp
 
 
-            // chọn lọc full
-            if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.selected != "") {
+            // chọn lọc  4 tiêu chí
+            if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp != "" && this.multiSearch_nhomsp != '') {
                 this.lokehoachpx = await this.$axios.$get(
                     `/api/lokehoach/filterfulldk`, {
                     params: {
                         mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
                         masp: masp,
                         status: status,
+                        nhomsp: nhomsp
                     },
                 }
                 );
             }
             // chỉ có mã px
-            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.selected == "") {
+            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_masp == "" && this.multiSearch_nhomsp == '') {
                 this.lokehoachpx = await this.$axios.$get(
                     `/api/lokehoach/filteronlymapx`, {
                     params: {
@@ -975,7 +883,7 @@ export default {
                 );
             }
             // chỉ có mã px và mã sp
-            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.selected != "") {
+            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_masp != "" && this.multiSearch_nhomsp == '') {
                 this.lokehoachpx = await this.$axios.$get(
                     `/api/lokehoach/filteronlymapxandmasp`, {
                     params: {
@@ -985,8 +893,19 @@ export default {
                 }
                 );
             }
+            // chỉ có mã px và nhomsp
+            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_masp == "" && this.multiSearch_nhomsp != '') {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlymapxandnhomsp`, {
+                    params: {
+                        mapx: mapxList,
+                        nhomsp: nhomsp
+                    },
+                }
+                );
+            }
             // chỉ có mã px và status
-            else if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.selected == "") {
+            else if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp == "" && this.multiSearch_nhomsp == '') {
                 this.lokehoachpx = await this.$axios.$get(
                     `/api/lokehoach/filteronlymapxandstatus`, {
                     params: {
@@ -997,7 +916,7 @@ export default {
                 );
             }
             // lọc mỗi trạng thái
-            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.selected == "") {
+            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.multiSearch_masp == "" && this.multiSearch_nhomsp == '') {
                 this.lokehoachpx = await this.$axios.$get(
                     `/api/lokehoach/filteronlystatus`, {
                     params: {
@@ -1008,7 +927,7 @@ export default {
             }
 
             // lọc mỗi mã sản phẩm
-            else if (!this.selectedOptions.length && !this.Options_status.length && this.selected != "") {
+            else if (!this.selectedOptions.length && !this.Options_status.length && this.multiSearch_masp != "" && this.multiSearch_nhomsp == '') {
                 this.lokehoachpx = await this.$axios.$get(
                     `/api/lokehoach/filteronlymasp`, {
                     params: {
@@ -1019,7 +938,7 @@ export default {
             }
 
             // lọc sản phẩm + trạng thái
-            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.selected != "") {
+            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.multiSearch_masp != "" && this.multiSearch_nhomsp == '') {
                 this.lokehoachpx = await this.$axios.$get(
                     `/api/lokehoach/filteronlymaspandstatus`, {
                     params: {
@@ -1030,116 +949,89 @@ export default {
                 );
             }
 
-        },
-
-        // các hàm phục vụ tính toán
-        // hàm bind v-model input type date
-        getDate(value) {
-            if (!value) {
-                return null;
+            // lọc mỗi nhóm px
+            else if (!this.selectedOptions.length && !this.Options_status.length && this.multiSearch_masp == "" && this.multiSearch_nhomsp != '') {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlynhomsp`, {
+                    params: {
+                        nhomsp: nhomsp,
+                    },
+                }
+                );
             }
-            return new Date(value);
-        },
 
-        // search in table
-        sort: function (s) {
-            //if s == current sort, reverse
-            if (s === this.currentSort) {
-                this.currentSortDir = this.currentSortDir === 'asc' ? 'desc' : 'asc';
+            // lọc mỗi nhóm sp và sản phẩm
+            else if (!this.selectedOptions.length && !this.Options_status.length && this.multiSearch_masp != "" && this.multiSearch_nhomsp != '') {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlynhomspandmasp`, {
+                    params: {
+                        nhomsp: nhomsp,
+                        masp: masp
+                    },
+                }
+                );
             }
-            this.currentSort = s;
-        },
 
-        nextPage: function () {
-            if ((this.currentPage * this.pageSize) < this.filteredsllosx.length) this.currentPage++;
-        },
-        prevPage: function () {
-            if (this.currentPage > 1) this.currentPage--;
-        },
-        onChange_pageSize(e) {
-            var id = e.target.value;
-            // var name = e.target.options[e.target.options.selectedIndex].text;
-            // console.log('id ',id );
-            // console.log('name ',name );
-            this.pageSize = id;
-        },
-
-        // thay đổi status
-        onChange_status(e) {
-            // 0: chưa đk; 1: dự kiến đăng ký (DK); 2: sản xuất (SX); 3: hoàn thành (HT)
-            var id = e.target.value;
-            // var name = e.target.options[e.target.options.selectedIndex].text;
-            // console.log('id ',id );
-            // console.log('name ',name );
-            // this.pageSize = id;
-            let dt = id
-            // console.log(dt)
-            this.status = dt
-        },
-
-        // các hàm get dữ liệu
-        // show ra danh sách tất cả các lô kế hoạch phân xưởng sắp xếp theo phân xưởng
-        async showAllLokhpx() {
-            this.lokehoachpx = await this.$axios.$get(
-                `/api/lokehoach/getallkehoachphanxuong`
-            );
-            this.search_timestart = ""
-            this.search_timeend = ""
-            this.multiSearch_masp = ""
-            this.multiSearch_nhomsp = ""
-            this.Options_status = []
-            this.isOpen = false
-            this.isOpenst = false
-            this.selectedOptions = []
-            this.selected = ""
-        },
-
-        // get all phân xưởng 
-        async showAllPx() {
-            this.phanxuong = await this.$axios.$get(`/api/phongban/allphanxuong`);
-        },
-
-        // bấm vào chọn phân xưởng khi lọc
-        async getWithPX(e) {
-            var name = e.target.options[e.target.options.selectedIndex].text;
-            // console.log(name)
-            let position = name.split("--");
-            let p1 = position[0].trim();
-            let p2 = position[1].trim();
-            this.search_maxuong = p1;
-            this.search_tenxuong = p2;
-            this.lokehoachpx = await this.$axios.$get(
-                `/api/lokehoach/getallkehoachpxwithmapx?mapx=${this.search_maxuong}`
-            );
-            this.arrRowWatchDetail = []
-        },
-
-        // click vào ô mã kế hoạch
-        async click_Add_Losanxuat(data) {
-            this.checkViewRegLsx = true;
-            // khi click vào ô mã lô đó thì cái biến this.showLophanxuong chính là dữ liệu của row đó, dữ liệu lô kế hoạch đó
-            this.showLophanxuong = data
-            // console.log(this.showLophanxuong)
-            let turn = 1;
-            let length = this.items.length;
-            while (turn <= length) {
-                this.deleteRow(this.items.length - turn);
-                turn += 1;
+            // lọc mỗi nhóm sp và trạng thái
+            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.multiSearch_masp == "" && this.multiSearch_nhomsp != '') {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlynhomspandstatus`, {
+                    params: {
+                        nhomsp: nhomsp,
+                        status: status
+                    },
+                }
+                );
             }
-            // show ra các lô sản xuất đã đăng ký
-            this.losanxuat = await this.$axios.$get(
-                `/api/lokehoach/getalllsxinkhpx?makh=${this.showLophanxuong.makh}&makhpx=${this.showLophanxuong.makhpx}&mapx=${this.showLophanxuong.mapx}`
-            );
-            // console.log(this.losanxuat)
+
+            // lọc xưởng, nhóm sp và status
+            else if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp == "" && this.multiSearch_nhomsp != '') {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlypxandnhomspandstatus`, {
+                    params: {
+                        nhomsp: nhomsp,
+                        status: status,
+                        mapx: mapxList,
+                    },
+                }
+                );
+            }
+
+            // lọc xưởng, mã sp và status
+            else if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp != "" && this.multiSearch_nhomsp == '') {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlypxandmaspandstatus`, {
+                    params: {
+                        masp: masp,
+                        status: status,
+                        mapx: mapxList,
+                    },
+                }
+                );
+            }
 
         },
 
+        // --------------------------------------------------------------------------------------
+        // Các hàm xử lý this.items - kiểm soát việc thêm bớt các lô sản xuất mới
         // xóa items
         deleteRow(index) {
             this.items.splice(index, 1);
         },
-
+        // copy dữ liệu của lô hiện hành
         copyadd(data) {
+            // for (let i = 0; i < this.items.length; i++) {
+            //     this.sumSoluonglkhpx += this.items[i].soluongkhpx
+            // }
+            // for (let item of this.items) {
+            //     this.sumSoluonglkhpx += parseInt(item.soluonglsx, 10);
+            // }
+            // console.log(this.sumSoluonglkhpx)
+            // gán số lượng lô sản xuất cho biến so sánh
+
+            // this.sumSoluonglkhpx là số lượng của tổng lô sản xuất mà kế hoạch này đã sản xuất, ví dụ 1200 cho 2 lô 1 lô 600 cái
+            // bây h bấm copy thêm (thì số lượng chỉ mới nằm ở items), vậy phải tổng cả 2 cái lại rồi so xem với soluong của lô kh phân xưởng
+
             this.items.push({
                 kehoachnam: data.kehoachnam,
                 makh: data.makh,
@@ -1154,6 +1046,7 @@ export default {
                 soluong: data.soluong,
                 nhomluong: data.nhomluong,
                 soluonglsx: data.soluonglsx,
+                soluongkhpx: 0,
                 ngaybd: data.ngaybd,
                 ngaykt: data.ngaykt,
                 tongdat: data.tongdat,
@@ -1161,7 +1054,8 @@ export default {
                 ghichu: data.ghichu,
                 createdAt: null,
                 createdBy: "",
-                status: 0,
+                status: 1,
+                status_tinhluong: 0,
                 datinhluong: 0,
                 stopday_losx: "",
                 nhomto: [
@@ -1173,20 +1067,30 @@ export default {
                     },
                 ],
             });
+
         },
 
         // bấm đăng ký lô kế hoạch phân xưởng
-        async addLosanxuat() {
+        async addLosanxuat(dataAdd, value) {
+            // console.log(value)
+            // dựa vào số lượng lô kế hoạch phân xưởng để tính toán ra số lô cần sản xuất
+            // ví dụ 2500 cái thì chia 6 ngày làm việc tính ra số lô cần làm và tự động render ra các lô luôn
+            // console.log(dataAdd.soluongkhpx)
+            // Chia lấy phần nguyên
+            // let number_lsx = Math.floor(dataAdd.soluongkhpx / 6);
+            // console.log(number_lsx)
+
+
             // lấy mã nhóm lương dựa vào mã sp và mã phân xưởng
-            if (this.showLophanxuong.mapx.trim() == "PXD" || this.showLophanxuong.mapx.trim() == "AL_PXD" || this.showLophanxuong.mapx.trim() == "DV_PXD") {
+            if (dataAdd.mapx.trim() == "PXD" || dataAdd.mapx.trim() == "AL_PXD" || dataAdd.mapx.trim() == "DV_PXD") {
                 let phanxuong = "PXD";
                 this.nhomluong = await this.$axios.$get(
-                    `/api/lokehoach/getnhomluongtheompx?mapx=${phanxuong}&mavt=${this.showLophanxuong.maspkhpx}`
+                    `/api/lokehoach/getnhomluongtheompx?mapx=${phanxuong}&mavt=${dataAdd.maspkhpx}`
                 );
                 // console.log(this.nhomluong[0].nhomluong);
             } else {
                 this.nhomluong = await this.$axios.$get(
-                    `/api/lokehoach/getnhomluongtheompx?mapx=${this.showLophanxuong.mapx}&mavt=${this.showLophanxuong.maspkhpx}`
+                    `/api/lokehoach/getnhomluongtheompx?mapx=${dataAdd.mapx}&mavt=${dataAdd.maspkhpx}`
                 );
                 // console.log(this.nhomluong[0].nhomluong);
             }
@@ -1199,33 +1103,37 @@ export default {
 
             // check xem xưởng này có tổ không?
             this.tonhom = await this.$axios.$get(
-                `/api/phongban/alltoinxuong?mapx=${this.showLophanxuong.mapx}`
+                `/api/phongban/alltoinxuong?mapx=${dataAdd.mapx}`
             );
             this.isaddlosx = 1;
+
             this.items.push({
-                kehoachnam: this.showLophanxuong.kehoachnam,
-                makh: this.showLophanxuong.makh,
-                makhpx: this.showLophanxuong.makhpx,
-                malosx: this.showLophanxuong.makhpx.trim() + '-' + '01',
-                mapx: this.showLophanxuong.mapx,
-                tenpx: this.showLophanxuong.tenpx,
+                kehoachnam: dataAdd.kehoachnam,
+                makh: dataAdd.makh,
+                makhpx: dataAdd.makhpx,
+                malosx: dataAdd.maspkhpx.trim() + '-' + dataAdd.makhpx.trim() + '-' + '01',
+                mapx: dataAdd.mapx,
+                tenpx: dataAdd.tenpx,
                 mato: "",
                 tento: "",
-                masp: this.showLophanxuong.maspkhpx,
-                tensp: this.showLophanxuong.tenspkhpx,
-                soluong: this.showLophanxuong.soluongkhpx,
+                masp: dataAdd.maspkhpx,
+                tensp: dataAdd.tenspkhpx,
+                soluong: dataAdd.soluongkhpx,
                 nhomluong: nhom_luong,
                 soluonglsx: "",
-                ngaybd: this.showLophanxuong.ngaybdkhpx,
-                ngaykt: this.showLophanxuong.ngayktkhpx,
+                soluongkhpx: 0,
+                ngaybd: dataAdd.ngaybdkhpx,
+                ngaykt: dataAdd.ngayktkhpx,
                 tongdat: "",
                 tonghong: "",
                 ghichu: "",
-                createdAt: null,
-                createdBy: "",
-                status: 0,
+                createdAt: this.form.createdAt,
+                createdBy: this.form.createdBy,
+                status: 1,
+                status_tinhluong: 0,
                 datinhluong: 0,
                 stopday_losx: "",
+                updatedAt: "",
                 nhomto: [
                     {
                         maxuong: "",
@@ -1236,37 +1144,6 @@ export default {
                 ],
             });
             // console.log(this.items)
-        },
-
-        // Bấm vào chọn phân xưởng // Hiện đang không cần sử dụng
-        async getInfoPX(e, selectedIndex, index) {
-            var name = e.target.options[e.target.options.selectedIndex].text;
-            // console.log(name)
-            let position = name.split("-");
-            let p1 = position[0].trim();
-            // console.log(p1)
-            this.tonhom = await this.$axios.$get(
-                `/api/phongban/alltoinxuong?mapx=${p1}`
-            );
-            // console.log(this.tonnhom)
-            if (this.tonhom.length > 0) {
-                for (let i = 0; i < this.items.length; i++) {
-                    if (i == index) {
-                        this.items[i].nhomto = [];
-
-                        for (let k = 0; k < this.tonhom.length; k++) {
-                            let cn = {
-                                maxuong: this.tonhom[k].mapx.trim(),
-                                tenxuong: this.tonhom[k].tenpx.trim(),
-                                tento: this.tonhom[k].tento.trim(),
-                                mato: this.tonhom[k].mato.trim(),
-                            };
-                            this.items[i].nhomto.push(cn);
-                            // console.log(cn)
-                        }
-                    }
-                }
-            }
         },
 
         // Bấm vào chọn tổ
@@ -1290,84 +1167,32 @@ export default {
 
         },
 
-        // tìm theo điều kiện đơn lẻ
-        // tìm lọc số liệu lô kế hoạch phân xưởng theo nhóm sản phẩm
-        async searhNhomsp() {
-            this.lokehoachpx = await this.$axios.$get(
-                `/api/lokehoach/searchnhomsplokhpx?nhomsp=${this.search_nhomsp}`
-            );
-            if (this.lokehoachpx.length <= 0) {
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: "top-end",
-                    showConfirmButton: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                        toast.addEventListener("mouseenter", Swal.stopTimer);
-                        toast.addEventListener("mouseleave", Swal.resumeTimer);
-                    },
-                });
-                Toast.fire({
-                    icon: "success",
-                    title: "Không tìm thấy số liệu với nhóm này",
-                });
-            }
-        },
-        // tìm lọc số liệu lô kế hoạch phân xưởng theo sản phẩm 
-        async searhSanpham() {
-            this.lokehoachpx = await this.$axios.$get(
-                `/api/lokehoach/searchsplokhpx?maspkhpx=${this.search_sanpham}`
-            );
-            if (this.lokehoachpx.length <= 0) {
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: "top-end",
-                    showConfirmButton: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                        toast.addEventListener("mouseenter", Swal.stopTimer);
-                        toast.addEventListener("mouseleave", Swal.resumeTimer);
-                    },
-                });
-                Toast.fire({
-                    icon: "success",
-                    title: "Không tìm thấy số liệu với sản phẩm này",
-                });
-            }
-        },
-        // tìm lọc số liệu lô kế hoạch phân xưởng theo thời gian kết thúc của lô kế hoạch phân xưởng
-        // tìm tất cả các lô có ngày kết thúc bé thua ngày cần tìm
-        async searhtgketthuc() {
-            this.lokehoachpx = await this.$axios.$get(
-                `/api/lokehoach/searchlokhpxtheongaykt?ngayktkhpx=${this.search_timeend}`
-            );
-            if (this.lokehoachpx.length <= 0) {
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: "top-end",
-                    showConfirmButton: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                        toast.addEventListener("mouseenter", Swal.stopTimer);
-                        toast.addEventListener("mouseleave", Swal.resumeTimer);
-                    },
-                });
-                Toast.fire({
-                    icon: "success",
-                    title: "Không tìm thấy số liệu với thời gian này",
-                });
-            }
-        },
-
-        // showdata sau khi nhóm tìm
-        async showData() {
-            // console.log(this.search_timestart)
-            // console.log(this.search_timeend)
-            if (this.search_maxuong == '' || this.search_timestart == '' || this.search_timeend == '') {
-                if (this.lokehoachpx.length <= 0) {
+        // --------------------------------------------------------------------------------------
+        // 4: Các hàm CRUD
+        // Create
+        async ghidulieu(datalkh) {
+            // console.log(datalkh)
+            // tính toán lại số lượng lô trước khi ghi thêm dữ liệu
+            // 1. tính số lượng những lô đã đăng ký hoặc đang sx
+            // nếu đã có lô được dk hoặc sx
+            if (this.$children) {
+                this.sumSoluonglkhpx = 0
+                for (let item of this.dataChildren) {
+                    this.sumSoluonglkhpx += parseInt(item.soluonglsx, 10);
+                }
+                // console.log('Tổng lô sản xuất đã làm: ' + this.sumSoluonglkhpx)
+                // 2. tính tổng số lượng những lô trong items chuẩn bị được thêm
+                this.sumItemssl = 0
+                for (let item of this.items) {
+                    this.sumItemssl += parseInt(item.soluonglsx, 10);
+                }
+                // console.log('Tổng lô sản xuất cb thêm: ' + this.sumItemssl)
+                this.sumAll = this.sumSoluonglkhpx + this.sumItemssl
+                // console.log('Tổng toàn bộ: ' + this.sumAll)
+                // console.log(datalkh)
+                const slvuot = this.sumAll - parseInt(datalkh.soluongkhpx)
+                // console.log(slvuot)
+                if (this.sumAll > parseInt(datalkh.soluongkhpx)) {
                     const Toast = Swal.mixin({
                         toast: true,
                         position: "top-end",
@@ -1381,53 +1206,162 @@ export default {
                     });
                     Toast.fire({
                         icon: "error",
-                        title: "Chọn đủ thông tin lọc",
+                        title: "Số lượng lô sản xuất đã vượt định mức kế hoạch: " + slvuot,
                     });
+                } else {
+                    let isDuplicate = false;
+                    const allItems = [...this.items, ...this.dataChildren]; // Tạo mảng mới chứa cả items và dataChildren
+                    for (let i = 0; i < allItems.length; i++) {
+                        for (let j = i + 1; j < allItems.length; j++) {
+                            if (allItems[i].malosx === allItems[j].malosx) {
+                                // console.log(`Tên khách hàng "${allItems[i].malosx}" bị trùng!`);
+                                const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: "top-end",
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                        toast.addEventListener("mouseenter", Swal.stopTimer);
+                                        toast.addEventListener("mouseleave", Swal.resumeTimer);
+                                    },
+                                });
+                                Toast.fire({
+                                    icon: "error",
+                                    title: `Có mã lô sản xuất "${allItems[i].malosx}" bị trùng, xem lại!`,
+                                });
+                                isDuplicate = true;
+                                break;
+                            }
+                        }
+                        if (isDuplicate) {
+                            break;
+                        }
+                    }
+                    if (!isDuplicate) {
+                        try {
+                            for (let i = 0; i < this.items.length; i++) {
+                                // console.log('this.items[i]', this.items[i]);
+                                this.$axios.$post("/api/ketoan/addphieulosx", this.items[i]);
+
+                                const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: "top-end",
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                        toast.addEventListener("mouseenter", Swal.stopTimer);
+                                        toast.addEventListener("mouseleave", Swal.resumeTimer);
+                                    },
+                                });
+                                Toast.fire({
+                                    icon: "success",
+                                    title: "Tạo phiếu lô sản xuất thành công",
+                                });
+                                // this.dataChildren.push(this.items[i]);
+                            }
+                            this.dataChildren.push(...this.items);
+                            let turn = 1;
+                            let length = this.items.length;
+                            while (turn <= length) {
+                                this.deleteRow(this.items.length - turn);
+                                turn += 1;
+                            }
+                        } catch (error) {
+                            console.log(error);
+                        }
+                    }
                 }
-            } else {
-                this.lokehoachpx = await this.$axios.$get(
-                    `/api/lokehoach/getallkehoachpxwithpxorderbyngaykt?mapx=${this.search_maxuong}&ngaybdkhpx=${this.search_timestart}&ngayktkhpx=${this.search_timeend}`
-                );
+            }
+            // nếu chưa có lô nào được dk or sx
+            else {
+                this.sumItemssl = 0
+                for (let item of this.items) {
+                    this.sumItemssl += parseInt(item.soluonglsx, 10);
+                }
+                if (this.sumItemssl > parseInt(datalkh.soluongkhpx)) {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener("mouseenter", Swal.stopTimer);
+                            toast.addEventListener("mouseleave", Swal.resumeTimer);
+                        },
+                    });
+                    Toast.fire({
+                        icon: "error",
+                        title: "Số lượng lô sản xuất đã vượt định mức kế hoạch: " + slvuot,
+                    });
+                } else {
+                    let isDuplicate = false;
+                    for (let i = 0; i < this.items.length; i++) {
+                        for (let j = i + 1; j < this.items.length; j++) {
+                            if (this.items[i].malosx === this.items[j].malosx) {
+                                // console.log(`Tên khách hàng "${this.items[i].malosx}" bị trùng!`);
+                                const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: "top-end",
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                        toast.addEventListener("mouseenter", Swal.stopTimer);
+                                        toast.addEventListener("mouseleave", Swal.resumeTimer);
+                                    },
+                                });
+                                Toast.fire({
+                                    icon: "error",
+                                    title: `Có mã lô sản xuất "${this.items[i].malosx}" bị trùng, xem lại!`,
+                                });
+                                isDuplicate = true;
+                                break;
+                            }
+                        }
+                        if (isDuplicate) {
+                            break;
+                        }
+                    }
+                    if (!isDuplicate) {
+                        try {
+                            for (let i = 0; i < this.items.length; i++) {
+                                // console.log('this.items[i]', this.items[i]);
+                                this.$axios.$post("/api/ketoan/addphieulosx", this.items[i]);
 
+                                const Toast = Swal.mixin({
+                                    toast: true,
+                                    position: "top-end",
+                                    showConfirmButton: false,
+                                    timer: 3000,
+                                    timerProgressBar: true,
+                                    didOpen: (toast) => {
+                                        toast.addEventListener("mouseenter", Swal.stopTimer);
+                                        toast.addEventListener("mouseleave", Swal.resumeTimer);
+                                    },
+                                });
+                                Toast.fire({
+                                    icon: "success",
+                                    title: "Tạo phiếu lô sản xuất thành công",
+                                });
+                                // this.dataChildren.push(this.items[i]);
+                            }
+                            this.dataChildren.push(...this.items);
+                            let turn = 1;
+                            let length = this.items.length;
+                            while (turn <= length) {
+                                this.deleteRow(this.items.length - turn);
+                                turn += 1;
+                            }
+                        } catch (error) {
+                            console.log(error);
+                        }
+                    }
+                }
             }
         },
-
-        async ghidulieu() {
-            // console.log(this.items)
-            for (let i = 0; i < this.items.length; i++) {
-                console.log('this.items[i]', this.items[i]);
-                this.$axios.$post("/api/ketoan/addphieulosx", this.items[i]);
-
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: "top-end",
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                        toast.addEventListener("mouseenter", Swal.stopTimer);
-                        toast.addEventListener("mouseleave", Swal.resumeTimer);
-                    },
-                });
-                Toast.fire({
-                    icon: "success",
-                    title: "Tạo phiếu lô sản xuất thành công",
-                });
-            }
-
-            // show ra các lô sản xuất đã đăng ký
-            this.losanxuat = await this.$axios.$get(
-                `/api/lokehoach/getalllsxinkhpx?makh=${this.showLophanxuong.makh}&makhpx=${this.showLophanxuong.makhpx}&mapx=${this.showLophanxuong.mapx}`
-            );
-
-            let turn = 1;
-            let length = this.items.length;
-            while (turn <= length) {
-                this.deleteRow(this.items.length - turn);
-                turn += 1;
-            }
-        },
-
 
         // update lô sản xuất
         async onUpdate(data) {
@@ -1437,6 +1371,10 @@ export default {
                     `/api/lokehoach/losanxuat/${data._id}`,
                     data
                 );
+
+                // Sắp xếp lại bảng theo ngày kết thúc ngay lập tức
+                this.dataChildren.sort((a, b) => new Date(a.ngaykt) - new Date(b.ngaykt));
+
                 const Toast = Swal.mixin({
                     toast: true,
                     position: "top-end",
@@ -1516,14 +1454,52 @@ export default {
             }
         },
 
+        // xóa lô sản xuất
+        async onDeleteLsx(pl) {
+            swal({
+                title: "Bạn muốn xóa?",
+                text: "Chỉ xóa được những lô chưa được sản xuất!",
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    if (pl.status == 1 && pl.status_tinhluong == false && pl.datinhluong == false) {
+                        this.$axios.$delete(`/api/lokehoach/losx/${pl._id}`)
+                            .then(response => {
+                                const index = this.dataChildren.findIndex(lsx => lsx._id === pl._id) // find the post index 
+                                if (~index) // if the post exists in array
+                                    this.dataChildren.splice(index, 1) //delete the post
+                            });
+                    } else {
+                        const Toast = Swal.mixin({
+                            toast: true,
+                            position: "top-end",
+                            showConfirmButton: false,
+                            timer: 3000,
+                            timerProgressBar: true,
+                            didOpen: (toast) => {
+                                toast.addEventListener("mouseenter", Swal.stopTimer);
+                                toast.addEventListener("mouseleave", Swal.resumeTimer);
+                            },
+                        });
+                        Toast.fire({
+                            icon: "error",
+                            title: "Lô đã được đưa vào sản xuất, không thể xóa!!!",
+                        });
+                    }
+
+                } else {
+                    swal("Bạn đã hủy xóa");
+                }
+            });
+        },
+
     },
 };
 </script>
 
 <style scoped>
 .table_wrapper {
-    display: block;
-    overflow-x: auto;
     white-space: nowrap;
 }
 
@@ -1563,6 +1539,7 @@ tr:hover {
 .select-wrapper {
     position: relative;
     width: 200px;
+    /* height: 38px; */
 }
 
 .select-header {
@@ -1573,6 +1550,10 @@ tr:hover {
     background-color: #f2f2f2;
     border: 1px solid #ddd;
     cursor: pointer;
+    height: 29px;
+    text-align: center;
+    color: #cb4b10;
+    font-weight: 700;
 }
 
 .arrow {
@@ -1605,9 +1586,57 @@ tr:hover {
     padding-top: 5px;
     padding-left: 5px;
     padding-bottom: 5px;
+    text-align: left;
 }
 
 .select-options.open {
     display: block;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 5px;
+    padding-bottom: 10px;
+}
+
+.pagination button {
+    margin: 0 5px;
+    padding: 5px 10px;
+    border: none;
+    background-color: #ccc;
+    color: #fff;
+    cursor: pointer;
+}
+
+.pagination button.active {
+    background-color: #cb4b10;
+}
+
+.autocomplete {
+    position: relative;
+}
+
+.autocomplete-items {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #d4d4d4;
+    border-bottom: none;
+    border-top: none;
+    z-index: 99;
+    top: 100%;
+    left: 0;
+    right: 0;
+}
+
+.autocomplete-item {
+    padding: 4px;
+    cursor: pointer;
+    border-bottom: 1px solid #d4d4d4;
+    font-size: small;
+}
+
+.autocomplete-item:hover {
+    background-color: #fffaeb;
 }
 </style>

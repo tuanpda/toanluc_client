@@ -143,14 +143,21 @@
                             <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
                                 item.soluong
                             }}</td>
-                            <td style="font-size: small; text-align: center">
-                                <span v-if="item.status == false">
-                                    <i style="color: #ffd863" class="fa fa-circle"></i>
-                                </span>
-                                <span v-else>
-                                    <i style="color: #00947e" class="fa fa-circle"></i>
-                                </span>
-                            </td>
+                            <template>
+                                <td v-if="item.status == 1" style="font-size: small; text-align: center; "><span
+                                        style="color: white; font-weight: bold; background-color: red; padding-left: 7px; padding-right: 7px;">DK</span>
+                                </td>
+                                <td v-else-if="item.status == 2" style="font-size: small; text-align: center;">
+                                    <span
+                                        style="color: red; font-weight: bold; background-color: yellow; padding-left: 7px; padding-right: 7px;">SX</span>
+                                </td>
+                                <td v-else-if="item.status == 3" style="font-size: small; text-align: center;">
+                                    <span
+                                        style="color: white; font-weight: bold; background-color: green; padding-left: 7px; padding-right: 7px;">HT</span>
+                                </td>
+                                <td v-else style="font-size: small; text-align: center;">
+                                </td>
+                            </template>
                             <td
                                 style="font-size: small; text-align: center; background-color: #effaf5; color: red; font-weight: 600;">
                                 {{
@@ -1060,7 +1067,7 @@ export default {
 
         // update lô kế hoạch phân xưởng
         async onUpdateKehoachpx(data) {
-            console.log(data)
+            // console.log(data)
             try {
                 data.updatedAt = this.form.updatedAt
                 this.$axios.$patch(
