@@ -128,9 +128,10 @@
                                 item.makhpx
                             }}</td>
                             <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
-                                item.nhomsp
+                                item.nhomthanhpham
                             }}</td>
-                            <td style="font-size: small; background-color: #effaf5; text-align: center;">{{ item.masp }}
+                            <td style="font-size: small; background-color: #effaf5; text-align: center;">{{ item.mathanhpham
+                            }}
                             </td>
 
                             <td style="font-size: small; background-color: #effaf5;">{{ item.tensp }}</td>
@@ -460,6 +461,8 @@ export default {
                     createdBy: "",
                     status: 0,
                     nhomsp: "",
+                    nhomthanhpham: "",
+                    mathanhpham: "",
                     sanpham: [
                         {
                             masp: "",
@@ -807,6 +810,7 @@ export default {
 
         // bấm đăng ký lô kế hoạch phân xưởng
         async addLokhpx() {
+            console.log(this.dataLonm)
             this.isphanxuong = 1;
             this.items.push({
                 kehoachnam: this.dataLonm.makh,
@@ -831,6 +835,8 @@ export default {
                 createdBy: "",
                 status: 0,
                 nhomsp: this.dataLonm.nhomsp,
+                nhomthanhpham: this.dataLonm.nhomthanhpham,
+                mathanhpham: this.dataLonm.mathanhpham,
                 sanpham: [
                     {
                         masp: "",
@@ -838,6 +844,7 @@ export default {
                     },
                 ],
             });
+            console.log(this.items)
         },
 
         // copy dữ liệu đăng ký
@@ -882,6 +889,9 @@ export default {
                 createdAt: data.createdAt,
                 createdBy: data.createdBy,
                 status: 0,
+                nhomsp: data.nhomsp,
+                mathanhpham: data.mathanhpham,
+                nhomthanhpham: data.nhomthanhpham,
                 sanpham: [
                     {
                         masp: data.maspkhpx,
@@ -1006,7 +1016,7 @@ export default {
 
         // ghi dữ liệu đăng ký lô kế hoạch phân xưởng
         async ghidulieu() {
-            // console.log(this.items)
+            console.log(this.items)
             if (this.items.length <= 0) {
                 const Toast = Swal.mixin({
                     toast: true,

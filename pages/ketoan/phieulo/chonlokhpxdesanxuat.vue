@@ -42,17 +42,30 @@
                             </td>
                             <td style="width: 10.5%;">
                                 <div class="autocomplete">
-                                    <input class="input is-small is-info" type="text" v-model="multiSearch_nhomsp"
-                                        @input="onInput_nhomsp" placeholder="Chọn nhóm sản phẩm">
-                                    <div class="autocomplete-items" v-if="suggestions_nhomsp.length">
-                                        <div class="autocomplete-item" v-for="suggestion_nhomsp in suggestions_nhomsp"
-                                            @click="selectSuggestion_nhomsp(suggestion_nhomsp)">
-                                            {{ suggestion_nhomsp }}
+                                    <input class="input is-small is-info" type="text" v-model="multiSearch_nhomtp"
+                                        @input="onInput_nhomsp" placeholder="Nhóm thành phẩm">
+                                    <div class="autocomplete-items" v-if="suggestions_nhomtp.length">
+                                        <div class="autocomplete-item" v-for="suggestion_nhomtp in suggestions_nhomtp"
+                                            @click="selectSuggestion_nhomsp(suggestion_nhomtp)">
+                                            {{ suggestion_nhomtp }}
                                         </div>
                                     </div>
                                 </div>
                             </td>
-                            <td style="width: 12%;">
+                            <!-- mã sp tạm thời thay bằng nhom tp -->
+                            <td style="width: 10.5%;">
+                                <div class="autocomplete">
+                                    <input class="input is-small is-danger" type="text" v-model="multiSearch_matp"
+                                        @input="onInput_matp" placeholder="Mã thành phẩm">
+                                    <div class="autocomplete-items" v-if="suggestions_matp.length">
+                                        <div class="autocomplete-item" v-for="suggestion_matp in suggestions_matp"
+                                            @click="selectSuggestion_matp(suggestion_matp)">
+                                            {{ suggestion_matp }}
+                                        </div>
+                                    </div>
+                                </div>
+                            </td>
+                            <!-- <td style="width: 12%;">
                                 <div class="autocomplete">
                                     <input class="input is-small is-danger" type="text" v-model="multiSearch_masp"
                                         @input="onInput" placeholder="Chọn sản phẩm">
@@ -63,7 +76,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </td>
+                            </td> -->
                             <td style="font-size: small; width: 10%;">
                                 <div class="select-wrapper">
                                     <div class="select-header" @click="isOpenst = !isOpenst">
@@ -116,7 +129,12 @@
                                 style="font-size: small; text-align: center; font-weight: 600; width: 4%">Mã kế hoạch
                                 PX
                             </td>
-
+                            <td @click="sortTable('nhomthanhpham')"
+                                style="font-size: small; text-align: center; font-weight: 600; width: 4%">Nhóm TP
+                            </td>
+                            <td @click="sortTable('mathanhpham')"
+                                style="font-size: small; text-align: center; font-weight: 600; width: 4%">Mã TP
+                            </td>
                             <td @click="sortTable('nhomsp')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 7%">Nhóm SP
                             </td>
@@ -159,6 +177,12 @@
                                 item.makhpx
                             }}
                             </td>
+                            <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
+                                item.nhomthanhpham
+                            }}</td>
+                            <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
+                                item.mathanhpham
+                            }}</td>
                             <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
                                 item.nhomsp
                             }}</td>
@@ -266,13 +290,17 @@ export default {
             isOpenst: false,
             statusArr: [{ masta: 1, tensta: "DK" }, { masta: 2, tensta: "SX" }, { masta: 3, tensta: "HT" }],
             multiSearch_masp: "",
-            multiSearch_nhomsp: "",
+            // lọc thay mã sp thành mã thành phẩm
+            multiSearch_matp: "",
+            multiSearch_nhomtp: "",
 
             // suggest input nhóm sản phẩm và mã sản phẩm
             suggestions: [],
-            suggestions_nhomsp: [],
+            suggestions_nhomtp: [],
+            suggestions_matp: [],
             maspinlokehoach: [],
-            nhomspinlokehoach: [],
+            matpinlokehoach: [],
+            nhomtpinlokehoach: [],
 
             // hiển thị đăng ký lô sản xuất
             checkViewRegLsx: false,
@@ -412,7 +440,8 @@ export default {
         this.showAllLokhpx()
         this.showAllPx()
         this.maspinlkh();
-        this.nhomspinlkh()
+        this.matpinlkh();
+        this.nhomtpinlkh()
     },
 
     computed: {
@@ -499,22 +528,40 @@ export default {
             this.suggestions = [];
         },
         // end suggest mã sản phẩm
+        // suggest input mã thành phẩm
+        onInput_matp() {
+            if (!this.multiSearch_matp) {
+                this.suggestions_matp = [];
+                return;
+            }
+            const MAX_SUGGESTIONS = 5; // Số lượng suggest tối đa
+            this.suggestions_matp = this.matpinlokehoach
+                .map((c) => c.mathanhpham)
+                .filter((mathanhpham) => mathanhpham.toLowerCase().includes(this.multiSearch_matp.toLowerCase()))
+                .map((mathanhpham) => mathanhpham.trim())
+                .slice(0, MAX_SUGGESTIONS);
+        },
+        selectSuggestion_matp(suggestion_matp) {
+            this.multiSearch_matp = suggestion_matp;
+            this.suggestions_matp = [];
+        },
+        // end suggest mã thành phẩm
         // suggest input nhóm sản phẩm
         onInput_nhomsp() {
-            if (!this.multiSearch_nhomsp) {
-                this.suggestions_nhomsp = [];
+            if (!this.multiSearch_nhomtp) {
+                this.suggestions_nhomtp = [];
                 return;
             }
             const MAX_SUGGESTIONS = 10; // Số lượng suggest tối đa
-            this.suggestions_nhomsp = this.nhomspinlokehoach
-                .map((c) => c.nhomsp)
-                .filter((nhomsp) => nhomsp.toLowerCase().includes(this.multiSearch_nhomsp.toLowerCase()))
-                .map((nhomsp) => nhomsp.trim())
+            this.suggestions_nhomtp = this.nhomtpinlokehoach
+                .map((c) => c.nhomthanhpham)
+                .filter((nhomthanhpham) => nhomthanhpham.toLowerCase().includes(this.multiSearch_nhomtp.toLowerCase()))
+                .map((nhomthanhpham) => nhomthanhpham.trim())
                 .slice(0, MAX_SUGGESTIONS);
         },
-        selectSuggestion_nhomsp(suggestion_nhomsp) {
-            this.multiSearch_nhomsp = suggestion_nhomsp;
-            this.suggestions_nhomsp = [];
+        selectSuggestion_nhomsp(suggestion_nhomtp) {
+            this.multiSearch_nhomtp = suggestion_nhomtp;
+            this.suggestions_nhomtp = [];
         },
         // end suggest nhóm sản phẩm
         // sắp xếp và phân trang
@@ -559,7 +606,8 @@ export default {
                 `/api/lokehoach/getallkehoachphanxuong`
             );
             this.multiSearch_masp = ""
-            this.multiSearch_nhomsp = ""
+            this.multiSearch_matp = ""
+            this.multiSearch_nhomtp = ""
             this.Options_status = []
             this.selectedOptions = []
             this.isOpen = false
@@ -574,9 +622,16 @@ export default {
         async maspinlkh() {
             this.maspinlokehoach = await this.$axios.$get('/api/lokehoach/hmsanphamlokhpx')
         },
-        async nhomspinlkh() {
-            this.nhomspinlokehoach = await this.$axios.$get('/api/lokehoach/nhomsanphamlokhpx')
-            // console.log(this.nhomspinlokehoach)
+        // lấy mã thành phẩm, mã sp và nhóm sản phẩm trong lô kế hoạch phân xưởng
+        async matpinlkh() {
+            this.matpinlokehoach = await this.$axios.$get('/api/lokehoach/matpinlokhpx')
+        },
+        async maspinlkh() {
+            this.maspinlokehoach = await this.$axios.$get('/api/lokehoach/hmsanphamlokhpx')
+        },
+        async nhomtpinlkh() {
+            this.nhomtpinlokehoach = await this.$axios.$get('/api/lokehoach/nhomthanhphamlokhpx')
+            // console.log(this.nhomtpinlokehoach)
         },
 
         // --------------------------------------------------------------------------------------
@@ -594,7 +649,157 @@ export default {
             // console.log(dt)
             this.status = dt
         },
-        // lọc nhiều tiêu chí
+        // lọc nhiều tiêu chí (mã sảnphaamr)
+        // async filterData() {
+        //     // console.log(this.selectedOptions)
+        //     // console.log(this.Options_status)
+        //     this.isOpen = false
+        //     this.isOpenst = false
+
+        //     const mapxList = this.selectedOptions
+        //     const masp = this.multiSearch_masp
+        //     const status = this.Options_status
+        //     const nhomsp = this.multiSearch_nhomtp
+
+        //     // chọn lọc full
+        //     if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp != "" && this.multiSearch_nhomtp != '') {
+        //         this.lokehoachpx = await this.$axios.$get(
+        //             `/api/lokehoach/filterfulldk`, {
+        //             params: {
+        //                 mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
+        //                 masp: masp,
+        //                 status: status,
+        //                 nhomsp: nhomsp
+        //             },
+        //         }
+        //         );
+        //     }
+        //     // chỉ có mã px
+        //     else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_masp == "" && this.multiSearch_nhomtp == '') {
+        //         this.lokehoachpx = await this.$axios.$get(
+        //             `/api/lokehoach/filteronlymapx`, {
+        //             params: {
+        //                 mapx: mapxList,
+        //             },
+        //         }
+        //         );
+        //     }
+        //     // chỉ có mã px và mã sp
+        //     else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_masp != "" && this.multiSearch_nhomtp == '') {
+        //         this.lokehoachpx = await this.$axios.$get(
+        //             `/api/lokehoach/filteronlymapxandmasp`, {
+        //             params: {
+        //                 mapx: mapxList,
+        //                 masp: masp
+        //             },
+        //         }
+        //         );
+        //     }
+        //     // chỉ có mã px và nhomsp
+        //     else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_masp == "" && this.multiSearch_nhomtp != '') {
+        //         this.lokehoachpx = await this.$axios.$get(
+        //             `/api/lokehoach/filteronlymapxandnhomsp`, {
+        //             params: {
+        //                 mapx: mapxList,
+        //                 nhomsp: nhomsp
+        //             },
+        //         }
+        //         );
+        //     }
+        //     // chỉ có mã px và status
+        //     else if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp == "" && this.multiSearch_nhomtp == '') {
+        //         this.lokehoachpx = await this.$axios.$get(
+        //             `/api/lokehoach/filteronlymapxandstatus`, {
+        //             params: {
+        //                 mapx: mapxList,
+        //                 status: status
+        //             },
+        //         }
+        //         );
+        //     }
+        //     // lọc mỗi trạng thái
+        //     else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.multiSearch_masp == "" && this.multiSearch_nhomtp == '') {
+        //         this.lokehoachpx = await this.$axios.$get(
+        //             `/api/lokehoach/filteronlystatus`, {
+        //             params: {
+        //                 status: status
+        //             },
+        //         }
+        //         );
+        //     }
+
+        //     // lọc mỗi mã sản phẩm
+        //     else if (!this.selectedOptions.length && !this.Options_status.length && this.multiSearch_masp != "" && this.multiSearch_nhomtp == '') {
+        //         this.lokehoachpx = await this.$axios.$get(
+        //             `/api/lokehoach/filteronlymasp`, {
+        //             params: {
+        //                 masp: masp
+        //             },
+        //         }
+        //         );
+        //     }
+
+        //     // lọc sản phẩm + trạng thái
+        //     else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.multiSearch_masp != "" && this.multiSearch_nhomtp == '') {
+        //         this.lokehoachpx = await this.$axios.$get(
+        //             `/api/lokehoach/filteronlymaspandstatus`, {
+        //             params: {
+        //                 masp: masp,
+        //                 status: status
+        //             },
+        //         }
+        //         );
+        //     }
+
+        //     // lọc mỗi nhóm px
+        //     else if (!this.selectedOptions.length && !this.Options_status.length && this.multiSearch_masp == "" && this.multiSearch_nhomtp != '') {
+        //         this.lokehoachpx = await this.$axios.$get(
+        //             `/api/lokehoach/filteronlynhomsp`, {
+        //             params: {
+        //                 nhomsp: nhomsp,
+        //             },
+        //         }
+        //         );
+        //     }
+
+        //     // lọc mỗi nhóm sp và sản phẩm
+        //     else if (!this.selectedOptions.length && !this.Options_status.length && this.multiSearch_masp != "" && this.multiSearch_nhomtp != '') {
+        //         this.lokehoachpx = await this.$axios.$get(
+        //             `/api/lokehoach/filteronlynhomspandmasp`, {
+        //             params: {
+        //                 nhomsp: nhomsp,
+        //                 masp: masp
+        //             },
+        //         }
+        //         );
+        //     }
+
+        //     // lọc mỗi nhóm sp và trạng thái
+        //     else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.multiSearch_masp == "" && this.multiSearch_nhomtp != '') {
+        //         this.lokehoachpx = await this.$axios.$get(
+        //             `/api/lokehoach/filteronlynhomspandstatus`, {
+        //             params: {
+        //                 nhomsp: nhomsp,
+        //                 status: status
+        //             },
+        //         }
+        //         );
+        //     }
+
+        //     // lọc xưởng, nhóm sp và status
+        //     else if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp == "" && this.multiSearch_nhomtp != '') {
+        //         this.lokehoachpx = await this.$axios.$get(
+        //             `/api/lokehoach/filteronlypxandnhomspandstatus`, {
+        //             params: {
+        //                 nhomsp: nhomsp,
+        //                 status: status,
+        //                 mapx: mapxList,
+        //             },
+        //         }
+        //         );
+        //     }
+
+        // },
         async filterData() {
             // console.log(this.selectedOptions)
             // console.log(this.Options_status)
@@ -602,25 +807,26 @@ export default {
             this.isOpenst = false
 
             const mapxList = this.selectedOptions
-            const masp = this.multiSearch_masp
+            // const masp = this.multiSearch_masp
+            const matp = this.multiSearch_matp
             const status = this.Options_status
-            const nhomsp = this.multiSearch_nhomsp
+            const nhomtp = this.multiSearch_nhomtp
 
             // chọn lọc full
-            if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp != "" && this.multiSearch_nhomsp != '') {
+            if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_matp != "" && this.multiSearch_nhomtp != '') {
                 this.lokehoachpx = await this.$axios.$get(
-                    `/api/lokehoach/filterfulldk`, {
+                    `/api/lokehoach/filterfulldkmtp`, {
                     params: {
                         mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
-                        masp: masp,
+                        matp: matp,
                         status: status,
-                        nhomsp: nhomsp
+                        nhomtp: nhomtp
                     },
                 }
                 );
             }
             // chỉ có mã px
-            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_masp == "" && this.multiSearch_nhomsp == '') {
+            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_matp == "" && this.multiSearch_nhomtp == '') {
                 this.lokehoachpx = await this.$axios.$get(
                     `/api/lokehoach/filteronlymapx`, {
                     params: {
@@ -629,30 +835,32 @@ export default {
                 }
                 );
             }
-            // chỉ có mã px và mã sp
-            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_masp != "" && this.multiSearch_nhomsp == '') {
+            // chỉ có mã px và mã tp
+            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_matp != "" && this.multiSearch_nhomtp == '') {
+                console.log(this.selectedOptions)
+
                 this.lokehoachpx = await this.$axios.$get(
-                    `/api/lokehoach/filteronlymapxandmasp`, {
+                    `/api/lokehoach/filteronlymapxandmatp`, {
                     params: {
                         mapx: mapxList,
-                        masp: masp
+                        matp: matp
                     },
                 }
                 );
             }
-            // chỉ có mã px và nhomsp
-            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_masp == "" && this.multiSearch_nhomsp != '') {
+            // chỉ có mã px và nhomtp
+            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_matp == "" && this.multiSearch_nhomtp != '') {
                 this.lokehoachpx = await this.$axios.$get(
-                    `/api/lokehoach/filteronlymapxandnhomsp`, {
+                    `/api/lokehoach/filteronlymapxandnhomtp`, {
                     params: {
                         mapx: mapxList,
-                        nhomsp: nhomsp
+                        nhomtp: nhomtp
                     },
                 }
                 );
             }
             // chỉ có mã px và status
-            else if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp == "" && this.multiSearch_nhomsp == '') {
+            else if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_matp == "" && this.multiSearch_nhomtp == '') {
                 this.lokehoachpx = await this.$axios.$get(
                     `/api/lokehoach/filteronlymapxandstatus`, {
                     params: {
@@ -663,7 +871,7 @@ export default {
                 );
             }
             // lọc mỗi trạng thái
-            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.multiSearch_masp == "" && this.multiSearch_nhomsp == '') {
+            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.multiSearch_matp == "" && this.multiSearch_nhomtp == '') {
                 this.lokehoachpx = await this.$axios.$get(
                     `/api/lokehoach/filteronlystatus`, {
                     params: {
@@ -673,71 +881,95 @@ export default {
                 );
             }
 
-            // lọc mỗi mã sản phẩm
-            else if (!this.selectedOptions.length && !this.Options_status.length && this.multiSearch_masp != "" && this.multiSearch_nhomsp == '') {
+            // lọc mỗi mã thành phẩm
+            else if (!this.selectedOptions.length && !this.Options_status.length && this.multiSearch_matp != "" && this.multiSearch_nhomtp == '') {
                 this.lokehoachpx = await this.$axios.$get(
-                    `/api/lokehoach/filteronlymasp`, {
+                    `/api/lokehoach/filteronlymatp`, {
                     params: {
-                        masp: masp
+                        matp: matp
                     },
                 }
                 );
             }
 
-            // lọc sản phẩm + trạng thái
-            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.multiSearch_masp != "" && this.multiSearch_nhomsp == '') {
+            // lọc thành phẩm + trạng thái
+            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.multiSearch_matp != "" && this.multiSearch_nhomtp == '') {
                 this.lokehoachpx = await this.$axios.$get(
-                    `/api/lokehoach/filteronlymaspandstatus`, {
+                    `/api/lokehoach/filteronlymatpandstatus`, {
                     params: {
-                        masp: masp,
+                        matp: matp,
                         status: status
                     },
                 }
                 );
             }
 
-            // lọc mỗi nhóm px
-            else if (!this.selectedOptions.length && !this.Options_status.length && this.multiSearch_masp == "" && this.multiSearch_nhomsp != '') {
+            // lọc mỗi nhóm thành phẩm
+            else if (!this.selectedOptions.length && !this.Options_status.length && this.multiSearch_matp == "" && this.multiSearch_nhomtp != '') {
                 this.lokehoachpx = await this.$axios.$get(
-                    `/api/lokehoach/filteronlynhomsp`, {
+                    `/api/lokehoach/filteronlynhomtp`, {
                     params: {
-                        nhomsp: nhomsp,
+                        nhomtp: nhomtp,
                     },
                 }
                 );
             }
 
-            // lọc mỗi nhóm sp và sản phẩm
-            else if (!this.selectedOptions.length && !this.Options_status.length && this.multiSearch_masp != "" && this.multiSearch_nhomsp != '') {
+            // lọc mỗi nhóm thành phẩm và mã thành phẩm
+            else if (!this.selectedOptions.length && !this.Options_status.length && this.multiSearch_matp != "" && this.multiSearch_nhomtp != '') {
                 this.lokehoachpx = await this.$axios.$get(
-                    `/api/lokehoach/filteronlynhomspandmasp`, {
+                    `/api/lokehoach/filteronlynhomtpandmatp`, {
                     params: {
-                        nhomsp: nhomsp,
-                        masp: masp
+                        nhomtp: nhomtp,
+                        matp: matp
                     },
                 }
                 );
             }
 
-            // lọc mỗi nhóm sp và trạng thái
-            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.multiSearch_masp == "" && this.multiSearch_nhomsp != '') {
+            // lọc mỗi nhóm tp và trạng thái
+            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.multiSearch_matp == "" && this.multiSearch_nhomtp != '') {
                 this.lokehoachpx = await this.$axios.$get(
-                    `/api/lokehoach/filteronlynhomspandstatus`, {
+                    `/api/lokehoach/filteronlynhomtpandstatus`, {
                     params: {
-                        nhomsp: nhomsp,
+                        nhomtp: nhomtp,
                         status: status
                     },
                 }
                 );
             }
 
-            // lọc xưởng, nhóm sp và status
-            else if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp == "" && this.multiSearch_nhomsp != '') {
+            // lọc nhóm thành phẩm; nhóm sản phẩm và trạng thái
+            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.multiSearch_matp != "" && this.multiSearch_nhomtp != '') {
                 this.lokehoachpx = await this.$axios.$get(
-                    `/api/lokehoach/filteronlypxandnhomspandstatus`, {
+                    `/api/lokehoach/filteronlynhomtpnhomtpstatus`, {
                     params: {
-                        nhomsp: nhomsp,
+                        nhomtp: nhomtp,
                         status: status,
+                        matp: matp
+                    },
+                }
+                );
+            }
+            // lọc xưởng, nhóm tp và status
+            else if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_matp == "" && this.multiSearch_nhomtp != '') {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlypxandnhomtpandstatus`, {
+                    params: {
+                        nhomtp: nhomtp,
+                        status: status,
+                        mapx: mapxList,
+                    },
+                }
+                );
+            }
+            // lọc xưởng, nhóm tp và mã thành phẩm
+            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_matp != "" && this.multiSearch_nhomtp != '') {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlypxandnhomtpmatp`, {
+                    params: {
+                        nhomtp: nhomtp,
+                        matp: matp,
                         mapx: mapxList,
                     },
                 }

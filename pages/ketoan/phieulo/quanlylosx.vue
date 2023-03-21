@@ -95,7 +95,8 @@
                 <th @click="sort('makh')" style="text-align: center; font-size: small; font-weight: bold; width: 7%;">
                   Kế hoạch năm
                 </th>
-                <th @click="sort('masp')" style="text-align: center; font-size: small; font-weight: bold; width: 7%;">
+                <th @click="sort('mathanhpham')"
+                  style="text-align: center; font-size: small; font-weight: bold; width: 7%;">
                   Mã thành phẩm
                 </th>
                 <th @click="sort('nhomsp')" style="text-align: center; font-size: small; font-weight: bold; width: 5%;">
@@ -146,8 +147,8 @@
                   <!-- <input type="text" class="input is-small" v-model="pl.makh"> -->
                   {{ pl.makh }}
                 </td>
-                <td style="font-size: small;">
-                  {{ pl.masp }}
+                <td style="font-size: small; text-align: center;">
+                  {{ pl.mathanhpham }}
                 </td>
                 <td style="font-size: small; text-align: center;">
                   {{ pl.nhomsp }}
@@ -416,6 +417,9 @@
                   Mã thành phẩm
                 </th>
                 <th style="text-align: center; font-size: small; font-weight: bold;">
+                  Nhóm thành phẩm
+                </th>
+                <th style="text-align: center; font-size: small; font-weight: bold;">
                   Mã Lô nhà máy
                 </th>
                 <th style="text-align: center; font-size: small; font-weight: bold; width: 3%;">
@@ -442,8 +446,8 @@
               <tr v-for="(item, index) in kehoachphanxuong" :key="index + 'jjjhhhff'">
                 <td style="text-align: center; font-size: small;">{{ index + 1 }}</td>
                 <td style="text-align: center; font-size: small;">{{ item.makh }}</td>
-                <td style="text-align: center; font-size: small;">{{ item.masp }}</td>
-                <!-- <td style="font-size: small;">{{ item.makhpx }}</td> -->
+                <td style="text-align: center; font-size: small;">{{ item.mathanhpham }}</td>
+                <td style="text-align: center; font-size: small;">{{ item.nhomthanhpham }}</td>
                 <td style="font-size: small;">
                   <!-- <input type="text" class="input is-small" v-model.trim="item.makhpx"> -->
                   {{ item.makhpx }}
@@ -701,6 +705,8 @@ export default {
           tensp: "",
           createdAt: "",
           nhomsp: "",
+          nhomthanhpham: "",
+          mathanhpham: "",
         },
       ],
 
@@ -1128,6 +1134,8 @@ export default {
         soluong: "",
         masp: "",
         tensp: "",
+        nhomthanhpham: "",
+        mathanhpham: "",
         createdAt: this.form.createdAt,
       });
     },
@@ -1470,11 +1478,14 @@ export default {
 
     async ghidulieu() {
       // console.log(this.items_khpx)
+      // console.log(this.mark_kehoachnam)
       for (let i = 0; i < this.items_khpx.length; i++) {
         this.items_khpx[i].makh = this.mark_kehoachnam.makh.trim()
         this.items_khpx[i].tensp = this.mark_kehoachnam.tensp.trim()
         this.items_khpx[i].masp = this.mark_kehoachnam.masp.trim()
         this.items_khpx[i].nhomsp = this.mark_kehoachnam.nhomsp.trim()
+        this.items_khpx[i].mathanhpham = this.mark_kehoachnam.mathanhpham.trim()
+        this.items_khpx[i].nhomthanhpham = this.mark_kehoachnam.nhomthanhpham.trim()
         this.$axios.$post(
           "/api/ketoan/addphieulokh",
           this.items_khpx[i]
@@ -1544,6 +1555,8 @@ export default {
         masp: data.masp,
         // tensp: tenvt,
         createdAt: this.form.createdAt,
+        mathanhpham: data.mathanhpham,
+        nhomthanhpham: data.nhomthanhpham
       });
       // console.log(this.items)
     },
