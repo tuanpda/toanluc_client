@@ -141,11 +141,17 @@
                             <td @click="sortTable('maspkhpx')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 7%">Mã sản phẩm
                             </td>
-                            <td @click="sortTable('ngaybdkhpx')"
+                            <!-- <td @click="sortTable('ngaybdkhpx')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 8%;">Ngày bắt đầu
                             </td>
                             <td @click="sortTable('ngayktkhpx')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 8%;">Ngày kết thúc
+                            </td> -->
+                            <td @click="sortTable('tuanbd')"
+                                style="font-size: small; text-align: center; font-weight: 600; width: 8%;">Tuần BĐ (T1)
+                            </td>
+                            <td @click="sortTable('tuankt')"
+                                style="font-size: small; text-align: center; font-weight: 600; width: 8%;">Tuần KT (T2)
                             </td>
                             <td @click="sortTable('soluongkhpx')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Số lượng
@@ -156,9 +162,9 @@
                             <td @click="sortTable('status')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Trạng thái
                             </td>
-                            <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Chọn Trạng thái
+                            <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Chọn TT
                             </td>
-                            <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Số lượng HT
+                            <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">SL đã ĐK
                             </td>
                             <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Ngày BDTT
                             </td>
@@ -189,19 +195,25 @@
                             <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
                                 item.maspkhpx
                             }}</td>
-                            <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
+                            <!-- <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
                                 item.ngaybdkhpx | formatDate
-                            }}</td>
+                            }}</td> -->
                             <!-- <td style="background-color: #fffaeb;"><input class="input is-small" type="date"
                                     v-bind:value="item.ngaybdkhpx | inputDateFilter"
                                     v-on:input="item.ngaybdkhpx = getDate($event.target.value)">
                             </td> -->
-                            <td style="font-size: small; text-align: center; background-color: #fffaeb;">{{
+                            <!-- <td style="font-size: small; text-align: center; background-color: #fffaeb;">{{
                                 item.ngayktkhpx | formatDate
-                            }}</td>
+                            }}</td> -->
                             <!-- <td style="background-color: #fffaeb;"><input class="input is-small" type="date"
                                     v-bind:value="item.ngayktkhpx | inputDateFilter"
                                     v-on:input="item.ngayktkhpx = getDate($event.target.value)"></td> -->
+                            <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
+                                item.tuanbd
+                            }}</td>
+                            <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
+                                item.tuankt
+                            }}</td>
                             <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
                                 item.soluongkhpx | formatNumber
                             }}</td>
@@ -224,17 +236,18 @@
                                 </td>
                             </template>
 
-                            <td style="font-size: small; width: 10%;">
-                                <div class="select is-small is-fullwidth">
+                            <td style="font-size: small;">
+                                <div v-if="item.status != 3" class="select is-small is-fullwidth">
                                     <select id="" @change="onChange_status($event, item)" v-model="item.status">
-                                        <option value="3">HT</option>
+                                        <!-- <option value="3">HT</option> -->
                                         <option value="2">SX</option>
                                         <option value="1">DK</option>
                                         <option value="0">0</option>
                                     </select>
                                 </div>
                             </td>
-                            <td style="font-size: small; text-align: center; background-color: #effaf5;"></td>
+                            <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
+                                item.tong_soluong }}</td>
                             <td style="font-size: small; text-align: center; background-color: #effaf5;"></td>
                             <td style="font-size: small; text-align: center; background-color: #effaf5;"></td>
                             <td><button @click="onUpdate_lokhpx(item)"
@@ -637,7 +650,7 @@ export default {
         // --------------------------------------------------------------------------------------
         // 3: Các hàm chức năng
         // Đổi trạng thái cho lô kế hoạch phân xưởng (sau này yêu cầu đổi toàn bộ lô cùng mã hiệu)
-        onChange_status(e, data) {
+        async onChange_status(e, data) {
             // console.log(data)
             // 0: chưa đk; 1: dự kiến đăng ký (DK); 2: sản xuất (SX); 3: hoàn thành (HT)
             var id = e.target.value;
@@ -648,7 +661,51 @@ export default {
             let dt = id
             // console.log(dt)
             this.status = dt
+            // console.log(data);
+            // ĐOẠN NÀY LẬP LUẬN NHƯ SAU: CÓ CÁC TRH NÀY XẢY RA
+            // muốn đổi trạng thái của lô kế hoạch phân xưởng cần phải đáp ứng các điều kiện như sau
+            // chỉ được đổi từ đk thành sản xuất hoặc từ đk thành 0
+            // muốn đổi từ sản xuất cần phải xem xét các điều kiện. vì nếu đổi từ sản xuất thành dk
+            // thì phải xem các lô sản xuất đang làm đến đâu rồi. nếu như lô sản xuất mà có bất kỳ lô nào 
+            // đang ở trạng thái sản xuất thì lô phân xưởng đó đương nhiên là đang sx chứ k thể đổi thành đk
+            // vậy cần kiểm tra số liệu của lô sản xuất có trạng thái sx hay không?
+            // tìm xem có bao nhiêu lô sản xuất trong lô kế hoạch phân xưởng
+            // TÓM LẠI LÀ CHỖ NÀY CHỈ CHO PHÉP ĐỔI SANG ĐĂNG KÝ. CÒN PHẦN SẢN XUẤT SẼ TỰ ĐỘNG ĐỔI KHI LÔ SẢN XUẤT ĐƯỢC
+            // CHUYỂN THÀNH SX
+            // tìm xem có bao nhiêu lô sản xuất trong lô kế hoạch phân xưởng
+            const losxs = await this.$axios.$get(`/api/ketoan/checklosanxuatstussx?_id_khpx=${data._id}&random=${Math.random()}`)
+            // console.log(losxs);
+            // check xem trong toàn bộ lô sinh ra từ mã kế hoạch phân xưởng đó
+            // có lô nào đang sx không? nếu có thì chuyển trạng thái lô kế hoạch phân xưởng thành sx luôn
+            const hasStatusTwo = losxs.some((item) => item.status === 2);
+            // console.log(isAllStatus3); // false
+            // console.log(hasStatusTwo);
+            if (hasStatusTwo == true) {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener("mouseenter", Swal.stopTimer);
+                        toast.addEventListener("mouseleave", Swal.resumeTimer);
+                    },
+                });
+                Toast.fire({
+                    icon: "error",
+                    title: "Lô phân xưởng này đang có Lô sản xuất thực hiện không thể chuyển về trạng thái ĐK !!!",
+                });
+            } else {
+                this.$axios.$patch(
+                    `/api/lokehoach/updatelokehoachpxatdangkylodesanxuat/${data._id}`,
+                    data
+                );
+            }
+
+
         },
+
         // lọc nhiều tiêu chí (mã sảnphaamr)
         // async filterData() {
         //     // console.log(this.selectedOptions)
@@ -988,48 +1045,71 @@ export default {
             // status = 1 (DK)
             // update theo mã lô nhà máy và _id
 
-            try {
-                this.$axios.$get(
-                    `/api/lokehoach/updatestatuslonhamay?status=${data.status}&makhpx=${data.makh}`
+            // chuyển trạng thái cho lô nhà máy luôn
+            // kiểm tra với id của lô nhà máy ứng với con là lkhpx nào nếu chỉ có status = 0 hoặc 1 sẽ là dk
+            // nếu có tồn tại 2 thì sx và chỉ ht khi full status con là 3
+            // 1: tìm dữ liệu lô khpx ứng với id của lô nhà máy 
+            const lokhpxs = await this.$axios.$get(`/api/ketoan/checklokhpxoflnm?_id_lonhamay=${data._id_lonhamay}`)
+            // for (let i = 0; i < lokhpxs.length; i++) {
+            //     console.log(lokhpxs[i].status)
+            // }
+            const isAllStatus01 = lokhpxs.every(item => item.status === 0 || item.status === 1);
+            const isAllStatus012 = lokhpxs.every(item => item.status === 0 || item.status === 1 || item.status === 2);
+            const isAllStatus3 = lokhpxs.every(item => item.status === 3);
+            // console.log(isAllStatus01); // true
+            if (isAllStatus01 == true) {
+                this.$axios.$patch(`/api/lokehoach/lonhamay/status1/${data._id_lonhamay}`
                 );
-                // data.status = this.status
-                this.$axios.$patch(
-                    `/api/lokehoach/updatelokehoachpxatdangkylodesanxuat/${data._id}`,
-                    data
+            } else if (isAllStatus012 == true) {
+                this.$axios.$patch(`/api/lokehoach/lonhamay/status2/${data._id_lonhamay}`
                 );
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: "top-end",
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                        toast.addEventListener("mouseenter", Swal.stopTimer);
-                        toast.addEventListener("mouseleave", Swal.resumeTimer);
-                    },
-                });
-                Toast.fire({
-                    icon: "success",
-                    title: "Đã cập nhật",
-                });
-            } catch (error) {
-                // console.log(error);
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: "top-end",
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                        toast.addEventListener("mouseenter", Swal.stopTimer);
-                        toast.addEventListener("mouseleave", Swal.resumeTimer);
-                    },
-                });
-                Toast.fire({
-                    icon: "error",
-                    title: "Có lỗi xảy ra !!!",
-                });
+            } else if (isAllStatus3 == true) {
+                this.$axios.$patch(`/api/lokehoach/lonhamay/status3/${data._id_lonhamay}`
+                );
             }
+
+            // try {
+            //     this.$axios.$get(
+            //         `/api/lokehoach/updatestatuslonhamay?status=${data.status}&makhpx=${data.makh}`
+            //     );
+            //     // data.status = this.status
+            //     this.$axios.$patch(
+            //         `/api/lokehoach/updatelokehoachpxatdangkylodesanxuat/${data._id}`,
+            //         data
+            //     );
+            //     const Toast = Swal.mixin({
+            //         toast: true,
+            //         position: "top-end",
+            //         showConfirmButton: false,
+            //         timer: 3000,
+            //         timerProgressBar: true,
+            //         didOpen: (toast) => {
+            //             toast.addEventListener("mouseenter", Swal.stopTimer);
+            //             toast.addEventListener("mouseleave", Swal.resumeTimer);
+            //         },
+            //     });
+            //     Toast.fire({
+            //         icon: "success",
+            //         title: "Đã cập nhật",
+            //     });
+            // } catch (error) {
+            //     // console.log(error);
+            //     const Toast = Swal.mixin({
+            //         toast: true,
+            //         position: "top-end",
+            //         showConfirmButton: false,
+            //         timer: 3000,
+            //         timerProgressBar: true,
+            //         didOpen: (toast) => {
+            //             toast.addEventListener("mouseenter", Swal.stopTimer);
+            //             toast.addEventListener("mouseleave", Swal.resumeTimer);
+            //         },
+            //     });
+            //     Toast.fire({
+            //         icon: "error",
+            //         title: "Có lỗi xảy ra !!!",
+            //     });
+            // }
         },
 
     },

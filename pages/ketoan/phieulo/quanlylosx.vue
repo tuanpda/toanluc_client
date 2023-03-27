@@ -425,11 +425,17 @@
                 <th style="text-align: center; font-size: small; font-weight: bold; width: 3%;">
                   Số lượng
                 </th>
-                <th style="text-align: center; font-size: small; font-weight: bold; width: 7%">
+                <!-- <th style="text-align: center; font-size: small; font-weight: bold; width: 7%">
                   Thời gian bắt đầu
                 </th>
                 <th style="text-align: center; font-size: small; font-weight: bold; width: 7%">
                   Thời gian kết thúc
+                </th> -->
+                <th style="text-align: center; font-size: small; font-weight: bold; width: 7%">
+                  Tuần BĐ (T1)
+                </th>
+                <th style="text-align: center; font-size: small; font-weight: bold; width: 7%">
+                  Tuần KT (T2)
                 </th>
                 <th style="text-align: center; font-size: small; font-weight: bold;">
                   Trạng thái
@@ -456,18 +462,27 @@
                 <td><input type="text" class="input is-small" v-model.trim="item.soluong"></td>
                 <!-- <td style="text-align: center; font-size: small;">{{ item.ngaybd | formatDate }}</td> -->
                 <!-- <td><input type="date" class="input is-small" v-model="item.ngaybd"></td> -->
-                <td><input class="input is-small" type="date" v-bind:value="item.ngaybd | inputDateFilter"
+                <!-- <td><input class="input is-small" type="date" v-bind:value="item.ngaybd | inputDateFilter"
                     v-on:input="item.ngaybd = getDate($event.target.value)"></td>
-                <!-- <td style="text-align: center; font-size: small;">{{ item.ngaykt | formatDate }}</td> -->
                 <td><input class="input is-small is-danger" type="date" v-bind:value="item.ngaykt | inputDateFilter"
-                    v-on:input="item.ngaykt = getDate($event.target.value)"></td>
-                <td style="font-size: small; text-align: center;">
-                  <span v-if="item.status == false">
-                    <i style="color: #ffd863" class="fa fa-circle"></i>
-                  </span>
-                  <span v-else><i style="color: #00947e" class="fa fa-circle"></i>
-                  </span>
-                </td>
+                    v-on:input="item.ngaykt = getDate($event.target.value)"></td> -->
+                <td><input type="text" class="input is-small" v-model.trim="item.tuanbd"></td>
+                <td><input type="text" class="input is-small" v-model.trim="item.tuankt"></td>
+                <template>
+                  <td v-if="item.status == 1" style="font-size: small; text-align: center; "><span
+                      style="color: white; font-weight: bold; background-color: red; padding-left: 7px; padding-right: 7px;">DK</span>
+                  </td>
+                  <td v-else-if="item.status == 2" style="font-size: small; text-align: center;">
+                    <span
+                      style="color: red; font-weight: bold; background-color: yellow; padding-left: 7px; padding-right: 7px;">SX</span>
+                  </td>
+                  <td v-else-if="item.status == 3" style="font-size: small; text-align: center;">
+                    <span
+                      style="color: white; font-weight: bold; background-color: green; padding-left: 7px; padding-right: 7px;">HT</span>
+                  </td>
+                  <td v-else style="font-size: small; text-align: center;">
+                  </td>
+                </template>
                 <td>
                   <button @click="onUpdateKhnm(item)" class="button is-success is-small is-fullwidth">
                     <span>Cập nhật</span>
@@ -506,11 +521,17 @@
               <td style="font-size: small; font-weight: 500; text-align: center;">
                 Số lượng
               </td>
-              <td style="width: 5%; font-size: small; font-weight: 500; text-align: center;">
+              <!-- <td style="width: 5%; font-size: small; font-weight: 500; text-align: center;">
                 Thời gian bắt đầu
               </td>
               <td style="width: 5%; font-size: small; font-weight: 500; text-align: center;">
                 Thời gian kết thúc
+              </td> -->
+              <td style="width: 5%; font-size: small; font-weight: 500; text-align: center;">
+                Tuần bắt đầu (T1)
+              </td>
+              <td style="width: 5%; font-size: small; font-weight: 500; text-align: center;">
+                Tuần kết thúc (T2)
               </td>
               <td style="width: 5%; font-size: small; font-weight: 500; text-align: center;">
                 Xóa
@@ -530,10 +551,12 @@
                 <input v-model.trim="item.soluong" type="text" class="input is-small" />
               </td>
               <td>
-                <input v-model.trim="item.ngaybd" type="date" class="input is-small" />
+                <!-- <input v-model.trim="item.ngaybd" type="date" class="input is-small" /> -->
+                <input @change="getTuanbd" v-model.trim="item.tuanbd" type="number" class="input is-small" />
               </td>
               <td>
-                <input v-model.trim="item.ngaykt" type="date" class="input is-small" />
+                <!-- <input v-model.trim="item.ngaykt" type="date" class="input is-small" /> -->
+                <input @change="getTuankt" v-model.trim="item.tuankt" type="number" class="input is-small" />
               </td>
               <td style="text-align: center">
                 <button @click="deleteRow_khpx(index)" class="button is-danger is-small">
@@ -595,6 +618,8 @@
 
 <script>
 import Swal from "sweetalert2";
+import dayjs from 'dayjs';
+import 'dayjs/locale/vi';
 export default {
   middleware: "auth",
   data() {
@@ -1058,7 +1083,11 @@ export default {
     filter() {
       console.log('reset to p1 due to filter');
       this.currentPage = 1;
-    }
+    },
+    kehoachphanxuong(newItems) {
+      // Cập nhật lại bảng khi có thay đổi
+      console.log('Dữ liệu đã được cập nhật!');
+    },
   },
 
   filters: {
@@ -1087,6 +1116,41 @@ export default {
         ":" +
         current.getSeconds();
       this.form.createdAt = date + " " + time;
+    },
+
+    getTuanbd() {
+      // console.log(tuanbd);
+      const now = new Date();
+      const currentYear = now.getFullYear();
+
+      // Gán kết quả tính toán vào biến result để hiển thị trên màn hình
+      // console.log(`Ngày bắt đầu của tuần ${tuanbd} là ${startDateString} và ngày kết thúc là ${endDateString}`);
+      for (let i = 0; i < this.items_khpx.length; i++) {
+        const startDate = dayjs().year(currentYear).month(0).date((this.items_khpx[i].tuanbd - 1) * 7 + 1);
+        const startDateString = startDate.locale('vi').format('YYYY/MM/DD');
+
+        // // Tính toán ngày kết thúc của tuần đó
+        const endDate = dayjs().year(currentYear).month(0).date(this.items_khpx[i].tuanbd * 7);
+        const endDateString = endDate.locale('vi').format('YYYY/MM/DD');
+        this.items_khpx[i].ngaybd = startDateString
+
+      }
+      // console.log(this.items_khpx);
+    },
+    getTuankt() {
+      const now = new Date();
+      const currentYear = now.getFullYear();
+      for (let i = 0; i < this.items_khpx.length; i++) {
+        const startDate = dayjs().year(currentYear).month(0).date((this.items_khpx[i].tuankt - 1) * 7 + 1);
+        const startDateString = startDate.locale('vi').format('YYYY/MM/DD');
+
+        // // Tính toán ngày kết thúc của tuần đó
+        const endDate = dayjs().year(currentYear).month(0).date(this.items_khpx[i].tuankt * 7);
+        const endDateString = endDate.locale('vi').format('YYYY/MM/DD');
+        this.items_khpx[i].ngaykt = endDateString
+
+      }
+      // console.log(this.items_khpx);
     },
 
     // chọn trang hiển thị
@@ -1124,6 +1188,7 @@ export default {
     // tạo lô kế hoạch tại phân xưởng
     async addPhanxuong() {
       this.items_khpx.push({
+        _id_khnam: "",
         makh: "",
         mapx: "",
         tenpx: "",
@@ -1137,6 +1202,8 @@ export default {
         nhomthanhpham: "",
         mathanhpham: "",
         createdAt: this.form.createdAt,
+        tuanbd: "",
+        tuankt: "",
       });
     },
 
@@ -1439,6 +1506,10 @@ export default {
       this.kehoachphanxuong = await this.$axios.$get(
         `/api/lokehoach/getallkehoachpx?makh=${ttkehoachnam.makh}`
       );
+      // nhớ phải đổi lại = id khi nhập lại dữ liệu
+      // this.kehoachphanxuong = await this.$axios.$get(
+      //   `/api/lokehoach/getallkehoachpx?makh=${ttkehoachnam.makh}`
+      // );
 
     },
 
@@ -1480,6 +1551,7 @@ export default {
       // console.log(this.items_khpx)
       // console.log(this.mark_kehoachnam)
       for (let i = 0; i < this.items_khpx.length; i++) {
+        this.items_khpx[i]._id_khnam = this.mark_kehoachnam._id
         this.items_khpx[i].makh = this.mark_kehoachnam.makh.trim()
         this.items_khpx[i].tensp = this.mark_kehoachnam.tensp.trim()
         this.items_khpx[i].masp = this.mark_kehoachnam.masp.trim()
@@ -1543,15 +1615,14 @@ export default {
     },
 
     async copyadd_khpx(data) {
-
       this.items_khpx.push({
         makh: data.makh,
         mapx: data.mapx,
         tenpx: data.tenpx,
         makhpx: data.makhpx,
         soluong: data.soluong,
-        ngaybd: data.ngaybd,
-        ngaykt: data.ngaykt,
+        // ngaybd: data.ngaybd, copy bắt phải gõ lại tuần
+        // ngaykt: data.ngaykt,
         masp: data.masp,
         // tensp: tenvt,
         createdAt: this.form.createdAt,
@@ -1869,6 +1940,15 @@ export default {
 
     async onUpdateKhnm(data) {
       try {
+        const now = new Date();
+        const currentYear = now.getFullYear();
+        const startDate = dayjs().year(currentYear).month(0).date((data.tuanbd - 1) * 7 + 1);
+        const startDateString = startDate.locale('vi').format('YYYY/MM/DD');
+        data.ngaybd = startDateString
+        // // Tính toán ngày kết thúc của tuần đó
+        const endDate = dayjs().year(currentYear).month(0).date(data.tuankt * 7);
+        const endDateString = endDate.locale('vi').format('YYYY/MM/DD');
+        data.ngaykt = endDateString
         this.$axios.$patch(
           `/api/lokehoach/${data._id}`,
           data
@@ -2125,7 +2205,8 @@ export default {
     // xóa 1 mã kế hoạch năm
     async onDeleteKehoachnam(data) {
       let arrLokehoach
-      arrLokehoach = await this.$axios.$get(`/api/lokehoach/predelete_muctieunam?makh=${data.makh}`);
+      arrLokehoach = await this.$axios.$get(`/api/lokehoach/predelete_muctieunam?_id=${data._id}`);
+      // console.log(arrLokehoach);
       swal({
         title: "Bạn muốn kế hoạch nhà máy năm?",
         text: "Chỉ xóa được kế hoạch năm mà chưa phát sinh lô nhà máy",
@@ -2169,8 +2250,8 @@ export default {
       // lấy ra _id, mã kế hoạch, mã lô nhà máy để xác định là duy nhất
       // console.log(pl)
       let arrLokehoachphanxuong
-      arrLokehoachphanxuong = await this.$axios.$get(`/api/lokehoach/predelete_lonhamay?kehoachnam=${pl.makh}&makh=${pl.makhpx}`);
-      // console.log(arrLokehoachphanxuong)
+      arrLokehoachphanxuong = await this.$axios.$get(`/api/lokehoach/predelete_lonhamay?_id=${pl._id}`);
+      console.log(arrLokehoachphanxuong)
       swal({
         title: "Bạn muốn xóa?",
         text: "Chỉ được xóa lô nhà máy chưa phát sinh lô kế hoạch phân xưởng!",

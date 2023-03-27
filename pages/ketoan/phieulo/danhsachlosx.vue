@@ -47,7 +47,18 @@
                                         </label>
                                     </div>
                                 </div>
-
+                            </td>
+                            <td style="width: 12.65%;">
+                                <div class="autocomplete">
+                                    <input class="input is-small is-success" type="text" v-model="multiSearch_nhomsp"
+                                        @input="onInput_nhomsp" placeholder="Nhóm sản phẩm">
+                                    <div class="autocomplete-items" v-if="suggestions_nhomsp.length">
+                                        <div class="autocomplete-item" v-for="suggestion_nhomsp in suggestions_nhomsp"
+                                            @click="selectSuggestion_nhomsp(suggestion_nhomsp)">
+                                            {{ suggestion_nhomsp }}
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
                             <td style="width: 12.65%;">
                                 <div class="autocomplete">
@@ -120,11 +131,13 @@
                                 style="font-size: small; text-align: center; font-weight: 600; width: 5%">Mã PX
                             </td>
                             <td @click="sortTable('makhpx')"
-                                style="font-size: small; text-align: center; font-weight: 600; width: 4%">Mã kế hoạch
-                                PX
+                                style="font-size: small; text-align: center; font-weight: 600; width: 4%">Mã KHPX
                             </td>
                             <td @click="sortTable('malosx')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 7%">Mã lô sản xuất
+                            </td>
+                            <td @click="sortTable('nhomsp')"
+                                style="font-size: small; text-align: center; font-weight: 600; width: 7%">Nhóm SP
                             </td>
                             <td @click="sortTable('masp')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 7%">Mã sản phẩm
@@ -144,7 +157,7 @@
                             <td @click="sortTable('status')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Trạng thái
                             </td>
-                            <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Chọn trạng thái
+                            <td style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Chọn TT
                             </td>
                             <!-- <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Số lượng HT
                             </td> -->
@@ -169,6 +182,9 @@
                                 {{
                                     item.malosx
                                 }}</td>
+                            <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
+                                item.nhomsp
+                            }}</td>
                             <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
                                 item.masp
                             }}</td>
@@ -208,10 +224,10 @@
                                 </td>
                             </template>
 
-                            <td style="font-size: small; width: 10%;">
-                                <div class="select is-small is-fullwidth">
-                                    <select id="" @change="onChange_status($event)" v-model="item.status">
-                                        <option value="3">HT</option>
+                            <td style="font-size: small;">
+                                <div v-if="item.status != 3" class="select is-small is-fullwidth">
+                                    <select id="" @change="onChange_status($event, item)" v-model="item.status">
+                                        <!-- <option value="3">HT</option> -->
                                         <option value="2">SX</option>
                                         <option value="1">DK</option>
                                         <option value="0">0</option>
@@ -287,6 +303,7 @@ export default {
             suggestions: [],
             suggestions_nhomsp: [],
             maspinlosanxuat: [],
+            nhomspinlosanxuat: [],
 
             reportData: [
                 // ['Tháng', 'Doanh thu', 'Lợi nhuận'],
@@ -375,6 +392,7 @@ export default {
         this.showAllLokhsx()
         this.showAllPx()
         this.maspinlsx()
+        this.nhomspinlsx()
     },
 
     computed: {
@@ -444,6 +462,11 @@ export default {
         itemsPerPage() {
             this.currentPage = 1;
         },
+        lokehoachsx(newItems) {
+            // Cập nhật lại bảng khi có thay đổi
+            console.log('Dữ liệu đã được cập nhật!');
+        },
+
     },
 
 
@@ -478,6 +501,23 @@ export default {
         selectSuggestion(suggestion) {
             this.multiSearch_masp = suggestion;
             this.suggestions = [];
+        },
+        // suggest input nhóm sản phẩm
+        onInput_nhomsp() {
+            if (!this.multiSearch_nhomsp) {
+                this.suggestions_nhomsp = [];
+                return;
+            }
+            const MAX_SUGGESTIONS = 5; // Số lượng suggest tối đa
+            this.suggestions_nhomsp = this.nhomspinlosanxuat
+                .map((c) => c.nhomsp)
+                .filter((nhomsp) => nhomsp.toLowerCase().includes(this.multiSearch_nhomsp.toLowerCase()))
+                .map((nhomsp) => nhomsp.trim())
+                .slice(0, MAX_SUGGESTIONS);
+        },
+        selectSuggestion_nhomsp(suggestion_nhomsp) {
+            this.multiSearch_nhomsp = suggestion_nhomsp;
+            this.suggestions_nhomsp = [];
         },
         // end suggest mã sản phẩm
         // sắp xếp và phân trang
@@ -578,6 +618,11 @@ export default {
             this.maspinlosanxuat = await this.$axios.$get('/api/lokehoach/hmsanphamlosx')
             // console.log(this.maspinlosanxuat)
         },
+        // lấy nhóm sản phẩm trong lô sản xuất
+        async nhomspinlsx() {
+            this.nhomspinlosanxuat = await this.$axios.$get('/api/lokehoach/nhomspinlosanxuat')
+            // console.log(this.maspinlosanxuat)
+        },
         // Chế độ lọc multi
         async filterData() {
             // console.log(this.selectedOptions)
@@ -588,24 +633,26 @@ export default {
 
             const mapxList = this.selectedOptions
             const masp = this.multiSearch_masp
+            const nhomsp = this.multiSearch_nhomsp
             const status = this.Options_status
 
 
             // chọn lọc full
-            if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp != "") {
+            if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp != "" && this.multiSearch_nhomsp != '') {
                 this.lokehoachsx = await this.$axios.$get(
                     `/api/lokehoach/filterfulldklosanxuat`, {
                     params: {
                         mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
                         masp: masp,
                         status: status,
+                        nhomsp: nhomsp
                     },
                 }
                 );
-                console.log(this.lokehoachsx)
+                // console.log(this.lokehoachsx)
             }
             // chỉ có mã px
-            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_masp == "") {
+            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_masp == "" && this.multiSearch_nhomsp == '') {
                 this.lokehoachsx = await this.$axios.$get(
                     `/api/lokehoach/filteronlymapxlosanxuat`, {
                     params: {
@@ -615,7 +662,7 @@ export default {
                 );
             }
             // chỉ có mã px và mã sp
-            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_masp != "") {
+            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_masp != "" && this.multiSearch_nhomsp == '') {
                 this.lokehoachsx = await this.$axios.$get(
                     `/api/lokehoach/filteronlymapxandmasplosanxuat`, {
                     params: {
@@ -625,8 +672,19 @@ export default {
                 }
                 );
             }
+            // chỉ có mã px và nhóm sp
+            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_masp == "" && this.multiSearch_nhomsp != '') {
+                this.lokehoachsx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlymapxandnhomsplosanxuat`, {
+                    params: {
+                        mapx: mapxList,
+                        nhomsp: nhomsp
+                    },
+                }
+                );
+            }
             // chỉ có mã px và status
-            else if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp == "") {
+            else if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp == "" && this.multiSearch_nhomsp == '') {
                 this.lokehoachsx = await this.$axios.$get(
                     `/api/lokehoach/filteronlymapxandstatuslosanxuat`, {
                     params: {
@@ -636,8 +694,20 @@ export default {
                 }
                 );
             }
+            // chỉ có mã px và status và nhóm sp
+            else if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp == "" && this.multiSearch_nhomsp != '') {
+                this.lokehoachsx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlymapxandstatusnhomsplosanxuat`, {
+                    params: {
+                        mapx: mapxList,
+                        status: status,
+                        nhomsp: nhomsp
+                    },
+                }
+                );
+            }
             // lọc mỗi trạng thái
-            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.multiSearch_masp == "") {
+            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.multiSearch_masp == "" && this.multiSearch_nhomsp == '') {
                 this.lokehoachsx = await this.$axios.$get(
                     `/api/lokehoach/filteronlystatuslosanxuat`, {
                     params: {
@@ -648,7 +718,7 @@ export default {
             }
 
             // lọc mỗi mã sản phẩm
-            else if (!this.selectedOptions.length && !this.Options_status.length && this.multiSearch_masp != "") {
+            else if (!this.selectedOptions.length && !this.Options_status.length && this.multiSearch_masp != "" && this.multiSearch_nhomsp == '') {
                 this.lokehoachsx = await this.$axios.$get(
                     `/api/lokehoach/filteronlymasplosanxuat`, {
                     params: {
@@ -659,7 +729,7 @@ export default {
             }
 
             // lọc mã sp + status
-            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.multiSearch_masp != "") {
+            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.multiSearch_masp != "" && this.multiSearch_nhomsp == '') {
                 this.lokehoachsx = await this.$axios.$get(
                     `/api/lokehoach/filteronlymaspandstatuslosx`, {
                     params: {
@@ -670,12 +740,37 @@ export default {
                 );
             }
 
+            // lọc nhóm sp + status
+            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.multiSearch_masp == "" && this.multiSearch_nhomsp != '') {
+                this.lokehoachsx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlynhomspandstatuslosx`, {
+                    params: {
+                        nhomsp: nhomsp,
+                        status: status
+                    },
+                }
+                );
+            }
+
+            // lọc nhóm sp + status + sanp
+            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.multiSearch_masp != "" && this.multiSearch_nhomsp != '') {
+                this.lokehoachsx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlynhomspandstatuslosxmasp`, {
+                    params: {
+                        nhomsp: nhomsp,
+                        status: status,
+                        masp: masp
+                    },
+                }
+                );
+            }
+
         },
 
         // --------------------------------------------------------------------------------------
         // 3: Các hàm chức năng
         // thay đổi status
-        onChange_status(e) {
+        async onChange_status(e, item) {
             // 0: chưa đk; 1: dự kiến đăng ký (DK); 2: sản xuất (SX); 3: hoàn thành (HT)
             var id = e.target.value;
             // var name = e.target.options[e.target.options.selectedIndex].text;
@@ -685,6 +780,43 @@ export default {
             let dt = id
             // console.log(dt)
             this.status = dt
+            // console.log(item);
+            // ĐOẠN NÀY LẬP LUẬN NHƯ SAU: CÓ CÁC TRH NÀY XẢY RA
+            // 1: NẾU LÔ NÀO MÀ ĐÃ CÓ PHÁT SINH NHẬP LƯƠNG THÌ KHÔNG ĐƯỢC CHO TRỞ THÀNH TRẠNG THÁI ĐK
+            // CHỈ CÓ THỂ THÀNH TRTH HT MÀ THÔI
+            // 2: KHI MỘT LÔ CHƯA CÓ NHẬP LƯƠNG VÀ STATUS PHẢI KHÔNG BẰNG 3 THÌ MỚI ĐƯỢC CHO TRỞ VỀ THÀNH ĐK
+            // ĐỂ LÀM ĐƯỢC ĐIỀU ĐÓ THÌ PHẢI SO SÁNH VỚI DB TRƯỚC KHI CHẤP NHẬN CHO ĐỔI TRẠNG THÁI LÔ SẢN XUẤT
+            // TÌM XEM _ID CỦA LÔ SẢN XUẤT NÀY CÓ TRONG BẢNG LUONGCONGNHAN HAY KHÔNG?
+            // TỰU CHUNG LẠI LÀ CÓ 2 ĐIỀU KIỆN: 1 LÀ NẾU _ID ĐÃ TỒN TẠI TRONG LUONGCONGDOAN; 2 LÀ STATUS ĐỔI THÀNH 3 
+            // LÀ KHÔNG ĐƯỢC ĐỔI TRẠNG THÁI NỮA
+            // TIẾP ĐẾN LÀ NẾU ĐỔI 1 LÔ SANG SẢN XUẤT THÌ TÌM XEM LOKEHOACH CHA LÀ LÔ NÀO?
+            // NẾU BẤT KỲ LÔ SẢN XUẤT NÀO LÀ SX THÌ LÔ KẾ HOẠCH PHÂN XƯỞNG CHA PHẢI THÀNH SX
+            const exits = await this.$axios.$get(`/api/ketoan/getallluongcongdoaninlsx?_id_losx=${item._id}`)
+            // console.log(exits)
+            // console.log(data);
+
+            if (exits.length > 0) {
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener("mouseenter", Swal.stopTimer);
+                        toast.addEventListener("mouseleave", Swal.resumeTimer);
+                    },
+                });
+                Toast.fire({
+                    icon: "error",
+                    title: "Đã phát sinh vào lương không thể đổi thành trạng thái Đăng Ký hoặc 0",
+                });
+            } else {
+                this.$axios.$patch(
+                    `/api/lokehoach/losanxuat/status/${item._id}`,
+                    item
+                );
+            }
         },
         // in PDF
         async printphieu() {
@@ -791,15 +923,26 @@ export default {
         async onUpdateLosx(data) {
             // console.log(data)
             try {
-                // if (parseFloat(data.soluongkhsx) > 0) {
-                //     data.status = 2
-                // } else {
-                //     data.status = 1
-                // }
-                this.$axios.$patch(
-                    `/api/lokehoach/losanxuat/status/${data._id}`,
-                    data
-                );
+                // tìm xem có bao nhiêu lô sản xuất trong lô kế hoạch phân xưởng
+                const losxs = await this.$axios.$get(`/api/ketoan/checklosanxuatstussx?_id_khpx=${data._id_khpx}&random=${Math.random()}`)
+                // console.log(losxs);
+                // check xem trong toàn bộ lô sinh ra từ mã kế hoạch phân xưởng đó
+                // có lô nào đang sx không? nếu có thì chuyển trạng thái lô kế hoạch phân xưởng thành sx luôn
+                const hasStatusTwo = losxs.some((item) => item.status === 2);
+                const isAllStatus3 = losxs.every(item => item.status === 3);
+                // console.log(isAllStatus3); // false
+                // console.log(hasStatusTwo);
+                if (hasStatusTwo == true) {
+                    this.$axios.$patch(`/api/lokehoach/lokehoach/status2/${data._id_khpx}`
+                    );
+                } else {
+                    this.$axios.$patch(`/api/lokehoach/lokehoach/status1/${data._id_khpx}`
+                    );
+                }
+                if (isAllStatus3 == true) {
+                    this.$axios.$patch(`/api/lokehoach/lokehoach/status3/${data._id_khpx}`
+                    );
+                }
 
                 const Toast = Swal.mixin({
                     toast: true,
@@ -814,8 +957,9 @@ export default {
                 });
                 Toast.fire({
                     icon: "success",
-                    title: "Đã cập nhật",
+                    title: "Đã cập nhật lại trạng thái",
                 });
+
             } catch (error) {
                 // console.log(error);
                 const Toast = Swal.mixin({

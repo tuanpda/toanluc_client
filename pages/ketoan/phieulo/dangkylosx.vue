@@ -148,11 +148,17 @@
                             <td @click="sortTable('maspkhpx')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 7%">Mã sản phẩm
                             </td>
-                            <td @click="sortTable('ngaybdkhpx')"
+                            <!-- <td @click="sortTable('ngaybdkhpx')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 9%;">Ngày bắt đầu
                             </td>
                             <td @click="sortTable('ngayktkhpx')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 9%;">Ngày kết thúc
+                            </td> -->
+                            <td @click="sortTable('tuanbd')"
+                                style="font-size: small; text-align: center; font-weight: 600; width: 9%;">Tuần BĐ (T1)
+                            </td>
+                            <td @click="sortTable('tuankt')"
+                                style="font-size: small; text-align: center; font-weight: 600; width: 9%;">Tuần KT (T2)
                             </td>
                             <td @click="sortTable('soluongkhpx')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Số lượng
@@ -164,7 +170,7 @@
                             <!-- <td @click="sort('soluongkhpx')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Chọn Trạng thái
                             </td> -->
-                            <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Số lượng HT
+                            <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">SL đã ĐK
                             </td>
                             <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Ngày BDTT
                             </td>
@@ -172,7 +178,8 @@
                             </td>
 
                         </tr>
-                        <template v-for="(item, index) in paginatedTable.filter(el => el.status !== 3)">
+                        <!-- <template v-for="(item, index) in paginatedTable.filter(el => el.status !== 3)"> -->
+                        <template v-for="(item, index) in paginatedTable">
                             <tr @click="watchDetail(index, item)">
                                 <td>
                                     <div
@@ -204,11 +211,17 @@
                                 <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
                                     item.maspkhpx
                                 }}</td>
-                                <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
+                                <!-- <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
                                     item.ngaybdkhpx | formatDate
                                 }}</td>
                                 <td style="font-size: small; text-align: center; background-color: #fffaeb;">{{
                                     item.ngayktkhpx | formatDate
+                                }}</td> -->
+                                <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
+                                    item.tuanbd
+                                }}</td>
+                                <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
+                                    item.tuankt
                                 }}</td>
                                 <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
                                     item.soluongkhpx | formatNumber
@@ -228,7 +241,8 @@
                                             style="color: white; font-weight: bold; background-color: green; padding-left: 7px; padding-right: 7px;">HT</span>
                                     </td>
                                 </template>
-                                <td style="font-size: small; text-align: center; background-color: #effaf5;"></td>
+                                <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
+                                    item.tong_soluong }}</td>
                                 <td style="font-size: small; text-align: center; background-color: #effaf5;"></td>
                                 <td style="font-size: small; text-align: center; background-color: #effaf5;"></td>
 
@@ -486,6 +500,9 @@ export default {
             checkViewRegLsx: false,
             isaddlosx: 0,
 
+            // số lượng vượt kế hoạch phân xưởng
+            soluonghanmuckhpx: 0,
+
             form: {
                 createdAt: null,
                 createdBy: this.$auth.$state.user.username,
@@ -721,10 +738,12 @@ export default {
         // lấy danh sách tất cả các lô kế hoạch phân xưởng sắp xếp theo phân xưởng
         async showAllLokhpx() {
             this.lokehoachpx = await this.$axios.$get(
-                `/api/lokehoach/getallkehoachphanxuong`
+                `/api/lokehoach/getallkehoachphanxuongwithout0`
             );
             this.multiSearch_masp = ""
             this.multiSearch_nhomsp = ""
+            this.multiSearch_nhomtp = ""
+            this.multiSearch_matp = ""
             this.Options_status = []
             this.isOpen = false
             this.isOpenst = false
@@ -741,9 +760,9 @@ export default {
                 this.arrRowWatchDetail.splice(indexValue, 1)
                 return
             }
-
+            // console.log(data);
             this.dataChildren = await this.$axios.$get(
-                `/api/lokehoach/getalllsxinkhpx?makh=${data.makh}&makhpx=${data.makhpx}&mapx=${data.mapx}`
+                `/api/lokehoach/getalllsxinkhpx?_id_khpx=${data._id}`
             );
 
             // console.log(this.dataChildren)
@@ -1264,6 +1283,9 @@ export default {
             // bây h bấm copy thêm (thì số lượng chỉ mới nằm ở items), vậy phải tổng cả 2 cái lại rồi so xem với soluong của lô kh phân xưởng
 
             this.items.push({
+                _id_khnam: data._id_khnam,
+                _id_lonhamay: data._id_lonhamay,
+                _id_khpx: data._id_khpx,
                 kehoachnam: data.kehoachnam,
                 makh: data.makh,
                 makhpx: data.makhpx,
@@ -1299,6 +1321,7 @@ export default {
                     },
                 ],
             });
+            // console.log(this.items);
 
         },
 
@@ -1340,6 +1363,9 @@ export default {
             this.isaddlosx = 1;
 
             this.items.push({
+                _id_khnam: dataAdd._id_khnam,
+                _id_lonhamay: dataAdd._id_lonhamay,
+                _id_khpx: dataAdd._id,
                 kehoachnam: dataAdd.kehoachnam,
                 makh: dataAdd.makh,
                 makhpx: dataAdd.makhpx,
@@ -1423,31 +1449,45 @@ export default {
                 this.sumAll = this.sumSoluonglkhpx + this.sumItemssl
                 // console.log('Tổng toàn bộ: ' + this.sumAll)
                 // console.log(datalkh)
-                const slvuot = this.sumAll - parseInt(datalkh.soluongkhpx)
+                const slvuot = parseInt(datalkh.soluongkhpx) - this.sumAll
                 // console.log(slvuot)
-                if (this.sumAll > parseInt(datalkh.soluongkhpx)) {
-                    const Toast = Swal.mixin({
-                        toast: true,
-                        position: "top-end",
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true,
-                        didOpen: (toast) => {
-                            toast.addEventListener("mouseenter", Swal.stopTimer);
-                            toast.addEventListener("mouseleave", Swal.resumeTimer);
-                        },
-                    });
-                    Toast.fire({
-                        icon: "error",
-                        title: "Số lượng lô sản xuất đã vượt định mức kế hoạch: " + slvuot,
-                    });
-                } else {
-                    let isDuplicate = false;
-                    const allItems = [...this.items, ...this.dataChildren]; // Tạo mảng mới chứa cả items và dataChildren
-                    for (let i = 0; i < allItems.length; i++) {
-                        for (let j = i + 1; j < allItems.length; j++) {
-                            if (allItems[i].malosx === allItems[j].malosx) {
-                                // console.log(`Tên khách hàng "${allItems[i].malosx}" bị trùng!`);
+
+                let isDuplicate = false;
+                const allItems = [...this.items, ...this.dataChildren]; // Tạo mảng mới chứa cả items và dataChildren
+                for (let i = 0; i < allItems.length; i++) {
+                    for (let j = i + 1; j < allItems.length; j++) {
+                        if (allItems[i].malosx === allItems[j].malosx) {
+                            // console.log(`Tên khách hàng "${allItems[i].malosx}" bị trùng!`);
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: "top-end",
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener("mouseenter", Swal.stopTimer);
+                                    toast.addEventListener("mouseleave", Swal.resumeTimer);
+                                },
+                            });
+                            Toast.fire({
+                                icon: "error",
+                                title: `Có mã lô sản xuất "${allItems[i].malosx}" bị trùng, xem lại!`,
+                            });
+                            isDuplicate = true;
+                            break;
+                        }
+                    }
+                    if (isDuplicate) {
+                        break;
+                    }
+                }
+                if (!isDuplicate) {
+                    try {
+                        for (let i = 0; i < this.items.length; i++) {
+                            // console.log('this.items[i]', this.items[i]);
+                            if (
+                                this.items[i].soluonglsx == ""
+                            ) {
                                 const Toast = Swal.mixin({
                                     toast: true,
                                     position: "top-end",
@@ -1461,20 +1501,11 @@ export default {
                                 });
                                 Toast.fire({
                                     icon: "error",
-                                    title: `Có mã lô sản xuất "${allItems[i].malosx}" bị trùng, xem lại!`,
+                                    title: "Chưa nhập số lượng !!!",
                                 });
-                                isDuplicate = true;
-                                break;
-                            }
-                        }
-                        if (isDuplicate) {
-                            break;
-                        }
-                    }
-                    if (!isDuplicate) {
-                        try {
-                            for (let i = 0; i < this.items.length; i++) {
-                                // console.log('this.items[i]', this.items[i]);
+                                return;
+                            } else {
+                                // this.soluonghanmuckhpx = slvuot
                                 this.$axios.$post("/api/ketoan/addphieulosx", this.items[i]);
 
                                 const Toast = Swal.mixin({
@@ -1490,22 +1521,25 @@ export default {
                                 });
                                 Toast.fire({
                                     icon: "success",
-                                    title: "Tạo phiếu lô sản xuất thành công",
+                                    title: `Tạo phiếu lô sản xuất thành công. số lượng còn lại: ${slvuot}`,
                                 });
                                 // this.dataChildren.push(this.items[i]);
                             }
-                            this.dataChildren.push(...this.items);
-                            let turn = 1;
-                            let length = this.items.length;
-                            while (turn <= length) {
-                                this.deleteRow(this.items.length - turn);
-                                turn += 1;
-                            }
-                        } catch (error) {
-                            console.log(error);
+
+
                         }
+                        this.dataChildren.push(...this.items);
+                        let turn = 1;
+                        let length = this.items.length;
+                        while (turn <= length) {
+                            this.deleteRow(this.items.length - turn);
+                            turn += 1;
+                        }
+                    } catch (error) {
+                        console.log(error);
                     }
                 }
+
             }
             // nếu chưa có lô nào được dk or sx
             else {
@@ -1513,28 +1547,42 @@ export default {
                 for (let item of this.items) {
                     this.sumItemssl += parseInt(item.soluonglsx, 10);
                 }
-                if (this.sumItemssl > parseInt(datalkh.soluongkhpx)) {
-                    const Toast = Swal.mixin({
-                        toast: true,
-                        position: "top-end",
-                        showConfirmButton: false,
-                        timer: 3000,
-                        timerProgressBar: true,
-                        didOpen: (toast) => {
-                            toast.addEventListener("mouseenter", Swal.stopTimer);
-                            toast.addEventListener("mouseleave", Swal.resumeTimer);
-                        },
-                    });
-                    Toast.fire({
-                        icon: "error",
-                        title: "Số lượng lô sản xuất đã vượt định mức kế hoạch: " + slvuot,
-                    });
-                } else {
-                    let isDuplicate = false;
-                    for (let i = 0; i < this.items.length; i++) {
-                        for (let j = i + 1; j < this.items.length; j++) {
-                            if (this.items[i].malosx === this.items[j].malosx) {
-                                // console.log(`Tên khách hàng "${this.items[i].malosx}" bị trùng!`);
+
+                let isDuplicate = false;
+                for (let i = 0; i < this.items.length; i++) {
+                    for (let j = i + 1; j < this.items.length; j++) {
+                        if (this.items[i].malosx === this.items[j].malosx) {
+                            // console.log(`Tên khách hàng "${this.items[i].malosx}" bị trùng!`);
+                            const Toast = Swal.mixin({
+                                toast: true,
+                                position: "top-end",
+                                showConfirmButton: false,
+                                timer: 3000,
+                                timerProgressBar: true,
+                                didOpen: (toast) => {
+                                    toast.addEventListener("mouseenter", Swal.stopTimer);
+                                    toast.addEventListener("mouseleave", Swal.resumeTimer);
+                                },
+                            });
+                            Toast.fire({
+                                icon: "error",
+                                title: `Có mã lô sản xuất "${this.items[i].malosx}" bị trùng, xem lại!`,
+                            });
+                            isDuplicate = true;
+                            break;
+                        }
+                    }
+                    if (isDuplicate) {
+                        break;
+                    }
+                }
+                if (!isDuplicate) {
+                    try {
+                        for (let i = 0; i < this.items.length; i++) {
+                            // console.log('this.items[i]', this.items[i]);
+                            if (
+                                this.items[i].soluonglsx == ""
+                            ) {
                                 const Toast = Swal.mixin({
                                     toast: true,
                                     position: "top-end",
@@ -1548,20 +1596,10 @@ export default {
                                 });
                                 Toast.fire({
                                     icon: "error",
-                                    title: `Có mã lô sản xuất "${this.items[i].malosx}" bị trùng, xem lại!`,
+                                    title: "Chưa nhập số lượng !!!",
                                 });
-                                isDuplicate = true;
-                                break;
-                            }
-                        }
-                        if (isDuplicate) {
-                            break;
-                        }
-                    }
-                    if (!isDuplicate) {
-                        try {
-                            for (let i = 0; i < this.items.length; i++) {
-                                // console.log('this.items[i]', this.items[i]);
+                                return;
+                            } else {
                                 this.$axios.$post("/api/ketoan/addphieulosx", this.items[i]);
 
                                 const Toast = Swal.mixin({
@@ -1577,28 +1615,30 @@ export default {
                                 });
                                 Toast.fire({
                                     icon: "success",
-                                    title: "Tạo phiếu lô sản xuất thành công",
+                                    title: `Tạo phiếu lô sản xuất thành công. Số lượng còn lại: ${slvuot}`,
                                 });
                                 // this.dataChildren.push(this.items[i]);
                             }
-                            this.dataChildren.push(...this.items);
-                            let turn = 1;
-                            let length = this.items.length;
-                            while (turn <= length) {
-                                this.deleteRow(this.items.length - turn);
-                                turn += 1;
-                            }
-                        } catch (error) {
-                            console.log(error);
                         }
+
+                        this.dataChildren.push(...this.items);
+                        let turn = 1;
+                        let length = this.items.length;
+                        while (turn <= length) {
+                            this.deleteRow(this.items.length - turn);
+                            turn += 1;
+                        }
+                    } catch (error) {
+                        console.log(error);
                     }
                 }
+
             }
         },
 
         // update lô sản xuất
         async onUpdate(data) {
-            // console.log(data)
+            // console.log(data._id)
             try {
                 this.$axios.$patch(
                     `/api/lokehoach/losanxuat/${data._id}`,

@@ -106,24 +106,32 @@
                             <td style="font-size: small; font-weight: bold; text-align: center;"><input type="checkbox"
                                     v-model="selectAll" /></td>
                             <td style="font-size: small; text-align: center; font-weight: 600; width: 3%">STT</td>
-                            <td style="font-size: small; text-align: center; font-weight: 600; width: 10%">Mã PX
+                            <td @click="sortTable('mapx')"
+                                style="font-size: small; text-align: center; font-weight: 600; width: 10%">Mã PX
                             </td>
-                            <td style="font-size: small; text-align: center; font-weight: 600; width: 10%">KH nhà máy
+                            <td @click="sortTable('makh')"
+                                style="font-size: small; text-align: center; font-weight: 600; width: 10%">KH nhà máy
                             </td>
-                            <td style="font-size: small; text-align: center; font-weight: 600; width: 10%">Lô KHPX</td>
-                            <td style="font-size: small; text-align: center; font-weight: 600; width: 13%">Lô sản xuất
+                            <td @click="sortTable('makhpx')"
+                                style="font-size: small; text-align: center; font-weight: 600; width: 10%">Lô KHPX</td>
+                            <td @click="sortTable('malosx')"
+                                style="font-size: small; text-align: center; font-weight: 600; width: 13%">Lô sản xuất
                             </td>
-                            <td style="font-size: small; text-align: center; font-weight: 600; width: 10%">Mã SP
+                            <td @click="sortTable('masp')"
+                                style="font-size: small; text-align: center; font-weight: 600; width: 10%">Mã SP
                             </td>
-                            <td style="font-size: small; text-align: center; font-weight: 600; width: 17%">Nhóm lương
+                            <td @click="sortTable('nhomluong')"
+                                style="font-size: small; text-align: center; font-weight: 600; width: 17%">Nhóm lương
                             </td>
-                            <td style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Ngày bắt đầu
+                            <td @click="sortTable('ngaybd')"
+                                style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Ngày bắt đầu
                             </td>
                             <!-- <td style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Ngày kết thúc
                             </td> -->
                             <td style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Số lượng
                             </td>
-                            <td style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Trạng thái
+                            <td @click="sortTable('status')"
+                                style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Trạng thái
                             </td>
                             <td style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Chốt?
                             </td>
@@ -131,9 +139,11 @@
                             </td>
                             <td style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Tổng hỏng
                             </td>
-                            <td style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Ngày BĐTT
+                            <td @click="sortTable('ngaybatdautt')"
+                                style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Ngày BĐTT
                             </td>
-                            <td style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Ngày HTTT
+                            <td @click="sortTable('ngayhoanthanhtt')"
+                                style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Ngày HTTT
                             </td>
                             <td style="font-size: small; text-align: center; font-weight: 600; width: 5%;">SL nhanh
                             </td>
@@ -224,14 +234,10 @@
                 <label class="checkbox">
                     <input type="checkbox" v-model="checkViewluong">
                     <span>Chi tiết lương tại lô sản xuất có mã: </span> <span style="color: red; font-weight: 500">{{
-                        getinfoplsx.malosx
-                    }}</span> <span style="font-weight: 500"> - {{ getinfoplsx.tenpx }} - {{
-    getinfoplsx.mapx
-}}</span> | <span style="font-weight: 500; color: blue">Mã kế hoạch: {{
-    getinfoplsx.makh
-}}</span> | <span style="font-weight: 500; color: green">Mã kế hoạch PX: {{
-    getinfoplsx.makhpx
-}}</span>
+                        getinfoplsx.malosx }}</span> <span style="font-weight: 500"> - {{ getinfoplsx.tenpx }} - {{
+        getinfoplsx.mapx }}</span> | <span style="font-weight: 500; color: blue">Mã kế hoạch: {{
+        getinfoplsx.makh }}</span> | <span style="font-weight: 500; color: green">Mã kế hoạch PX: {{
+        getinfoplsx.makhpx }}</span>
                 </label>
                 <div v-if="checkViewluong == true">
                     <div class="table_wrapper">
@@ -284,7 +290,7 @@
                                 </td>
                                 <td style="text-align: center; font-size: small">
                                     <a @click="
-                                        onUpdateCd(item._id, item.sodat, item.sohong)
+                                        onUpdateCd(item)
                                     ">
                                         <span style="color: green" class="icon is-small">
                                             <i class="far fa-check-circle"></i>
@@ -311,14 +317,10 @@
                                 <td></td>
                                 <td style="text-align: right; font-size: small">{{ group.sodat | formatNumber }}</td>
                                 <td style="text-align: right; font-size: small">{{ group.sohong | formatNumber }}</td>
-                                <td colspan="2"></td>
+                                <td colspan="2" style="text-align: right; font-size: small; color: red; font-weight: 600;">
+
+                                </td>
                             </tr>
-                            <!-- <tr>
-                                <td colspan="2">sum</td>
-                                <td>{{ totals.dongia }}</td>
-                                <td>{{ totals.sodat }}</td>
-                                <td>{{ totals.sohong }}</td>
-                            </tr> -->
                         </table>
                     </div>
                     <br />
@@ -610,20 +612,6 @@
                                                     {{ index + 1 }}
                                                 </td>
                                                 <td style="font-size: small; font-weight: bold;">
-                                                    <!-- <div class="select is-small is-fullwidth">
-                                                        <select v-model="item.nguyencong" @change="
-                                                            getinfoNguyencong(
-                                                                $event,
-                                                                $event.target.selectedIndex,
-                                                                index
-                                                            )
-                                                        ">
-                                                            <option v-for="(item, indexdmnc) in dmnguyencong"
-                                                                :key="indexdmnc" :value="item.congdoan">
-                                                                {{ item.congdoan }} -- {{ item.dongia }}
-                                                            </option>
-                                                        </select>
-                                                    </div> -->
                                                     {{ item.nguyencong }}
                                                 </td>
                                                 <td>
@@ -841,41 +829,24 @@
 
 <script>
 import Swal from "sweetalert2";
+import { mapState } from "vuex";
 export default {
     middleware: "auth",
     data() {
         return {
             selected: [],
-            tonhomsl: [],
-            phanxuongsl: [],
-            lokehoach: [],
-            ds_sanpham: [],
-            dm_sanpham: [],
-            ds_lokh: [],
-            one_lokh: [],
             dmnguyencong: [],
             cong_nhan: [],
             cong_nhan_cn: [],
-            dmcongnhan: [],
             phanxuong: [],
             selectedIndex: 0,
             dongia_ns: "",
-            namlsx: "",
-            kehoach: [],
-            checkMalosx: "",
-            listlsx: [],
-            arrLsx: [],
-            phanxuongtgsx: [],
-            phanxuongkehoach: [],
             nhomluong: [],
             isExits: null,
             showlsxpx: [],
-            getoneshowlosx: {},
+
             tonghonginlo: "",
             tongdatinlo: "",
-            pageOfitems: [],
-            pageOfitems_cd: [],
-            pageOfitems_cn: [],
             form: {
                 makh: "",
                 makhpx: "",
@@ -1040,13 +1011,12 @@ export default {
     mounted() {
         this.currentDateTime();
         this.get_phanxuong();
-        this.get_phanxuong_solieu();
-        this.getMalosx();
-        this.get_kehoach();
         this.getSolieuLSX_ALl_cht()
         this.deleteRow(0);
         this.deleteRowCn(0);
         this.maspinlsx();
+        // this.$store.dispatch('losanxuat/fetchLosanxuat')
+
     },
 
     isFormValid() {
@@ -1054,12 +1024,26 @@ export default {
     },
 
     computed: {
+        // Load dữ liệu lương công đoạn từ VUEX
+        // load dữ liệu lô sản xuất có status = 2
+        // ...mapState({
+        //     losanxuats: state => state.losanxuat.items,
+        // }),
+        // load dữ liệu lương công đoạn
+        // luongcongdoans() {
+        //     return this.$store.state.quanlyluong.luongcongdoans
+        // },
+        // luongcongnhats() {
+        //     return this.$store.state.quanlyluong.luongcongnhats
+        // },
+        // tính tổng hỏng
         totalhong() {
             return this.allluongcongdoan.reduce((sohong) => sohong += sohong, 0)
         },
+        // chọn hết 
         selectAll: {
             get: function () {
-                return this.sllosx
+                return this.losanxuats
                     ? this.selected.length == this.showlsxpx.length
                     : false;
             },
@@ -1067,7 +1051,7 @@ export default {
                 var selected = [];
 
                 if (value) {
-                    this.sllosx.forEach(function (nv) {
+                    this.losanxuats.forEach(function (nv) {
                         selected.push(nv);
                     });
                 }
@@ -1122,6 +1106,10 @@ export default {
         itemsPerPage() {
             this.currentPage = 1;
         },
+        allluongcongdoan(newItems) {
+            // Cập nhật lại bảng khi có thay đổi
+            console.log('Dữ liệu đã được cập nhật!');
+        },
     },
 
     // dùng để bind dữ liệu ngày tháng vào input mang kiểu date (type="date" trong thẻ input)
@@ -1136,6 +1124,9 @@ export default {
     },
 
     methods: {
+        // --------------------------------------------------------------------------------------
+        // 1: Các hàm hỗ trợ tính toán; lọc ...
+        // hàm lấy ngày giờ hiện tại
         currentDateTime() {
             const current = new Date();
             const date =
@@ -1150,12 +1141,9 @@ export default {
                 current.getMinutes() +
                 ":" +
                 current.getSeconds();
-            this.namlsx = current.getFullYear();
             this.form.createdAt = date + " " + time;
             this.form.excutedAt = date + " " + time
         },
-
-
         // suggest input mã sản phẩm
         onInput() {
             if (!this.multiSearch_masp) {
@@ -1188,41 +1176,9 @@ export default {
                 this.currentPage = pageNumber;
             }
         },
-
-        // calculateTotals() {
-        //     // console.log(this.allluongcongdoan)
-        //     const groups = {};
-        //     this.allluongcongdoan.forEach(item => {
-        //         if (!groups[item.nguyencong]) {
-        //             groups[item.nguyencong] = {
-        //                 dongia: item.dongia,
-        //                 sodat: item.sodat,
-        //                 sohong: item.sohong
-        //             };
-        //         } else {
-        //             groups[item.nguyencong].dongia +=  item.dongia;
-        //             groups[item.nguyencong].sodat += item.sodat;
-        //             groups[item.nguyencong].sohong += item.sohong;
-        //         }
-        //     });
-
-        //     const totals = {
-        //         dongia: 0,
-        //         sodat: 0,
-        //         sohong: 0,
-        //     };
-        //     this.items.forEach(item => {
-        //         totals.dongia += item.dongia;
-        //         totals.sodat += item.sodat;
-        //         totals.sohong += item.sohong;
-        //     });
-
-        //     this.groups = groups;
-        //     this.totals = totals;
-        // },
-
         calculateTotals() {
             const groups = {};
+            // console.log(this.luongcongdoans);
             this.allluongcongdoan.forEach(item => {
                 const dongia = parseFloat(item.dongia);
                 const sodat = parseInt(item.sodat);
@@ -1235,7 +1191,7 @@ export default {
                         sohong: sohong
                     };
                 } else {
-                    groups[item.nguyencong].dongia += dongia;
+                    groups[item.nguyencong].dongia = dongia;
                     groups[item.nguyencong].sodat += sodat;
                     groups[item.nguyencong].sohong += sohong;
                 }
@@ -1245,6 +1201,7 @@ export default {
                 dongia: 0,
                 sodat: 0,
                 sohong: 0,
+                tongtien: 0
             };
             this.items.forEach(item => {
                 const dongia = parseFloat(item.dongia);
@@ -1254,39 +1211,25 @@ export default {
                 totals.dongia += dongia;
                 totals.sodat += sodat;
                 totals.sohong += sohong;
+                totals.tongtien += (sodat + sohong) * dongia;
             });
 
             this.groups = groups;
             this.totals = totals;
         },
 
-
-
-        // tìm lọc số liệu lô sản xuất
-        async getSolieuLSX() {
-            this.sllosx = await this.$axios.$get(
-                `/api/ketoan/getlosxtheoky?mapx=${this.maxuong}&nam=${this.namsl}&thang=${this.thangsl}`
-            );
-            if (this.sllosx.length <= 0) {
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: "top-end",
-                    showConfirmButton: false,
-                    timer: 1000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                        toast.addEventListener("mouseenter", Swal.stopTimer);
-                        toast.addEventListener("mouseleave", Swal.resumeTimer);
-                    },
-                });
-                Toast.fire({
-                    icon: "success",
-                    title: "Không tìm thấy số liệu",
-                });
-            }
+        // hàm lấy thẳng dữ liệu trực tiếp từ store 
+        async asyncDataLosx() {
+            const losanxuats = await fetchLosanxuat()
+            return { losanxuats }
         },
-
-        // Show all Lo sản xuất vào lương
+        // async fetchLosanxuats() {
+        //     const response = await this.$axios.$get('/api/losanxuats')
+        //     return response.data
+        // },
+        // --------------------------------------------------------------------------------------
+        // 2: Các hàm lấy dữ liệu từ server qua API
+        // form load sẽ lấy ra dữ liệu của các lô sản xuất - nằm ở trạng thái sản xuất
         async getSolieuLSX_ALl_cht() {
             this.multiSearch_masp = ""
             this.multiSearch_nhomsp = ""
@@ -1315,237 +1258,19 @@ export default {
                 });
             }
         },
-
-        async showmapx(e) {
-            // console.log(this.mapx)
-            var name = e.target.options[e.target.options.selectedIndex].text;
-            // console.log(name)
-            let position = name.split("--");
-            this.form.mapx = position[0].trim();
-            this.form.tenpx = position[1].trim();
-            this.ds_lokh = await this.$axios.$get(
-                `/api/ketoan/getallmalkhpx?mapx=${this.form.mapx}`
-            );
-            this.getMalosx();
-        },
-
-        onChange_Thang(e) {
-            var id = e.target.value;
-            var name = e.target.options[e.target.options.selectedIndex].text;
-            // console.log('id ', id);
-            // console.log('name ',name );
-            this.thangsl = id;
-        },
-
-        onChange_Nam(e) {
-            var id = e.target.value;
-            // var name = e.target.options[e.target.options.selectedIndex].text;
-            // console.log('id ',id );
-            // console.log('name ',name );
-            this.namsl = id;
-        },
-
-        onChange_pageSize(e) {
-            var id = e.target.value;
-            // var name = e.target.options[e.target.options.selectedIndex].text;
-            // console.log('id ',id );
-            // console.log('name ',name );
-            this.pageSize = id;
-        },
-
-        async getWithPX(e) {
-            this.mato = "";
-            var name = e.target.options[e.target.options.selectedIndex].text;
-            // console.log(name)
-            let position = name.split("--");
-            let p1 = position[0].trim();
-            let p2 = position[1].trim();
-            this.maxuong = p1;
-            this.tenxuong = p2;
-            this.tonhomsl = await this.$axios.$get(
-                `/api/phongban/alltoinxuong?mapx=${p1}`
-            );
-        },
-
-        async getWithTo(e) {
-            // console.log(this.mapx)
-            var name = e.target.options[e.target.options.selectedIndex].text;
-            // console.log(name)
-            let position = name.split("--");
-            let p1 = position[0].trim();
-            let p2 = position[1].trim();
-            this.mato = p1;
-            this.tento = p2;
-        },
-
-        async loadMakh() {
-            this.one_lokh = await this.$axios.$get(
-                `/api/lokehoach/getonemakh?mapx=${this.form.mapx}&makh=${this.form.makh}`
-            );
-            // console.log(this.one_lokh)
-            this.form.tenpx = this.one_lokh[0].tenpx;
-            this.form.ngaybd = this.one_lokh[0].ngaybd;
-            this.form.ngaykt = this.one_lokh[0].ngaykt;
-            let nn = this.namlsx.toString();
-            let sx_nam = nn.substring(2, 4);
-            this.form.malosx = this.one_lokh[0].makh.trim() + "-" + sx_nam;
-            this.form.masp = this.one_lokh[0].masp;
-            this.form.tensp = this.one_lokh[0].tensp;
-            this.form.soluong = this.one_lokh[0].soluong;
-            this.form.nhomluong = this.one_lokh[0].nhomluong;
-            // console.log(this.one_lokh[0].masp);
-            // console.log(this.form.masp);
-            this.checkMalosx = this.form.malosx.length;
-        },
-
-        copyCongdoan(data, index) {
-            // console.log(index)
-            // this.items.push({
-            //     _id_losx: data._id_losx,
-            //     kehoachnam: data.kehoachnam,
-            //     makh: data.makh,
-            //     makhpx: data.makhpx,
-            //     malosx: data.malosx,
-            //     mapx: data.mapx,
-            //     mapxchoncn: "",
-            //     malosx: data.malosx,
-            //     nguyencong: data.nguyencong,
-            //     may: 0,
-            //     congnhan: data.congnhan,
-            //     sodat: data.sodat,
-            //     sohong: data.sohong,
-            //     ghichu: data.ghichu,
-            //     masp: data.masp,
-            //     dongia: data.dongia,
-            //     tencn: data.tencn,
-            //     stopday_losx: data.stopday_losx,
-            //     status: data.status,
-            //     to_cn: data.to_cn,
-            //     ngaythuchien: data.ngaythuchien,
-            // });
-            data = { ...this.items[index] };
-            this.items.splice(index + 1, 0, data);
-            // console.log(this.items)
-        },
-
-        copyCongnhat(data, index) {
-            // console.log(index)
-            // this.items.push({
-            //     _id_losx: data._id_losx,
-            //     kehoachnam: data.kehoachnam,
-            //     makh: data.makh,
-            //     makhpx: data.makhpx,
-            //     malosx: data.malosx,
-            //     mapx: data.mapx,
-            //     mapxchoncn: "",
-            //     malosx: data.malosx,
-            //     nguyencong: data.nguyencong,
-            //     may: 0,
-            //     congnhan: data.congnhan,
-            //     sodat: data.sodat,
-            //     sohong: data.sohong,
-            //     ghichu: data.ghichu,
-            //     masp: data.masp,
-            //     dongia: data.dongia,
-            //     tencn: data.tencn,
-            //     stopday_losx: data.stopday_losx,
-            //     status: data.status,
-            //     to_cn: data.to_cn,
-            //     ngaythuchien: data.ngaythuchien,
-            // });
-            data = { ...this.items_cn[index] };
-            this.items_cn.splice(index + 1, 0, data);
-            // console.log(this.items)
-        },
-
         // get all phân xưởng
         async get_phanxuong() {
             this.phanxuong = await this.$axios.$get(`/api/phongban/allphanxuong`);
         },
-
-        // get all phân xưởng tim kiem so lieu mo
-        async get_phanxuong_solieu() {
-            this.phanxuongsl = await this.$axios.$get(`/api/phongban/allphanxuong`);
+        // lấy tất cả mã sản phẩm có trong lô sản xuất
+        async maspinlsx() {
+            this.maspinlosanxuat = await this.$axios.$get('/api/lokehoach/hmsanphamlosanxuat')
         },
 
-        // get all kế hoạch năm
-        async get_kehoach() {
-            this.kehoach = await this.$axios.$get(`/api/lokehoach/getkehoach`);
-        },
-
-        async getMalosx() {
-            this.listlsx = await this.$axios.$get(`/api/lokehoach/getlosx`);
-            // console.log(this.listlkh)
-            for (let i = 0; i < this.listlsx.length; i++) {
-                let mlsx = this.listlsx[i].malosx.trim();
-                this.arrLsx.push(mlsx);
-            }
-            // console.log(this.arrLsx);
-        },
-
-        async infoKehoach(e) {
-            this.allluongcongdoan = [];
-            this.allluongcongnhat = [];
-            let turn = 1;
-            let length = this.items.length;
-            while (turn <= length) {
-                this.deleteRow(this.items.length - turn);
-                turn += 1;
-            }
-            this.iscongdoan = 0;
-            this.isphanxuong = 1;
-            this.showlsxpx = [];
-            var name = e.target.options[e.target.options.selectedIndex].text;
-            let position = name.split("--");
-            this.form.makh = position[0].trim();
-
-            this.oneKehoach = await this.$axios.$get(
-                `/api/lokehoach/getkehoachone?makh=${this.form.makh}`
-            );
-
-            this.phanxuongtgsx = await this.$axios.$get(
-                `/api/lokehoach/allphanxuonginkh?makh=${this.form.makh}`
-            );
-            // console.log(this.phanxuongtgsx)
-            this.phanxuongkehoach = await this.$axios.$get(
-                `/api/lokehoach/allphanxuonginlkh?makh=${this.form.makh}`
-            );
-            // console.log(this.phanxuongkehoach)
-            // this.infosanpham = await this.$axios.$get(
-            //   `/api/lokehoach/getmaspinkh?makh=${this.form.makh}`
-            // );
-            // console.log(this.infosanpham)
-            // this.form.masp = this.infosanpham[0].masp.trim();
-            // this.form.tensp = this.infosanpham[0].tensp.trim();
-
-            this.dmcongnhat = await this.$axios.$get(`/api/ketoan/alldmcongnhat`);
-        },
-
-        async addPhanxuong() {
-            // this.isphanxuong = 1;
-            this.items.push({
-                makh: "",
-                makhpx: "",
-                malosx: "",
-                mapx: "",
-                tenpx: "",
-                masp: "",
-                tensp: "",
-                soluong: "",
-                nhomluong: "",
-                soluonglsx: "",
-                slthuctetaixuong: "",
-                ngaybd: "",
-                ngaykt: "",
-                tongdat: "",
-                tonghong: "",
-                ghichu: "",
-                createdAt: null,
-                createdBy: "",
-                status: 0,
-            });
-        },
-
+        // --------------------------------------------------------------------------------------
+        // 2: Các Hàm chức năng
+        // Các hàm xử lý thêm, xóa, copy các công đoạn sản xuất hoặc công nhật của công nhân
+        // Sự kiện bấm nút thêm các công đoạn sản xuất
         async addCongdoan() {
             // console.log(this.getinfoplsx) 
             let arrayCongdoan
@@ -1592,7 +1317,7 @@ export default {
                     congnhan: "",
                     tencn: "",
                     sodat: "",
-                    sohong: "",
+                    sohong: 0,
                     ghichu: "",
                     stopday_losx: "",
                     status: 0,
@@ -1616,7 +1341,7 @@ export default {
                         },
                     ],
                 });
-                console.log(this.items)
+                // console.log(this.items)
             }
 
             for (let i = 0; i < this.items.length; i++) {
@@ -1636,15 +1361,8 @@ export default {
 
 
             }
-
-            // console.log(this.items)
-
         },
-
-        deleteRow(index) {
-            this.items.splice(index, 1);
-        },
-
+        // Sự kiện bấm nút thêm công nhật của công nhân
         async addCongnhat() {
             this.dmcongnhat = await this.$axios.$get(`/api/ketoan/alldmcongnhat`);
             this.iscongnhat = 1;
@@ -1686,162 +1404,51 @@ export default {
                 ],
             });
         },
-
+        // Copy công đoạn sản xuất
+        copyCongdoan(data, index) {
+            // console.log(index)
+            // this.items.push({
+            //     _id_losx: data._id_losx,
+            //     kehoachnam: data.kehoachnam,
+            //     makh: data.makh,
+            //     makhpx: data.makhpx,
+            //     malosx: data.malosx,
+            //     mapx: data.mapx,
+            //     mapxchoncn: "",
+            //     malosx: data.malosx,
+            //     nguyencong: data.nguyencong,
+            //     may: 0,
+            //     congnhan: data.congnhan,
+            //     sodat: data.sodat,
+            //     sohong: data.sohong,
+            //     ghichu: data.ghichu,
+            //     masp: data.masp,
+            //     dongia: data.dongia,
+            //     tencn: data.tencn,
+            //     stopday_losx: data.stopday_losx,
+            //     status: data.status,
+            //     to_cn: data.to_cn,
+            //     ngaythuchien: data.ngaythuchien,
+            // });
+            data = { ...this.items[index] };
+            this.items.splice(index + 1, 0, data);
+            // console.log(this.items)
+        },
+        // Copy công nhật
+        copyCongnhat(data, index) {
+            data = { ...this.items_cn[index] };
+            this.items_cn.splice(index + 1, 0, data);
+            // console.log(this.items)
+        },
+        // Delete 1 row công đoạn
+        deleteRow(index) {
+            this.items.splice(index, 1);
+        },
+        // Delete 1 row công nhật
         deleteRowCn(index) {
             this.items_cn.splice(index, 1);
         },
-
-        async getInfoPX(e, selectedIndex, index) {
-            var name = e.target.options[e.target.options.selectedIndex].text;
-            // console.log(name)
-            let position = name.split("--");
-            let mapx = position[0].trim();
-            this.form.tenpx = position[1].trim();
-            this.getmakhpx = await this.$axios.$get(
-                `/api/lokehoach/getmakhpx?makh=${this.form.makh}&mapx=${mapx}`
-            );
-            // console.lotg(this.getmakhpx);
-            this.selectedIndex = selectedIndex;
-            let nn = this.namlsx.toString();
-            let sx_nam = nn.substring(2, 4);
-            for (let i = 0; i < this.items.length; i++) {
-                if (i == index) {
-                    this.items[i].makhpx = this.getmakhpx[0].makhpx.trim();
-                    this.items[i].malosx =
-                        this.getmakhpx[0].makhpx.trim() + "-" + sx_nam + "-";
-                    this.checkMalosx = this.items[i].malosx.length;
-                    // console.log(this.checkMalosx)
-                    this.items[i].tenpx = this.form.tenpx;
-                }
-            }
-            // console.log(this.items)
-            // lấy mã nhóm lương dựa vào mã sp và mã phân xưởng
-            if (mapx == "PXD" || mapx == "AL_PXD" || mapx == "DV_PXD") {
-                let phanxuong = "PXD";
-                this.nhomluong = await this.$axios.$get(
-                    `/api/lokehoach/getnhomluongtheompx?mapx=${phanxuong}&mavt=${this.form.masp}`
-                );
-                // console.log(this.nhomluong[0].nhomluong);
-            } else {
-                this.nhomluong = await this.$axios.$get(
-                    `/api/lokehoach/getnhomluongtheompx?mapx=${mapx}&mavt=${this.form.masp}`
-                );
-                // console.log(this.nhomluong[0].nhomluong);
-            }
-
-            for (let i = 0; i < this.items.length; i++) {
-                if (i == index) {
-                    if (this.nhomluong[0].nhomluong) {
-                        this.items[i].nhomluong = this.nhomluong[0].nhomluong.trim();
-                    } else {
-                        this.items[i].nhomluong = "";
-                    }
-                }
-            }
-            // console.log(this.items);
-        },
-
-        async getNhomluong(e) {
-            var name = e.target.options[e.target.options.selectedIndex].text;
-            // console.log(name)
-        },
-
-        async maspinlsx() {
-            this.maspinlosanxuat = await this.$axios.$get('/api/lokehoach/hmsanphamlosanxuat')
-        },
-
-        // lọc nhiều tiêu chí
-        async filterData() {
-            // console.log(this.selectedOptions)
-            // console.log(this.Options_status)
-            this.isOpen = false
-            this.isOpenst = false
-
-            const mapxList = this.selectedOptions
-            const masp = this.multiSearch_masp
-            const status = this.Options_status
-
-
-            // chọn lọc full
-            if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp != "") {
-                this.sllosx = await this.$axios.$get(
-                    `/api/lokehoach/filterfulldklosanxuat`, {
-                    params: {
-                        mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
-                        masp: masp,
-                        status: status,
-                    },
-                }
-                );
-            }
-            // chỉ có mã px
-            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_masp == "") {
-                this.sllosx = await this.$axios.$get(
-                    `/api/lokehoach/filteronlymapxlosanxuat`, {
-                    params: {
-                        mapx: mapxList,
-                    },
-                }
-                );
-            }
-            // chỉ có mã px và mã sp
-            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_masp != "") {
-                this.sllosx = await this.$axios.$get(
-                    `/api/lokehoach/filteronlymapxandmasplosanxuat`, {
-                    params: {
-                        mapx: mapxList,
-                        masp: masp
-                    },
-                }
-                );
-            }
-            // chỉ có mã px và status
-            else if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp == "") {
-                this.sllosx = await this.$axios.$get(
-                    `/api/lokehoach/filteronlymapxandstatuslosanxuat`, {
-                    params: {
-                        mapx: mapxList,
-                        status: status
-                    },
-                }
-                );
-            }
-            // lọc mỗi trạng thái
-            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.multiSearch_masp == "") {
-                this.sllosx = await this.$axios.$get(
-                    `/api/lokehoach/filteronlystatuslosanxuat`, {
-                    params: {
-                        status: status
-                    },
-                }
-                );
-            }
-
-            // lọc mỗi mã sản phẩm
-            else if (!this.selectedOptions.length && !this.Options_status.length && this.multiSearch_masp != "") {
-                this.sllosx = await this.$axios.$get(
-                    `/api/lokehoach/filteronlymasplosanxuat`, {
-                    params: {
-                        masp: masp
-                    },
-                }
-                );
-            }
-
-            // lọc sản phẩm + trạng thái
-            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.multiSearch_masp != "") {
-                this.sllosx = await this.$axios.$get(
-                    `/api/lokehoach/filteronlymaspandstatuslosx`, {
-                    params: {
-                        masp: masp,
-                        status: status
-                    },
-                }
-                );
-            }
-
-        },
-
+        // Các hàm xử lý sự kiện thay đổi hộp select
         // Bấm vào chọn tổ
         async getWithTo(e, selectedIndex, index) {
             this.selectedIndex = selectedIndex;
@@ -1905,8 +1512,374 @@ export default {
                 }
             }
         },
+        // Show tổ nhóm
+        async showtonhom(e, selectedIndex, index) {
+            var name = e.target.options[e.target.options.selectedIndex].text;
+            // console.log(name)
+            let position = name.split("-");
+            let p1 = position[0].trim();
+            // console.log(p1)
+            this.tonhomid = await this.$axios.$get(
+                `/api/phongban/alltoinxuong?mapx=${p1}`
+            );
+            if (this.tonhomid.length > 0) {
+                for (let i = 0; i < this.items.length; i++) {
+                    if (i == index) {
+                        this.items[i].nhomto = [];
+                        this.tonhomid = await this.$axios.$get(
+                            `/api/phongban/alltoinxuong?mapx=${p1}`
+                        );
+                        for (let k = 0; k < this.tonhomid.length; k++) {
+                            let cn = {
+                                maxuong: this.tonhomid[k].mapx,
+                                tenxuong: this.tonhomid[k].tenpx,
+                                tento: this.tonhomid[k].tento,
+                                mato: this.tonhomid[k].mato,
+                            };
+                            this.items[i].nhomto.push(cn);
+                            // console.log(cn)
+                        }
+                    }
+                }
+            } else {
+                for (let i = 0; i < this.items.length; i++) {
+                    if (i == index) {
+                        this.items[i].nhomto = [];
+                        this.cong_nhan = await this.$axios.$get(
+                            `/api/congnhan/allcongnhanpx?mapx=${p1}`
+                        );
+                        this.items[i].nhomto_cnt = [];
+                        for (let k = 0; k < this.cong_nhan.length; k++) {
+                            let cn = {
+                                maxuong: this.cong_nhan[k].mapx,
+                                tenxuong: this.cong_nhan[k].tenpx,
+                                tento: this.cong_nhan[k].tento,
+                                mato: this.cong_nhan[k].mato,
+                                tencn: this.cong_nhan[k].tencn,
+                                macn: this.cong_nhan[k].macn,
+                            };
+                            this.items[i].nhomto_cnt.push(cn);
+                            // console.log(cn)
+                        }
+                    }
+                }
+            }
+        },
+        async showtonhom_cn(e, selectedIndex, index) {
+            var name = e.target.options[e.target.options.selectedIndex].text;
+            // console.log(name)
+            let position = name.split("-");
+            let p1 = position[0].trim();
+            // console.log(p1)
+            this.tonhomid = await this.$axios.$get(
+                `/api/phongban/alltoinxuong?mapx=${p1}`
+            );
+            if (this.tonhomid.length > 0) {
+                for (let i = 0; i < this.items_cn.length; i++) {
+                    if (i == index) {
+                        this.items_cn[i].nhomto = [];
+                        this.tonhomid = await this.$axios.$get(
+                            `/api/phongban/alltoinxuong?mapx=${p1}`
+                        );
+                        for (let k = 0; k < this.tonhomid.length; k++) {
+                            let cn = {
+                                maxuong: this.tonhomid[k].mapx,
+                                tenxuong: this.tonhomid[k].tenpx,
+                                tento: this.tonhomid[k].tento,
+                                mato: this.tonhomid[k].mato,
+                            };
+                            this.items_cn[i].nhomto.push(cn);
+                            // console.log(cn)
+                        }
+                    }
+                }
+            } else {
+                for (let i = 0; i < this.items_cn.length; i++) {
+                    if (i == index) {
+                        this.items_cn[i].nhomto = [];
+                        this.cong_nhan = await this.$axios.$get(
+                            `/api/congnhan/allcongnhanpx?mapx=${p1}`
+                        );
+                        this.items_cn[i].nhomto_cnt = [];
+                        for (let k = 0; k < this.cong_nhan.length; k++) {
+                            let cn = {
+                                maxuong: this.cong_nhan[k].mapx,
+                                tenxuong: this.cong_nhan[k].tenpx,
+                                tento: this.cong_nhan[k].tento,
+                                mato: this.cong_nhan[k].mato,
+                                tencn: this.cong_nhan[k].tencn,
+                                macn: this.cong_nhan[k].macn,
+                            };
+                            this.items_cn[i].nhomto_cnt.push(cn);
+                            // console.log(cn)
+                        }
+                    }
+                }
+            }
+        },
+        // Lấy tên công nhân
+        getTencn(event, selectedIndex, index) {
+            // console.log(this.cong_nhan[this.selectedIndex])
+            this.selectedIndex = selectedIndex;
+            for (let i = 0; i < this.items.length; i++) {
+                if (i == index) {
+                    this.items[i].congnhan =
+                        this.items[i].nhomto_cnt[this.selectedIndex].macn;
+                    this.items[i].tencn =
+                        this.items[i].nhomto_cnt[this.selectedIndex].tencn;
+                    this.items[i].phanxuong_cn =
+                        this.items[i].nhomto_cnt[this.selectedIndex].maxuong;
+                    this.items[i].to_cn =
+                        this.items[i].nhomto_cnt[this.selectedIndex].mato;
+                    this.items[i].mato = this.form.mato;
+                }
+            }
+        },
+        getTencnCN(event, selectedIndex, index) {
+            // console.log(this.cong_nhan[this.selectedIndex])
+            this.selectedIndex = selectedIndex;
+            for (let i = 0; i < this.items_cn.length; i++) {
+                if (i == index) {
+                    this.items_cn[i].malosx = this.malosx;
+                    this.items_cn[i].nguoithuchien =
+                        this.cong_nhan_cn[this.selectedIndex].tencn;
+                    this.items_cn[i].malosx = this.form.malosx;
 
-        // chốt phiếu
+                    this.items_cn[i].macongnhan =
+                        this.items_cn[i].nhomto_cnt[this.selectedIndex].macn;
+                    this.items_cn[i].nguoithuchien =
+                        this.items_cn[i].nhomto_cnt[this.selectedIndex].tencn;
+                }
+            }
+            // console.log(this.items_cn)
+        },
+        // lấy công nhật
+        async getCongnhat(event, selectedIndex, index) {
+            this.selectedIndex = selectedIndex;
+            for (let i = 0; i < this.items_cn.length; i++) {
+                if (i == index) {
+                    this.items_cn[i].tencongnhat =
+                        this.dmcongnhat[this.selectedIndex].tencn;
+                    this.items_cn[i].dongia = this.dmcongnhat[this.selectedIndex].dongia;
+                    this.items_cn[i].malosx = this.form.malosx;
+                    this.items_cn[i].makh = this.form.makh;
+                    this.items_cn[i].makhpx = this.form.makhpx;
+                    this.items_cn[i].tensp = this.form.tensp;
+                    this.items_cn[i].mapx = this.form.mapx;
+                    this.items_cn[i]._id_losx = this.getinfoplsx._id
+                }
+            }
+            // console.log(this.items_cn)
+            if (this.form.mato == "") {
+                for (let i = 0; i < this.items_cn.length; i++) {
+                    if (i == index) {
+                        this.cong_nhan_cn = await this.$axios.$get(
+                            `/api/congnhan/allcongnhanpx?mapx=${this.form.mapx}`
+                        );
+                        // console.log(this.cong_nhan);
+                        this.items_cn[i].nhomto_cnt = [];
+
+                        for (let k = 0; k < this.cong_nhan_cn.length; k++) {
+                            let cn = {
+                                maxuong: this.cong_nhan_cn[k].mapx,
+                                tenxuong: this.cong_nhan_cn[k].tenpx,
+                                tento: this.cong_nhan_cn[k].tento,
+                                mato: this.cong_nhan_cn[k].mato,
+                                tencn: this.cong_nhan_cn[k].tencn,
+                                macn: this.cong_nhan_cn[k].macn,
+                            };
+                            this.items_cn[i].nhomto_cnt.push(cn);
+                            // console.log(cn)
+                        }
+                        // console.log(this.items_cn[i].nhomto_cnt)
+                    }
+                }
+            } else {
+                for (let i = 0; i < this.items_cn.length; i++) {
+                    if (i == index) {
+                        // console.log(this.form.mato);
+                        this.cong_nhan_cn = await this.$axios.$get(
+                            `/api/congnhan/allcongnhanto?mato=${this.form.mato}`
+                        );
+                        // console.log(this.cong_nhan_cn);
+                        this.items_cn[i].nhomto_cnt = [];
+
+                        for (let k = 0; k < this.cong_nhan_cn.length; k++) {
+                            let cn = {
+                                maxuong: this.cong_nhan_cn[k].mapx,
+                                tenxuong: this.cong_nhan_cn[k].tenpx,
+                                tento: this.cong_nhan_cn[k].tento,
+                                mato: this.cong_nhan_cn[k].mato,
+                                tencn: this.cong_nhan_cn[k].tencn,
+                                macn: this.cong_nhan_cn[k].macn,
+                            };
+                            this.items_cn[i].nhomto_cnt.push(cn);
+                        }
+                    }
+                }
+
+            }
+        },
+        // Các Hàm xử lý sự kiện bấm nút ra thông tin
+        // Bấm vào mã lô sản xuất sẽ ra thông tin lương đã nhập
+        async getInfoLosx(infoPhieulo) {
+            // gọi lương công đoạn từ store
+            // this.$store.dispatch('quanlyluong/fetchLuongcd', infoPhieulo._id)
+            // // gọi lương công nhật từ store
+            // this.$store.dispatch('quanlyluong/fetchLuongcn', infoPhieulo._id)
+
+            this.allluongcongdoan = await this.$axios.$get(
+                `/api/ketoan/getallluongcongdoaninlsx?_id_losx=${infoPhieulo._id}`
+            );
+            this.allluongcongnhat = await this.$axios.$get(
+                `/api/ketoan/getallluongcongnhatinlsx?_id_losx=${infoPhieulo._id}`
+            );
+            // this.isActive = true;
+            this.calculateTotals();
+            // console.log(this.groups)
+            this.iscongdoan = 1;
+            this.getinfoplsx = infoPhieulo;
+            // console.log(this.getinfoplsx);
+            this.form.id_losx = this.getinfoplsx._id
+            this.form.nhomluong = infoPhieulo.nhomluong.trim();
+            this.form.mapx = infoPhieulo.mapx.trim();
+            this.form.malosx = infoPhieulo.malosx.trim();
+            this.form.makh = infoPhieulo.makh.trim();
+            this.form.makhpx = infoPhieulo.makhpx.trim();
+            this.form.tensp = infoPhieulo.tensp.trim();
+            this.form.mato = infoPhieulo.mato.trim();
+            this.form.tento = infoPhieulo.tento.trim();
+
+            // lấy mã nhóm lương dựa vào mã sp và mã phân xưởng
+            if (
+                this.form.mapx == "PXD" ||
+                this.form.mapx == "AL_PXD" ||
+                this.form.mapx == "DV_PXD"
+            ) {
+                let phanxuong = "PXD";
+                this.dmnguyencong = await this.$axios.$get(
+                    `/api/ketoan/getnguyencong?khsp=${this.form.nhomluong}&px=${phanxuong}`
+                );
+            } else {
+                this.dmnguyencong = await this.$axios.$get(
+                    `/api/ketoan/getnguyencong?khsp=${this.form.nhomluong}&px=${this.form.mapx}`
+                );
+                // console.log(this.dmnguyencong)
+            }
+
+            // tính tổng hỏng
+
+            const sumhong = await this.$axios.$get(
+                `/api/ketoan/sumtonghong?_id_losx=${this.getinfoplsx._id}`
+            );
+
+            let j = sumhong[0].tonghong
+            this.tonghonginlo = j
+
+
+
+        },
+        // Bấm vào nhập lương sẽ ra popup nhập lương
+        async vaoPhieuluong(infoPhieulo) {
+            this.isActive = true;
+            // console.log(infoPhieulo)
+            this.items = []
+            this.iscongdoan = 1;
+            this.getinfoplsx = infoPhieulo;
+            // console.log(this.getinfoplsx);
+            this.form.id_losx = this.getinfoplsx._id
+            this.form.nhomluong = infoPhieulo.nhomluong;
+            this.form.mapx = infoPhieulo.mapx;
+            this.form.malosx = infoPhieulo.malosx;
+            this.form.makh = infoPhieulo.makh;
+            this.form.makhpx = infoPhieulo.makhpx;
+            this.form.tensp = infoPhieulo.tensp;
+            this.form.mato = infoPhieulo.mato;
+            this.form.tento = infoPhieulo.tento;
+
+            // this.allluongcongdoan = await this.$axios.$get(
+            //     `/api/ketoan/getallluongcongdoaninlsx?makh=${this.form.makh}&makhpx=${this.form.makhpx}&malosx=${this.form.malosx}&mapx=${this.form.mapx}`
+            // );
+            // this.allluongcongnhat = await this.$axios.$get(
+            //     `/api/ketoan/getallluongcongnhatinlsx?makh=${this.form.makh}&makhpx=${this.form.makhpx}&malosx=${this.form.malosx}&mapx=${this.form.mapx}`
+            // );
+
+            // lấy mã nhóm lương dựa vào mã sp và mã phân xưởng
+            if (
+                this.form.mapx == "PXD" ||
+                this.form.mapx == "AL_PXD" ||
+                this.form.mapx == "DV_PXD"
+            ) {
+                let phanxuong = "PXD";
+                this.dmnguyencong = await this.$axios.$get(
+                    `/api/ketoan/getnguyencong?khsp=${this.form.nhomluong}&px=${phanxuong}`
+                );
+            } else {
+                this.dmnguyencong = await this.$axios.$get(
+                    `/api/ketoan/getnguyencong?khsp=${this.form.nhomluong}&px=${this.form.mapx}`
+                );
+                // console.log(this.dmnguyencong)
+            }
+
+            // tính tổng hỏng
+
+            const sumhong = await this.$axios.$get(
+                `/api/ketoan/sumtonghong?_id_losx=${this.getinfoplsx._id}`
+            );
+
+            let j = sumhong[0].tonghong
+            this.tonghonginlo = j
+        },
+        // Hàm cập nhật nhanh khi gõ số lượng hoàn thành vào sẽ đổi trạng thái Lô sản xuất
+        async updateStatus(data) {
+            try {
+                if (parseFloat(data.soluongkhsx) > 0) {
+                    data.status = 3
+                } else {
+                    data.status = 2
+                }
+                this.$axios.$patch(
+                    `/api/lokehoach/losanxuat/status/${data._id}`,
+                    data
+                );
+
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener("mouseenter", Swal.stopTimer);
+                        toast.addEventListener("mouseleave", Swal.resumeTimer);
+                    },
+                });
+                Toast.fire({
+                    icon: "success",
+                    title: "Đã cập nhật",
+                });
+            } catch (error) {
+                // console.log(error);
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener("mouseenter", Swal.stopTimer);
+                        toast.addEventListener("mouseleave", Swal.resumeTimer);
+                    },
+                });
+                Toast.fire({
+                    icon: "error",
+                    title: "Có lỗi xảy ra !!!",
+                });
+            }
+        },
+
+        // Hàm xử lý chốt phiếu 
+        // Chốt phiếu
         async chotPhieulo() {
             // Quy trình khi chốt phiếu lô sản xuất
             // 1. Chốt các mã lô sản xuất đã được chọn
@@ -2046,8 +2019,7 @@ export default {
 
 
         },
-
-        // hủy từng phiếu
+        // Hủy từng phiếu
         async xacnhanHuyChotphieu() {
             let data = {
                 stopday_losx: this.form.stopday_losx,
@@ -2106,8 +2078,7 @@ export default {
 
             this.getSolieuLSX_ALl_cht()
         },
-
-        // hủy chốt toàn bộ phiếu
+        // Hủy chốt toàn bộ phiếu
         async huychotallPhieulo() {
             // console.log(this.selected)
             for (let i = 0; i < this.selected.length; i++) {
@@ -2172,466 +2143,102 @@ export default {
 
         },
 
-        // Bấm vào mã lô sản xuất sẽ ra thông tin lương đã nhập
-        async getInfoLosx(infoPhieulo) {
-            this.allluongcongdoan = await this.$axios.$get(
-                `/api/ketoan/getallluongcongdoaninlsx?_id_losx=${infoPhieulo._id}`
-            );
-            this.allluongcongnhat = await this.$axios.$get(
-                `/api/ketoan/getallluongcongnhatinlsx?makh=${this.form.makh}&makhpx=${this.form.makhpx}&malosx=${this.form.malosx}&mapx=${this.form.mapx}`
-            );
-            // this.isActive = true;
-            this.calculateTotals();
-            // console.log(this.groups)
-            this.iscongdoan = 1;
-            this.getinfoplsx = infoPhieulo;
-            // console.log(this.getinfoplsx);
-            this.form.id_losx = this.getinfoplsx._id
-            this.form.nhomluong = infoPhieulo.nhomluong.trim();
-            this.form.mapx = infoPhieulo.mapx.trim();
-            this.form.malosx = infoPhieulo.malosx.trim();
-            this.form.makh = infoPhieulo.makh.trim();
-            this.form.makhpx = infoPhieulo.makhpx.trim();
-            this.form.tensp = infoPhieulo.tensp.trim();
-            this.form.mato = infoPhieulo.mato.trim();
-            this.form.tento = infoPhieulo.tento.trim();
+        // Hàm lọc dữ liệu
+        // Lọc nhiều tiêu chí
+        async filterData() {
+            // console.log(this.selectedOptions)
+            // console.log(this.Options_status)
+            this.isOpen = false
+            this.isOpenst = false
 
-            // lấy mã nhóm lương dựa vào mã sp và mã phân xưởng
-            if (
-                this.form.mapx == "PXD" ||
-                this.form.mapx == "AL_PXD" ||
-                this.form.mapx == "DV_PXD"
-            ) {
-                let phanxuong = "PXD";
-                this.dmnguyencong = await this.$axios.$get(
-                    `/api/ketoan/getnguyencong?khsp=${this.form.nhomluong}&px=${phanxuong}`
-                );
-            } else {
-                this.dmnguyencong = await this.$axios.$get(
-                    `/api/ketoan/getnguyencong?khsp=${this.form.nhomluong}&px=${this.form.mapx}`
-                );
-                // console.log(this.dmnguyencong)
-            }
-
-            // tính tổng hỏng
-
-            const sumhong = await this.$axios.$get(
-                `/api/ketoan/sumtonghong?_id_losx=${this.getinfoplsx._id}`
-            );
-
-            let j = sumhong[0].tonghong
-            this.tonghonginlo = j
+            const mapxList = this.selectedOptions
+            const masp = this.multiSearch_masp
+            const status = this.Options_status
 
 
-
-        },
-
-        // Bấm vào nhập lương sẽ ra popup nhập lương
-        async vaoPhieuluong(infoPhieulo) {
-            this.isActive = true;
-            // console.log(infoPhieulo)
-            this.items = []
-            this.iscongdoan = 1;
-            this.getinfoplsx = infoPhieulo;
-            // console.log(this.getinfoplsx);
-            this.form.id_losx = this.getinfoplsx._id
-            this.form.nhomluong = infoPhieulo.nhomluong;
-            this.form.mapx = infoPhieulo.mapx;
-            this.form.malosx = infoPhieulo.malosx;
-            this.form.makh = infoPhieulo.makh;
-            this.form.makhpx = infoPhieulo.makhpx;
-            this.form.tensp = infoPhieulo.tensp;
-            this.form.mato = infoPhieulo.mato;
-            this.form.tento = infoPhieulo.tento;
-
-            // this.allluongcongdoan = await this.$axios.$get(
-            //     `/api/ketoan/getallluongcongdoaninlsx?makh=${this.form.makh}&makhpx=${this.form.makhpx}&malosx=${this.form.malosx}&mapx=${this.form.mapx}`
-            // );
-            // this.allluongcongnhat = await this.$axios.$get(
-            //     `/api/ketoan/getallluongcongnhatinlsx?makh=${this.form.makh}&makhpx=${this.form.makhpx}&malosx=${this.form.malosx}&mapx=${this.form.mapx}`
-            // );
-
-            // lấy mã nhóm lương dựa vào mã sp và mã phân xưởng
-            if (
-                this.form.mapx == "PXD" ||
-                this.form.mapx == "AL_PXD" ||
-                this.form.mapx == "DV_PXD"
-            ) {
-                let phanxuong = "PXD";
-                this.dmnguyencong = await this.$axios.$get(
-                    `/api/ketoan/getnguyencong?khsp=${this.form.nhomluong}&px=${phanxuong}`
-                );
-            } else {
-                this.dmnguyencong = await this.$axios.$get(
-                    `/api/ketoan/getnguyencong?khsp=${this.form.nhomluong}&px=${this.form.mapx}`
-                );
-                // console.log(this.dmnguyencong)
-            }
-
-            // tính tổng hỏng
-
-            const sumhong = await this.$axios.$get(
-                `/api/ketoan/sumtonghong?_id_losx=${this.getinfoplsx._id}`
-            );
-
-            let j = sumhong[0].tonghong
-            this.tonghonginlo = j
-
-
-
-        },
-
-        async showtonhom(e, selectedIndex, index) {
-            var name = e.target.options[e.target.options.selectedIndex].text;
-            // console.log(name)
-            let position = name.split("-");
-            let p1 = position[0].trim();
-            // console.log(p1)
-            this.tonhomid = await this.$axios.$get(
-                `/api/phongban/alltoinxuong?mapx=${p1}`
-            );
-            if (this.tonhomid.length > 0) {
-                for (let i = 0; i < this.items.length; i++) {
-                    if (i == index) {
-                        this.items[i].nhomto = [];
-                        this.tonhomid = await this.$axios.$get(
-                            `/api/phongban/alltoinxuong?mapx=${p1}`
-                        );
-                        for (let k = 0; k < this.tonhomid.length; k++) {
-                            let cn = {
-                                maxuong: this.tonhomid[k].mapx,
-                                tenxuong: this.tonhomid[k].tenpx,
-                                tento: this.tonhomid[k].tento,
-                                mato: this.tonhomid[k].mato,
-                            };
-                            this.items[i].nhomto.push(cn);
-                            // console.log(cn)
-                        }
-                    }
-                }
-            } else {
-                for (let i = 0; i < this.items.length; i++) {
-                    if (i == index) {
-                        this.items[i].nhomto = [];
-                        this.cong_nhan = await this.$axios.$get(
-                            `/api/congnhan/allcongnhanpx?mapx=${p1}`
-                        );
-                        this.items[i].nhomto_cnt = [];
-                        for (let k = 0; k < this.cong_nhan.length; k++) {
-                            let cn = {
-                                maxuong: this.cong_nhan[k].mapx,
-                                tenxuong: this.cong_nhan[k].tenpx,
-                                tento: this.cong_nhan[k].tento,
-                                mato: this.cong_nhan[k].mato,
-                                tencn: this.cong_nhan[k].tencn,
-                                macn: this.cong_nhan[k].macn,
-                            };
-                            this.items[i].nhomto_cnt.push(cn);
-                            // console.log(cn)
-                        }
-                    }
-                }
-            }
-        },
-
-        async showtonhom_cn(e, selectedIndex, index) {
-            var name = e.target.options[e.target.options.selectedIndex].text;
-            // console.log(name)
-            let position = name.split("-");
-            let p1 = position[0].trim();
-            // console.log(p1)
-            this.tonhomid = await this.$axios.$get(
-                `/api/phongban/alltoinxuong?mapx=${p1}`
-            );
-            if (this.tonhomid.length > 0) {
-                for (let i = 0; i < this.items_cn.length; i++) {
-                    if (i == index) {
-                        this.items_cn[i].nhomto = [];
-                        this.tonhomid = await this.$axios.$get(
-                            `/api/phongban/alltoinxuong?mapx=${p1}`
-                        );
-                        for (let k = 0; k < this.tonhomid.length; k++) {
-                            let cn = {
-                                maxuong: this.tonhomid[k].mapx,
-                                tenxuong: this.tonhomid[k].tenpx,
-                                tento: this.tonhomid[k].tento,
-                                mato: this.tonhomid[k].mato,
-                            };
-                            this.items_cn[i].nhomto.push(cn);
-                            // console.log(cn)
-                        }
-                    }
-                }
-            } else {
-                for (let i = 0; i < this.items_cn.length; i++) {
-                    if (i == index) {
-                        this.items_cn[i].nhomto = [];
-                        this.cong_nhan = await this.$axios.$get(
-                            `/api/congnhan/allcongnhanpx?mapx=${p1}`
-                        );
-                        this.items_cn[i].nhomto_cnt = [];
-                        for (let k = 0; k < this.cong_nhan.length; k++) {
-                            let cn = {
-                                maxuong: this.cong_nhan[k].mapx,
-                                tenxuong: this.cong_nhan[k].tenpx,
-                                tento: this.cong_nhan[k].tento,
-                                mato: this.cong_nhan[k].mato,
-                                tencn: this.cong_nhan[k].tencn,
-                                macn: this.cong_nhan[k].macn,
-                            };
-                            this.items_cn[i].nhomto_cnt.push(cn);
-                            // console.log(cn)
-                        }
-                    }
-                }
-            }
-        },
-
-        async getdataPhieulosx(phieulo) {
-            this.allluongcongdoan = [];
-            this.allluongcongnhat = [];
-            this.iscongdoan = 0;
-            this.iscongnhat = 0;
-            this.phieulosx = phieulo;
-            // console.log(this.phieulosx.tenpx);
-            this.showlsxpx = await this.$axios.$get(
-                `/api/lokehoach/losanxuattaipx?makh=${this.phieulosx.makh}&makhpx=${this.phieulosx.makhpx}&mapx=${this.phieulosx.mapx}`
-            );
-            // ban đầu làm là do update tổng đạt hỏng từ bên ngoài
-            // Soi vào từng lô để tính sum số hỏng
-            // for (let i = 0; i < this.showlsxpx.length; i++) {
-            //   const sumhong = await this.$axios.$get(
-            //     `/api/ketoan/sumtonghong?_id_losx=${this.showlsxpx[i]._id}`
-            //   );
-            //   // console.log(sumhong[0].tonghong)
-            //   // console.log(`Mã Lô ${i} là: ${this.showlsxpx[i]._id} -- Có tổng hỏng là: ${sumhong[0].tonghong}`)
-            //   // items_tonghong
-            //   this.showlsxpx[i].tonghong = sumhong[0].tonghong
-
-            // }
-            // console.log(this.showlsxpx)
-        },
-
-        // bấm chọn nguyên công
-        async getinfoNguyencong(event, selectedIndex, index) {
-            this.selectedIndex = selectedIndex;
-            // console.log(index)
-            for (let i = 0; i < this.items.length; i++) {
-                if (i == index) {
-                    this.items[i].dongia = this.dmnguyencong[this.selectedIndex].dongia;
-                    this.items[i].malosx = this.form.malosx;
-                    this.items[i].makh = this.form.makh;
-                    this.items[i].makhpx = this.form.makhpx;
-                    this.items[i].tensp = this.form.tensp;
-                    this.items[i].mapx = this.form.mapx;
-                    this.items[i]._id_losx = this.getinfoplsx._id
-                }
-            }
-
-            if (this.form.mato == "") {
-                for (let i = 0; i < this.items.length; i++) {
-                    if (i == index) {
-                        this.cong_nhan = await this.$axios.$get(
-                            `/api/congnhan/allcongnhanpx?mapx=${this.form.mapx}`
-                        );
-                        // console.log(this.cong_nhan);
-                        this.items[i].nhomto_cnt = [];
-
-                        for (let k = 0; k < this.cong_nhan.length; k++) {
-                            let cn = {
-                                maxuong: this.cong_nhan[k].mapx,
-                                tenxuong: this.cong_nhan[k].tenpx,
-                                tento: this.cong_nhan[k].tento,
-                                mato: this.cong_nhan[k].mato,
-                                tencn: this.cong_nhan[k].tencn,
-                                macn: this.cong_nhan[k].macn,
-                            };
-                            this.items[i].nhomto_cnt.push(cn);
-                            // console.log(cn)
-                        }
-                    }
-                }
-            } else {
-                for (let i = 0; i < this.items.length; i++) {
-                    if (i == index) {
-                        this.cong_nhan = await this.$axios.$get(
-                            `/api/congnhan/allcongnhanto?mato=${this.form.mato}`
-                        );
-                        // console.log(this.cong_nhan);
-                        this.items[i].nhomto_cnt = [];
-
-                        for (let k = 0; k < this.cong_nhan.length; k++) {
-                            let cn = {
-                                maxuong: this.cong_nhan[k].mapx,
-                                tenxuong: this.cong_nhan[k].tenpx,
-                                tento: this.cong_nhan[k].tento,
-                                mato: this.cong_nhan[k].mato,
-                                tencn: this.cong_nhan[k].tencn,
-                                macn: this.cong_nhan[k].macn,
-                            };
-                            this.items[i].nhomto_cnt.push(cn);
-                            // console.log(cn)
-                        }
-                    }
-                }
-            }
-        },
-
-
-
-        getTencn(event, selectedIndex, index) {
-            // console.log(this.cong_nhan[this.selectedIndex])
-            this.selectedIndex = selectedIndex;
-            for (let i = 0; i < this.items.length; i++) {
-                if (i == index) {
-                    this.items[i].congnhan =
-                        this.items[i].nhomto_cnt[this.selectedIndex].macn;
-                    this.items[i].tencn =
-                        this.items[i].nhomto_cnt[this.selectedIndex].tencn;
-                    this.items[i].phanxuong_cn =
-                        this.items[i].nhomto_cnt[this.selectedIndex].maxuong;
-                    this.items[i].to_cn =
-                        this.items[i].nhomto_cnt[this.selectedIndex].mato;
-                    this.items[i].mato = this.form.mato;
-                }
-            }
-        },
-
-        getTencnCN(event, selectedIndex, index) {
-            // console.log(this.cong_nhan[this.selectedIndex])
-            this.selectedIndex = selectedIndex;
-            for (let i = 0; i < this.items_cn.length; i++) {
-                if (i == index) {
-                    this.items_cn[i].malosx = this.malosx;
-                    this.items_cn[i].nguoithuchien =
-                        this.cong_nhan_cn[this.selectedIndex].tencn;
-                    this.items_cn[i].malosx = this.form.malosx;
-
-                    this.items_cn[i].macongnhan =
-                        this.items_cn[i].nhomto_cnt[this.selectedIndex].macn;
-                    this.items_cn[i].nguoithuchien =
-                        this.items_cn[i].nhomto_cnt[this.selectedIndex].tencn;
-                }
-            }
-            // console.log(this.items_cn)
-        },
-
-        async getCongnhat(event, selectedIndex, index) {
-            this.selectedIndex = selectedIndex;
-            for (let i = 0; i < this.items_cn.length; i++) {
-                if (i == index) {
-                    this.items_cn[i].tencongnhat =
-                        this.dmcongnhat[this.selectedIndex].tencn;
-                    this.items_cn[i].dongia = this.dmcongnhat[this.selectedIndex].dongia;
-                    this.items_cn[i].malosx = this.form.malosx;
-                    this.items_cn[i].makh = this.form.makh;
-                    this.items_cn[i].makhpx = this.form.makhpx;
-                    this.items_cn[i].tensp = this.form.tensp;
-                    this.items_cn[i].mapx = this.form.mapx;
-                    this.items_cn[i]._id_losx = this.getinfoplsx._id
-                }
-            }
-            // console.log(this.items_cn)
-            if (this.form.mato == "") {
-                for (let i = 0; i < this.items_cn.length; i++) {
-                    if (i == index) {
-                        this.cong_nhan_cn = await this.$axios.$get(
-                            `/api/congnhan/allcongnhanpx?mapx=${this.form.mapx}`
-                        );
-                        // console.log(this.cong_nhan);
-                        this.items_cn[i].nhomto_cnt = [];
-
-                        for (let k = 0; k < this.cong_nhan_cn.length; k++) {
-                            let cn = {
-                                maxuong: this.cong_nhan_cn[k].mapx,
-                                tenxuong: this.cong_nhan_cn[k].tenpx,
-                                tento: this.cong_nhan_cn[k].tento,
-                                mato: this.cong_nhan_cn[k].mato,
-                                tencn: this.cong_nhan_cn[k].tencn,
-                                macn: this.cong_nhan_cn[k].macn,
-                            };
-                            this.items_cn[i].nhomto_cnt.push(cn);
-                            // console.log(cn)
-                        }
-                        // console.log(this.items_cn[i].nhomto_cnt)
-                    }
-                }
-            } else {
-                for (let i = 0; i < this.items_cn.length; i++) {
-                    if (i == index) {
-                        // console.log(this.form.mato);
-                        this.cong_nhan_cn = await this.$axios.$get(
-                            `/api/congnhan/allcongnhanto?mato=${this.form.mato}`
-                        );
-                        // console.log(this.cong_nhan_cn);
-                        this.items_cn[i].nhomto_cnt = [];
-
-                        for (let k = 0; k < this.cong_nhan_cn.length; k++) {
-                            let cn = {
-                                maxuong: this.cong_nhan_cn[k].mapx,
-                                tenxuong: this.cong_nhan_cn[k].tenpx,
-                                tento: this.cong_nhan_cn[k].tento,
-                                mato: this.cong_nhan_cn[k].mato,
-                                tencn: this.cong_nhan_cn[k].tencn,
-                                macn: this.cong_nhan_cn[k].macn,
-                            };
-                            this.items_cn[i].nhomto_cnt.push(cn);
-                        }
-                    }
-                }
-
-            }
-        },
-
-        // thử cho cập nhật đồng thời để update newest cho tổng hỏng. dkm
-        async updateImdi() {
-            const tonghong = await this.$axios.$get(
-                `/api/ketoan/sumtonghong?_id_losx=${this.getinfoplsx._id}`
-            );
-
-            let j = tonghong[0].tonghong
-            this.tonghonginlo = j
-
-            // console.log(this.tonghonginlo)
-            let sumhong = this.tonghonginlo
-            let sumdat = this.tongdatinlo
-            // console.log(`mã lô: ${this.showlsxpx[i]._id} có tổng hỏng là: ${sumhong}`)
-            let dt = { tonghong: sumhong, tongdat: sumdat }
-            this.$axios.$patch(
-                `/api/ketoan/updatetonghong?_id=${this.getinfoplsx._id}`,
-                dt
-            );
-
-            // refresh table luong cong doan da thuc hien
-            this.allluongcongdoan = []
-            this.allluongcongnhat = []
-            // console.log(this.getinfoplsx)
-            if (this.mapx != '' & this.namsl != '' & this.thangsl != '') {
-                // console.log('px')
+            // chọn lọc full
+            if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp != "") {
                 this.sllosx = await this.$axios.$get(
-                    `/api/ketoan/getlosxtheoky?mapx=${this.getinfoplsx.mapx}&nam=${this.namsl}&thang=${this.thangsl}`
-                );
-            } else {
-                // console.log('no px')
-                this.sllosx = await this.$axios.$get(
-                    `/api/ketoan/getallphieulocht`
-                );
-            }
-
-        },
-
-        taophieuluong() {
-            if (this.items.length > 0) {
-                for (let i = 0; i < this.items.length; i++) {
-                    this.$axios.$post(
-                        "/api/ketoan/addluongcongdoan",
-                        this.items[i]
-                    );
+                    `/api/lokehoach/filterfulldklosanxuat`, {
+                    params: {
+                        mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
+                        masp: masp,
+                        status: status,
+                    },
                 }
+                );
             }
+            // chỉ có mã px
+            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_masp == "") {
+                this.sllosx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlymapxlosanxuat`, {
+                    params: {
+                        mapx: mapxList,
+                    },
+                }
+                );
+            }
+            // chỉ có mã px và mã sp
+            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_masp != "") {
+                this.sllosx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlymapxandmasplosanxuat`, {
+                    params: {
+                        mapx: mapxList,
+                        masp: masp
+                    },
+                }
+                );
+            }
+            // chỉ có mã px và status
+            else if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp == "") {
+                this.sllosx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlymapxandstatuslosanxuat`, {
+                    params: {
+                        mapx: mapxList,
+                        status: status
+                    },
+                }
+                );
+            }
+            // lọc mỗi trạng thái
+            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.multiSearch_masp == "") {
+                this.sllosx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlystatuslosanxuat`, {
+                    params: {
+                        status: status
+                    },
+                }
+                );
+            }
+
+            // lọc mỗi mã sản phẩm
+            else if (!this.selectedOptions.length && !this.Options_status.length && this.multiSearch_masp != "") {
+                this.sllosx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlymasplosanxuat`, {
+                    params: {
+                        masp: masp
+                    },
+                }
+                );
+            }
+
+            // lọc sản phẩm + trạng thái
+            else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.multiSearch_masp != "") {
+                this.sllosx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlymaspandstatuslosx`, {
+                    params: {
+                        masp: masp,
+                        status: status
+                    },
+                }
+                );
+            }
+
         },
 
-        // create phiếu trong model popup
+        // --------------------------------------------------------------------------------------
+        // 4: Các hàm CRUD
+        // Hàm tạo ra Phiếu lô sản xuất trong Modal
         onTaophieu() {
             // console.log(this.masp);
             Swal.fire({
@@ -2649,7 +2256,8 @@ export default {
                             for (let i = 0; i < this.items.length; i++) {
                                 if (
                                     this.items[i].ngaythuchien == "" ||
-                                    this.items[i].tencn == ""
+                                    this.items[i].tencn == "" ||
+                                    this.items[i].sodat == ""
                                 ) {
                                     const Toast = Swal.mixin({
                                         toast: true,
@@ -2756,29 +2364,7 @@ export default {
                             }
                         }
 
-                        // this.$axios.$get(`/api/ketoan/getallluongcongdoaninlsx?makh=${this.form.makh.trim()}&makhpx=${this.form.makhpx.trim()}&malosx=${this.form.malosx.trim()}&mapx=${this.form.mapx.trim()}`)
-                        //     .then(resp => {
-                        //         // console.log(resp);
-                        //         this.allluongcongdoan = resp
-                        //     })
-                        //     .catch(err => {
-                        //         // Handle Error Here
-                        //         console.error(err);
-                        //     });
-
-                        // this.$axios.$get(`/api/ketoan/getallluongcongnhatinlsx?makh=${this.form.makh.trim()}&makhpx=${this.form.makhpx.trim()}&malosx=${this.form.malosx.trim()}&mapx=${this.form.mapx.trim()}`)
-                        //     .then(resp => {
-                        //         // console.log(resp);
-                        //         this.allluongcongnhat = resp
-                        //     })
-                        //     .catch(err => {
-                        //         // Handle Error Here
-                        //         console.error(err);
-                        //     });
-
-
-                        this.updateImdi()
-                        // this.getSolieuLSX()
+                        this.getSolieuLSX_ALl_cht()
 
                     } catch (error) {
                         console.log(error);
@@ -2801,15 +2387,13 @@ export default {
                 }
             });
         },
-
-        async onUpdateCd(id, sodat, sohong, ghichu) {
-            // console.log(sodat, sohong, id)
-            let data = {
-                sodat: sodat.trim(),
-                sohong: sohong.trim(),
-            };
-            // console.log(data)
-            this.$axios.$patch(`/api/ketoan/updateluongcongdoan/${id}`, data);
+        // Hàm update số đạt lương công đoạn
+        async onUpdateCd(item) {
+            // console.log(item);
+            await this.$axios.$patch(
+                `/api/ketoan/updatesodatsohonglcd/${item._id}`,
+                item
+            );
             const Toast = Swal.mixin({
                 toast: true,
                 position: "top-end",
@@ -2823,10 +2407,11 @@ export default {
             });
             Toast.fire({
                 icon: "success",
-                title: "Cập nhật thành công",
+                title: "Updated",
             });
+            this.calculateTotals()
         },
-
+        // Hàm update lương công nhật
         async onUpdateCn(id, sogiocong, ghichu) {
             let data = {
                 sogiocong: sogiocong.trim(),
@@ -2849,7 +2434,7 @@ export default {
                 title: "Cập nhật thành công",
             });
         },
-
+        // Hàm xóa lương công đoạn
         onDelete(cd) {
             swal({
                 title: "Bạn muốn xóa công đoạn này?",
@@ -2889,7 +2474,7 @@ export default {
                 }
             });
         },
-
+        // Hàm xóa lương công nhật
         onDeleteCn(cd) {
             swal({
                 title: "Bạn muốn xóa công nhật này?",
@@ -2929,53 +2514,6 @@ export default {
                 }
             });
         },
-
-        async updateStatus(data) {
-            try {
-                if (parseFloat(data.soluongkhsx) > 0) {
-                    data.status = 3
-                } else {
-                    data.status = 1
-                }
-                this.$axios.$patch(
-                    `/api/lokehoach/losanxuat/status/${data._id}`,
-                    data
-                );
-
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: "top-end",
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                        toast.addEventListener("mouseenter", Swal.stopTimer);
-                        toast.addEventListener("mouseleave", Swal.resumeTimer);
-                    },
-                });
-                Toast.fire({
-                    icon: "success",
-                    title: "Đã cập nhật",
-                });
-            } catch (error) {
-                // console.log(error);
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: "top-end",
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                        toast.addEventListener("mouseenter", Swal.stopTimer);
-                        toast.addEventListener("mouseleave", Swal.resumeTimer);
-                    },
-                });
-                Toast.fire({
-                    icon: "error",
-                    title: "Có lỗi xảy ra !!!",
-                });
-            }
-        }
     },
 };
 </script>

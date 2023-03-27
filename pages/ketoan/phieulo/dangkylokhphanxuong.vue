@@ -97,11 +97,17 @@
                             <td @click="sort('tensp')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 17%">Tên SP
                             </td>
-                            <td @click="sort('ngaybd')"
+                            <!-- <td @click="sort('ngaybd')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Ngày bắt đầu
                             </td>
                             <td @click="sort('ngaykt')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Ngày kết thúc
+                            </td> -->
+                            <td @click="sort('tuanbd')"
+                                style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Tuần BĐ (T1)
+                            </td>
+                            <td @click="sort('tuankt')"
+                                style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Tuần KT (T2)
                             </td>
                             <td @click="sort('soluong')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Số lượng
@@ -135,11 +141,17 @@
                             </td>
 
                             <td style="font-size: small; background-color: #effaf5;">{{ item.tensp }}</td>
-                            <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
+                            <!-- <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
                                 item.ngaybd | formatDate
                             }}</td>
                             <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
                                 item.ngaykt | formatDate
+                            }}</td> -->
+                            <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
+                                item.tuanbd
+                            }}</td>
+                            <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
+                                item.tuankt
                             }}</td>
                             <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
                                 item.soluong
@@ -223,7 +235,7 @@
                     <div class="">
                         <table class="table is-responsive is-bordered is-narrow is-fullwidth">
                             <tr style="background-color: #feecf0">
-                                <td colspan="9" style="font-weight: bold; font-size: small">
+                                <td colspan="10" style="font-weight: bold; font-size: small">
                                     <span>Mã lô nhà máy: </span> <span style="color: red;">{{ dataLonm.makhpx }}</span>
                                     |
                                     <span>Ngày bắt đầu: </span> <span style="color: red;">{{
@@ -251,23 +263,28 @@
                             </tr>
                             <tr>
                                 <td style="text-align: center; font-size:small; font-weight:700; width: 2%">STT</td>
-                                <td style="text-align: center; font-size:small; font-weight:700; width: 10%">Mã lô nhà
+                                <td style="text-align: center; font-size:small; font-weight:700; width: 15%">Mã lô nhà
                                     máy</td>
                                 <td style="text-align: center; font-size:small; font-weight:700; width: 15%">Phân xưởng
                                 </td>
-                                <td style="text-align: center; font-size:small; font-weight:700; width: 20%">Mã Sản phẩm
+                                <td style="text-align: center; font-size:small; font-weight:700; width: 12%">Mã Sản phẩm
                                 </td>
-                                <td style="text-align: center; font-size:small; font-weight:700; width: 10%">Mã kế hoạch
-                                    PX</td>
+                                <td style="text-align: center; font-size:small; font-weight:700; width: 7%">Mã KHPX</td>
                                 <td style="text-align: center; font-size:small; font-weight:700; width: 5%">Số lượng
                                 </td>
-                                <td style="text-align: center; font-size:small; font-weight:700; width: 7%">Thời gian
+                                <!-- <td style="text-align: center; font-size:small; font-weight:700; width: 7%">Thời gian
                                     bắt đầu</td>
                                 <td style="text-align: center; font-size:small; font-weight:700; width: 7%">Thời gian
-                                    kết thúc</td>
+                                    kết thúc</td> -->
+                                <td @click="sort('tuanbd')"
+                                    style="text-align: center; font-size:small; font-weight:700; width: 5%">Tuần BĐ</td>
+                                <td @click="sort('tuankt')"
+                                    style="text-align: center; font-size:small; font-weight:700; width: 5%">Tuần KT</td>
                                 <td @click="sort('ttqt')"
                                     style="text-align: center; font-size:small; font-weight:700; width: 5%">TTQT
                                 </td>
+                                <td style="text-align: center; font-size:small; font-weight:700; width: 6%">
+                                    Trạng thái</td>
                                 <td style="text-align: center; font-size:small; font-weight:700; width: 6%">
                                     Copy/Update</td>
                                 <td style="text-align: center; font-size:small; font-weight:700; width: 5%">
@@ -293,14 +310,31 @@
                                 <td style="font-size: small; text-align: center">
                                     <input type="text" class="input is-small" v-model="item.soluongkhpx" />
                                 </td>
-                                <td><input class="input is-small" type="date"
+                                <!-- <td><input class="input is-small" type="date"
                                         v-bind:value="item.ngaybdkhpx | inputDateFilter"
                                         v-on:input="item.ngaybdkhpx = getDate($event.target.value)"></td>
                                 <td><input class="input is-small" type="date"
                                         v-bind:value="item.ngayktkhpx | inputDateFilter"
-                                        v-on:input="item.ngayktkhpx = getDate($event.target.value)"></td>
+                                        v-on:input="item.ngayktkhpx = getDate($event.target.value)"></td> -->
+                                <td><input type="text" class="input is-small" v-model.trim="item.tuanbd"></td>
+                                <td><input type="text" class="input is-small" v-model.trim="item.tuankt"></td>
                                 <td style="font-size: small; text-align: center"><input type="text" class="input is-small"
                                         v-model="item.ttqt"></td>
+                                <template>
+                                    <td v-if="item.status == 1" style="font-size: small; text-align: center; "><span
+                                            style="color: white; font-weight: bold; background-color: red; padding-left: 7px; padding-right: 7px;">DK</span>
+                                    </td>
+                                    <td v-else-if="item.status == 2" style="font-size: small; text-align: center;">
+                                        <span
+                                            style="color: red; font-weight: bold; background-color: yellow; padding-left: 7px; padding-right: 7px;">SX</span>
+                                    </td>
+                                    <td v-else-if="item.status == 3" style="font-size: small; text-align: center;">
+                                        <span
+                                            style="color: white; font-weight: bold; background-color: green; padding-left: 7px; padding-right: 7px;">HT</span>
+                                    </td>
+                                    <td v-else style="font-size: small; text-align: center;">
+                                    </td>
+                                </template>
                                 <td style="text-align: center; font-size: small">
                                     <a @click="onUpdateKehoachpx(item)">
                                         <span style="color: green" class="icon is-small">
@@ -348,12 +382,20 @@
                                     <td><input @change="getTensp(item)" v-model.trim="item.makhpx" type="text"
                                             class="input is-small"></td>
                                     <td><input v-model.trim="item.soluongkhpx" type="text" class="input is-small"></td>
-                                    <td><input class="input is-small" type="date"
+                                    <!-- <td><input class="input is-small" type="date"
                                             v-bind:value="item.ngaybdkhpx | inputDateFilter"
                                             v-on:input="item.ngaybdkhpx = getDate($event.target.value)"></td>
                                     <td><input class="input is-small" type="date"
                                             v-bind:value="item.ngayktkhpx | inputDateFilter"
-                                            v-on:input="item.ngayktkhpx = getDate($event.target.value)"></td>
+                                            v-on:input="item.ngayktkhpx = getDate($event.target.value)"></td> -->
+                                    <td style="font-size: small;">
+                                        <input @change="getTuanbd" v-model.trim="item.tuanbd" type="number"
+                                            class="input is-small" />
+                                    </td>
+                                    <td style="font-size: small;">
+                                        <input @change="getTuankt" v-model.trim="item.tuankt" type="number"
+                                            class="input is-small" />
+                                    </td>
                                     <td>
                                         <div class="select is-small is-fullwidth">
                                             <select v-model="item.ttqt">
@@ -387,6 +429,8 @@
 import Swal from "sweetalert2";
 import { ModelListSelect } from "vue-search-select";
 import "vue-search-select/dist/VueSearchSelect.css";
+import dayjs from 'dayjs';
+import 'dayjs/locale/vi';
 export default {
     middleware: "auth",
     components: {
@@ -463,6 +507,8 @@ export default {
                     nhomsp: "",
                     nhomthanhpham: "",
                     mathanhpham: "",
+                    tuanbd: "",
+                    tuankt: "",
                     sanpham: [
                         {
                             masp: "",
@@ -560,7 +606,11 @@ export default {
         filter() {
             console.log('reset to p1 due to filter');
             this.currentPage = 1;
-        }
+        },
+        datakehoachpx(newItems) {
+            // Cập nhật lại bảng khi có thay đổi
+            console.log('Dữ liệu đã được cập nhật!');
+        },
     },
 
     // dùng để bind dữ liệu ngày tháng vào input mang kiểu date (type="date" trong thẻ input)
@@ -631,6 +681,41 @@ export default {
         },
         prevPage: function () {
             if (this.currentPage > 1) this.currentPage--;
+        },
+
+        getTuanbd() {
+            // console.log(tuanbd);
+            const now = new Date();
+            const currentYear = now.getFullYear();
+
+            // Gán kết quả tính toán vào biến result để hiển thị trên màn hình
+            // console.log(`Ngày bắt đầu của tuần ${tuanbd} là ${startDateString} và ngày kết thúc là ${endDateString}`);
+            for (let i = 0; i < this.items.length; i++) {
+                const startDate = dayjs().year(currentYear).month(0).date((this.items[i].tuanbd - 1) * 7 + 1);
+                const startDateString = startDate.locale('vi').format('YYYY/MM/DD');
+
+                // // Tính toán ngày kết thúc của tuần đó
+                const endDate = dayjs().year(currentYear).month(0).date(this.items[i].tuanbd * 7);
+                const endDateString = endDate.locale('vi').format('YYYY/MM/DD');
+                this.items[i].ngaybdkhpx = startDateString
+
+            }
+            // console.log(this.items_khpx);
+        },
+        getTuankt() {
+            const now = new Date();
+            const currentYear = now.getFullYear();
+            for (let i = 0; i < this.items.length; i++) {
+                const startDate = dayjs().year(currentYear).month(0).date((this.items[i].tuankt - 1) * 7 + 1);
+                const startDateString = startDate.locale('vi').format('YYYY/MM/DD');
+
+                // // Tính toán ngày kết thúc của tuần đó
+                const endDate = dayjs().year(currentYear).month(0).date(this.items[i].tuankt * 7);
+                const endDateString = endDate.locale('vi').format('YYYY/MM/DD');
+                this.items[i].ngaykt = endDateString
+
+            }
+            // console.log(this.items_khpx);
         },
 
         // tìm lọc số liệu lô nhà máy theo nhóm sản phẩm
@@ -810,9 +895,11 @@ export default {
 
         // bấm đăng ký lô kế hoạch phân xưởng
         async addLokhpx() {
-            console.log(this.dataLonm)
+            // console.log(this.dataLonm)
             this.isphanxuong = 1;
             this.items.push({
+                _id_khnam: this.dataLonm._id_khnam,
+                _id_lonhamay: this.dataLonm._id,
                 kehoachnam: this.dataLonm.makh,
                 makh: this.dataLonm.makhpx,
                 mapx: "",
@@ -837,6 +924,8 @@ export default {
                 nhomsp: this.dataLonm.nhomsp,
                 nhomthanhpham: this.dataLonm.nhomthanhpham,
                 mathanhpham: this.dataLonm.mathanhpham,
+                tuanbd: "",
+                tuankt: "",
                 sanpham: [
                     {
                         masp: "",
@@ -844,7 +933,7 @@ export default {
                     },
                 ],
             });
-            console.log(this.items)
+            // console.log(this.items)
         },
 
         // copy dữ liệu đăng ký
@@ -868,6 +957,8 @@ export default {
             }
             // console.log(tenvt)
             this.items.push({
+                _id_khnam: data._id_khnam,
+                _id_lonhamay: data._id_lonhamay,
                 kehoachnam: data.kehoachnam,
                 makh: data.makh,
                 mapx: data.mapx,
@@ -892,6 +983,9 @@ export default {
                 nhomsp: data.nhomsp,
                 mathanhpham: data.mathanhpham,
                 nhomthanhpham: data.nhomthanhpham,
+                // tuanbd: data.tuanbd, copy bắt phải gõ lại tuần
+                // tuankt: data.tuankt,
+                ttqt: data.ttqt,
                 sanpham: [
                     {
                         masp: data.maspkhpx,
@@ -945,7 +1039,7 @@ export default {
                 this.items[i].tenspkhpx = tenvt
                 this.items[i].nhomluong = nhom_luong
             }
-            console.log(this.items)
+            // console.log(this.items)
 
         },
 
@@ -1016,7 +1110,7 @@ export default {
 
         // ghi dữ liệu đăng ký lô kế hoạch phân xưởng
         async ghidulieu() {
-            console.log(this.items)
+            // console.log(this.items)
             if (this.items.length <= 0) {
                 const Toast = Swal.mixin({
                     toast: true,
@@ -1079,6 +1173,16 @@ export default {
         async onUpdateKehoachpx(data) {
             // console.log(data)
             try {
+                const now = new Date();
+                const currentYear = now.getFullYear();
+                const startDate = dayjs().year(currentYear).month(0).date((data.tuanbd - 1) * 7 + 1);
+                const startDateString = startDate.locale('vi').format('YYYY/MM/DD');
+                data.ngaybdkhpx = startDateString
+                // // Tính toán ngày kết thúc của tuần đó
+                const endDate = dayjs().year(currentYear).month(0).date(data.tuankt * 7);
+                const endDateString = endDate.locale('vi').format('YYYY/MM/DD');
+                data.ngayktkhpx = endDateString
+
                 data.updatedAt = this.form.updatedAt
                 this.$axios.$patch(
                     `/api/lokehoach/updatelokehoachpx/${data._id}`,
@@ -1124,7 +1228,7 @@ export default {
             // lấy ra _id, mã kế hoạch, mã lô nhà máy để xác định là duy nhất
             // console.log(pl)
             let arrlosanxuat
-            arrlosanxuat = await this.$axios.$get(`/api/lokehoach/predelete_lokehoachpx?kehoachnam=${pl.kehoachnam.trim()}&makh=${pl.makh.trim()}&makhpx=${pl.makhpx.trim()}&mapx=${pl.mapx}`);
+            arrlosanxuat = await this.$axios.$get(`/api/lokehoach/predelete_lokehoachpx?_id=${pl._id}`);
             // console.log(arrlosanxuat)
             swal({
                 title: "Bạn muốn xóa?",
@@ -1154,7 +1258,7 @@ export default {
                         });
                         Toast.fire({
                             icon: "error",
-                            title: "Đã có lô kế hoạch phân xưởng phát sinh từ lô nhà máy này, không thể xóa!!!",
+                            title: "Đã có lô sản xuất phát sinh từ lô Kế hoạch PX này, không thể xóa!!!",
                         });
                     }
 
