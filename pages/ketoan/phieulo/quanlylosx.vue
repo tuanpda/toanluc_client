@@ -1249,13 +1249,13 @@ export default {
     // tìm lọc
     async timNhomsp() {
       this.phieulo = await this.$axios.$get(
-        `/api/lokehoach/getlokhnm?nhomsp=${this.searchnhomsp}`
+        `/api/lokehoach/getlokhnm?nhomthanhpham=${this.searchnhomsp}`
       );
     },
 
     async timMasp() {
       this.phieulo = await this.$axios.$get(
-        `/api/lokehoach/getlokhnmwithmasp?masp=${this.searchmasp}`
+        `/api/lokehoach/getlokhnmwithmasp?mathanhpham=${this.searchmasp}`
       );
     },
 

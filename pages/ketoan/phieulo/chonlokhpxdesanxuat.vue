@@ -996,7 +996,7 @@ export default {
                     `/api/lokehoach/filteronlymapxandnhomtp`, {
                     params: {
                         mapx: mapxList,
-                        nhomtp: nhomtp
+                        nhomthanhpham: nhomtp
                     },
                 }
                 );
