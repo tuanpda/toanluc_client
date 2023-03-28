@@ -27,7 +27,7 @@
                     <table class="table is-responsive is-bordered is-narrow is-fullwidth">
                         <tr style="background-color: #faf0f5;">
                             <td style="width: 15%">
-                                <div class="field has-addons">
+                                <!-- <div class="field has-addons">
                                     <p class="control is-expanded">
                                         <input v-model="search_nhomsp" class="input is-small is-fullwidth" type="text"
                                             placeholder="Tìm theo nhóm sản phẩm">
@@ -37,16 +37,38 @@
                                             Lọc
                                         </a>
                                     </p>
+                                </div> -->
+                                <div class="field has-addons">
+                                    <p class="control is-expanded">
+                                        <input v-model="search_nhomthanhpham" class="input is-small is-fullwidth"
+                                            type="text" placeholder="Nhóm thành phẩm">
+                                    </p>
+                                    <p class="control">
+                                        <a @click="searhNhomthanhpham" class="button is-small">
+                                            Lọc
+                                        </a>
+                                    </p>
                                 </div>
                             </td>
                             <td style="width: 15%">
-                                <div class="field has-addons">
+                                <!-- <div class="field has-addons">
                                     <p class="control is-expanded">
                                         <input v-model="search_sanpham" class="input is-small is-fullwidth" type="text"
                                             placeholder="Tìm theo sản phẩm">
                                     </p>
                                     <p class="control">
                                         <a @click="searhSanpham" class="button is-small">
+                                            Lọc
+                                        </a>
+                                    </p>
+                                </div> -->
+                                <div class="field has-addons">
+                                    <p class="control is-expanded">
+                                        <input v-model="search_mathanhpham" class="input is-small is-fullwidth" type="text"
+                                            placeholder="Mã thành phẩm">
+                                    </p>
+                                    <p class="control">
+                                        <a @click="searhMathanhpham" class="button is-small">
                                             Lọc
                                         </a>
                                     </p>
@@ -126,34 +148,34 @@
                             </td>
                         </tr>
                         <tr v-for="(item, index) in sortedsllosx" :key="index + 'llllkiq'"
-                            :class="{ highlight: item._id == phieulosx }">
-                            <td style="font-size: small; text-align: center; background-color: #effaf5;">{{ index + 1 }}
+                            :class="{ 'highlighted': item === highlightedRow }"
+                            @click="[getInfoLosx(item), highlightRow(item)]">
+                            <td style="font-size: small; text-align: center;">{{ index + 1 }}
                             </td>
-                            <td style="font-size: small; background-color: #effaf5;">{{ item.makh }}</td>
-                            <td @click="getInfoLosx(item)" style="font-size: small; background-color: #fffaeb;">{{
-                                item.makhpx
+                            <td style="font-size: small;">{{ item.kehoachnam }}</td>
+                            <td style="font-size: small; font-weight: 600; color: red;">{{
+                                item.malonhamay
                             }}</td>
-                            <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
+                            <td style="font-size: small; text-align: center;">{{
                                 item.nhomthanhpham
                             }}</td>
-                            <td style="font-size: small; background-color: #effaf5; text-align: center;">{{ item.mathanhpham
+                            <td style="font-size: small;text-align: center;">{{ item.mathanhpham
                             }}
                             </td>
-
-                            <td style="font-size: small; background-color: #effaf5;">{{ item.tensp }}</td>
+                            <td style="font-size: small; ">{{ item.tenthanhpham }}</td>
                             <!-- <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
                                 item.ngaybd | formatDate
                             }}</td>
                             <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
                                 item.ngaykt | formatDate
                             }}</td> -->
-                            <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
+                            <td style="font-size: small; text-align: center; ">{{
                                 item.tuanbd
                             }}</td>
-                            <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
+                            <td style="font-size: small; text-align: center; ">{{
                                 item.tuankt
                             }}</td>
-                            <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
+                            <td style="font-size: small; text-align: center; ">{{
                                 item.soluong
                             }}</td>
                             <template>
@@ -171,28 +193,23 @@
                                 <td v-else style="font-size: small; text-align: center;">
                                 </td>
                             </template>
-                            <td
-                                style="font-size: small; text-align: center; background-color: #effaf5; color: red; font-weight: 600;">
+                            <td style="font-size: small; text-align: center; color: red; font-weight: 600;">
                                 {{
                                     item.px1
                                 }}</td>
-                            <td
-                                style="font-size: small; text-align: center; background-color: #effaf5; color: red; font-weight: 600;">
+                            <td style="font-size: small; text-align: center; color: red; font-weight: 600;">
                                 {{
                                     item.px2
                                 }}</td>
-                            <td
-                                style="font-size: small; text-align: center; background-color: #effaf5; color: red; font-weight: 600;">
+                            <td style="font-size: small; text-align: center;  color: red; font-weight: 600;">
                                 {{
                                     item.px3
                                 }}</td>
-                            <td
-                                style="font-size: small; text-align: center; background-color: #effaf5; color: red; font-weight: 600;">
+                            <td style="font-size: small; text-align: center; color: red; font-weight: 600;">
                                 {{
                                     item.px4
                                 }}</td>
-                            <td
-                                style="font-size: small; text-align: center; background-color: #effaf5; color: red; font-weight: 600;">
+                            <td style="font-size: small; text-align: center;  color: red; font-weight: 600;">
                                 {{
                                     item.px5
                                 }}</td>
@@ -236,13 +253,13 @@
                         <table class="table is-responsive is-bordered is-narrow is-fullwidth">
                             <tr style="background-color: #feecf0">
                                 <td colspan="10" style="font-weight: bold; font-size: small">
-                                    <span>Mã lô nhà máy: </span> <span style="color: red;">{{ dataLonm.makhpx }}</span>
+                                    <span>Mã lô nhà máy: </span> <span style="color: red;">{{ dataLonm.malonhamay }}</span>
                                     |
-                                    <span>Ngày bắt đầu: </span> <span style="color: red;">{{
+                                    <span>Ngày bắt đầu dự kiến: </span> <span style="color: red;">{{
                                         dataLonm.ngaybd |
                                         formatDate
                                     }}</span> |
-                                    <span>Ngày kết thúc: </span> <span style="color: red;">{{
+                                    <span>Ngày kết thúc dự kiến: </span> <span style="color: red;">{{
                                         dataLonm.ngaykt |
                                         formatDate
                                     }}</span> |
@@ -263,11 +280,13 @@
                             </tr>
                             <tr>
                                 <td style="text-align: center; font-size:small; font-weight:700; width: 2%">STT</td>
-                                <td style="text-align: center; font-size:small; font-weight:700; width: 15%">Mã lô nhà
-                                    máy</td>
-                                <td style="text-align: center; font-size:small; font-weight:700; width: 15%">Phân xưởng
+                                <!-- <td style="text-align: center; font-size:small; font-weight:700; width: 15%">Mã lô nhà
+                                    máy</td> -->
+                                <td style="text-align: center; font-size:small; font-weight:700; width: 14%">Phân xưởng
                                 </td>
-                                <td style="text-align: center; font-size:small; font-weight:700; width: 12%">Mã Sản phẩm
+                                <td style="text-align: center; font-size:small; font-weight:700; width: 13%">Tổ / Nhóm
+                                </td>
+                                <td style="text-align: center; font-size:small; font-weight:700; width: 8%">Mã Sản phẩm
                                 </td>
                                 <td style="text-align: center; font-size:small; font-weight:700; width: 7%">Mã KHPX</td>
                                 <td style="text-align: center; font-size:small; font-weight:700; width: 5%">Số lượng
@@ -296,19 +315,20 @@
                                 <td style="font-size: small; text-align: center">
                                     {{ index + 1 }}
                                 </td>
-                                <td style="font-size: small">
+                                <!-- <td style="font-size: small">
                                     {{ item.malonhamay }}
-                                </td>
+                                </td> -->
                                 <td style="font-size: small;">
                                     {{ item.tenpx }}
                                 </td>
+                                <td style="font-size: small">{{ item.tento }}</td>
                                 <td style="font-size: small">{{ item.maspkhpx }}</td>
                                 <td style="font-size: small; text-align: center">
                                     <!-- <input type="text" class="input is-small" v-model="item.makhpx" /> -->
                                     <input type="text" class="input is-small" v-model="item.makhpx" />
                                 </td>
                                 <td style="font-size: small; text-align: center">
-                                    <input type="text" class="input is-small" v-model="item.soluongkhpx" />
+                                    <input type="number" class="input is-small" v-model="item.soluongkhpx" />
                                 </td>
                                 <!-- <td><input class="input is-small" type="date"
                                         v-bind:value="item.ngaybdkhpx | inputDateFilter"
@@ -316,8 +336,8 @@
                                 <td><input class="input is-small" type="date"
                                         v-bind:value="item.ngayktkhpx | inputDateFilter"
                                         v-on:input="item.ngayktkhpx = getDate($event.target.value)"></td> -->
-                                <td><input type="text" class="input is-small" v-model.trim="item.tuanbd"></td>
-                                <td><input type="text" class="input is-small" v-model.trim="item.tuankt"></td>
+                                <td><input type="text" class="input is-small" v-model.trim="item.tuanbdkhpx"></td>
+                                <td><input type="text" class="input is-small" v-model.trim="item.tuanktkhpx"></td>
                                 <td style="font-size: small; text-align: center"><input type="text" class="input is-small"
                                         v-model="item.ttqt"></td>
                                 <template>
@@ -356,7 +376,7 @@
                                     <td style="font-size: small; text-align:center">
                                         {{ index + 1 }}
                                     </td>
-                                    <td style="font-size: small;">{{ item.makh }}</td>
+                                    <!-- <td style="font-size: small;">{{ item.malonhamay }}</td> -->
                                     <td>
                                         <div class="control has-icons-left">
                                             <div class="select is-fullwidth is-small">
@@ -374,10 +394,40 @@
                                             </span>
                                         </div>
                                     </td>
+                                    <td>
+                                        <div class="control has-icons-left">
+                                            <div class="select is-fullwidth is-small">
+                                                <select v-model.trim="item.mato" @change="
+                                                    getInfoTonhom($event, $event.target.selectedIndex, index)
+                                                ">
+                                                    <option v-for="(item, index) in item.tonhom" :key="index + 'tonhom'"
+                                                        :value="item.mato">
+                                                        {{ item.tento }}
+                                                    </option>
+                                                </select>
+                                            </div>
+                                            <span class="icon is-left">
+                                                <i style="color: #48c78e" class="fas fa-dice-d6"></i>
+                                            </span>
+                                        </div>
+                                    </td>
                                     <td style="font-size: small;">
-                                        <model-list-select :list="item.sanpham" v-model="item.maspkhpx" option-value="masp"
+                                        <!-- <model-list-select :list="item.sanpham" v-model="item.maspkhpx" option-value="masp"
                                             :custom-text="codeAndNameAndDesc" placeholder="Chọn sản phẩm">
-                                        </model-list-select>
+                                        </model-list-select> -->
+                                        <div class="autocomplete">
+                                            <input class="input is-small is-danger" type="text"
+                                                v-model="item.get_sanpham_input" @input="onInput_sanpham(index)"
+                                                placeholder="Chọn sản phẩm">
+                                            <div class="autocomplete-items">
+                                                <div class="autocomplete-item"
+                                                    v-for="(suggestion_sp, indexsuggest) in item.suggestions_sanpham"
+                                                    :key="indexsuggest + 'suuug'"
+                                                    @click="selectSuggestion_sanpham(index, suggestion_sp, indexsuggest)">
+                                                    {{ suggestion_sp }}
+                                                </div>
+                                            </div>
+                                        </div>
                                     </td>
                                     <td><input @change="getTensp(item)" v-model.trim="item.makhpx" type="text"
                                             class="input is-small"></td>
@@ -389,11 +439,11 @@
                                             v-bind:value="item.ngayktkhpx | inputDateFilter"
                                             v-on:input="item.ngayktkhpx = getDate($event.target.value)"></td> -->
                                     <td style="font-size: small;">
-                                        <input @change="getTuanbd" v-model.trim="item.tuanbd" type="number"
+                                        <input @change="getTuanbd" v-model.trim="item.tuanbdkhpx" type="number"
                                             class="input is-small" />
                                     </td>
                                     <td style="font-size: small;">
-                                        <input @change="getTuankt" v-model.trim="item.tuankt" type="number"
+                                        <input @change="getTuankt" v-model.trim="item.tuanktkhpx" type="number"
                                             class="input is-small" />
                                     </td>
                                     <td>
@@ -409,7 +459,7 @@
                                             </select>
                                         </div>
                                     </td>
-
+                                    <td></td>
                                     <td><button @click="copyadd(item)"
                                             class="button is-small is-warning is-fullwidth">Copy</button></td>
                                     <td><button @click="deleteRow(index)"
@@ -440,29 +490,19 @@ export default {
         return {
             dm_sanpham: [],
             phanxuong: [],
+            dm_to: [],
+            tonhom: [],
             selectedIndex: 0,
             kehoach: [],
             form: {
-                makh: "",
-                makhpx: "",
-                tenpx: "",
-                mapx: "",
-                masp: "",
-                tensp: "",
                 createdAt: "",
                 createdBy: this.$auth.$state.user.username,
-                updateAt: "",
-                nhomluong: "",
-                malosx: "",
-                status: false,
-                stopday_losx: "",
-                tongdat: "",
-                tonghong: "",
-                mato: "",
-                tento: "",
-                id_losx: "",
+                updatedAt: "",
             },
             // search lô nhà máy
+            search_nhomthanhpham: "",
+            search_mathanhpham: "",
+
             search_nhomsp: "",
             search_sanpham: "",
             search_timekt: null,
@@ -481,40 +521,59 @@ export default {
             pageSize: 10,
             currentPage: 1,
             filter: '',
+            // hightligh
+            highlightedRow: null,
             items: [
                 {
-                    kehoachnam: "",
-                    makh: "",
-                    mapx: "",
-                    tenpx: "",
-                    malonhamay: "",
-                    soluonglonm: "",
-                    ngaybdlonm: "",
-                    ngayktlonm: "",
-                    masplonm: "",
-                    tensplonm: "",
-                    makhpx: "",
-                    soluongkhpx: "",
-                    ngaybdkhpx: "",
-                    ngayktkhpx: "",
-                    maspkhpx: "",
-                    tenspkhpx: "",
-                    nhomluong: "",
-                    ghichu: "",
-                    createdAt: "",
-                    createdBy: "",
-                    status: 0,
-                    nhomsp: "",
-                    nhomthanhpham: "",
-                    mathanhpham: "",
-                    tuanbd: "",
-                    tuankt: "",
-                    sanpham: [
+                    _id_khnam: '',
+                    _id_lonhamay: '',
+                    kehoachnam: '',
+                    malonhamay: '',
+                    soluonglonm: '',
+                    tuanbdlonm: '',
+                    tuanktlonm: '',
+                    ngaybdlonm: '',
+                    ngayktlonm: '',
+                    mathanhpham: '',
+                    tenthanhpham: '',
+                    nhomthanhpham: '',
+                    mapx: '',
+                    tenpx: '',
+                    mato: '',
+                    tento: '',
+                    maspkhpx: '',
+                    tenspkhpx: '',
+                    nhomspkhpx: '',
+                    makhpx: '',
+                    soluongkhpx: '',
+                    tuanbdkhpx: '',
+                    tuanktkhpx: '',
+                    ngaybdkhpx: '',
+                    ngayktkhpx: '',
+                    tuanbdthucte: '',
+                    tuanktthucte: '',
+                    ngaybdthucte: '',
+                    ngayhoanthanhtt: '',
+                    ttqt: '',
+                    nhomluong: '',
+                    status: '',
+                    sldathang: '',
+                    slsanxuat: '',
+                    ghichu: '',
+                    createdAt: '',
+                    updatedAt: '',
+                    createdBy: '',
+                    congsuat: '',
+                    songay: '',
+                    may: '',
+                    tonhom: [
                         {
-                            masp: "",
-                            tensp: "",
-                        },
+                            mato: "",
+                            tento: "",
+                        }
                     ],
+                    get_sanpham_input: "",
+                    suggestions_sanpham: [],
                 }
             ],
             dataLonm: [],
@@ -522,18 +581,31 @@ export default {
             // xuất execl lô nhà máy
             columns: [
                 {
-                    label: "Mã kế hoạch năm",
-                    field: "makh",
-                    dataFormat: this.trimData
+                    label: "Kế hoạch năm",
+                    field: "kehoachnam",
+                    // dataFormat: this.trimData
                 },
                 {
-                    label: "Mã lô sản xuất",
-                    field: "makhpx",
+                    label: "Mã lô nhà máy",
+                    field: "malonhamay",
                     /* dataFormat: this.priceFormat */
-                    dataFormat: this.trimData
+                    // dataFormat: this.trimData
                 },
                 {
-                    label: "Ngày bắt đầu",
+                    label: "Số lượng",
+                    field: "soluong",
+                },
+                {
+                    label: "Tuần bắt đầu",
+                    field: "tuanbd",
+                    // dataFormat: this.prefixformatDate
+                },
+                {
+                    label: "Tuần kết thúc",
+                    field: "tuankt",
+                },
+                {
+                    label: "Ngày bắt đầuy",
                     field: "ngaybd",
                     dataFormat: this.prefixformatDate
                 },
@@ -543,30 +615,53 @@ export default {
                     dataFormat: this.prefixformatDate
                 },
                 {
-                    label: "Mã sản phẩm",
-                    field: "masp",
-                    dataFormat: this.trimData
-                },
-                {
-                    label: "Tên sản phẩm",
-                    field: "tensp",
-                    dataFormat: this.trimData
-                },
-                {
-                    label: "Số lượng",
-                    field: "soluong",
-                    dataFormat: this.trimData
+                    label: "Mã thành phẩm",
+                    field: "mathanhpham",
+                    // dataFormat: this.trimData
                 },
 
                 {
-                    label: "Nhóm sản phẩm",
-                    field: "nhomsp",
-                    dataFormat: this.trimData
+                    label: "Tên thành phẩm",
+                    field: "tenthanhpham",
+                    // dataFormat: this.trimData
+                },
+                {
+                    label: "Nhóm thành thẩm",
+                    field: "nhomthanhpham",
+                    // dataFormat: this.trimData
                 },
                 {
                     label: "Trạng thái",
                     field: "status",
                     // dataFormat: this.trimData
+                },
+                {
+                    label: "Ngày bắt đầu TT",
+                    field: "ngaybatdautt",
+                    dataFormat: this.prefixformatDate
+                },
+                {
+                    label: "Ngày hoàn thành TT",
+                    field: "ngayhoanthanhtt",
+                    dataFormat: this.prefixformatDate
+                },
+                {
+                    label: "Ghi chú",
+                    field: "ghichu",
+                },
+                {
+                    label: "Ngày tạo",
+                    field: "createdAt",
+                    dataFormat: this.prefixformatDate
+                },
+                {
+                    label: "Ngày update",
+                    field: "updatedAt",
+                    dataFormat: this.prefixformatDate
+                },
+                {
+                    label: "Người tạo",
+                    field: "createdBy",
                 },
             ],
         };
@@ -625,6 +720,33 @@ export default {
     },
 
     methods: {
+        // --------------------------------------------------------------------------------------
+        // 1: Các hàm hỗ trợ tính toán; lọc ...
+        // suggest sản phẩm input
+        onInput_sanpham(index) {
+            // console.log(index);
+            // console.log(this.items);
+            const item = this.items[index];
+            // console.log(item);
+            if (!item.get_sanpham_input) {
+                item.get_sanpham_input = [];
+                return;
+            }
+            const MAX_SUGGESTIONS = 7; // Số lượng suggest tối đa
+            item.suggestions_sanpham = this.dm_sanpham
+                .map((c) => c.mavt)
+                .filter((mavt) => mavt.toLowerCase().includes(item.get_sanpham_input.toLowerCase()))
+                .map((mavt) => mavt.trim())
+                .slice(0, MAX_SUGGESTIONS);
+        },
+        selectSuggestion_sanpham(index, suggestion_sp, indexsuggest) {
+            this.items[index].get_sanpham_input = suggestion_sp;
+            this.items[index].suggestions_sanpham = [];
+        },
+        // hàm highlight để đánh dấu row nào được chọn
+        highlightRow(row) {
+            this.highlightedRow = row;
+        },
         // format trước khi xuất execl, ở đây là trim dữ liệu trước khi mang ra
         trimData(value) {
             return value.trim();
@@ -691,11 +813,11 @@ export default {
             // Gán kết quả tính toán vào biến result để hiển thị trên màn hình
             // console.log(`Ngày bắt đầu của tuần ${tuanbd} là ${startDateString} và ngày kết thúc là ${endDateString}`);
             for (let i = 0; i < this.items.length; i++) {
-                const startDate = dayjs().year(currentYear).month(0).date((this.items[i].tuanbd - 1) * 7 + 1);
+                const startDate = dayjs().year(currentYear).month(0).date((this.items[i].tuanbdkhpx - 1) * 7 + 1);
                 const startDateString = startDate.locale('vi').format('YYYY/MM/DD');
 
                 // // Tính toán ngày kết thúc của tuần đó
-                const endDate = dayjs().year(currentYear).month(0).date(this.items[i].tuanbd * 7);
+                const endDate = dayjs().year(currentYear).month(0).date(this.items[i].tuanbdkhpx * 7);
                 const endDateString = endDate.locale('vi').format('YYYY/MM/DD');
                 this.items[i].ngaybdkhpx = startDateString
 
@@ -706,13 +828,13 @@ export default {
             const now = new Date();
             const currentYear = now.getFullYear();
             for (let i = 0; i < this.items.length; i++) {
-                const startDate = dayjs().year(currentYear).month(0).date((this.items[i].tuankt - 1) * 7 + 1);
+                const startDate = dayjs().year(currentYear).month(0).date((this.items[i].tuanktkhpx - 1) * 7 + 1);
                 const startDateString = startDate.locale('vi').format('YYYY/MM/DD');
 
                 // // Tính toán ngày kết thúc của tuần đó
-                const endDate = dayjs().year(currentYear).month(0).date(this.items[i].tuankt * 7);
+                const endDate = dayjs().year(currentYear).month(0).date(this.items[i].tuanktkhpx * 7);
                 const endDateString = endDate.locale('vi').format('YYYY/MM/DD');
-                this.items[i].ngaykt = endDateString
+                this.items[i].ngayktkhpx = endDateString
 
             }
             // console.log(this.items_khpx);
@@ -775,6 +897,17 @@ export default {
                     );
                 }
             }
+        },
+
+        async searhNhomthanhpham() {
+            this.sllosx = await this.$axios.$get(
+                `/api/lokehoach/searchnhomthanhpham?nhomthanhpham=${this.search_nhomthanhpham}`
+            );
+        },
+        async searhMathanhpham() {
+            this.sllosx = await this.$axios.$get(
+                `/api/lokehoach/searchmathanhpham?mathanhpham=${this.search_mathanhpham}`
+            );
         },
 
         // tìm lọc số liệu lô nhà máy theo sản phẩm
@@ -850,8 +983,8 @@ export default {
 
         // Show all lô sản xuất nhà máy
         async getAlllonhamay() {
-            this.search_sanpham = ''
-            this.search_nhomsp = ''
+            this.search_mathanhpham = ''
+            this.search_nhomthanhpham = ''
             this.search_timekt = null
             this.sllosx = await this.$axios.$get(
                 `/api/lokehoach/alllonhamaywithsoluonglokhpx`
@@ -900,99 +1033,111 @@ export default {
             this.items.push({
                 _id_khnam: this.dataLonm._id_khnam,
                 _id_lonhamay: this.dataLonm._id,
-                kehoachnam: this.dataLonm.makh,
-                makh: this.dataLonm.makhpx,
-                mapx: "",
-                tenpx: "",
-                malonhamay: this.dataLonm.makhpx,
+                kehoachnam: this.dataLonm.kehoachnam,
+                malonhamay: this.dataLonm.malonhamay,
                 soluonglonm: this.dataLonm.soluong,
+                tuanbdlonm: this.dataLonm.tuanbd,
+                tuanktlonm: this.dataLonm.tuankt,
                 ngaybdlonm: this.dataLonm.ngaybd,
                 ngayktlonm: this.dataLonm.ngaykt,
-                masplonm: this.dataLonm.masp,
-                tensplonm: this.dataLonm.tensp,
-                makhpx: "",
-                soluongkhpx: this.dataLonm.soluong,
-                ngaybdkhpx: this.dataLonm.ngaybd,
-                ngayktkhpx: this.dataLonm.ngaykt,
-                maspkhpx: "",
-                tenspkhpx: "",
-                nhomluong: "",
-                ghichu: "",
-                createdAt: null,
-                createdBy: "",
-                status: 0,
-                nhomsp: this.dataLonm.nhomsp,
-                nhomthanhpham: this.dataLonm.nhomthanhpham,
                 mathanhpham: this.dataLonm.mathanhpham,
-                tuanbd: "",
-                tuankt: "",
-                sanpham: [
+                tenthanhpham: this.dataLonm.tenthanhpham,
+                nhomthanhpham: this.dataLonm.nhomthanhpham,
+                mapx: '',
+                tenpx: '',
+                mato: '',
+                tento: '',
+                maspkhpx: '',
+                tenspkhpx: '',
+                nhomspkhpx: '',
+                makhpx: '',
+                soluongkhpx: '',
+                tuanbdkhpx: '',
+                tuanktkhpx: '',
+                ngaybdkhpx: '',
+                ngayktkhpx: '',
+                tuanbdthucte: '',
+                tuanktthucte: '',
+                ngaybdthucte: '',
+                ngayhoanthanhtt: '',
+                ttqt: '',
+                nhomluong: '', // chưa lấy được
+                status: '',
+                sldathang: '',
+                slsanxuat: '',
+                ghichu: '',
+                createdAt: this.form.createdAt,
+                updatedAt: this.form.updatedAt,
+                createdBy: this.form.createdBy,
+                congsuat: '',
+                songay: '',
+                may: '',
+                tonhom: [
                     {
-                        masp: "",
-                        tensp: "",
-                    },
+                        mato: "",
+                        tento: "",
+                    }
                 ],
+                get_sanpham_input: "",
+                suggestions_sanpham: [],
             });
             // console.log(this.items)
         },
 
         // copy dữ liệu đăng ký
         async copyadd(data) {
-            // tìm cách lấy tên vật tư do k có @change
-            // console.log(data)
-            let mapx
-            let tenvt
-            if (data.mapx == 'AL_PXD' || data.mapx == 'DV_PXD') {
-                mapx = 'PXD'
-            } else {
-                mapx = data.mapx
-            }
-            let getsp = {}
-
-            getsp = await this.$axios.$get(
-                `/api/ketoan/gettensp?mapx=${mapx}&mavt=${data.maspkhpx}`
-            );
-            if (getsp.length > 0) {
-                tenvt = getsp[0].tenvt
-            }
-            // console.log(tenvt)
+            // console.log(data);
             this.items.push({
                 _id_khnam: data._id_khnam,
                 _id_lonhamay: data._id_lonhamay,
                 kehoachnam: data.kehoachnam,
-                makh: data.makh,
-                mapx: data.mapx,
-                tenpx: data.tenpx,
                 malonhamay: data.malonhamay,
                 soluonglonm: data.soluonglonm,
+                tuanbdlonm: data.tuanbdlonm,
+                tuanktlonm: data.tuanktlonm,
                 ngaybdlonm: data.ngaybdlonm,
                 ngayktlonm: data.ngayktlonm,
-                masplonm: data.masplonm,
-                tensplonm: data.tensplonm,
+                mathanhpham: data.mathanhpham,
+                tenthanhpham: data.tenthanhpham,
+                nhomthanhpham: data.nhomthanhpham,
+                mapx: data.mapx,
+                tenpx: data.tenpx,
+                mato: data.mato,
+                tento: data.tento,
+                maspkhpx: data.maspdata,
+                tenspkhpx: data.tenspkhpx,  // chưa lấy được
                 makhpx: data.makhpx,
                 soluongkhpx: data.soluongkhpx,
+                tuanbdkhpx: data.tuanbdkhpx,
+                tuanktkhpx: data.tuanktkhpx,
                 ngaybdkhpx: data.ngaybdkhpx,
                 ngayktkhpx: data.ngayktkhpx,
-                maspkhpx: data.maspkhpx,
-                tenspkhpx: tenvt,
-                nhomluong: data.nhomluong,
-                ghichu: "",
-                createdAt: data.createdAt,
-                createdBy: data.createdBy,
-                status: 0,
-                nhomsp: data.nhomsp,
-                mathanhpham: data.mathanhpham,
-                nhomthanhpham: data.nhomthanhpham,
-                // tuanbd: data.tuanbd, copy bắt phải gõ lại tuần
-                // tuankt: data.tuankt,
+                tuanbdthucte: data.tuanbdthucte,
+                tuanktthucte: data.tuanktthucte,
+                ngaybdthucte: data.ngaybdthucte,
+                ngayhoanthanhtt: data.ngayhoanthanhtt,
                 ttqt: data.ttqt,
-                sanpham: [
+                nhomluong: data.nhomluong, // chưa lấy được
+                status: data.status,
+                sldathang: data.sldathang,
+                slsanxuat: data.slsanxuat,
+                ghichu: data.ghichu,
+                createdAt: data.createdAt,
+                updatedAt: data.updatedAt,
+                createdBy: data.createdBy,
+                congsuat: data.congsuat,
+                songay: data.songay,
+                may: data.may,
+                tonhom: [
                     {
-                        masp: data.maspkhpx,
-                        tensp: tenvt,
-                    },
+                        mato: data.mato,
+                        tento: data.tento,
+                    }
                 ],
+                get_sanpham_input: data.get_sanpham_input,
+                suggestions_sanpham: [],
             });
+            // console.log(this.items);
         },
 
         deleteRow(index) {
@@ -1043,7 +1188,8 @@ export default {
 
         },
 
-        // bấm chọn phân xưởng
+        // Sau khi bấm chọn select phân xưởng
+        // sẽ chuyển sang suggets input
         async getInfoPX(e, selectedIndex, index) {
             this.selectedIndex = selectedIndex;
             for (let i = 0; i < this.items.length; i++) {
@@ -1064,19 +1210,34 @@ export default {
                             `/api/sanpham/getallspwithmapxfromdmnc?mapx=${this.items[i].mapx}`
                         );
                     }
-                    // console.log(this.dm_sanpham);
-                    this.items[i].sanpham = [];
-
-                    for (let k = 0; k < this.dm_sanpham.length; k++) {
-                        let cn = {
-                            masp: this.dm_sanpham[k].mavt,
-                            tensp: this.dm_sanpham[k].tenvt,
+                    // get tổ
+                    this.tonhom = await this.$axios.$get(
+                        `/api/phongban/alltoinxuong?mapx=${this.phanxuong[this.selectedIndex].mapx}`
+                    );
+                    // console.log(this.tonhom);
+                    this.items[i].tonhom = []
+                    for (let k = 0; k < this.tonhom.length; k++) {
+                        let tn = {
+                            mato: this.tonhom[k].mato,
+                            tento: this.tonhom[k].tento,
                         };
-                        this.items[i].sanpham.push(cn);
-                        // console.log(cn)
+                        this.items[i].tonhom.push(tn);
+
                     }
+                    // console.log(this.items);
                 }
             }
+        },
+
+        getInfoTonhom(event, selectedIndex, index) {
+            // lấy mã tổ tên tổ
+            const selectedOption = event.target.options[selectedIndex];
+            const mato = selectedOption.value;
+            const tento = selectedOption.text;
+            // console.log(`mato: ${mato}, tento: ${tento}`);
+            this.items[index].mato = mato
+            this.items[index].tento = tento
+            // console.log(this.items);
         },
 
         // Bấm vào mã lô sản xuất sẽ ra thông tin các lô kế hoạch phân xưởng
@@ -1086,7 +1247,7 @@ export default {
             // console.log(this.dataLonm)
 
             this.datakehoachpx = await this.$axios.$get(
-                `/api/lokehoach/showlokehoachpx?malonhamay=${this.dataLonm.makhpx}`
+                `/api/lokehoach/showlokehoachpx?_id_lonhamay=${this.dataLonm._id}`
             );
             if (this.datakehoachpx.length <= 0) {
                 const Toast = Swal.mixin({
@@ -1111,7 +1272,94 @@ export default {
         // ghi dữ liệu đăng ký lô kế hoạch phân xưởng
         async ghidulieu() {
             // console.log(this.items)
-            if (this.items.length <= 0) {
+            try {
+                if (this.items.length <= 0) {
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener("mouseenter", Swal.stopTimer);
+                            toast.addEventListener("mouseleave", Swal.resumeTimer);
+                        },
+                    });
+                    Toast.fire({
+                        icon: "error",
+                        title: "Chưa đăng ký gì !!!",
+                    });
+                    return;
+                } else {
+                    for (let i = 0; i < this.items.length; i++) {
+                        this.items[i].maspkhpx = this.items[i].get_sanpham_input
+                        // 1. Cần lấy thêm tên của Vật tư
+                        var mapx
+                        if (this.items[i].mapx == 'AL_PXD' || this.items[i].mapx == 'DV_PXD') {
+                            mapx = 'PXD'
+                        } else {
+                            mapx = this.items[i].mapx
+                        }
+                        const arrTenvt = await this.$axios.$get(
+                            `/api/lokehoach/gettenvt?mapx=${mapx}&mavt=${this.items[i].maspkhpx}`
+                        );
+                        // console.log(arrTenvt[0].tenvt);
+                        const tenvt = arrTenvt[0].tenvt
+                        this.items[i].tenspkhpx = tenvt
+                        // 2. Lấy Nhóm lương
+                        const arrNhomluong = await this.$axios.$get(
+                            `/api/ketoan/getnhomluong?mapx=${mapx}&mavt=${this.items[i].maspkhpx}`
+                        );
+                        // console.log(arrNhomluong);
+                        const nhomluong = arrNhomluong[0].nhomluong
+                        const nhomsanpham = arrNhomluong[0].nhomsp
+                        if (nhomluong != null) {
+                            this.items[i].nhomluong = nhomluong
+                        } else {
+                            this.items[i].nhomluong = "Chưa có"
+                        }
+                        if (nhomsanpham != null) {
+                            this.items[i].nhomspkhpx = nhomsanpham
+                        } else {
+                            this.items[i].nhomspkhpx = "Chưa có"
+                        }
+
+                        // ghi vào csdl
+                        this.$axios.$post(
+                            "/api/ketoan/addphieulokhpx",
+                            this.items[i]
+                        );
+                    }
+                    this.datakehoachpx = await this.$axios.$get(
+                        `/api/lokehoach/showlokehoachpx?_id_lonhamay=${this.dataLonm._id}`
+                    );
+
+                    let turn = 1;
+                    let length = this.items.length;
+                    while (turn <= length) {
+                        this.deleteRow(this.items.length - turn);
+                        turn += 1;
+                    }
+
+                    this.isphanxuong = 0
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener("mouseenter", Swal.stopTimer);
+                            toast.addEventListener("mouseleave", Swal.resumeTimer);
+                        },
+                    });
+                    Toast.fire({
+                        icon: "success",
+                        title: "Tạo thành công",
+                    });
+                }
+            } catch (error) {
+                // console.log(error);
                 const Toast = Swal.mixin({
                     toast: true,
                     position: "top-end",
@@ -1125,48 +1373,9 @@ export default {
                 });
                 Toast.fire({
                     icon: "error",
-                    title: "Chưa đăng ký gì !!!",
-                });
-            } else {
-                for (let i = 0; i < this.items.length; i++) {
-                    this.items[i].createdAt = this.form.createdAt
-                    this.items[i].createdBy = this.form.createdBy
-                    this.$axios.$post(
-                        "/api/ketoan/addphieulokhpx",
-                        this.items[i]
-                    );
-                }
-                this.datakehoachpx = await this.$axios.$get(
-                    `/api/lokehoach/showlokehoachpx?malonhamay=${this.dataLonm.makhpx}`
-                );
-                // console.log(this.dataLonm.makhpx)
-                // console.log(this.datakehoachpx)
-
-                let turn = 1;
-                let length = this.items.length;
-                while (turn <= length) {
-                    this.deleteRow(this.items.length - turn);
-                    turn += 1;
-                }
-
-                this.isphanxuong = 0
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: "top-end",
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                        toast.addEventListener("mouseenter", Swal.stopTimer);
-                        toast.addEventListener("mouseleave", Swal.resumeTimer);
-                    },
-                });
-                Toast.fire({
-                    icon: "success",
-                    title: "Tạo thành công",
+                    title: "Có lỗi xảy ra !!!",
                 });
             }
-
         },
 
         // update lô kế hoạch phân xưởng
@@ -1302,12 +1511,39 @@ export default {
     max-height: 90px;
 }
 
-.highlight {
-    background-color: #eff5fb;
-}
-
 tr:hover {
     cursor: pointer;
+    background-color: whitesmoke;
+}
+
+.highlighted {
+    background-color: lightblue;
+}
+
+.autocomplete {
+    position: relative;
+}
+
+.autocomplete-items {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #d4d4d4;
+    border-bottom: none;
+    border-top: none;
+    z-index: 99;
+    top: 100%;
+    left: 0;
+    right: 0;
+}
+
+.autocomplete-item {
+    padding: 4px;
+    cursor: pointer;
+    border-bottom: 1px solid #d4d4d4;
+    font-size: small;
+}
+
+.autocomplete-item:hover {
     background-color: #fffaeb;
 }
 </style>

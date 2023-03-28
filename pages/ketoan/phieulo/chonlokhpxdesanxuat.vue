@@ -173,26 +173,26 @@
                             <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Ghi dữ liệu</td>
                         </tr>
                         <tr v-for="(item, index) in paginatedTable" :key="index + 'llllkiq'">
-                            <td style="font-size: small; text-align: center; background-color: #effaf5;">{{ index + 1 }}
+                            <td style="font-size: small; text-align: center;">{{ index + 1 }}
                             </td>
-                            <td style="font-size: small;">{{ item.makh }}
+                            <td style="font-size: small;">{{ item.malonhamay }}
                             </td>
-                            <td style="font-size: small; background-color: #effaf5; text-align: center;">{{ item.mapx }}
+                            <td style="font-size: small; text-align: center;">{{ item.mapx }}
                             </td>
-                            <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
+                            <td style="font-size: small; text-align: center;">{{
                                 item.makhpx
                             }}
                             </td>
-                            <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
+                            <td style="font-size: small; text-align: center;">{{
                                 item.nhomthanhpham
                             }}</td>
-                            <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
+                            <td style="font-size: small; text-align: center;">{{
                                 item.mathanhpham
                             }}</td>
-                            <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
+                            <td style="font-size: small; text-align: center;">{{
                                 item.nhomsp
                             }}</td>
-                            <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
+                            <td style="font-size: small; text-align: center;">{{
                                 item.maspkhpx
                             }}</td>
                             <!-- <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
@@ -208,16 +208,16 @@
                             <!-- <td style="background-color: #fffaeb;"><input class="input is-small" type="date"
                                     v-bind:value="item.ngayktkhpx | inputDateFilter"
                                     v-on:input="item.ngayktkhpx = getDate($event.target.value)"></td> -->
-                            <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
+                            <td style="font-size: small; text-align: center; ">{{
                                 item.tuanbd
                             }}</td>
-                            <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
+                            <td style="font-size: small; text-align: center; ">{{
                                 item.tuankt
                             }}</td>
-                            <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
+                            <td style="font-size: small; text-align: center; ">{{
                                 item.soluongkhpx | formatNumber
                             }}</td>
-                            <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
+                            <td style="font-size: small; text-align: center; ">{{
                                 item.ttqt
                             }}</td>
                             <template>
@@ -246,10 +246,10 @@
                                     </select>
                                 </div>
                             </td>
-                            <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
+                            <td style="font-size: small; text-align: center;">{{
                                 item.tong_soluong }}</td>
-                            <td style="font-size: small; text-align: center; background-color: #effaf5;"></td>
-                            <td style="font-size: small; text-align: center; background-color: #effaf5;"></td>
+                            <td style="font-size: small; text-align: center; "></td>
+                            <td style="font-size: small; text-align: center; "></td>
                             <td><button @click="onUpdate_lokhpx(item)"
                                     class="button is-small is-success is-fullwidth">Ghi</button>
                             </td>
@@ -360,25 +360,28 @@ export default {
             // xuất execl lô nhà máy
             columns: [
                 {
+                    label: "Kế hoạch năm",
+                    field: "kehoachnam",
+                    // dataFormat: this.trimData
+                },
+                {
                     label: "Mã lô nhà máy",
-                    field: "makh",
+                    field: "malonhamay",
                     /* dataFormat: this.priceFormat */
-                    dataFormat: this.trimData
-                },
-                {
-                    label: "Mã phân xưởng",
-                    field: "mapx",
-                    dataFormat: this.trimData
-                },
-                {
-                    label: "Tên phân xưởng",
-                    field: "tenpx",
-                    dataFormat: this.trimData
+                    // dataFormat: this.trimData
                 },
                 {
                     label: "Số lượng lô nhà máy",
                     field: "soluonglonm",
-                    dataFormat: this.trimData
+                },
+                {
+                    label: "Tuần bắt đầu lô nhà máy",
+                    field: "tuanbdlonm",
+                    // dataFormat: this.prefixformatDate
+                },
+                {
+                    label: "Tuần kết thúc lô nhà máy",
+                    field: "tuanktlonm",
                 },
                 {
                     label: "Ngày bắt đầu lô nhà máy",
@@ -388,62 +391,144 @@ export default {
                 {
                     label: "Ngày kết thúc lô nhà máy",
                     field: "ngayktlonm",
-                    dataFormat: this.trimData
+                    dataFormat: this.prefixformatDate
+                },
+                {
+                    label: "Mã thành phẩm",
+                    field: "mathanhpham",
+                    // dataFormat: this.trimData
                 },
 
                 {
-                    label: "Mã sản phẩm lô nhà máy (Mã thành phẩm)",
-                    field: "masplonm",
-                    dataFormat: this.trimData
+                    label: "Tên thành phẩm",
+                    field: "tenthanhpham",
+                    // dataFormat: this.trimData
                 },
                 {
-                    label: "Tên sản phẩm lô nhà máy (Tên thành phẩm)",
-                    field: "tensplonm",
-                    dataFormat: this.trimData
+                    label: "Nhóm thành thẩm",
+                    field: "nhomthanhpham",
+                    // dataFormat: this.trimData
                 },
                 {
-                    label: "Mã kế hoạch PX",
-                    field: "makhpx",
-                    dataFormat: this.trimData
+                    label: "Mã phân xưởng",
+                    field: "mapx",
+                    // dataFormat: this.trimData
                 },
                 {
-                    label: "Mã sản phẩm (KHPX)",
+                    label: "Tên phân xưởng",
+                    field: "tenpx",
+                    // dataFormat: this.trimData
+                },
+                {
+                    label: "Mã tổ",
+                    field: "mato",
+                    // dataFormat: this.trimData
+                },
+                {
+                    label: "Tên tổ",
+                    field: "tento",
+                    // dataFormat: this.trimData
+                },
+                {
+                    label: "Mã sản phẩm KHPX",
                     field: "maspkhpx",
-                    dataFormat: this.trimData
+                    // dataFormat: this.trimData
                 },
                 {
-                    label: "Tên sản phẩm (KHPX)",
+                    label: "Tên sản phẩm KHPX",
                     field: "tenspkhpx",
-                    dataFormat: this.trimData
+                    // dataFormat: this.trimData
+                },
+                {
+                    label: "Nhóm SP KHPX",
+                    field: "nhomspkhpx",
+                    // dataFormat: this.trimData
+                },
+                {
+                    label: "Mã KHPX",
+                    field: "makhpx",
+                    // dataFormat: this.trimData
                 },
                 {
                     label: "Số lượng KHPX",
                     field: "soluongkhpx",
-                    dataFormat: this.trimData
+                    // dataFormat: this.trimData
                 },
                 {
-                    label: "Ngày bắt đầu (KHPX)",
-                    field: "ngaybdkhpx",
+                    label: "Tuần bắt đầu KHPX",
+                    field: "tuanbdkhpx",
+                    // dataFormat: this.trimData
+                },
+                {
+                    label: "Tuần kết thúc KHPX",
+                    field: "tuanktkhpx",
+                    // dataFormat: this.trimData
+                },
+                {
+                    label: "Tuần bắt đầu TT",
+                    field: "tuanbdthucte",
+                    // dataFormat: this.trimData
+                },
+                {
+                    label: "Tuần kết thúc TT",
+                    field: "tuanktthucte",
+                    // dataFormat: this.trimData
+                },
+                {
+                    label: "Ngày bắt đầu TT",
+                    field: "ngaybdthucte",
                     dataFormat: this.prefixformatDate
                 },
                 {
-                    label: "Ngày kết thúc (KHPX)",
-                    field: "ngayktkhpx",
+                    label: "Ngày hoàn thành TT",
+                    field: "ngayhoanthanhtt",
                     dataFormat: this.prefixformatDate
                 },
                 {
-                    label: "status",
-                    field: "status",
-                    // dataFormat: this.prefixformatDate
-                },
-                {
-                    label: "Thứ tự QT",
+                    label: "TTQT",
                     field: "ttqt",
+                    // dataFormat: this.trimData
                 },
                 {
-                    label: "Nhóm sản phẩm",
-                    field: "nhomsp",
-                    dataFormat: this.trimData
+                    label: "Nhóm lương",
+                    field: "nhomluong",
+                    // dataFormat: this.trimData
+                },
+                {
+                    label: "Trạng thái",
+                    field: "status",
+                    // dataFormat: this.trimData
+                },
+                {
+                    label: "Ghi chú",
+                    field: "ghichu",
+                    // dataFormat: this.trimData
+                },
+                {
+                    label: "Ngày tạo",
+                    field: "createdAt",
+                    dataFormat: this.prefixformatDate
+                },
+                {
+                    label: "Ngày tạo",
+                    field: "updatedAt",
+                    dataFormat: this.prefixformatDate
+                },
+                {
+                    label: "Người tạo",
+                    field: "createdBy",
+                },
+                {
+                    label: "Công suất",
+                    field: "congsuat",
+                },
+                {
+                    label: "Số ngày",
+                    field: "songay",
+                },
+                {
+                    label: "Máy",
+                    field: "may",
                 },
             ],
         };
@@ -1039,77 +1124,56 @@ export default {
         // 4: Các hàm CRUD
         // update lô kế hoạch phân xưởng
         async onUpdate_lokhpx(data) {
-            // console.log(data)
-            // Tiến hành update cho table lokehoach - tức là lô Nhà máy
-            // Nếu bất kỳ phân xưởng nào trong lokehoachphanxuong có phát sinh SX hoặc ĐK thì tức là mã lô nhà máy đó thành đăng ký 
-            // status = 1 (DK)
-            // update theo mã lô nhà máy và _id
-
-            // chuyển trạng thái cho lô nhà máy luôn
-            // kiểm tra với id của lô nhà máy ứng với con là lkhpx nào nếu chỉ có status = 0 hoặc 1 sẽ là dk
-            // nếu có tồn tại 2 thì sx và chỉ ht khi full status con là 3
-            // 1: tìm dữ liệu lô khpx ứng với id của lô nhà máy 
+            // Tìm tất cả các lô KHPX mà do lô nhà máy này đẻ ra thông qua _id của LNM
+            // Đẩy toàn bộ trạng thái các LÔ KHPX này vào 1 mảng và lập luận như sau:
+            // nếu mảng mà toàn = 0 thì log ra chữ: "0"
+            // nếu mảng toàn = 3 thì log "ht"
+            // nếu mảng mà có 0, 1, 2, 3 thì log ra sx.tức là nếu mảng chỉ cần còn thấy 2 là log sx.
+            // nếu mảng không tìm thấy 2 hoặc 3 mà chỉ toàn 0 hoặc 1 thì log dk
+            // còn tất nhiên mà toàn = 1 thì log dk
+            const arr = []
             const lokhpxs = await this.$axios.$get(`/api/ketoan/checklokhpxoflnm?_id_lonhamay=${data._id_lonhamay}`)
-            // for (let i = 0; i < lokhpxs.length; i++) {
-            //     console.log(lokhpxs[i].status)
-            // }
-            const isAllStatus01 = lokhpxs.every(item => item.status === 0 || item.status === 1);
-            const isAllStatus012 = lokhpxs.every(item => item.status === 0 || item.status === 1 || item.status === 2);
-            const isAllStatus3 = lokhpxs.every(item => item.status === 3);
-            // console.log(isAllStatus01); // true
-            if (isAllStatus01 == true) {
-                this.$axios.$patch(`/api/lokehoach/lonhamay/status1/${data._id_lonhamay}`
-                );
-            } else if (isAllStatus012 == true) {
-                this.$axios.$patch(`/api/lokehoach/lonhamay/status2/${data._id_lonhamay}`
-                );
-            } else if (isAllStatus3 == true) {
-                this.$axios.$patch(`/api/lokehoach/lonhamay/status3/${data._id_lonhamay}`
-                );
+            for (let i = 0; i < lokhpxs.length; i++) {
+                arr.push(lokhpxs[i].status)
             }
-
-            // try {
-            //     this.$axios.$get(
-            //         `/api/lokehoach/updatestatuslonhamay?status=${data.status}&makhpx=${data.makh}`
-            //     );
-            //     // data.status = this.status
-            //     this.$axios.$patch(
-            //         `/api/lokehoach/updatelokehoachpxatdangkylodesanxuat/${data._id}`,
-            //         data
-            //     );
-            //     const Toast = Swal.mixin({
-            //         toast: true,
-            //         position: "top-end",
-            //         showConfirmButton: false,
-            //         timer: 3000,
-            //         timerProgressBar: true,
-            //         didOpen: (toast) => {
-            //             toast.addEventListener("mouseenter", Swal.stopTimer);
-            //             toast.addEventListener("mouseleave", Swal.resumeTimer);
-            //         },
-            //     });
-            //     Toast.fire({
-            //         icon: "success",
-            //         title: "Đã cập nhật",
-            //     });
-            // } catch (error) {
-            //     // console.log(error);
-            //     const Toast = Swal.mixin({
-            //         toast: true,
-            //         position: "top-end",
-            //         showConfirmButton: false,
-            //         timer: 3000,
-            //         timerProgressBar: true,
-            //         didOpen: (toast) => {
-            //             toast.addEventListener("mouseenter", Swal.stopTimer);
-            //             toast.addEventListener("mouseleave", Swal.resumeTimer);
-            //         },
-            //     });
-            //     Toast.fire({
-            //         icon: "error",
-            //         title: "Có lỗi xảy ra !!!",
-            //     });
-            // }
+            try {
+                // console.log(arr);
+                if (arr.every(x => x === 0)) {
+                    this.$axios.$patch(`/api/lokehoach/lonhamay/status0/${data._id_lonhamay}`
+                    );
+                } else if (arr.every(x => x === 3)) {
+                    this.$axios.$patch(`/api/lokehoach/lonhamay/status3/${data._id_lonhamay}`
+                    );
+                } else if (arr.indexOf(2) !== -1 || arr.indexOf(3) !== -1) {
+                    this.$axios.$patch(`/api/lokehoach/lonhamay/status2/${data._id_lonhamay}`
+                    );
+                } else if (arr.indexOf(2) === -1 && arr.indexOf(3) === -1) {
+                    if (arr.indexOf(1) !== -1) {
+                        this.$axios.$patch(`/api/lokehoach/lonhamay/status1/${data._id_lonhamay}`
+                        );
+                    } else if (arr.every(x => x === 0)) {
+                        this.$axios.$patch(`/api/lokehoach/lonhamay/status0/${data._id_lonhamay}`
+                        );
+                    }
+                }
+            } catch (error) {
+                console.log(error);
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener("mouseenter", Swal.stopTimer);
+                        toast.addEventListener("mouseleave", Swal.resumeTimer);
+                    },
+                });
+                Toast.fire({
+                    icon: "error",
+                    title: "Có lỗi xảy ra !!!",
+                });
+            }
         },
 
     },

@@ -100,7 +100,7 @@
                   Mã thành phẩm
                 </th>
                 <th @click="sort('nhomsp')" style="text-align: center; font-size: small; font-weight: bold; width: 5%;">
-                  Nhóm sản phẩm
+                  Nhóm thành phẩm
                 </th>
                 <th @click="sort('tgbatdau')" style="text-align: center; font-size: small; font-weight: bold; width: 5%;">
                   Ngày bắt đầu
@@ -151,7 +151,7 @@
                   {{ pl.mathanhpham }}
                 </td>
                 <td style="font-size: small; text-align: center;">
-                  {{ pl.nhomsp }}
+                  {{ pl.nhomthanhpham }}
                 </td>
                 <td style="background-color: #fffaeb;"><input class="input is-small" type="date"
                     v-bind:value="pl.tgbatdau | inputDateFilter" v-on:input="pl.tgbatdau = getDate($event.target.value)">
@@ -259,18 +259,7 @@
                   mark_kehoachnam.masp
                 }}</span> </span>
               </td>
-              <!-- <td colspan="2">
-                <button @click="addKehoachmuavu" class="button is-success is-small is-fullwidth"> 
-                  <span>Lập kế hoạch mùa vụ</span>
-                </button>
-              </td>
-              <td colspan="2">
-                <button @click="onUpdateKHMV" class="button is-success is-small is-fullwidth">
-                  <span>Cập nhật</span>
-                </button>
-              </td> -->
             </tr>
-            <!-- Nếu bấm nút thêm mùa vụ -->
             <template>
               <tr>
                 <td
@@ -347,29 +336,29 @@
                     khmv.soluongmuavup1 | formatNumber
                   }} | <span style="color: green">{{ soluongmuavuTotalMV1 | formatNumber }}</span>
                 </td>
-                <td style="background-color: #effaf5;"><input type="text" class="input is-small"
+                <td style="background-color: #effaf5;"><input type="number" class="input is-small"
                     v-model.trim="khmv.slthang1"></td>
-                <td style="text-align: center; font-size: small; background-color: #effaf5;"><input type="text"
+                <td style="text-align: center; font-size: small; background-color: #effaf5;"><input type="number"
                     class="input is-small" v-model.trim="khmv.slthang2"></td>
-                <td style="background-color: #effaf5;"><input type="text" class="input is-small"
+                <td style="background-color: #effaf5;"><input type="number" class="input is-small"
                     v-model.trim="khmv.slthang3"></td>
                 <td style="background-color: #effaf5;">
-                  <input type="text" class="input is-small" v-model.trim="khmv.slthang4">
+                  <input type="number" class="input is-small" v-model.trim="khmv.slthang4">
                 </td>
                 <td
                   style="text-align: right; font-size: small; background-color: whitesmoke; color: #f14668; font-weight: 900;">
                   {{ khmv.soluongmuavup2 | formatNumber }} | <span style="color: green">{{ soluongmuavuTotalMV2 |
                     formatNumber }}</span></td>
-                <td style="background-color: whitesmoke;"><input type="text" class="input is-small"
+                <td style="background-color: whitesmoke;"><input type="number" class="input is-small"
                     v-model.trim="khmv.slthang5"></td>
                 <td style="background-color: whitesmoke;">
-                  <input type="text" class="input is-small" v-model.trim="khmv.slthang6">
+                  <input type="number" class="input is-small" v-model.trim="khmv.slthang6">
                 </td>
                 <td style="background-color: whitesmoke;">
-                  <input type="text" class="input is-small" v-model.trim="khmv.slthang7">
+                  <input type="number" class="input is-small" v-model.trim="khmv.slthang7">
                 </td>
                 <td style="background-color: whitesmoke;">
-                  <input type="text" class="input is-small" v-model.trim="khmv.slthang8">
+                  <input type="number" class="input is-small" v-model.trim="khmv.slthang8">
                 </td>
                 <td
                   style="text-align: right; font-size: small; background-color: #eef6f4ff; color: #f14668; font-weight: 900;">
@@ -379,13 +368,13 @@
                     v-model.trim="khmv.slthang9">
                 </td>
                 <td style="background-color: #eef6f4ff;">
-                  <input type="text" class="input is-small" v-model.trim="khmv.slthang10">
+                  <input type="number" class="input is-small" v-model.trim="khmv.slthang10">
                 </td>
                 <td style="background-color: #eef6f4ff;">
-                  <input type="text" class="input is-small" v-model.trim="khmv.slthang11">
+                  <input type="number" class="input is-small" v-model.trim="khmv.slthang11">
                 </td>
                 <td style="background-color: #eef6f4ff;">
-                  <input type="text" class="input is-small" v-model.trim="khmv.slthang12">
+                  <input type="number" class="input is-small" v-model.trim="khmv.slthang12">
                 </td>
                 <td>
                   <button @click="onupdateKehoachmuavutheothang(khmv)" class="button is-success is-small is-fullwidth">
@@ -411,10 +400,13 @@
                   STT
                 </th>
                 <th style="text-align: center; font-size: small; font-weight: bold;">
-                  Kế hoạch
+                  Kế hoạch năm
                 </th>
                 <th style="text-align: center; font-size: small; font-weight: bold;">
                   Mã thành phẩm
+                </th>
+                <th style="text-align: center; font-size: small; font-weight: bold;">
+                  Tên thành phẩm
                 </th>
                 <th style="text-align: center; font-size: small; font-weight: bold;">
                   Nhóm thành phẩm
@@ -451,12 +443,13 @@
             <tbody>
               <tr v-for="(item, index) in kehoachphanxuong" :key="index + 'jjjhhhff'">
                 <td style="text-align: center; font-size: small;">{{ index + 1 }}</td>
-                <td style="text-align: center; font-size: small;">{{ item.makh }}</td>
+                <td style="text-align: center; font-size: small;">{{ item.kehoachnam }}</td>
                 <td style="text-align: center; font-size: small;">{{ item.mathanhpham }}</td>
+                <td style="text-align: center; font-size: small;">{{ item.tenthanhpham }}</td>
                 <td style="text-align: center; font-size: small;">{{ item.nhomthanhpham }}</td>
                 <td style="font-size: small;">
                   <!-- <input type="text" class="input is-small" v-model.trim="item.makhpx"> -->
-                  {{ item.makhpx }}
+                  {{ item.malonhamay }}
                 </td>
                 <!-- <td style="text-align: center; font-size: small;">{{ item.soluong }}</td> -->
                 <td><input type="text" class="input is-small" v-model.trim="item.soluong"></td>
@@ -545,10 +538,10 @@
                 {{ index + 1 }}
               </td>
               <td>
-                <input v-model.trim="item.makhpx" type="text" class="input is-warning is-small" />
+                <input v-model.trim="item.malonhamay" type="text" class="input is-warning is-small" />
               </td>
               <td>
-                <input v-model.trim="item.soluong" type="text" class="input is-small" />
+                <input v-model.trim="item.soluong" type="number" class="input is-small" />
               </td>
               <td>
                 <!-- <input v-model.trim="item.ngaybd" type="date" class="input is-small" /> -->
@@ -634,8 +627,9 @@ export default {
       searchmasp: '',
       tonhom: [],
       form: {
-        createdAt: null,
+        createdAt: "",
         createdBy: this.$auth.$state.user.username,
+        updatedAt: "",
       },
       phieulokh: {},
       phieulosx: {},
@@ -682,99 +676,34 @@ export default {
         soluong: "",
       },
       check_giaopx: false,
-      // Các var cho việc thêm lô sản xuất tại xưởng
-      items: [
-        {
-          makh: "",
-          makhpx: "",
-          malosx: "",
-          mapx: "",
-          tenpx: "",
-          mato: "",
-          tento: "",
-          masp: "",
-          tensp: "",
-          soluong: "",
-          nhomluong: "",
-          soluonglsx: "",
-          soluongkhsx: "",
-          ngaybd: "",
-          ngaykt: "",
-          tongdat: "",
-          tonghong: "",
-          ghichu: "",
-          createdAt: null,
-          createdBy: "",
-          status: 0,
-          stopday_losx: "",
-          nhomto: [
-            {
-              tento: "",
-              mato: "",
-            },
-          ],
-        },
-      ],
 
       // lokehoachphanxuong
       items_khpx: [
         {
-          mapx: "",
-          tenpx: "",
-          makh: "",
-          soluong: "",
+          _id_khnam: "",
+          kehoachnam: "",
+          malonhamay: "",
+          soluong: 0,
+          sldathang: 0,
+          slsanxuat: 0,
+          tuanbd: "",
+          tuankt: "",
           ngaybd: "",
           ngaykt: "",
-          soluong: "",
-          masp: "",
-          tensp: "",
-          createdAt: "",
-          nhomsp: "",
-          nhomthanhpham: "",
           mathanhpham: "",
-        },
-      ],
-
-      // tạo kế hoạch mùa vụ
-      // items này để lập kế hoạch nhà máy
-      items_khmv: [
-        {
-          makh: "",
-          makhmv: "",
-          mota: "",
-          masp: "",
-          tensp: "",
-          nhomsp: "",
-          soluong: "",
-          soluongmuavu: "",
-          tgbatdau: "",
-          tgketthuc: "",
-          ghichu: "",
+          tenthanhpham: "",
+          nhomthanhpham: "",
           status: 0,
+          ngaybatdautt: "",
+          ngayhoanthanhtt: "",
+          ghichu: "",
+          createdAt: "",
+          createdBy: "",
+          updatedAt: "",
         },
       ],
 
-      // tạo lô kế hoạch phân xưởng
-      items_cre_lokhpx: [
-        {
-          mapx: "",
-          tenpx: "",
-          makh: "",
-          soluong: "",
-          ngaybd: "",
-          ngaykt: "",
-          soluong: "",
-          masp: "",
-          tensp: "",
-          createdAt: "",
-          sanpham: [
-            {
-              masp: "",
-              tensp: "",
-            },
-          ],
-        },
-      ],
+
       // xuất execl
       columns: [
         {
@@ -969,9 +898,6 @@ export default {
     this.currentDateTime();
     this.getPhanxuong();
     this.getAllPhieulo();
-    // this.getmalokh()
-    this.deleteRow(0);
-    this.deleteRow_khmv(0)
     this.deleteRow_khpx(0)
   },
 
@@ -1116,6 +1042,7 @@ export default {
         ":" +
         current.getSeconds();
       this.form.createdAt = date + " " + time;
+      this.form.updatedAt = date + " " + time;
     },
 
     getTuanbd() {
@@ -1187,252 +1114,38 @@ export default {
 
     // tạo lô kế hoạch tại phân xưởng
     async addPhanxuong() {
+      // console.log(this.mark_kehoachnam);
       this.items_khpx.push({
-        _id_khnam: "",
-        makh: "",
-        mapx: "",
-        tenpx: "",
-        makhpx: "",
-        soluong: "",
-        ngaybd: "",
-        ngaykt: "",
-        soluong: "",
-        masp: "",
-        tensp: "",
-        nhomthanhpham: "",
-        mathanhpham: "",
-        createdAt: this.form.createdAt,
+        _id_khnam: this.mark_kehoachnam._id,
+        kehoachnam: this.mark_kehoachnam.makh,
+        malonhamay: this.mark_kehoachnam.mathanhpham + '-',
+        soluong: 0,
+        sldathang: 0,
+        slsanxuat: 0,
         tuanbd: "",
         tuankt: "",
-      });
-    },
-
-    // bấm tạo kế hoạch mùa vụ
-    async addKehoachmuavu() {
-      this.items_khmv.push({
-        makh: this.mark_kehoachnam.makh,
-        makhmv: "",
-        mota: this.mark_kehoachnam.mota,
-        masp: this.mark_kehoachnam.masp,
-        tensp: this.mark_kehoachnam.tensp,
-        nhomsp: this.mark_kehoachnam.nhomsp,
-        soluong: this.mark_kehoachnam.soluong,
-        soluongmuavu: "",
-        tgbatdau: this.mark_kehoachnam.tgbatdau,
-        tgketthuc: this.mark_kehoachnam.tgketthuc,
-        ghichu: this.mark_kehoachnam.ghichu,
+        ngaybd: "",
+        ngaykt: "",
+        mathanhpham: this.mark_kehoachnam.mathanhpham,
+        tenthanhpham: this.mark_kehoachnam.tenthanhpham,
+        nhomthanhpham: this.mark_kehoachnam.nhomthanhpham,
         status: 0,
-        createdAt: this.form.createdAt,
-        createdBy: this.$auth.$state.user.username,
-      });
-    },
-
-    // bấm nút thêm lô sản xuất
-    async addLosx() {
-      // this.isphanxuong = 1;
-      if (this.mark_Makh == '') {
-        const Toast = Swal.mixin({
-          toast: true,
-          position: "top-end",
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.addEventListener("mouseenter", Swal.stopTimer);
-            toast.addEventListener("mouseleave", Swal.resumeTimer);
-          },
-        });
-        Toast.fire({
-          icon: "error",
-          title: "Chọn phân xưởng trước khi tạo phiếu lô!",
-        });
-      } else {
-        this.checkadd = true
-        console.log(this.mark_Mapx)
-        // 1. Tìm nhóm lương tại đây luôn
-        if (this.mark_Mapx.trim() == "AL_PXD" || this.mark_Mapx.trim() == "PXD" || this.mark_Mapx.trim() == "DV_PXD") {
-          let phanxuong = "PXD";
-          this.nhomluong = await this.$axios.$get(
-            `/api/lokehoach/getnhomluongtheompx?mapx=${phanxuong}&mavt=${this.mark_Masp}`
-          );
-          // console.log(this.nhomluong);
-        } else {
-          this.nhomluong = await this.$axios.$get(
-            `/api/lokehoach/getnhomluongtheompx?mapx=${this.mark_Mapx}&mavt=${this.mark_Masp}`
-          );
-          // console.log(this.nhomluong);
-        }
-
-        let nl
-        if (this.nhomluong.length <= 0) {
-          nl = "không có"
-        } else {
-          nl = this.nhomluong[0].nhomluong.trim()
-          // console.log(this.nhomluong[0].nhomluong.trim())
-        }
-        // console.log(nl)
-
-        // 2. Xem xưởng này có tổ hay là không???
-        // 2.1. Từ mã phân xưởng thì soi xem xưởng vừa được chọn có tổ không?
-        this.tonhom = await this.$axios.$get(
-          `/api/phongban/alltoinxuong?mapx=${this.mark_Mapx}`
-        );
-        // console.log(this.tonhom)
-        this.items.push({
-          makh: this.mark_Makh.trim(),
-          makhpx: this.mark_Makhpx.trim(),
-          malosx: this.mark_Makhpx.trim() + '-',
-          mapx: this.mark_Mapx.trim(),
-          tenpx: this.mark_Tenpx.trim(),
-          mato: "",
-          tento: "",
-          masp: this.mark_Masp.trim(),
-          tensp: this.mark_Tensp.trim(),
-          soluong: "",
-          nhomluong: nl,
-          soluonglsx: "",
-          soluongkhsx: this.mark_Soluongkhsx.trim(),
-          ngaybd: "",
-          ngaykt: "",
-          tongdat: "",
-          tonghong: "",
-          ghichu: "",
-          createdAt: null,
-          createdBy: "",
-          status: 0,
-          stopday_losx: "",
-          nhomto: this.tonhom
-        });
-        // console.log(this.items)
-      }
-
-    },
-
-    // copy
-    copy(data) {
-      this.items.push({
-        makh: data.makh,
-        makhpx: data.makhpx,
-        malosx: data.malosx,
-        mapx: data.mapx,
-        tenpx: data.tenpx,
-        mato: data.mato,
-        tento: data.tento,
-        masp: data.masp,
-        tensp: data.tensp,
-        soluong: data.soluong,
-        nhomluong: data.nhomluong,
-        soluonglsx: data.soluonglsx,
-        soluongkhsx: data.soluongkhsx,
-        ngaybd: data.ngaybd,
-        ngaykt: data.ngaykt,
-        tongdat: "",
-        tonghong: "",
+        ngaybatdautt: "",
+        ngayhoanthanhtt: "",
         ghichu: "",
-        status: 0,
-        stopday_losx: "",
-        nhomto: [{
-          mato: data.mato,
-          tento: data.tento
-        }]
-      });
-    },
-
-    // copy mã mùa vụ
-    async copyadd_khmv(data) {
-      this.items_khmv.push({
-        makh: this.mark_kehoachnam.makh,
-        makhmv: data.makhmv,
-        mota: this.mark_kehoachnam.mota,
-        masp: this.mark_kehoachnam.masp,
-        tensp: this.mark_kehoachnam.tensp,
-        nhomsp: this.mark_kehoachnam.nhomsp,
-        soluong: this.mark_kehoachnam.soluong,
-        soluongmuavu: data.soluongmuavu,
-        tgbatdau: this.mark_kehoachnam.tgbatdau,
-        tgketthuc: this.mark_kehoachnam.tgketthuc,
-        ghichu: this.mark_kehoachnam.ghichu,
-        status: 0,
         createdAt: this.form.createdAt,
-        createdBy: this.$auth.$state.user.username,
+        createdBy: this.form.createdBy,
+        updatedAt: this.form.updatedAt
       });
+      // console.log(this.items_khpx);
     },
 
-    // xóa dòng items 
-    deleteRow(index) {
-      this.items.splice(index, 1);
-    },
 
     // xóa dòng giao khpx
     deleteRow_khpx(index) {
       this.items_khpx.splice(index, 1);
       if (this.items_khpx.length <= 0) {
         this.check_giaopx = false
-      }
-    },
-
-    deleteRow_khmv(index) {
-      this.items_khmv.splice(index, 1);
-    },
-
-    async getInfoPX(event, selectedIndex, index) {
-      this.selectedIndex = selectedIndex;
-      // for (let i = 0; i < this.items.length; i++) {
-      //   // console.log(this.form.makh)
-      //   this.items[i].makh = this.form.makh
-      //   if (i == index) {
-      //     let px;
-      //     this.items[i].mapx = this.phanxuong[this.selectedIndex].mapx;
-      //     this.items[i].tenpx = this.phanxuong[this.selectedIndex].tenpx;
-      //     if (
-      //       this.items[i].mapx == "AL_PXD" ||
-      //       this.items[i].mapx == "DV_PXD"
-      //     ) {
-      //       px = "PXD";
-      //       this.dm_sanpham = await this.$axios.$get(
-      //         `/api/sanpham/getallspwithmapxfromdmnc?mapx=${px}`
-      //       );
-      //     } else {
-      //       this.dm_sanpham = await this.$axios.$get(
-      //         `/api/sanpham/getallspwithmapxfromdmnc?mapx=${this.items[i].mapx}`
-      //       );
-      //     }
-      //     // console.log(this.dm_sanpham);
-      //     this.items[i].sanpham = [];
-
-      //     for (let k = 0; k < this.dm_sanpham.length; k++) {
-      //       let cn = {
-      //         masp: this.dm_sanpham[k].mavt,
-      //         tensp: this.dm_sanpham[k].tenvt,
-      //       };
-      //       this.items[i].sanpham.push(cn);
-      //       // console.log(cn)
-      //     }
-      //   }
-      // }
-    },
-
-    async getWithTo(e, selectedIndex, index) {
-      // console.log(this.mapx)
-      var name = e.target.options[e.target.options.selectedIndex].text;
-      // console.log(name)
-      let position = name.split("--");
-      let p1 = position[0].trim();
-
-      // this.cong_nhan = await this.$axios.$get(
-      //   `/api/congnhan/allcongnhanto?mato=${p1}`
-      // );
-
-      this.selectedIndex = selectedIndex;
-      // console.log(index)
-      for (let i = 0; i < this.items.length; i++) {
-        if (i == index) {
-          this.items[i].mato = this.tonhom[this.selectedIndex].mato.trim();
-          this.items[i].tento = this.tonhom[this.selectedIndex].tento.trim();
-          // console.log(this.tonhomid[this.selectedIndex].mato);
-          // select * from congnhan where mato=mato
-          // gán vào ds công nhân
-        }
       }
     },
 
@@ -1497,14 +1210,15 @@ export default {
       // this.isActive = true;
       // console.log(phieulo)
       // console.log(this.phieulokh.makh);
+      // lấy thông tin số lượng theo tháng trong kế hoạch năm show ra 
       this.kehoachmuavu = await this.$axios.$get(
-        `/api/lokehoach/getallkhmuavu?makh=${ttkehoachnam.makh}`
+        `/api/lokehoach/getallkhmuavu?_id=${ttkehoachnam._id}`
       );
       // console.log(this.kehoachmuavu);
 
       // list ds kế hoạch phân xưởng đã giao
       this.kehoachphanxuong = await this.$axios.$get(
-        `/api/lokehoach/getallkehoachpx?makh=${ttkehoachnam.makh}`
+        `/api/lokehoach/getallkehoachpx?_id_khnam=${ttkehoachnam._id}`
       );
       // nhớ phải đổi lại = id khi nhập lại dữ liệu
       // this.kehoachphanxuong = await this.$axios.$get(
@@ -1551,21 +1265,46 @@ export default {
       // console.log(this.items_khpx)
       // console.log(this.mark_kehoachnam)
       for (let i = 0; i < this.items_khpx.length; i++) {
-        this.items_khpx[i]._id_khnam = this.mark_kehoachnam._id
-        this.items_khpx[i].makh = this.mark_kehoachnam.makh.trim()
-        this.items_khpx[i].tensp = this.mark_kehoachnam.tensp.trim()
-        this.items_khpx[i].masp = this.mark_kehoachnam.masp.trim()
-        this.items_khpx[i].nhomsp = this.mark_kehoachnam.nhomsp.trim()
-        this.items_khpx[i].mathanhpham = this.mark_kehoachnam.mathanhpham.trim()
-        this.items_khpx[i].nhomthanhpham = this.mark_kehoachnam.nhomthanhpham.trim()
-        this.$axios.$post(
-          "/api/ketoan/addphieulokh",
-          this.items_khpx[i]
-        );
+        if (this.items_khpx[i].malonhamay == '' || this.items_khpx[i].soluong == '' || this.items_khpx[i].tuanbd == '' || this.items_khpx[i].tuankt == '') {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
+          Toast.fire({
+            icon: "error",
+            title: "Nhập vào đủ thông tin",
+          });
+          return;
+        } else {
+          this.$axios.$post(
+            "/api/ketoan/addphieulokh",
+            this.items_khpx[i]
+          );
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
+          Toast.fire({
+            icon: "success",
+            title: "Tạo thành công",
+          });
+        }
       }
-      this.kehoachphanxuong = await this.$axios.$get(
-        `/api/lokehoach/getallkehoachpx?makh=${this.mark_kehoachnam.makh}`
-      );
+      this.callKehoachnhamay()
       let turn = 1;
       let length = this.items_khpx.length;
       while (turn <= length) {
@@ -1573,21 +1312,8 @@ export default {
         turn += 1;
       }
       this.check_giaopx = false
-      const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
-        },
-      });
-      Toast.fire({
-        icon: "success",
-        title: "Tạo thành công",
-      });
+
+
     },
 
     async refresh() {
@@ -1616,65 +1342,28 @@ export default {
 
     async copyadd_khpx(data) {
       this.items_khpx.push({
-        makh: data.makh,
-        mapx: data.mapx,
-        tenpx: data.tenpx,
-        makhpx: data.makhpx,
+        _id_khnam: data._id_khnam,
+        kehoachnam: data.kehoachnam,
+        malonhamay: data.malonhamay,
         soluong: data.soluong,
-        // ngaybd: data.ngaybd, copy bắt phải gõ lại tuần
-        // ngaykt: data.ngaykt,
-        masp: data.masp,
-        // tensp: tenvt,
-        createdAt: this.form.createdAt,
+        sldathang: data.sldathang,
+        slsanxuat: data.slsanxuat,
+        tuanbd: "",
+        tuankt: "",
+        ngaybd: "",
+        ngaykt: "",
         mathanhpham: data.mathanhpham,
-        nhomthanhpham: data.nhomthanhpham
+        tenthanhpham: data.tenthanhpham,
+        nhomthanhpham: data.nhomthanhpham,
+        status: data.status,
+        ngaybatdautt: data.ngaybatdautt,
+        ngayhoanthanhtt: data.ngayhoanthanhtt,
+        ghichu: data.ghichu,
+        createdAt: data.createdAt,
+        createdBy: data.createdBy,
+        updatedAt: data.updatedAt,
       });
-      // console.log(this.items)
-    },
 
-    async getInfoPhieulsx(plsx) {
-      this.checkadd = false
-      this.items = []
-      this.mark_Makh = ""
-      this.mark_Makhpx = ""
-      this.mark_Mapx = ""
-      this.mark_Tenpx = ""
-      this.mark_Masp = ""
-      this.mark_Tensp = ""
-      this.mark_Soluongkhsx = ""
-      this.phieulosx = plsx;
-      // console.log(this.phieulosx);
-      // Đoạn này đánh dấu rõ rằng: Mã kế hoạch nhà máy + Mã kế hoạch nhà máy và mã phân xưởng.
-      // Đánh dấu
-      this.mark_Makh = this.phieulosx.makh
-      this.mark_Makhpx = this.phieulosx.makhpx
-      this.mark_Mapx = this.phieulosx.mapx
-      this.mark_Tenpx = this.phieulosx.tenpx
-      this.mark_Masp = this.phieulosx.masp
-      this.mark_Tensp = this.phieulosx.tensp
-      this.mark_Soluongkhsx = this.phieulosx.soluong
-      // show lên để check
-      // console.log(this.mark_Makh)
-      // console.log(this.mark_Makhpx)
-      // console.log(this.mark_Mapx)
-      // Lấy toàn bộ phiếu lô sản xuất trong 1 phân xưởng nào đó
-      // Dựa trên tiêu chí bộ mã gồm 3 cái trên
-      // Mã KH nhà máy (Cái này là duy nhất) + Mã kế hoạch tại PX + Mã PX
-      this.infoLosx = await this.$axios.$get(
-        `/api/lokehoach/getalllsxinlkh?makh=${this.phieulosx.makh}&makhpx=${this.phieulosx.makhpx}&mapx=${this.phieulosx.mapx}`
-      );
-      // lấy tổng số đã sản xuất hiện tại
-      this.sumsllosx = 0
-      const data = await this.$axios.$get(
-        `/api/ketoan/sumsoluonginlsx?makh=${this.phieulosx.makh}&makhpx=${this.phieulosx.makhpx}&mapx=${this.phieulosx.mapx}`
-      );
-      // console.log(data[0].total)
-
-      if (data.length > 0) {
-        this.sumsllosx = data[0].total
-      } else {
-        this.sumsllosx = 0
-      }
     },
 
     async resetAll() {
@@ -1686,255 +1375,9 @@ export default {
       this.getAllPhieulo()
     },
 
-    // tạo kế hoạch mùa vụ
-    async onUpdateKHMV() {
-      for (let i = 0; i < this.items_khmv.length; i++) {
-        this.$axios.$post("/api/ketoan/lapkehoachmuavu", this.items_khmv[i]);
-      }
-      const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
-        },
-      });
-      Toast.fire({
-        icon: "success",
-        title: "Tạo thành công",
-      });
-    },
-
-    // create phiếu
-    onTaophieu() {
-      // console.log(this.masp);
-      Swal.fire({
-        title: "Chắc chắn tạo lô sản xuất?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Chắc chắn tạo",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          try {
-            // console.log(this.form.createdAt)
-            // console.log(this.items)
-            for (let i = 0; i < this.items.length; i++) {
-              this.items[i].createdAt = this.form.createdAt;
-              this.items[i].createdBy = this.form.createdBy;
-
-              if (
-                this.items[i].malosx == "" ||
-                this.items[i].soluong == "" ||
-                this.items[i].ngaybd == ""
-              ) {
-                const Toast = Swal.mixin({
-                  toast: true,
-                  position: "top-end",
-                  showConfirmButton: false,
-                  timer: 3000,
-                  timerProgressBar: true,
-                  didOpen: (toast) => {
-                    toast.addEventListener("mouseenter", Swal.stopTimer);
-                    toast.addEventListener("mouseleave", Swal.resumeTimer);
-                  },
-                });
-                Toast.fire({
-                  icon: "error",
-                  title: "Yêu cầu nhập đủ thông tin !!!",
-                });
-              } else {
-                if (this.items[i].malosx.length == this.checkMalosx) {
-                  const Toast = Swal.mixin({
-                    toast: true,
-                    position: "top-end",
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                      toast.addEventListener("mouseenter", Swal.stopTimer);
-                      toast.addEventListener("mouseleave", Swal.resumeTimer);
-                    },
-                  });
-                  Toast.fire({
-                    icon: "error",
-                    title: "Tạo mã Lô sản xuất",
-                  });
-                } else {
-                  this.$axios.$post("/api/ketoan/addphieulosx", this.items[i]);
-
-                  this.$axios.$get(`/api/lokehoach/getalllsxinlkh?makh=${this.mark_Makh.trim()}&makhpx=${this.mark_Makhpx.trim()}&mapx=${this.mark_Mapx.trim()}`)
-                    .then(resp => {
-                      // console.log(resp);
-                      this.infoLosx = resp
-                    })
-                    .catch(err => {
-                      // Handle Error Here
-                      console.error(err);
-                    });
-
-                  this.$axios.$get(`/api/ketoan/sumsoluonginlsx?makh=${this.mark_Makh.trim()}&makhpx=${this.mark_Makhpx.trim()}&mapx=${this.mark_Mapx.trim()}`)
-                    .then(resp => {
-                      console.log(resp);
-                      // this.infoLosx = resp
-                      this.sumsllosx = resp[0].total
-                      console.log(this.sumsllosx)
-                    })
-                    .catch(err => {
-                      // Handle Error Here
-                      console.error(err);
-                    });
-
-
-                  const Toast = Swal.mixin({
-                    toast: true,
-                    position: "top-end",
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                      toast.addEventListener("mouseenter", Swal.stopTimer);
-                      toast.addEventListener("mouseleave", Swal.resumeTimer);
-                    },
-                  });
-                  Toast.fire({
-                    icon: "success",
-                    title: "Tạo phiếu lô sản xuất thành công",
-                  });
-                }
-              }
-            }
-
-            this.infoLosx = []
-            this.checkadd = false
-
-            let turn = 1;
-            let length = this.items.length;
-            while (turn <= length) {
-              this.deleteRow(this.items.length - turn);
-              turn += 1;
-            }
-
-          } catch (error) {
-            console.log(error);
-            const Toast = Swal.mixin({
-              toast: true,
-              position: "top-end",
-              showConfirmButton: false,
-              timer: 3000,
-              timerProgressBar: true,
-              didOpen: (toast) => {
-                toast.addEventListener("mouseenter", Swal.stopTimer);
-                toast.addEventListener("mouseleave", Swal.resumeTimer);
-              },
-            });
-            Toast.fire({
-              icon: "error",
-              title: "Có lỗi xảy ra !!!",
-            });
-          }
-        }
-      });
-    },
-
-    async update_one_lsx(phieulo) {
-      // console.log(this.form_update)
-      let data = {
-        malosx: phieulo.malosx.trim(),
-        ngaybd: phieulo.ngaybd.trim(),
-        ngaykt: phieulo.ngaykt.trim(),
-        soluong: phieulo.soluong.trim()
-      };
-      this.$axios.$patch(
-        `/api/ketoan/updatettlsx/${phieulo._id}`, data
-      );
-
-      this.refresh()
-
-      const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
-        },
-      });
-      Toast.fire({
-        icon: "success",
-        title: "Đã cập nhật",
-      });
-    },
-
-    onUpdate() {
-      // console.log(this.masp);
-      Swal.fire({
-        title: "Chắc chắn cập nhật?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Chắc chắn",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          try {
-            if (this.form.tgbatdau == "") {
-              this.form.tgbatdau = this.phieulokh.tgbatdau;
-              // console.log(this.form.ngaybd)
-            } else {
-              this.form.tgbatdau = this.form.tgbatdau;
-              // console.log(this.form.ngaybd)
-            }
-            if (this.form.tgketthuc == "") {
-              this.form.tgketthuc = this.phieulokh.tgketthuc;
-            } else {
-              this.form.tgketthuc = this.form.tgketthuc;
-            }
-            if (this.form.soluong == "") {
-              this.form.soluong = this.phieulokh.soluong;
-            } else {
-              this.form.soluong = this.form.soluong;
-            }
-            if (this.form.status == "") {
-              this.form.status = this.phieulokh.status;
-            } else {
-              this.form.status = this.form.status;
-            }
-            this.$axios.$patch(
-              `/api/lokehoach/phieulo/${this.phieulokh.makh}`,
-              this.form
-            );
-          } catch (error) {
-            console.log(error);
-            const Toast = Swal.mixin({
-              toast: true,
-              position: "top-end",
-              showConfirmButton: false,
-              timer: 3000,
-              timerProgressBar: true,
-              didOpen: (toast) => {
-                toast.addEventListener("mouseenter", Swal.stopTimer);
-                toast.addEventListener("mouseleave", Swal.resumeTimer);
-              },
-            });
-            Toast.fire({
-              icon: "error",
-              title: "Có lỗi xảy ra !!!",
-            });
-          }
-        }
-      });
-    },
-
     async callKehoachnhamay() {
       this.kehoachphanxuong = await this.$axios.$get(
-        `/api/lokehoach/getallkehoachpx?makh=${this.mark_kehoachnam.makh}`
+        `/api/lokehoach/getallkehoachpx?_id_khnam=${this.mark_kehoachnam._id}`
       );
     },
 

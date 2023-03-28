@@ -195,7 +195,7 @@
                                 </td>
                                 <td style="font-size: small; text-align: center; background-color: #effaf5;">{{ index + 1 }}
                                 </td>
-                                <td style="font-size: small;">{{ item.makh }}
+                                <td style="font-size: small;">{{ item.malonhamay }}
                                 </td>
                                 <td style="font-size: small; background-color: #effaf5; text-align: center;">{{ item.mapx }}
                                 </td>
@@ -206,7 +206,7 @@
                                 <td style="font-size: small; background-color: #effaf5; text-align: center;">{{ item.ttqt }}
                                 </td>
                                 <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
-                                    item.nhomsp
+                                    item.nhomspkhpx
                                 }}</td>
                                 <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
                                     item.maspkhpx
@@ -218,10 +218,10 @@
                                     item.ngayktkhpx | formatDate
                                 }}</td> -->
                                 <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
-                                    item.tuanbd
+                                    item.tuanbdkhpx
                                 }}</td>
                                 <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
-                                    item.tuankt
+                                    item.tuanktkhpx
                                 }}</td>
                                 <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
                                     item.soluongkhpx | formatNumber
@@ -378,7 +378,7 @@
                                             <td style="font-size: small; text-align:center">
                                                 {{ index + 1 }}
                                             </td>
-                                            <td style="font-size: small;">
+                                            <!-- <td style="font-size: small;">
                                                 <div class="select is-small is-fullwidth">
                                                     <select @change="
                                                         getWithTo($event, $event.target.selectedIndex, index)
@@ -389,7 +389,8 @@
                                                         </option>
                                                     </select>
                                                 </div>
-                                            </td>
+                                            </td> BỎ tổ nhóm vì đã chọn khi lập LKHPX-->
+                                            <td></td>
                                             <td style="font-weight: 700;"><input v-model.trim="item.malosx" type="text"
                                                     class="input is-small is-danger">
                                             </td>
@@ -511,7 +512,7 @@ export default {
             items: [
                 {
                     kehoachnam: "",
-                    makh: "",
+                    malonhamay: "",
                     makhpx: "",
                     malosx: "",
                     mapx: "",
@@ -523,6 +524,7 @@ export default {
                     soluong: "",
                     nhomluong: "",
                     soluonglsx: "",
+                    soluongkhsx: "",
                     ngaybd: "",
                     ngaykt: "",
                     tongdat: "",
@@ -533,14 +535,6 @@ export default {
                     status: 0,
                     datinhluong: 0,
                     stopday_losx: "",
-                    nhomto: [
-                        {
-                            maxuong: "",
-                            tenxuong: "",
-                            tento: "",
-                            mato: "",
-                        },
-                    ],
                 },
             ],
             tonhom: [], // lưu lại tổ nhóm
@@ -1287,7 +1281,7 @@ export default {
                 _id_lonhamay: data._id_lonhamay,
                 _id_khpx: data._id_khpx,
                 kehoachnam: data.kehoachnam,
-                makh: data.makh,
+                malonhamay: data.malonhamay,
                 makhpx: data.makhpx,
                 malosx: data.malosx,
                 mapx: data.mapx,
@@ -1299,7 +1293,7 @@ export default {
                 soluong: data.soluong,
                 nhomluong: data.nhomluong,
                 soluonglsx: data.soluonglsx,
-                soluongkhpx: 0,
+                soluongkhsx: data.soluongkhsx,
                 ngaybd: data.ngaybd,
                 ngaykt: data.ngaykt,
                 tongdat: data.tongdat,
@@ -1312,14 +1306,6 @@ export default {
                 datinhluong: 0,
                 stopday_losx: "",
                 nhomsp: data.nhomsp,
-                nhomto: [
-                    {
-                        maxuong: "",
-                        tenxuong: "",
-                        tento: "",
-                        mato: "",
-                    },
-                ],
             });
             // console.log(this.items);
 
@@ -1334,40 +1320,13 @@ export default {
             // Chia lấy phần nguyên
             // let number_lsx = Math.floor(dataAdd.soluongkhpx / 6);
             // console.log(number_lsx)
-
-
-            // lấy mã nhóm lương dựa vào mã sp và mã phân xưởng
-            if (dataAdd.mapx.trim() == "PXD" || dataAdd.mapx.trim() == "AL_PXD" || dataAdd.mapx.trim() == "DV_PXD") {
-                let phanxuong = "PXD";
-                this.nhomluong = await this.$axios.$get(
-                    `/api/lokehoach/getnhomluongtheompx?mapx=${phanxuong}&mavt=${dataAdd.maspkhpx}`
-                );
-                // console.log(this.nhomluong[0].nhomluong);
-            } else {
-                this.nhomluong = await this.$axios.$get(
-                    `/api/lokehoach/getnhomluongtheompx?mapx=${dataAdd.mapx}&mavt=${dataAdd.maspkhpx}`
-                );
-                // console.log(this.nhomluong[0].nhomluong);
-            }
-            var nhom_luong
-            if (this.nhomluong.length > 0) {
-                // console.log(this.nhomluong[0].nhomluong)
-                nhom_luong = this.nhomluong[0].nhomluong
-            }
-            // console.log(nhom_luong)
-
-            // check xem xưởng này có tổ không?
-            this.tonhom = await this.$axios.$get(
-                `/api/phongban/alltoinxuong?mapx=${dataAdd.mapx}`
-            );
             this.isaddlosx = 1;
-
             this.items.push({
                 _id_khnam: dataAdd._id_khnam,
                 _id_lonhamay: dataAdd._id_lonhamay,
                 _id_khpx: dataAdd._id,
                 kehoachnam: dataAdd.kehoachnam,
-                makh: dataAdd.makh,
+                malonhamay: dataAdd.malonhamay,
                 makhpx: dataAdd.makhpx,
                 malosx: dataAdd.maspkhpx.trim() + '-' + dataAdd.makhpx.trim() + '-' + '01',
                 mapx: dataAdd.mapx,
@@ -1377,9 +1336,9 @@ export default {
                 masp: dataAdd.maspkhpx,
                 tensp: dataAdd.tenspkhpx,
                 soluong: dataAdd.soluongkhpx,
-                nhomluong: nhom_luong,
+                nhomluong: dataAdd.nhomluong,
                 soluonglsx: "",
-                soluongkhpx: 0,
+                soluongkhsx: 0,
                 ngaybd: dataAdd.ngaybdkhpx,
                 ngaykt: dataAdd.ngayktkhpx,
                 tongdat: "",
@@ -1392,15 +1351,7 @@ export default {
                 datinhluong: 0,
                 stopday_losx: "",
                 updatedAt: "",
-                nhomsp: dataAdd.nhomsp,
-                nhomto: [
-                    {
-                        maxuong: "",
-                        tenxuong: "",
-                        tento: "",
-                        mato: "",
-                    },
-                ],
+                nhomsp: dataAdd.nhomspkhpx,
             });
             // console.log(this.items)
         },

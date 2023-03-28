@@ -1,6 +1,6 @@
 <template>
     <div class="container">
-        <div class="columns">
+        <div class="columns" style="margin-top: 10px;">
             <div class="column is-10">
                 <div class="file is-small is-info has-name">
                     <label class="file-label">
@@ -32,11 +32,13 @@
 
         <div class="table_wrapper table-height">
             <table class="table
-                        is-bordered is-striped is-narrow is-hoverable is-fullwidth">
+                                                        is-bordered is-striped is-narrow is-hoverable is-fullwidth">
                 <thead>
                     <tr style="background-color: #fffaeb;">
-                        <th style="text-align: center; font-size: small; width: 7%;">Nhóm SP</th>
-                        <th style="text-align: center; font-size: small; width: 10%;">Mã sản phẩm</th>
+                        <th style="text-align: center; font-size: small; width: 7%;">Mã Kế hoạch</th>
+                        <th style="text-align: center; font-size: small; width: 10%;">Mã Thành phẩm</th>
+                        <th style="text-align: center; font-size: small; width: 7%;">Tên Thành phẩm</th>
+                        <th style="text-align: center; font-size: small; width: 7%;">Nhóm Thành phẩm</th>
                         <th style="text-align: center; font-size: small; width: 7%;">Số lượng</th>
                         <th style="text-align: center; font-size: small; width: 7%;">Mùa vụ P1</th>
                         <th style="text-align: center; font-size: small; width: 7%;">Mùa vụ P2</th>
@@ -50,9 +52,16 @@
                 <tbody>
                     <tr v-for="(excel, index) in dataPreview" :key="index">
                         <td style="text-align: center; font-size: small;"><input class="input is-small" type="text"
-                                v-model="excel.nhomsp">
+                                v-model="excel.makh">
                         </td>
-                        <td style="font-size: small;"><input class="input is-small" type="text" v-model="excel.masp">
+                        <td style="text-align: center; font-size: small;"><input class="input is-small" type="text"
+                                v-model="excel.mathanhpham">
+                        </td>
+                        <td style="font-size: small;"><input class="input is-small" type="text"
+                                v-model="excel.tenthanhpham">
+                        </td>
+                        <td style="font-size: small;"><input class="input is-small" type="text"
+                                v-model="excel.nhomthanhpham">
                         </td>
                         <td style="text-align: right; font-size: small;"><input class="input is-small" type="text"
                                 v-model="excel.soluong"></td>
@@ -90,6 +99,9 @@ export default {
             selectedFile: null,
             file: null,
             dataPreview: [],
+            createdAt: "",
+            createdBy: this.$auth.$state.user.username,
+            updateAt: "",
         }
     },
 
@@ -104,7 +116,28 @@ export default {
         },
     },
 
+    mounted() {
+        this.currentDateTime()
+    },
+
     methods: {
+        currentDateTime() {
+            const current = new Date();
+            const date =
+                current.getFullYear() +
+                "-" +
+                (current.getMonth() + 1) +
+                "-" +
+                current.getDate();
+            const time =
+                current.getHours() +
+                ":" +
+                current.getMinutes() +
+                ":" +
+                current.getSeconds();
+            this.createdAt = date + " " + time;
+            this.updatedAt = date + " " + time
+        },
         // hàm bind v-model input type date
         getDate(value) {
             if (!value) {
@@ -158,6 +191,9 @@ export default {
             try {
                 let data = new FormData();
                 data.append("file", this.selectedFile, this.selectedFile.name);
+                data.append("createdAt", this.createdAt);
+                data.append("updatedAt", this.updatedAt);
+                data.append("createdBy", this.createdBy);
                 //console.log(this.selectedFile.name);
                 await this.$axios.$post(
                     "/api/lokehoach/importkehoachnam",
