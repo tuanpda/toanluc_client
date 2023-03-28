@@ -390,7 +390,7 @@
                                                     </select>
                                                 </div>
                                             </td> BỎ tổ nhóm vì đã chọn khi lập LKHPX-->
-                                            <td></td>
+                                            <td style=""></td>
                                             <td style="font-weight: 700;"><input v-model.trim="item.malosx" type="text"
                                                     class="input is-small is-danger">
                                             </td>

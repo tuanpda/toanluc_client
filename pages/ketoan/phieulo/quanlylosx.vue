@@ -139,11 +139,12 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(pl, index) in sortedKehoach" :key="index + 'a'">
+              <tr v-for="(pl, index) in sortedKehoach" :key="index + 'a'"
+                :class="{ 'highlighted': pl === highlightedRow }" @click="highlightRow(pl)">
                 <td style="text-align: center; font-size: small; background-color: whitesmoke;">
                   {{ index + 1 }}
                 </td>
-                <td @click="getdatakhnhamay(pl)" style="font-size: small; background-color: #fffaeb;">
+                <td @click="getdatakhnhamay(pl)" style="font-size: small;">
                   <!-- <input type="text" class="input is-small" v-model="pl.makh"> -->
                   {{ pl.makh }}
                 </td>
@@ -676,6 +677,8 @@ export default {
         soluong: "",
       },
       check_giaopx: false,
+      // hightligh
+      highlightedRow: null,
 
       // lokehoachphanxuong
       items_khpx: [
@@ -1043,6 +1046,11 @@ export default {
         current.getSeconds();
       this.form.createdAt = date + " " + time;
       this.form.updatedAt = date + " " + time;
+    },
+
+    // hàm highlight để đánh dấu row nào được chọn
+    highlightRow(row) {
+      this.highlightedRow = row;
     },
 
     getTuanbd() {
@@ -1744,6 +1752,9 @@ export default {
   white-space: nowrap;
 }
 
+.highlighted {
+  background-color: lightblue;
+}
 
 .table-height {
   height: 450px;
