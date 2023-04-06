@@ -4,22 +4,22 @@
             <br />
             <div class="box" style="margin-left: 20px; margin-right: 20px;">
                 <div class="columns">
-                    <div class="column is-9">
+                    <div class="column is-11">
                         <div class="control">
                             <span class="icon is-small is-left">
                                 <i style="color: #ff55acee" class="fas fa-broom"></i>
                             </span>
-                            <span style="color: #3850b7; font-size: 16px; font-weight: bold">LẬP KẾ HOẠCH</span>
+                            <span style="color: #3850b7; font-size: 16px; font-weight: bold">LẬP KẾ HOẠCH NĂM</span>
                         </div>
                     </div>
-                    <div class="column" style="text-align: right">
+                    <!-- <div class="column" style="text-align: right">
                         <button @click="onTaophieu" class="button is-success is-fullwidth is-small">
                             <span class="icon is-small">
                                 <i class="fas fa-pen-fancy"></i>
                             </span>
                             <span style="font-weight:600">LẬP KẾ HOẠCH NHÀ MÁY</span>
                         </button>
-                    </div>
+                    </div> -->
                     <div class="column" style="text-align: right">
                         <nuxt-link :to="`/`">
                             <button class="button is-info is-fullwidth is-small">
@@ -37,8 +37,13 @@
                     <div class="column">
                         <table class="table is-responsive is-bordered is-narrow is-fullwidth">
                             <tr style="background-color: #fffaeb">
-                                <td colspan="9" style="text-align: right; font-weight: bold; font-size: small;">
+                                <td colspan="11" style="text-align: right; font-weight: bold; font-size: small;">
 
+                                </td>
+                                <td>
+                                    <button @click="onTaophieu" class="button is-danger is-fullwidth is-small">
+                                        <span style="font-weight:600">Ghi dữ liệu</span>
+                                    </button>
                                 </td>
                                 <td>
                                     <button @click="addKehoach" class="button is-success is-fullwidth is-small">
@@ -50,23 +55,32 @@
                                 <td style="text-align: center; font-weight: bold; font-size: small; width: 3%;">
                                     STT
                                 </td>
-                                <td style="text-align: center; font-weight: bold; font-size: small; width: 10%">
+                                <td style="text-align: center; font-weight: bold; font-size: small; width: 7%">
                                     Mã KẾ HOẠCH
                                 </td>
-                                <td style="text-align: center; font-weight: bold; font-size: small; width: 20%">
-                                    Sản phẩm
+                                <td style="text-align: center; font-weight: bold; font-size: small; width: 7%">
+                                    Mã thành phẩm
                                 </td>
-                                <td style="text-align: center; font-weight: bold; font-size: small; width: 4%;">
+                                <td style="text-align: center; font-weight: bold; font-size: small; width: 10%">
+                                    Tên thành phẩm
+                                </td>
+                                <td style="text-align: center; font-weight: bold; font-size: small; width: 6%">
+                                    Nhóm TP
+                                </td>
+                                <td style="text-align: center; font-weight: bold; font-size: small; width: 3%;">
                                     Thời gian bắt Đầu
                                 </td>
-                                <td style="text-align: center; font-weight: bold; font-size: small; width: 4%;">
+                                <td style="text-align: center; font-weight: bold; font-size: small; width: 3%;">
                                     Thời gian kết thúc
                                 </td>
                                 <td style="text-align: center; font-weight: bold; font-size: small; width: 5%;">
                                     Số lượng
                                 </td>
-                                <td style="text-align: center; font-weight: bold; font-size: small; width: 13%;">
-                                    Mô tả
+                                <td style="text-align: center; font-weight: bold; font-size: small; width: 7%;">
+                                    Mã khách hàng
+                                </td>
+                                <td style="text-align: center; font-weight: bold; font-size: small; width: 10%;">
+                                    Tên khách hàng
                                 </td>
                                 <td style="text-align: center; font-weight: bold; font-size: small; width: 13%;">Ghi chú
                                 </td>
@@ -79,29 +93,49 @@
                                 <td style="font-size: small; text-align: center; background-color: #eff1fa;">{{ index +
                                 1 }}</td>
                                 <td>
-                                    <input @change="getSP" v-model.trim="item.makh"
+                                    <input v-model.trim="item.makh"
                                         class="input is-fullwidth is-danger is-small" type="text" />
                                 </td>
                                 <td style="font-size: small;">
-                                    <model-list-select :list="item.sanpham" v-model="item.masp" option-value="masp"
-                                        :custom-text="codeAndNameAndDesc" placeholder="Chọn sản phẩm">
-                                    </model-list-select>
+                                    <input v-model.trim="item.mathanhpham"
+                                        class="input is-fullwidth is-danger is-small" type="text" />
+                                    <!-- tạm thời chưa dùng -->
+                                        <!-- <div class="autocomplete">
+                                            <input class="input is-small is-danger" type="text"
+                                                v-model="item.mathanhpham" @input="onInput(index)"
+                                                placeholder="Chọn sản phẩm">
+                                            <div class="autocomplete-items">
+                                                <div class="autocomplete-item"
+                                                    v-for="(suggestion, indexsuggest) in item.suggestions_thanhpham"
+                                                    :key="indexsuggest + 'suuug'"
+                                                    @click="selectSuggestion(index, suggestion, indexsuggest)">
+                                                    {{ suggestion }}
+                                                </div>
+                                            </div>
+                                        </div> -->
                                 </td>
+                                <td>
+                                    <input v-model.trim="item.tenthanhpham" type="text" class="input is-small" />
+                                </td>
+                                <td>
+                                    <input v-model.trim="item.nhomthanhpham" type="text" class="input is-small" />
+                                </td>
+
                                 <td>
                                     <input v-model.trim="item.tgbatdau" type="date" class="input is-small" />
                                 </td>
                                 <td>
-                                    <input @change="getInfosp(item)" v-model.trim="item.tgketthuc" type="date"
+                                    <input v-model.trim="item.tgketthuc" type="date"
                                         class="input is-small" />
                                 </td>
                                 <td>
-                                    <input v-model.trim="item.soluong" type="text" class="input is-small" />
+                                    <input v-model.trim="item.soluong" type="number" class="input is-small" />
                                 </td>
                                 <td>
-                                    <div class="control">
-                                        <textarea rows="1" v-model.trim="item.mota" class="textarea is-small"
-                                            placeholder="Mô tả ..."></textarea>
-                                    </div>
+                                    <input v-model.trim="item.makhachhang" type="text" class="input is-small" />
+                                </td>
+                                <td>
+                                    <input v-model.trim="item.khachhang" type="text" class="input is-small" />
                                 </td>
                                 <td>
                                     <div class="control">
@@ -185,22 +219,30 @@ export default {
             selectedIndex: 0,
             giaopx: 0,
             checkGhichu: false,
+            // làm suggest
+            banthanpham: [],
+            // searchThanhpham: '',
+            // suggestions_thanhpham: [],
             // items này để lập kế hoạch nhà máy
             items: [
                 {
                     makh: "",
-                    mota: "",
-                    masp: "",
-                    tensp: "",
-                    nhomsp: "",
+                    mathanhpham: "",
+                    tenthanhpham: "",
+                    nhomthanhpham: "",
                     soluong: "",
-                    tgbatdau: "",
-                    tgketthuc: "",
-                    ghichu: "",
-                    status: 0,
                     soluongmuavup1: 0,
                     soluongmuavup2: 0,
                     soluongmuavup3: 0,
+                    tgbatdau: "",
+                    tgketthuc: "",
+                    makhachhang: "",
+                    khachhang: "",
+                    ghichu: "",
+                    status: 0,
+                    createdAt: "",
+                    createdBy: "",
+                    updatedAt: "",
                     slthang1: 0,
                     slthang2: 0,
                     slthang3: 0,
@@ -213,12 +255,7 @@ export default {
                     slthang10: 0,
                     slthang11: 0,
                     slthang12: 0,
-                    sanpham: [{
-                        mapx: "",
-                        masp: "",
-                        tensp: "",
-                        nhomsp: "",
-                    },]
+                    suggestions_thanhpham: [],
                 },
             ],
 
@@ -230,8 +267,9 @@ export default {
     mounted() {
         this.currentDateTime();
         this.get_phanxuong();
-        this.get_dmsp();
+        // this.get_dmsp();
         // this.deleteRow(0);
+        this.get_banthanhpham()
     },
 
     isFormValid() {
@@ -242,6 +280,28 @@ export default {
         codeAndNameAndDesc(item) {
             return `${item.masp} - ${item.tensp}`;
         },
+
+        // suggest input thành phẩm
+        onInput(index) {
+            const item = this.items[index];
+            if (!item.mathanhpham) {
+                item.mathanhpham = [];
+                return;
+            }
+            const MAX_SUGGESTIONS = 5; // Số lượng suggest tối đa
+            item.suggestions_thanhpham = this.banthanpham
+                .map((c) => c.mathanhpham)
+                .filter((mathanhpham) => mathanhpham.toLowerCase().includes(item.mathanhpham.toLowerCase()))
+                .map((mathanhpham) => mathanhpham)
+                .slice(0, MAX_SUGGESTIONS);
+        },
+        selectSuggestion(index, suggestion) {
+            // this.searchThanhpham = suggestion;
+            // this.suggestions_thanhpham = [];
+            this.items[index].mathanhpham = suggestion;
+            this.items[index].suggestions_thanhpham = [];
+        },
+        // end suggest thành phẩm phẩm
 
         format(item) {
             return `${item.mapx} - ${item.mavt} - ${item.tenvt}`;
@@ -265,118 +325,50 @@ export default {
             this.form.createdAt = date + " " + time;
         },
 
-        // bỏ
-        async showMalosx(e) {
-            this.giaopx = 1;
-            // var name = e.target.options[e.target.options.selectedIndex].text;
-            // let position = name.split("--");
-            // this.form.masp = position[0].trim();
-            // this.form.tensp = position[1].trim();
-            let nn = this.namlsx.toString();
-            let sx_nam = nn.substring(2, 4);
-            // console.log(this.form.makh.length)
-            this.checkMakh = this.form.makh.length;
-            // console.log(this.checkMakh)
-
-            // get nhóm lương
-            // this.nhomluong = await this.$axios.$get(
-            //   `/api/phongban/getnhomluong?masp=${this.form.masp}`
-            // );
-            // this.form.nhomluong = this.nhomluong[0].nhomluong;
-
-            // show select nguyencong dongia
-            // this.dmnguyencong = await this.$axios.$get(
-            //   `/api/phongban/getnguyencong?khsp=${this.form.nhomluong}`
-            // );
-
-            var today = new Date();
-            var dd = String(today.getDate()).padStart(2, "0");
-            var mm = String(today.getMonth() + 1).padStart(2, "0"); //January is 0!
-            var yyyy = today.getFullYear();
-
-            today = dd + "/" + mm + "/" + yyyy;
-            this.form.ngaygiaophieu = today;
-            // console.log(this.selectedPhanxuong);
-        },
 
         // get all phân xưởng
         async get_phanxuong() {
             this.phanxuong = await this.$axios.$get(`/api/phongban/allphanxuong`);
         },
-
-        // Lấy ra danh mục toàn bộ sản phẩm trong bảng dmnc
-        async get_dmsp() {
-            this.ds_sanpham = await this.$axios.$get(
-                `/api/sanpham/getallspfromdmnc`
-            );
-            for (let i = 0; i < this.items.length; i++) {
-                this.items[i].sanpham = []
-                for (let k = 0; k < this.ds_sanpham.length; k++) {
-                    let cn = {
-                        mapx: this.ds_sanpham[k].mapx,
-                        masp: this.ds_sanpham[k].mavt,
-                        tensp: this.ds_sanpham[k].tenvt,
-                        nhomsp: this.ds_sanpham[k].nhomsp
-                    };
-                    this.items[i].sanpham.push(cn)
-                    // console.log(cn)
-                }
-            }
-            // console.log(this.items)
+        // get all bán thành phẩm
+        async get_banthanhpham() {
+            this.banthanpham = await this.$axios.$get(`/api/lokehoach/getallthanhpham`);
+            // console.log(this.banthanhpham)
         },
 
         async addKehoach() {
             this.items.push({
-                makh: "",
-                mota: "",
-                masp: "",
-                tensp: "",
-                nhomsp: "",
-                soluong: "",
-                tgbatdau: "",
-                tgketthuc: "",
-                ghichu: "",
-                status: 0,
-                soluongmuavup1: 0,
-                soluongmuavup2: 0,
-                soluongmuavup3: 0,
-                slthang1: 0,
-                slthang2: 0,
-                slthang3: 0,
-                slthang4: 0,
-                slthang5: 0,
-                slthang6: 0,
-                slthang7: 0,
-                slthang8: 0,
-                slthang9: 0,
-                slthang10: 0,
-                slthang11: 0,
-                slthang12: 0,
-                createdAt: this.form.createdAt,
-                createdBy: this.$auth.$state.user.username,
-                sanpham: [{
-                    mapx: "",
-                    masp: "",
-                    tensp: "",
-                    nhomsp: "",
-                },]
+                    makh: "",
+                    mathanhpham: "",
+                    tenthanhpham: "",
+                    nhomthanhpham: "",
+                    soluong: "",
+                    soluongmuavup1: 0,
+                    soluongmuavup2: 0,
+                    soluongmuavup3: 0,
+                    tgbatdau: "",
+                    tgketthuc: "",
+                    makhachhang: "",
+                    khachhang: "",
+                    ghichu: "",
+                    status: 0,
+                    createdAt: this.form.createdAt,
+                    createdBy: this.$auth.$state.user.username,
+                    updatedAt: "",
+                    slthang1: 0,
+                    slthang2: 0,
+                    slthang3: 0,
+                    slthang4: 0,
+                    slthang5: 0,
+                    slthang6: 0,
+                    slthang7: 0,
+                    slthang8: 0,
+                    slthang9: 0,
+                    slthang10: 0,
+                    slthang11: 0,
+                    slthang12: 0,
+                    suggestions_thanhpham: []
             });
-        },
-
-        async getSP() {
-            for (let i = 0; i < this.items.length; i++) {
-                this.items[i].sanpham = []
-                for (let k = 0; k < this.ds_sanpham.length; k++) {
-                    let cn = {
-                        mapx: this.ds_sanpham[k].mapx,
-                        masp: this.ds_sanpham[k].mavt,
-                        tensp: this.ds_sanpham[k].tenvt,
-                        nhomsp: this.ds_sanpham[k].nhomsp
-                    };
-                    this.items[i].sanpham.push(cn)
-                    // console.log(cn)
-                }
-            }
         },
 
         async getInfosp(item) {
@@ -394,19 +386,11 @@ export default {
 
         // copy items kế hoạch nhà máy
         async copyadd(item) {
-            let getsp = []
-            getsp = await this.$axios.$get(
-                `/api/ketoan/getinfosp?mavt=${item.masp}`
-            );
-            if (getsp.length > 0) {
-                const tenvt = getsp[0].tenvt
-                const nhomsp = getsp[0].nhomsp
                 this.items.push({
                     makh: item.makh,
-                    mota: item.mota,
-                    masp: item.masp,
-                    tensp: tenvt,
-                    nhomsp: item.nhomsp,
+                    mathanhpham: item.mathanhpham,
+                    tenthanhpham: item.tenthanhpham,
+                    nhomthanhpham: item.nhomthanhpham,
                     soluong: item.soluong,
                     tgbatdau: item.tgbatdau,
                     tgketthuc: item.tgketthuc,
@@ -427,32 +411,13 @@ export default {
                     slthang10: 0,
                     slthang11: 0,
                     slthang12: 0,
+                    makhachhang: item.makhachhang,
+                    khachhang: item.khachhang,
                     createdAt: this.form.createdAt,
                     createdBy: this.$auth.$state.user.username,
-                    sanpham: [{
-                        mapx: "",
-                        masp: item.masp,
-                        tensp: tenvt,
-                        nhomsp: nhomsp,
-                    },]
+                    suggestions_thanhpham: []
                 });
-            } else {
-                const Toast = Swal.mixin({
-                    toast: true,
-                    position: "top-end",
-                    showConfirmButton: false,
-                    timer: 3000,
-                    timerProgressBar: true,
-                    didOpen: (toast) => {
-                        toast.addEventListener("mouseenter", Swal.stopTimer);
-                        toast.addEventListener("mouseleave", Swal.resumeTimer);
-                    },
-                });
-                Toast.fire({
-                    icon: "error",
-                    title: "Nhập đủ thông tin trước khi copy dữ liệu xuống !!!",
-                });
-            }
+            
 
             // console.log(this.items)
         },
@@ -460,15 +425,7 @@ export default {
         // create phiếu
         async onTaophieu() {
             // console.log(this.masp);
-            Swal.fire({
-                title: "Chắc chắn tạo lô sản xuất này?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Chắc chắn tạo",
-            }).then((result) => {
-                if (result.isConfirmed) {
+            
                     try {
                         // console.log(this.items);
                         // Đầu tiên phải giải quyết vấn đề DUY NHẤT của Kế hoạch nhà máy
@@ -486,15 +443,15 @@ export default {
                             else
                                 alreadySeen[str] = true;
                         });
-
+                        // console.log(this.items)
                         // console.log(checkLength)
                         if (checkLength.length <= 0) {
                             for (let i = 0; i < this.items.length; i++) {
                                 if (
                                     this.items[i].makh == "" ||
-                                    this.items[i].masp == "" ||
-                                    this.items[i].ngaybd == "" ||
-                                    this.items[i].ngaykt == "" ||
+                                    this.items[i].mathanhpham == "" ||
+                                    this.items[i].tgbatdau == "" ||
+                                    this.items[i].tgketthuc == "" ||
                                     this.items[i].soluong == ""
                                 ) {
                                     const Toast = Swal.mixin({
@@ -517,13 +474,20 @@ export default {
                                     });
                                 } else {
                                     for (let i = 0; i < this.items.length; i++) {
-                                        this.items[i].sanpham = []
+                                        // lấy thêm thông tin tên thành phẩm và nhóm thành phẩm
+                                        // đoạn này tạm bỏ qua để cho tự nhập đã
+                                        // const tp = await this.$axios.$get(
+                                        //     `/api/lokehoach/getallthanhphamwithmtp?mathanhpham=${this.items[i].mathanhpham}`
+                                        // );
+                                        // this.items[i].tenthanhpham = tp[0].tenthanhpham
+                                        // this.items[i].nhomthanhpham = tp[0].nhomthanhpham               
+
                                         this.$axios.$post(
                                             "/api/ketoan/lapkhnhamay",
                                             this.items[i]
                                         );
                                     }
-
+                                    // console.log(this.items)
 
                                     const Toast = Swal.mixin({
                                         toast: true,
@@ -547,6 +511,7 @@ export default {
                                         this.deleteRow(this.items.length - turn);
                                         turn += 1;
                                     }
+                                    this.addKehoach
                                 }
                             }
                         } else {
@@ -584,8 +549,7 @@ export default {
                             title: "Có lỗi xảy ra !!!",
                         });
                     }
-                }
-            });
+             
         },
     },
 };
@@ -629,5 +593,31 @@ export default {
 #preview img {
     max-width: 90px;
     max-height: 90px;
+}
+.autocomplete {
+    position: relative;
+}
+
+.autocomplete-items {
+    position: absolute;
+    background-color: white;
+    border: 1px solid #d4d4d4;
+    border-bottom: none;
+    border-top: none;
+    z-index: 99;
+    top: 100%;
+    left: 0;
+    right: 0;
+}
+
+.autocomplete-item {
+    padding: 4px;
+    cursor: pointer;
+    border-bottom: 1px solid #d4d4d4;
+    font-size: small;
+}
+
+.autocomplete-item:hover {
+    background-color: #fffaeb;
 }
 </style>

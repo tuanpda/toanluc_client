@@ -100,7 +100,7 @@
                         </tr>
                     </table>
                 </div>
-                <div class="table_wrapper">
+                <div v-if='showConponent' class="table_wrapper">
                     <table class="table is-responsive is-bordered is-narrow is-fullwidth">
                         <tr style="background-color: #f4f2f8">
                             <td style="font-size: small; font-weight: bold; text-align: center;"><input type="checkbox"
@@ -139,9 +139,9 @@
                             </td>
                             <td style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Tổng hỏng
                             </td>
-                            <td @click="sortTable('ngaybatdautt')"
+                            <!-- <td @click="sortTable('ngaybatdautt')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Ngày BĐTT
-                            </td>
+                            </td> -->
                             <td @click="sortTable('ngayhoanthanhtt')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Ngày HTTT
                             </td>
@@ -206,7 +206,7 @@
                             <td style="font-size: small; text-align: center;">{{ item.tongdat }}</td>
                             <td style="font-size: small; text-align: center;">{{ item.tonghong }}</td>
                             <!-- <td style="font-size: small; text-align: center;">{{ item.stopday_losx | formatDate }}</td> -->
-                            <td style="font-size: small; text-align: center;">{{ item.ngaybatdautt | formatDate }}</td>
+                            <!-- <td style="font-size: small; text-align: center;">{{ item.ngaybatdautt | formatDate }}</td> -->
                             <td style="font-size: small; text-align: center;">{{ item.ngayhoanthanhtt | formatDate }}</td>
                             <td style="font-size: small; text-align: center;"><input @change="updateStatus(item)"
                                     type="text" class="input is-small is-danger" v-model="item.soluongkhsx"></td>
@@ -232,12 +232,15 @@
                 </div>
                 <br />
                 <label class="checkbox">
-                    <input type="checkbox" v-model="checkViewluong">
-                    <span>Chi tiết lương tại lô sản xuất có mã: </span> <span style="color: red; font-weight: 500">{{
+                    <!-- <input type="checkbox" v-model="checkViewluong"> -->
+                    <span>Chi tiết lương tại lô sản xuất: </span> <span style="color: red; font-weight: 500">{{
                         getinfoplsx.malosx }}</span> <span style="font-weight: 500"> - {{ getinfoplsx.tenpx }} - {{
         getinfoplsx.mapx }}</span> | <span style="font-weight: 500; color: blue">Mã kế hoạch: {{
         getinfoplsx.makh }}</span> | <span style="font-weight: 500; color: green">Mã kế hoạch PX: {{
         getinfoplsx.makhpx }}</span>
+        <br />
+        <span style="font-size: small">Ngày bắt đầu thực tế: <span style="font-weight: bold;">{{ getinfoplsx.ngaybd | formatDate }}</span></span> -
+        <span style="font-size: small">Ngày kết thúc thực tế: <span style="font-weight: bold;">{{ getinfoplsx.ngayhoanthanhtt | formatDate }}</span></span>
                 </label>
                 <div v-if="checkViewluong == true">
                     <div class="table_wrapper">
@@ -246,6 +249,12 @@
                                 <td colspan="9" style="font-weight: bold; font-size: small">
                                     Công đoạn đã thực hiện
                                 </td>
+                                <td style="width: 9%; text-align: center;">
+                                <vue-excel-xlsx :data="allluongcongdoan" :columns="columns" :file-name="'Lương công đoạn'"
+                                    :file-type="'xlsx'" :sheet-name="'Lương công đoạn'">
+                                    Download Excel
+                                </vue-excel-xlsx>
+                            </td>
                             </tr>
                             <tr>
                                 <td style="font-size: small; text-align: center; font-weight: bold; width: 5%;">
@@ -257,6 +266,7 @@
                                 <td style="font-size: small; text-align: center; font-weight: bold; width: 10%;">PX / tổ
                                 </td>
                                 <td style="font-size: small; text-align: center; font-weight: bold;">Người thực hiện</td>
+                                <td style="font-size: small; text-align: center; font-weight: bold; width: 7%;">Ngày thực hiện</td>
                                 <td style="font-size: small; text-align: center; font-weight: bold; width: 7%;">Số đạt</td>
                                 <td style="font-size: small; text-align: center; font-weight: bold; width: 7%;">Số hỏng</td>
                                 <td style="font-size: small; text-align: center; font-weight: bold; width: 7%;">Cập nhật
@@ -282,6 +292,7 @@
                                     </td>
                                 </template>
                                 <td style="font-size: small">{{ item.tencn }}</td>
+                                <td style="font-size: small; text-align: center;">{{ item.ngaythuchien | formatDate }}</td>
                                 <td style="font-size: small; text-align: center">
                                     <input type="text" class="input is-small" v-model="item.sodat" />
                                 </td>
@@ -306,13 +317,14 @@
                                 </td>
                             </tr>
                             <tr>
-                                <td colspan="9" style="font-size: small; font-weight: 700; background-color: #effaf5;">Tổng
+                                <td colspan="10" style="font-size: small; font-weight: 700; background-color: #effaf5;">Tổng
                                     cộng</td>
                             </tr>
                             <tr v-for="(group, nguyencong) in groups" :key="nguyencong">
                                 <td style="text-align: center; font-size: small"></td>
                                 <td style="font-size: small">{{ nguyencong }}</td>
                                 <td style="text-align: right; font-size: small">{{ group.dongia | formatNumber }}</td>
+                                <td></td>
                                 <td></td>
                                 <td></td>
                                 <td style="text-align: right; font-size: small">{{ group.sodat | formatNumber }}</td>
@@ -466,7 +478,7 @@
                                                 </td>
                                             </tr>
                                             <tr>
-                                                <td style="font-size: small; font-weight: bold;">{{ getinfoplsx.makh }}
+                                                <td style="font-size: small; font-weight: bold;">{{ getinfoplsx.malonhamay }}
                                                 </td>
                                                 <td style="font-size: small; font-weight: bold; text-align: center;">{{
                                                     getinfoplsx.makhpx }}
@@ -516,10 +528,13 @@
                                                     getinfoplsx.soluonglsx |
                                                     formatNumber }}
                                                 </td>
+                                                <td style="font-size: small; text-align: center">
+                                                        <input class="input is-small" type="date"
+                                                            v-bind:value="getinfoplsx.ngaybd | inputDateFilter"
+                                                            v-on:input="getinfoplsx.ngaybd = getDate($event.target.value)">
+                                                    </td>
                                                 <td style="font-size: small; font-weight: bold; text-align: center;"><input
-                                                        type="date" class="input is-small"></td>
-                                                <td style="font-size: small; font-weight: bold; text-align: center;"><input
-                                                        type="date" class="input is-small"></td>
+                                                       v-model="ngayhoanthanh" type="date" class="input is-small"></td>
                                                 <td style="font-size: small; font-weight: bold; text-align: center;">{{
                                                     getinfoplsx.mapx }}
                                                 </td>
@@ -574,15 +589,15 @@
                                                     Máy
                                                 </td>
                                                 <td
-                                                    style="text-align: center; font-size: small; font-weight: bold; width: 20%;">
+                                                    style="text-align: center; font-size: small; font-weight: bold; width: 13%;">
                                                     Xưởng
                                                 </td>
                                                 <td
-                                                    style="text-align: center; font-size: small; font-weight: bold; width: 20%;">
+                                                    style="text-align: center; font-size: small; font-weight: bold; width: 13%;">
                                                     Tổ
                                                 </td>
                                                 <td
-                                                    style="text-align: center; font-size: small; font-weight: bold; width: 13%;">
+                                                    style="text-align: center; font-size: small; font-weight: bold; width: 15%;">
                                                     Người thực hiện
                                                 </td>
                                                 <td
@@ -668,10 +683,10 @@
                                                         v-bind:value="item.ngaythuchien | inputDateFilter"
                                                         v-on:input="item.ngaythuchien = getDate($event.target.value)"></td>
                                                 <td>
-                                                    <input type="text" v-model="item.sodat" class="input is-small" />
+                                                    <input type="number" v-model="item.sodat" class="input is-small" />
                                                 </td>
                                                 <td>
-                                                    <input type="text" v-model="item.sohong" class="input is-small" />
+                                                    <input type="number" v-model="item.sohong" class="input is-small" />
                                                 </td>
 
                                                 <td style="text-align: center">
@@ -802,7 +817,7 @@
                                                 </td>
                                                 <td><input v-model="item.sogiocong" type="text" class="input is-small" />
                                                 </td>
-                                                <td></td>
+                                                <td><textarea class="textarea is-small" v-model="item.ghichu" name="" id="" rows="1"></textarea></td>
                                                 <td style="text-align: center; font-size: small">
                                                     <button @click="copyCongnhat(item, index)"
                                                         class="button is-small is-danger">
@@ -845,7 +860,7 @@ export default {
             isExits: null,
             showlsxpx: [],
 
-            tonghonginlo: "",
+            tonghonginlo: 0,
             tongdatinlo: "",
             form: {
                 makh: "",
@@ -925,12 +940,14 @@ export default {
             // nhóm nguyên công trong chi tiết lương
             groups: {},
             totals: {},
+            showConponent: true,
 
+            ngayhoanthanh: "",
             items: [
                 {
                     _id_losx: "",
                     kehoachnam: "",
-                    makh: "",
+                    malonhamay: "",
                     makhpx: "",
                     malosx: this.malosx,
                     mapx: "",
@@ -1004,7 +1021,100 @@ export default {
             ],
             items_tonghong: [{
                 tonghong: "",
-            }]
+            }],
+
+            columns: [
+                {
+                    label: "Id Lô sản xuất",
+                    field: "_id_losx",
+                    // dataFormat: this.trimData
+                },
+                {
+                    label: "Kế hoạch năm",
+                    field: "kehoachnam",
+                    /* dataFormat: this.priceFormat */
+                    // dataFormat: this.trimData
+                },
+                {
+                    label: "Mã kế hoạch PX",
+                    field: "makhpx",
+                    /* dataFormat: this.priceFormat */
+                    // dataFormat: this.trimData
+                },
+                {
+                    label: "Mã lô sản xuất",
+                    field: "malosx",
+                },
+                {
+                    label: "Mã phân xưởng",
+                    field: "mapx",
+                    // dataFormat: this.prefixformatDate
+                },
+                {
+                    label: "Mã tổ",
+                    field: "mato",
+                },
+                {
+                    label: "Mã sản phẩm",
+                    field: "masp",
+                    // dataFormat: this.prefixformatDate
+                },
+                {
+                    label: "Tên sản phẩm",
+                    field: "tensp",
+                    // dataFormat: this.prefixformatDate
+                },
+                {
+                    label: "Nguyên công",
+                    field: "nguyencong",
+                    // dataFormat: this.trimData
+                },
+
+                {
+                    label: "Đơn giá",
+                    field: "dongia",
+                    // dataFormat: this.trimData
+                },
+                {
+                    label: "Máy",
+                    field: "may",
+                    // dataFormat: this.trimData
+                },
+                {
+                    label: "Phân xưởng của công nhân",
+                    field: "phanxuong_cn",
+                    // dataFormat: this.trimData
+                },
+                {
+                    label: "Tổ của công nhân",
+                    field: "to_cn",
+                    // dataFormat: this.prefixformatDate
+                },
+                {
+                    label: "Mã Công nhân",
+                    field: "congnhan",
+                    // dataFormat: this.prefixformatDate
+                },
+                {
+                    label: "Tên công nhan",
+                    field: "tencn",
+                },
+                {
+                    label: "Số đạt",
+                    field: "sodat",
+                    // dataFormat: this.prefixformatDate
+                },
+                {
+                    label: "Số hỏng",
+                    field: "sohong",
+                    // dataFormat: this.prefixformatDate
+                },
+                {
+                    label: "Ngày thực hiện",
+                    field: "ngaythuchien",
+                    dataFormat: this.prefixformatDate
+                },
+            ],
         };
     },
 
@@ -1143,6 +1253,21 @@ export default {
                 current.getSeconds();
             this.form.createdAt = date + " " + time;
             this.form.excutedAt = date + " " + time
+        },
+        // hàm bind v-model input type date
+        getDate(value) {
+            if (!value) {
+                return null;
+            }
+            return new Date(value);
+        },
+        // format date
+        prefixformatDate(value) {
+            if (!value) {
+                return '';
+            }
+            value = new Date(value);
+            return value.getFullYear() + '-' + ('0' + (value.getMonth() + 1)).slice(-2) + '-' + ('0' + value.getDate()).slice(-2);
         },
         // suggest input mã sản phẩm
         onInput() {
@@ -1302,7 +1427,7 @@ export default {
                 this.items.push({
                     _id_losx: this.getinfoplsx._id,
                     kehoachnam: this.getinfoplsx.kehoachnam,
-                    makh: this.getinfoplsx.makh,
+                    malonhamay: this.getinfoplsx.malonhamay,
                     makhpx: this.getinfoplsx.makhpx,
                     malosx: this.getinfoplsx.malosx,
                     mapx: this.getinfoplsx.mapx,
@@ -1405,7 +1530,8 @@ export default {
             });
         },
         // Copy công đoạn sản xuất
-        copyCongdoan(data, index) {
+        async copyCongdoan(data, index) {
+            // console.log(this.items[index])
             // console.log(index)
             // this.items.push({
             //     _id_losx: data._id_losx,
@@ -1430,9 +1556,119 @@ export default {
             //     to_cn: data.to_cn,
             //     ngaythuchien: data.ngaythuchien,
             // });
-            data = { ...this.items[index] };
-            this.items.splice(index + 1, 0, data);
+            // data = { ...this.items[index] };
+            // const dataAdd = {
+            //     _id_losx: data._id_losx,
+            //     kehoachnam: data.kehoachnam,
+            //     makh: data.makh,
+            //     makhpx: data.makhpx,
+            //     malosx: data.malosx,
+            //     mapx: data.mapx,
+            //     mapxchoncn: "",
+            //     malosx: data.malosx,
+            //     nguyencong: data.nguyencong,
+            //     may: 0,
+            //     congnhan: data.congnhan,
+            //     sodat: data.sodat,
+            //     sohong: data.sohong,
+            //     ghichu: data.ghichu,
+            //     masp: data.masp,
+            //     dongia: data.dongia,
+            //     tencn: data.tencn,
+            //     stopday_losx: data.stopday_losx,
+            //     status: data.status,
+            //     to_cn: data.to_cn,
+            //     ngaythuchien: data.ngaythuchien,
+            // }
+            // this.items.splice(index + 1, 0, dataAdd);
             // console.log(this.items)
+            let arrayCongdoan
+            let px
+
+            if (data.mapx.trim() == 'AL_PXD' || data.mapx.trim() == 'DV_PXD') {
+                px = 'PXD'
+                arrayCongdoan = await this.$axios.$get(
+                    `/api/ketoan/getnguyencong?khsp=${data.nhomluong}&px=${px}`
+                );
+            } else {
+                arrayCongdoan = await this.$axios.$get(
+                    `/api/ketoan/getnguyencong?khsp=${data.nhomluong}&px=${data.mapx}`
+                );
+            }
+
+            if (data.mapx && !data.mato) {
+                this.cong_nhan = await this.$axios.$get(
+                    `/api/congnhan/allcongnhanpx?mapx=${data.mapx}`
+                );
+            } else {
+                this.cong_nhan = await this.$axios.$get(
+                    `/api/congnhan/allcongnhanto?mato=${data.mato}`
+                );
+            }
+
+            const copydta = {
+                    _id_losx: this.items[index]._id_losx,
+                    kehoachnam: this.items[index].kehoachnam,
+                    malonhamay: this.items[index].malonhamay,
+                    makhpx: this.items[index].makhpx,
+                    malosx: this.items[index].malosx,
+                    mapx: this.items[index].mapx,
+                    mato: this.items[index].mato,
+                    masp: this.items[index].masp,
+                    tensp: this.items[index].tensp,
+                    nguyencong: this.items[index].nguyencong,
+                    dongia: this.items[index].dongia,
+                    may: "",
+                    mapxchoncn: "",
+                    to_cn: "",
+                    congnhan: "",
+                    tencn: "",
+                    sodat: this.items[index].sodat,
+                    sohong: this.items[index].sohong,
+                    ghichu: "",
+                    stopday_losx: "",
+                    status: 0,
+                    ngaythuchien: this.items[index].ngaythuchien,
+                    nhomto_cnt: [
+                        {
+                            maxuong: "",
+                            tenxuong: "",
+                            tento: "",
+                            mato: "",
+                            tencn: "",
+                            macn: "",
+                        },
+                    ],
+                    nhomto: [
+                        {
+                            maxuong: "",
+                            tenxuong: "",
+                            tento: "",
+                            mato: "",
+                        },
+                    ],
+                }
+
+            this.items.splice(index+1,0,copydta);
+
+            
+                for (let i = 0; i < this.items.length; i++) {
+                // console.log(this.cong_nhan)
+                for (let k = 0; k < this.cong_nhan.length; k++) {
+                    let cn = {
+                        maxuong: this.cong_nhan[k].mapx,
+                        tenxuong: this.cong_nhan[k].tenpx,
+                        tento: this.cong_nhan[k].tento,
+                        mato: this.cong_nhan[k].mato,
+                        tencn: this.cong_nhan[k].tencn,
+                        macn: this.cong_nhan[k].macn,
+                    };
+                    this.items[i].nhomto_cnt.push(cn);
+                    // console.log(this.items[i].nhomto_cnt)
+                }
+
+
+            }
         },
         // Copy công nhật
         copyCongnhat(data, index) {
@@ -1723,6 +1959,8 @@ export default {
         // Các Hàm xử lý sự kiện bấm nút ra thông tin
         // Bấm vào mã lô sản xuất sẽ ra thông tin lương đã nhập
         async getInfoLosx(infoPhieulo) {
+            this.checkViewluong = true
+            // console.log(this.checkViewluong)
             // gọi lương công đoạn từ store
             // this.$store.dispatch('quanlyluong/fetchLuongcd', infoPhieulo._id)
             // // gọi lương công nhật từ store
@@ -1744,7 +1982,7 @@ export default {
             this.form.nhomluong = infoPhieulo.nhomluong.trim();
             this.form.mapx = infoPhieulo.mapx.trim();
             this.form.malosx = infoPhieulo.malosx.trim();
-            this.form.makh = infoPhieulo.makh.trim();
+            this.form.makh = infoPhieulo.malonhamay.trim();
             this.form.makhpx = infoPhieulo.makhpx.trim();
             this.form.tensp = infoPhieulo.tensp.trim();
             this.form.mato = infoPhieulo.mato.trim();
@@ -1769,15 +2007,12 @@ export default {
 
             // tính tổng hỏng
 
-            const sumhong = await this.$axios.$get(
-                `/api/ketoan/sumtonghong?_id_losx=${this.getinfoplsx._id}`
-            );
+            // const sumhong = await this.$axios.$get(
+            //     `/api/ketoan/sumtonghong?_id_losx=${this.getinfoplsx._id}`
+            // );
 
-            let j = sumhong[0].tonghong
-            this.tonghonginlo = j
-
-
-
+            // let j = sumhong[0].tonghong
+            // this.tonghonginlo = j
         },
         // Bấm vào nhập lương sẽ ra popup nhập lương
         async vaoPhieuluong(infoPhieulo) {
@@ -2239,43 +2474,31 @@ export default {
         // --------------------------------------------------------------------------------------
         // 4: Các hàm CRUD
         // Hàm tạo ra Phiếu lô sản xuất trong Modal
-        onTaophieu() {
-            // console.log(this.masp);
-            Swal.fire({
-                title: "Cập nhật các công đoạn đã vào lương?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Chắc chắn",
-            }).then((result) => {
-                if (result.isConfirmed) {
+        async onTaophieu() {
+            // console.log(this.getinfoplsx);
+            
                     try {
-                        // console.log(this.getinfoplsx._id);
+                        let tonhongitem = this.items.reduce((total, item) => {
+                            const sohong = parseInt(item.sohong);
+                            if (!isNaN(sohong)) {
+                                return total + sohong;
+                            } else {
+                                return total;
+                            }
+                        }, 0);
+                        // console.log(this.tonghonginlo);
+                        // for (let i = 0; i < this.items.length; i++) {
+                        //         if (
+                        //             this.items[i].congnhan == "" &&
+                        //             this.items[i].sodat == ""
+                        //         ) {
+                        //             this.items.splice(i,1)
+                        //             }
+                        // }
+                        this.items = this.items.filter(item=>item.congnhan != '' && item.sodat != '')
+                        // console.log(this.items)
                         if (this.items.length > 0) {
                             for (let i = 0; i < this.items.length; i++) {
-                                if (
-                                    this.items[i].ngaythuchien == "" ||
-                                    this.items[i].tencn == "" ||
-                                    this.items[i].sodat == ""
-                                ) {
-                                    const Toast = Swal.mixin({
-                                        toast: true,
-                                        position: "top-end",
-                                        showConfirmButton: false,
-                                        timer: 3000,
-                                        timerProgressBar: true,
-                                        didOpen: (toast) => {
-                                            toast.addEventListener("mouseenter", Swal.stopTimer);
-                                            toast.addEventListener("mouseleave", Swal.resumeTimer);
-                                        },
-                                    });
-                                    Toast.fire({
-                                        icon: "error",
-                                        title: "Yêu cầu nhập đủ thông tin !!!",
-                                    });
-                                    return;
-                                } else {
                                     // cập nhật lương công đoạn
                                     this.$axios.$post(
                                         "/api/ketoan/addluongcongdoan",
@@ -2297,11 +2520,27 @@ export default {
                                         icon: "success",
                                         title: "Đã thêm công đoạn lương",
                                     });
-
-
-                                }
+                                
                             }
+                            // tinh tong hong cu
+                            
+                                // console.log(this.tonghonginlo)
+                                // console.log(tonhongitem)
+                                // console.log(tonghong + this.tonghonginlo)
+                                const th = this.tonghonginlo + tonhongitem
+                                // console.log(th)
+                            // phải tìm ra lô sản xuất để cập nhật số hỏng và số đạt
+                            // va ngay hoan thanh
+                            const dataUpdate = {tongdat: this.tongdatinlo, tonghong: th, ngayhoanthanhtt: this.ngayhoanthanh}
+                            this.$axios.$patch(
+                                        `/api/ketoan/updatetonghong?_id=${this.getinfoplsx._id}`,
+                                        dataUpdate
+                                    );
 
+                            this.getSolieuLSX_ALl_cht()
+                            this.allluongcongdoan = await this.$axios.$get(
+                            `/api/ketoan/getallluongcongdoaninlsx?_id_losx=${this.getinfoplsx._id}`
+                        );
                             let turn = 1;
                             let length = this.items.length;
                             while (turn <= length) {
@@ -2384,8 +2623,7 @@ export default {
                             title: "Có lỗi xảy ra !!!",
                         });
                     }
-                }
-            });
+         
         },
         // Hàm update số đạt lương công đoạn
         async onUpdateCd(item) {
@@ -2410,6 +2648,29 @@ export default {
                 title: "Updated",
             });
             this.calculateTotals()
+            // cap nhat lai so lieu trong losanxuat
+            // tinh lai tong so hong trong toan bo cong doanluong cua losanxuat
+            // dua vao _id_losx
+            const dataLcd = await this.$axios.$get(
+                `/api/ketoan/getallluongcongdoaninlsx?_id_losx=${item._id_losx}`
+            );
+            // console.log(dataLcd)
+            const tonghong = dataLcd.reduce((total, item) => {
+                const sohong = parseInt(item.sohong);
+                if (!isNaN(sohong)) {
+                    return total + sohong;
+                } else {
+                    return total;
+                }
+                }, 0);
+            // console.log(tonghong)
+            // cap nhat lai tong hong trong losx
+            const dataUpdate = {tonghong: tonghong}
+                            this.$axios.$patch(
+                                        `/api/ketoan/updateonlytonghong?_id=${item._id_losx}`,
+                                        dataUpdate
+                                    );
+            this.getSolieuLSX_ALl_cht()
         },
         // Hàm update lương công nhật
         async onUpdateCn(id, sogiocong, ghichu) {
@@ -2435,14 +2696,76 @@ export default {
             });
         },
         // Hàm xóa lương công đoạn
-        onDelete(cd) {
-            swal({
-                title: "Bạn muốn xóa công đoạn này?",
-                text: "Công đoạn sẽ không lấy lại được sau khi xóa!",
-                buttons: true,
-                dangerMode: true,
-            }).then((willDelete) => {
-                if (willDelete) {
+        // onDelete(cd) {
+        //     swal({
+        //         title: "Bạn muốn xóa công đoạn này?",
+        //         text: "Công đoạn sẽ không lấy lại được sau khi xóa!",
+        //         buttons: true,
+        //         dangerMode: true,
+        //     }).then((willDelete) => {
+        //         if (willDelete) {
+        //             if (cd.status == 1 && cd.stopday_losx != '') {
+        //                 const Toast = Swal.mixin({
+        //                     toast: true,
+        //                     position: "top-end",
+        //                     showConfirmButton: false,
+        //                     timer: 3000,
+        //                     timerProgressBar: true,
+        //                     didOpen: (toast) => {
+        //                         toast.addEventListener("mouseenter", Swal.stopTimer);
+        //                         toast.addEventListener("mouseleave", Swal.resumeTimer);
+        //                     },
+        //                 });
+        //                 Toast.fire({
+        //                     icon: "error",
+        //                     title: "Lô sản xuất đã được chốt, muốn xóa phải hủy chốt!!!",
+        //                 });
+        //             } else {
+        //                 // xóa công đoạn khỏi bảng
+        //                 this.$axios.$delete(`/api/lokehoach/luongcongnhan/${cd._id}`)
+        //                     .then(response => {
+        //                         const index = this.allluongcongdoan.findIndex(lcd => lcd._id === cd._id) // find the post index 
+        //                         if (~index) // if the post exists in array
+        //                             this.allluongcongdoan.splice(index, 1) //delete the post
+        //                     });
+        //                 this.calculateTotals()
+        //                 let dataLcd = []
+        //                 // cap nhat lai so lieu trong losanxuat
+        //                 // tinh lai tong so hong trong toan bo cong doanluong cua losanxuat
+        //                 // dua vao _id_losx
+        //                 this.$axios.$get(`/api/ketoan/getallluongcongdoaninlsx?_id_losx=${cd._id_losx}`)
+        //                     .then(response => {
+        //                         dataLcd = response
+        //                         // console.log(dataLcd)
+        //                     });
+        //                 // console.log(dataLcd)
+        //                 const tonghong = dataLcd.reduce((total, item) => {
+        //                     const sohong = parseInt(item.sohong);
+        //                     if (!isNaN(sohong)) {
+        //                         return total + sohong;
+        //                     } else {
+        //                         return total;
+        //                     }
+        //                     }, 0);
+        //                 console.log(tonghong)
+        //                 // cap nhat lai tong hong trong losx
+        //                 // const dataUpdate = {tonghong: tonghong}
+        //                 //                 this.$axios.$patch(
+        //                 //                             `/api/ketoan/updateonlytonghong?_id=${cd._id_losx}`,
+        //                 //                             dataUpdate
+        //                 //                         );
+        //                 // this.getSolieuLSX_ALl_cht()
+        //             }
+
+        //         } else {
+        //             swal("Bạn đã hủy xóa");
+        //         }
+        //     });
+        // },
+        async onDelete(cd) {
+            const confirmed = confirm('Bạn có chắc chắn muốn xóa dữ liệu không?');
+            if (confirmed) {
+                try {
                     if (cd.status == 1 && cd.stopday_losx != '') {
                         const Toast = Swal.mixin({
                             toast: true,
@@ -2467,12 +2790,99 @@ export default {
                                 if (~index) // if the post exists in array
                                     this.allluongcongdoan.splice(index, 1) //delete the post
                             });
-                    }
+            
+                        // cap nhat lai so lieu trong losanxuat
+                        // tinh lai tong so hong trong toan bo cong doanluong cua losanxuat
+                        // dua vao _id_losx
+                         const dataLcd = await this.$axios.$get(
+                                `/api/ketoan/getallluongcongdoaninlsx?_id_losx=${cd._id_losx}`
+                            );
+                        // console.log(dataLcd)
+                        const tonghong = dataLcd.reduce((total, item) => {
+                            const sohong = parseInt(item.sohong);
+                            if (!isNaN(sohong)) {
+                                return total + sohong;
+                            } else {
+                                return total;
+                            }
+                            }, 0);
+                        console.log(tonghong)
+                        // cap nhat lai tong hong trong losx
+                        const dataUpdate = {tonghong: tonghong}
+                                        this.$axios.$patch(
+                                                    `/api/ketoan/updateonlytonghong?_id=${cd._id_losx}`,
+                                                    dataUpdate
+                                                );
 
+                        this.calculateTotals()
+                        this.showConponent = false
+                        this.$nextTick(()=>{
+                            this.showConponent = true
+                        })
+
+                        const groups = {};
+            // console.log(this.luongcongdoans);
+            this.allluongcongdoan.forEach(item => {
+                const dongia = parseFloat(item.dongia);
+                const sodat = parseInt(item.sodat);
+                const sohong = parseInt(item.sohong);
+
+                if (!groups[item.nguyencong]) {
+                    groups[item.nguyencong] = {
+                        dongia: dongia,
+                        sodat: sodat,
+                        sohong: sohong
+                    };
                 } else {
-                    swal("Bạn đã hủy xóa");
+                    groups[item.nguyencong].dongia = dongia;
+                    groups[item.nguyencong].sodat += sodat;
+                    groups[item.nguyencong].sohong += sohong;
                 }
             });
+
+            const totals = {
+                dongia: 0,
+                sodat: 0,
+                sohong: 0,
+                tongtien: 0
+            };
+            this.items.forEach(item => {
+                const dongia = parseFloat(item.dongia);
+                const sodat = parseInt(item.sodat);
+                const sohong = parseInt(item.sohong);
+
+                totals.dongia += dongia;
+                totals.sodat += sodat;
+                totals.sohong += sohong;
+                totals.tongtien += (sodat + sohong) * dongia;
+            });
+
+            this.groups = groups;
+            this.totals = totals;
+                        this.getSolieuLSX_ALl_cht()
+                        this.sllosx = await this.$axios.$get(
+                `/api/ketoan/getallphieulocht`
+            );
+                    }
+                } catch (error) {
+                // console.log(error);
+                    const Toast = Swal.mixin({
+                        toast: true,
+                        position: "top-end",
+                        showConfirmButton: false,
+                        timer: 3000,
+                        timerProgressBar: true,
+                        didOpen: (toast) => {
+                            toast.addEventListener("mouseenter", Swal.stopTimer);
+                            toast.addEventListener("mouseleave", Swal.resumeTimer);
+                        },
+                    });
+                    Toast.fire({
+                        icon: "error",
+                        title: "Có lỗi xảy ra !!!",
+                });
+                }
+            }
         },
         // Hàm xóa lương công nhật
         onDeleteCn(cd) {

@@ -2,7 +2,7 @@
     <div class="columns">
         <div class="column">
             <br />
-            <div class="box" style="margin-left: 20px; margin-right: 20px">
+            <div class="box" style="margin-left: 5px; margin-right: 5px">
                 <div class="columns">
                     <div class="column is-11">
                         <div class="control">
@@ -119,16 +119,16 @@
                     <table class="table is-responsive is-bordered is-narrow is-fullwidth">
                         <tr style="background-color: #f4f2f8">
                             <td style="font-size: small; text-align: center; font-weight: 600; width: 3%">STT</td>
-                            <td @click="sortTable('makh')"
+                            <td @click="sortTable('malonhamay')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 5%">Mã lô nhà máy
                             </td>
                             <td @click="sortTable('mapx')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 5%">Mã PX
                             </td>
-                            <td @click="sortTable('makhpx')"
+                            <!-- <td @click="sortTable('makhpx')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 4%">Mã kế hoạch
                                 PX
-                            </td>
+                            </td> -->
                             <td @click="sortTable('nhomthanhpham')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 4%">Nhóm TP
                             </td>
@@ -147,11 +147,11 @@
                             <td @click="sortTable('ngayktkhpx')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 8%;">Ngày kết thúc
                             </td> -->
-                            <td @click="sortTable('tuanbd')"
-                                style="font-size: small; text-align: center; font-weight: 600; width: 8%;">Tuần BĐ (T1)
+                            <td @click="sortTable('tuanbdkhpx')"
+                                style="font-size: small; text-align: center; font-weight: 600; width: 8%;">T1
                             </td>
-                            <td @click="sortTable('tuankt')"
-                                style="font-size: small; text-align: center; font-weight: 600; width: 8%;">Tuần KT (T2)
+                            <td @click="sortTable('tuanktkhpx')"
+                                style="font-size: small; text-align: center; font-weight: 600; width: 8%;">T2
                             </td>
                             <td @click="sortTable('soluongkhpx')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Số lượng
@@ -164,7 +164,15 @@
                             </td>
                             <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Chọn TT
                             </td>
+                            <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Tuần Chạy
+                            </td>
                             <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">SL đã ĐK
+                            </td>
+                            <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">SL thực hiện
+                            </td>
+                            <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Tổng đạt
+                            </td>
+                            <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Tổng hỏng
                             </td>
                             <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Ngày BDTT
                             </td>
@@ -179,10 +187,10 @@
                             </td>
                             <td style="font-size: small; text-align: center;">{{ item.mapx }}
                             </td>
-                            <td style="font-size: small; text-align: center;">{{
+                            <!-- <td style="font-size: small; text-align: center;">{{
                                 item.makhpx
                             }}
-                            </td>
+                            </td> -->
                             <td style="font-size: small; text-align: center;">{{
                                 item.nhomthanhpham
                             }}</td>
@@ -190,7 +198,7 @@
                                 item.mathanhpham
                             }}</td>
                             <td style="font-size: small; text-align: center;">{{
-                                item.nhomsp
+                                item.nhomspkhpx
                             }}</td>
                             <td style="font-size: small; text-align: center;">{{
                                 item.maspkhpx
@@ -209,10 +217,10 @@
                                     v-bind:value="item.ngayktkhpx | inputDateFilter"
                                     v-on:input="item.ngayktkhpx = getDate($event.target.value)"></td> -->
                             <td style="font-size: small; text-align: center; ">{{
-                                item.tuanbd
+                                item.tuanbdkhpx
                             }}</td>
                             <td style="font-size: small; text-align: center; ">{{
-                                item.tuankt
+                                item.tuanktkhpx
                             }}</td>
                             <td style="font-size: small; text-align: center; ">{{
                                 item.soluongkhpx | formatNumber
@@ -246,9 +254,13 @@
                                     </select>
                                 </div>
                             </td>
+                            <td style="font-size: small; text-align: center;"><input v-model="item.tuanexc" type="number" class="input is-danger is-small"></td>
                             <td style="font-size: small; text-align: center;">{{
                                 item.tong_soluong }}</td>
-                            <td style="font-size: small; text-align: center; "></td>
+                                <td style="font-size: small; text-align: center;">{{ item.tongso_luongnhanh }}</td>
+                                <td style="font-size: small; text-align: center;">{{ item.tongso_dat }}</td>
+                                <td style="font-size: small; text-align: center;">{{ item.tongso_hong }}</td>
+                            <td style="font-size: small; text-align: center; ">{{ item.ngaybdthucte | formatDate}}</td>
                             <td style="font-size: small; text-align: center; "></td>
                             <td><button @click="onUpdate_lokhpx(item)"
                                     class="button is-small is-success is-fullwidth">Ghi</button>
@@ -274,6 +286,8 @@
 
 <script>
 import Swal from "sweetalert2";
+import dayjs from 'dayjs';
+import 'dayjs/locale/vi';
 export default {
     middleware: "auth",
     data() {
@@ -701,7 +715,7 @@ export default {
         // Lấy danh sách tất cả các lô kế hoạch phân xưởng sắp xếp theo phân xưởng
         async showAllLokhpx() {
             this.lokehoachpx = await this.$axios.$get(
-                `/api/lokehoach/getallkehoachphanxuong`
+                `/api/lokehoach/getallkehoachphanxuongwithout0`
             );
             this.multiSearch_masp = ""
             this.multiSearch_matp = ""
@@ -960,9 +974,9 @@ export default {
                     `/api/lokehoach/filterfulldkmtp`, {
                     params: {
                         mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
-                        matp: matp,
+                        mathanhpham: matp,
                         status: status,
-                        nhomtp: nhomtp
+                        nhomthanhpham: nhomtp
                     },
                 }
                 );
@@ -979,7 +993,7 @@ export default {
             }
             // chỉ có mã px và mã tp
             else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_matp != "" && this.multiSearch_nhomtp == '') {
-                console.log(this.selectedOptions)
+                // console.log(this.selectedOptions)
 
                 this.lokehoachpx = await this.$axios.$get(
                     `/api/lokehoach/filteronlymapxandmatp`, {
@@ -1110,8 +1124,8 @@ export default {
                 this.lokehoachpx = await this.$axios.$get(
                     `/api/lokehoach/filteronlypxandnhomtpmatp`, {
                     params: {
-                        nhomtp: nhomtp,
-                        matp: matp,
+                        nhomthanhpham: nhomtp,
+                        mathanhpham: matp,
                         mapx: mapxList,
                     },
                 }
@@ -1124,6 +1138,21 @@ export default {
         // 4: Các hàm CRUD
         // update lô kế hoạch phân xưởng
         async onUpdate_lokhpx(data) {
+            // console.log(data)
+            const now = new Date();
+            const currentYear = now.getFullYear();
+
+            const startDate = dayjs().year(currentYear).month(0).date((data.tuanexc - 1) * 7 + 1);
+            const startDateString = startDate.locale('vi').format('YYYY/MM/DD');
+
+            const endDate = dayjs().year(currentYear).month(0).date(data.tuanexc * 7);
+            const endDateString = endDate.locale('vi').format('YYYY/MM/DD');
+            data.ngaybdexc = startDateString
+            data.ngayktexc = endDateString
+            // console.log(startDateString, endDateString)
+
+   
+            
             // Tìm tất cả các lô KHPX mà do lô nhà máy này đẻ ra thông qua _id của LNM
             // Đẩy toàn bộ trạng thái các LÔ KHPX này vào 1 mảng và lập luận như sau:
             // nếu mảng mà toàn = 0 thì log ra chữ: "0"
@@ -1137,6 +1166,10 @@ export default {
                 arr.push(lokhpxs[i].status)
             }
             try {
+                this.$axios.$patch(
+                    `/api/lokehoach/updatelokehoachpxatdangkylodesanxuat/${data._id}`,
+                    data
+                );
                 // console.log(arr);
                 if (arr.every(x => x === 0)) {
                     this.$axios.$patch(`/api/lokehoach/lonhamay/status0/${data._id_lonhamay}`
@@ -1155,7 +1188,24 @@ export default {
                         this.$axios.$patch(`/api/lokehoach/lonhamay/status0/${data._id_lonhamay}`
                         );
                     }
+
+                    
                 }
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener("mouseenter", Swal.stopTimer);
+                        toast.addEventListener("mouseleave", Swal.resumeTimer);
+                    },
+                    });
+                    Toast.fire({
+                        icon: "success",
+                        title: "Đã ghi dữ liệu",
+                    });
             } catch (error) {
                 console.log(error);
                 const Toast = Swal.mixin({
@@ -1181,15 +1231,22 @@ export default {
 </script>
 
 <style scoped>
-.table_wrapper {
+/* .table_wrapper {
     white-space: nowrap;
-}
+} */
 
 .table_wrapper {
+    /* position: sticky;
+    left: 0;
+    background-color: whitesmoke; */
+
+    white-space: nowrap;
     position: sticky;
     left: 0;
     background-color: whitesmoke;
+    /* overflow-x: auto; */
 }
+
 
 
 .modal-content,

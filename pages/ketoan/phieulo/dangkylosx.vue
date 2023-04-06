@@ -128,21 +128,27 @@
                         <tr style="background-color: #f4f2f8">
                             <td style="font-size: small; text-align: center; font-weight: 600; width: 3%">--</td>
                             <td style="font-size: small; text-align: center; font-weight: 600; width: 3%">STT</td>
-                            <td @click="sortTable('makh')"
+                            <td @click="sortTable('malonhamay')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 5%">Mã lô nhà máy
                             </td>
                             <td @click="sortTable('mapx')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 5%">Mã PX
                             </td>
-                            <td @click="sortTable('makhpx')"
+                            <!-- <td @click="sortTable('makhpx')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 4%">Mã kế hoạch
                                 PX
-                            </td>
-                            <td @click="sortTable('ttqt')"
+                            </td> -->
+                            <!-- <td @click="sortTable('ttqt')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 4%">
                                 TTQT
+                            </td> -->
+                            <td @click="sortTable('nhomthanhpham')"
+                                style="font-size: small; text-align: center; font-weight: 600; width: 7%">Nhóm TP
                             </td>
-                            <td @click="sortTable('nhomsp')"
+                            <td @click="sortTable('mathanhpham')"
+                                style="font-size: small; text-align: center; font-weight: 600; width: 7%">Mã TP
+                            </td>
+                            <td @click="sortTable('nhomspkhpx')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 7%">Nhóm SP
                             </td>
                             <td @click="sortTable('maspkhpx')"
@@ -160,6 +166,9 @@
                             <td @click="sortTable('tuankt')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 9%;">Tuần KT (T2)
                             </td>
+                            <td @click="sortTable('tuanexc')"
+                                style="font-size: small; text-align: center; font-weight: 600; width: 9%;">Tuần chạy
+                            </td>
                             <td @click="sortTable('soluongkhpx')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Số lượng
                             </td>
@@ -171,6 +180,8 @@
                                 style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Chọn Trạng thái
                             </td> -->
                             <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">SL đã ĐK
+                            </td>
+                            <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">SL thực hiện
                             </td>
                             <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Ngày BDTT
                             </td>
@@ -199,11 +210,15 @@
                                 </td>
                                 <td style="font-size: small; background-color: #effaf5; text-align: center;">{{ item.mapx }}
                                 </td>
-                                <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
+                                <!-- <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
                                     item.makhpx
                                 }}
                                 </td>
-                                <td style="font-size: small; background-color: #effaf5; text-align: center;">{{ item.ttqt }}
+                                <td style="font-size: small; background-color: #effaf5; text-align: center;">{{ item.ttqt }} -->
+                                </td>
+                                <td style="font-size: small; background-color: #effaf5; text-align: center;">{{ item.nhomthanhpham }}
+                                </td>
+                                <td style="font-size: small; background-color: #effaf5; text-align: center;">{{ item.mathanhpham }}
                                 </td>
                                 <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
                                     item.nhomspkhpx
@@ -222,6 +237,9 @@
                                 }}</td>
                                 <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
                                     item.tuanktkhpx
+                                }}</td>
+                                <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
+                                    item.tuanexc
                                 }}</td>
                                 <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
                                     item.soluongkhpx | formatNumber
@@ -243,7 +261,9 @@
                                 </template>
                                 <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
                                     item.tong_soluong }}</td>
-                                <td style="font-size: small; text-align: center; background-color: #effaf5;"></td>
+                                    <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
+                                    item.tongso_luongnhanh }}</td>
+                                <td style="font-size: small; text-align: center; background-color: #effaf5;">{{ item.ngaybdthucte | formatDate }}</td>
                                 <td style="font-size: small; text-align: center; background-color: #effaf5;"></td>
 
                             </tr>
@@ -252,7 +272,7 @@
                                 'display': arrRowWatchDetail.length > 0 && arrRowWatchDetail.findIndex(el => el.key === index) > -1 ? 'table-row' :
                                     'none'
                             }">
-                                <td colspan="14" style="padding: 10px 46px; background: #209cee0f;">
+                                <td colspan="19" style="padding: 10px 46px; background: #209cee0f;">
                                     <table class="table is-responsive is-bordered is-narrow is-fullwidth">
                                         <tr style="background-color: #f4f2f8;">
                                             <td
@@ -260,7 +280,7 @@
                                                 STT
                                             </td>
                                             <td
-                                                style="text-align: center; font-size:small; font-weight: 600; width: 15.9%; color: red;">
+                                                style="text-align: center; font-size:small; font-weight: 600; width: 20%; color: red;">
                                                 Tổ
                                                 / nhóm
                                             </td>
@@ -303,7 +323,7 @@
                                                 <button @click="ghidulieu(item)" class="button is-small is-success">Ghi dữ
                                                     liệu</button>
                                             </td>
-                                            <td></td>
+                                            <!-- <td></td> -->
                                         </tr>
                                         <template
                                             v-if="arrRowWatchDetail.length > 0 && arrRowWatchDetail.findIndex(el => el.key === index) > -1">
@@ -1339,8 +1359,8 @@ export default {
                 nhomluong: dataAdd.nhomluong,
                 soluonglsx: "",
                 soluongkhsx: 0,
-                ngaybd: dataAdd.ngaybdkhpx,
-                ngaykt: dataAdd.ngayktkhpx,
+                ngaybd: dataAdd.ngaybdexc,
+                ngaykt: dataAdd.ngayktexc,
                 tongdat: "",
                 tonghong: "",
                 ghichu: "",
@@ -1583,13 +1603,15 @@ export default {
                         console.log(error);
                     }
                 }
-
             }
+            this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/getallkehoachphanxuongwithout0`
+                );
         },
 
         // update lô sản xuất
         async onUpdate(data) {
-            // console.log(data._id)
+            console.log(data._id)
             try {
                 this.$axios.$patch(
                     `/api/lokehoach/losanxuat/${data._id}`,
@@ -1679,21 +1701,59 @@ export default {
         },
 
         // xóa lô sản xuất
+        // async onDeleteLsx(pl) {
+        //     swal({
+        //         title: "Bạn muốn xóa?",
+        //         text: "Chỉ xóa được những lô chưa được sản xuất!",
+        //         buttons: true,
+        //         dangerMode: true,
+        //     }).then((willDelete) => {
+        //         if (willDelete) {
+        //             if (pl.status == 1 && pl.status_tinhluong == false && pl.datinhluong == false) {
+        //                 this.$axios.$delete(`/api/lokehoach/losx/${pl._id}`)
+        //                     .then(response => {
+        //                         const index = this.dataChildren.findIndex(lsx => lsx._id === pl._id) // find the post index 
+        //                         if (~index) // if the post exists in array
+        //                             this.dataChildren.splice(index, 1) //delete the post
+        //                     });
+        //                     this.lokehoachpx = await this.$axios.$get(
+        //             `/api/lokehoach/getallkehoachphanxuongwithout0`
+        //         );
+        //             } else {
+        //                 const Toast = Swal.mixin({
+        //                     toast: true,
+        //                     position: "top-end",
+        //                     showConfirmButton: false,
+        //                     timer: 3000,
+        //                     timerProgressBar: true,
+        //                     didOpen: (toast) => {
+        //                         toast.addEventListener("mouseenter", Swal.stopTimer);
+        //                         toast.addEventListener("mouseleave", Swal.resumeTimer);
+        //                     },
+        //                 });
+        //                 Toast.fire({
+        //                     icon: "error",
+        //                     title: "Lô đã được đưa vào sản xuất, không thể xóa!!!",
+        //                 });
+        //             }
+
+        //         } else {
+        //             swal("Bạn đã hủy xóa");
+        //         }
+        //     });
+        // },
+
         async onDeleteLsx(pl) {
-            swal({
-                title: "Bạn muốn xóa?",
-                text: "Chỉ xóa được những lô chưa được sản xuất!",
-                buttons: true,
-                dangerMode: true,
-            }).then((willDelete) => {
-                if (willDelete) {
-                    if (pl.status == 1 && pl.status_tinhluong == false && pl.datinhluong == false) {
+            if (pl.status == 1 && pl.status_tinhluong == false && pl.datinhluong == false) {
                         this.$axios.$delete(`/api/lokehoach/losx/${pl._id}`)
                             .then(response => {
                                 const index = this.dataChildren.findIndex(lsx => lsx._id === pl._id) // find the post index 
                                 if (~index) // if the post exists in array
                                     this.dataChildren.splice(index, 1) //delete the post
                             });
+                            this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/getallkehoachphanxuongwithout0`
+                );
                     } else {
                         const Toast = Swal.mixin({
                             toast: true,
@@ -1711,12 +1771,7 @@ export default {
                             title: "Lô đã được đưa vào sản xuất, không thể xóa!!!",
                         });
                     }
-
-                } else {
-                    swal("Bạn đã hủy xóa");
-                }
-            });
-        },
+        }
 
     },
 };

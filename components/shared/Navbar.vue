@@ -93,11 +93,11 @@
                     </span>
                     &ensp; Import số liệu
                   </nav-link>
-                  <nav-link to="/ketoan/phieulo/kehoachnhamay" class="navbar-item">
+                  <nav-link to="/ketoan/phieulo/lapkehoachnam" class="navbar-item">
                     <span style="color: #f14668" class="icon is-small is-left">
                       <i class="	fas fa-box"></i>
                     </span>
-                    &ensp; Lập Lô kế hoạch
+                    &ensp; Lập Kế hoạch năm
                   </nav-link>
                   <nav-link to="/ketoan/phieulo/quanlylosx" class="navbar-item">
                     <span style="color: #f14668" class="icon is-small is-left">

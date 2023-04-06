@@ -48,6 +48,13 @@ export default {
             // pageCount: 0
         };
     },
+
+    watch: {
+        itemsPerPage() {
+            this.currentPage = 1;
+        },
+    },
+    
     computed: {
         sortedTable() {
             return this.lokehoach.sort((a, b) => {

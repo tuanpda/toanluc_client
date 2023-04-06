@@ -124,7 +124,7 @@
                             <td style="font-size: small; font-weight: bold; text-align: center;"><input type="checkbox"
                                     v-model="selectAll" /></td>
                             <td style="font-size: small; text-align: center; font-weight: 600; width: 3%">STT</td>
-                            <td @click="sortTable('makh')"
+                            <td @click="sortTable('malonhamay')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 5%">Mã lô nhà máy
                             </td>
                             <td @click="sortTable('mapx')"
@@ -154,6 +154,12 @@
                             <td @click="sortTable('soluongkhsx')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Cập nhật nhanh
                             </td>
+                            <td 
+                                style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Tổng đạt
+                            </td>
+                            <td 
+                                style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Tổng hỏng
+                            </td>
                             <td @click="sortTable('status')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Trạng thái
                             </td>
@@ -171,7 +177,7 @@
                             </td>
                             <td style="font-size: small; text-align: center; background-color: #effaf5;">{{ index + 1 }}
                             </td>
-                            <td style="font-size: small;">{{ item.makh }}
+                            <td style="font-size: small;">{{ item.malonhamay }}
                             </td>
                             <td style="font-size: small; background-color: #effaf5; text-align: center;">{{ item.mapx }}
                             </td>
@@ -207,7 +213,12 @@
                             <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
                                 item.soluongkhsx | formatNumber
                             }}</td>
-
+                            <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
+                                item.tongdat | formatNumber
+                            }}</td>
+                            <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
+                                item.tonghong | formatNumber
+                            }}</td>
                             <template>
                                 <td v-if="item.status == 1" style="font-size: small; text-align: center; "><span
                                         style="color: white; font-weight: bold; background-color: red; padding-left: 7px; padding-right: 7px;">DK</span>
@@ -925,7 +936,30 @@ export default {
             try {
                 // tìm xem có bao nhiêu lô sản xuất trong lô kế hoạch phân xưởng
                 const losxs = await this.$axios.$get(`/api/ketoan/checklosanxuatstussx?_id_khpx=${data._id_khpx}&random=${Math.random()}`)
+                // tìm xem có bao nhiêu lô sản xuất trong lô kế hoạch phân xưởng tt bang sx
+                const checkdate = await this.$axios.$get(`/api/ketoan/checklosanxuatstussxtrangthai2?_id_khpx=${data._id_khpx}`)
+                
                 // console.log(losxs);
+                // tìm ngày bắt đầu bé nhất và ngày kết thúc lớn nhất các trong lô sản xuất
+                // luu y chi so trong nhung lo co trang thai la sx ma thoi. bo qua dk
+                    if(checkdate.length > 0){
+                        const ngaybdMin = checkdate.reduce((min, item) => item.ngaybd < min ? item.ngaybd : min, checkdate[0].ngaybd);
+                        const ngayktMax = checkdate.reduce((max, item) => item.ngaykt > max ? item.ngaykt : max, checkdate[0].ngaykt);
+                        // console.log(ngaybdMin)
+                        // alert(ngaybdMin)
+                        // console.log(ngayktMax)
+                        // update ngaybdtt trong khpx tai _id tu data._id_khpx
+                        const dataUpdate = {ngaybdthucte: ngaybdMin}
+                        // console.log(dataUpdate)
+                        await this.$axios.$patch(
+                        `/api/ketoan/updatelokehoachngaybdtt/${data._id_khpx}`,
+                        dataUpdate
+                        );
+                }
+                
+                // cập nhật luôn ngày bắt đầu thực tế cho lokehoachphanxuong bằng ngày bé nhất
+                // nếu có bất kỳ phần tử nào là bé nhất và cập nhật ngày kết thúc thực tế = ngày lớn nhất
+                // nếu tất cả các lô là HT
                 // check xem trong toàn bộ lô sinh ra từ mã kế hoạch phân xưởng đó
                 // có lô nào đang sx không? nếu có thì chuyển trạng thái lô kế hoạch phân xưởng thành sx luôn
                 const hasStatusTwo = losxs.some((item) => item.status === 2);
