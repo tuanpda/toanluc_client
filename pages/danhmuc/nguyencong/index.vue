@@ -18,8 +18,8 @@
           <div class="column is-6">
             <span>Có tất cả: </span>
             <span style="font-weight: bold">{{
-    nguyencong.length | formatNumber
-}}</span>
+              nguyencong.length | formatNumber
+            }}</span>
             <span>danh mục nguyên công</span>
           </div>
 
@@ -47,9 +47,9 @@
         </div>
         <div class="table_wrapper table-height">
           <table class="
-                  table
-                  is-bordered is-striped is-narrow is-hoverable is-fullwidth
-                ">
+                            table
+                            is-bordered is-striped is-narrow is-hoverable is-fullwidth
+                          ">
             <thead>
               <tr>
                 <th style="text-align: center; font-size: small;">STT</th>
@@ -59,11 +59,12 @@
                 <th style="text-align: center; font-size: small;">Nhóm SP</th>
                 <th style="text-align: center; font-size: small;">Nhóm lương</th>
                 <th style="text-align: center; font-size: small;">Diễn giải</th>
+                <th style="text-align: center; font-size: small;">Cập nhật</th>
                 <th style="text-align: center; font-size: small;">Xóa</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(nc, index) in filteredItems" :key="index" @click="getDN(nc)">
+              <tr v-for="(nc, index) in filteredItems" :key="index">
                 <td style="text-align: center; font-size: small;">
                   {{ index + 1 }}
                 </td>
@@ -84,6 +85,13 @@
                 </td>
                 <td style="font-size: small;">
                   {{ nc.diengiai }}
+                </td>
+                <td style="text-align: center; font-size: small">
+                  <a @click="getDN(nc)">
+                    <span style="color: green" class="icon is-small">
+                      <i class="far fa-check-circle"></i>
+                    </span>
+                  </a>
                 </td>
                 <td style="text-align: center; font-size: small">
                   <a @click="onDelete(nc)">
@@ -358,6 +366,15 @@ export default {
     }
   },
 
+  watch: {
+    filteredItems(newVal, oldVal) {
+      // Perform any necessary updates here
+    },
+    nguyencong(newVal, oldVal) {
+
+    },
+  },
+
   mounted() {
     this.getNguyencong();
     this.currentDateTime();
@@ -427,113 +444,95 @@ export default {
       this.isActive_cre = true
     },
 
-    async onUpdate(id) {
-      Swal.fire({
-        title: "Chắc chắn cập nhật nguyên công này?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Chắc chắn cập nhật",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          try {
-            this.$axios.$patch(
-              `/api/nguyencong/nc/${id}`,
-              this.one_nguyencong,
-              {}
-            );
+    async onUpdate() {
+      try {
+        this.$axios.$patch(
+          `/api/nguyencong/nc/${id}`,
+          this.one_nguyencong,
+          {}
+        );
+        this.nguyencong = await this.$axios.$get(
+          `/api/nguyencong/getallnguyencong`
+        );
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+        Toast.fire({
+          icon: "success",
+          title: "Cập nhật thông tin thành công",
+        });
 
-            const Toast = Swal.mixin({
-              toast: true,
-              position: "top-end",
-              showConfirmButton: false,
-              timer: 3000,
-              timerProgressBar: true,
-              didOpen: (toast) => {
-                toast.addEventListener("mouseenter", Swal.stopTimer);
-                toast.addEventListener("mouseleave", Swal.resumeTimer);
-              },
-            });
-            Toast.fire({
-              icon: "success",
-              title: "Cập nhật thông tin thành công",
-            });
+        this.isActive = false;
+      } catch (error) {
+        console.log(error);
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
 
-            this.isActive = false;
-          } catch (error) {
-            console.log(error);
-            const Toast = Swal.mixin({
-              toast: true,
-              position: "top-end",
-              showConfirmButton: false,
-              timer: 3000,
-              timerProgressBar: true,
-              didOpen: (toast) => {
-                toast.addEventListener("mouseenter", Swal.stopTimer);
-                toast.addEventListener("mouseleave", Swal.resumeTimer);
-              },
-            });
-
-            Toast.fire({
-              icon: "error",
-              title: "Có lỗi xảy ra !!!",
-            });
-          }
-        }
-      });
+        Toast.fire({
+          icon: "error",
+          title: "Có lỗi xảy ra !!!",
+        });
+      }
     },
 
-    onAddNc() {
-      Swal.fire({
-        title: "Chắc chắn thêm mới?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Đồng ý",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          try {
-            this.$axios.$post("/api/nguyencong/addnguyencong", this.form);
+    async onAddNc() {
+      try {
+        this.$axios.$post("/api/nguyencong/addnguyencong", this.form);
+        this.nguyencong = await this.$axios.$get(
+          `/api/nguyencong/getallnguyencong`
+        );
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+        Toast.fire({
+          icon: "success",
+          title: "Thêm mới thành công",
+        });
 
-            const Toast = Swal.mixin({
-              toast: true,
-              position: "top-end",
-              showConfirmButton: false,
-              timer: 3000,
-              timerProgressBar: true,
-              didOpen: (toast) => {
-                toast.addEventListener("mouseenter", Swal.stopTimer);
-                toast.addEventListener("mouseleave", Swal.resumeTimer);
-              },
-            });
-            Toast.fire({
-              icon: "success",
-              title: "Thêm mới thành công",
-            });
-
-            this.isActive_cre = false
-          } catch (error) {
-            console.log(error);
-            const Toast = Swal.mixin({
-              toast: true,
-              position: "top-end",
-              showConfirmButton: false,
-              timer: 3000,
-              timerProgressBar: true,
-              didOpen: (toast) => {
-                toast.addEventListener("mouseenter", Swal.stopTimer);
-                toast.addEventListener("mouseleave", Swal.resumeTimer);
-              },
-            });
-            Toast.fire({
-              icon: "error",
-              title: "Có lỗi xảy ra !!!",
-            });
-          }
-        }
-      });
+        this.isActive_cre = false
+      } catch (error) {
+        console.log(error);
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+        Toast.fire({
+          icon: "error",
+          title: "Có lỗi xảy ra !!!",
+        });
+      }
     },
 
     onDelete(nc) {
@@ -547,9 +546,9 @@ export default {
           // xóa công đoạn khỏi bảng
           this.$axios.$delete(`/api/nguyencong/${nc._id}`)
             .then(response => {
-              x(it => it._id === nc._id) // find the post index 
+              const index = this.nguyencong.findIndex(n => n._id === nc._id)
               if (~index) // if the post exists in array
-                this.filteredItems.splice(index, 1) //delete the post
+                this.nguyencong.splice(index, 1) //delete the post
             });
         } else {
           swal("Bạn đã hủy xóa");

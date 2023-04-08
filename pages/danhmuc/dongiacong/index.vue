@@ -47,9 +47,9 @@
                 </div>
                 <div class="table_wrapper table-height">
                     <table class="
-                      table
-                      is-bordered is-striped is-narrow is-hoverable is-fullwidth
-                    ">
+                                      table
+                                      is-bordered is-striped is-narrow is-hoverable is-fullwidth
+                                    ">
                         <thead>
                             <tr>
                                 <th style="text-align: center; font-size: small;">STT</th>
@@ -58,11 +58,12 @@
                                 <th style="text-align: center; font-size: small;">KHSP</th>
                                 <th style="text-align: center; font-size: small;">Đơn giá</th>
                                 <th style="text-align: center; font-size: small;">Ghi chú</th>
+                                <th style="text-align: center; font-size: small;">Cập nhật</th>
                                 <th style="text-align: center; font-size: small;">Xóa</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr v-for="(nc, index) in filteredItems" :key="index" @click="getDN(nc)">
+                            <tr v-for="(nc, index) in filteredItems" :key="index">
                                 <td style="text-align: center; font-size: small;">
                                     {{ index + 1 }}
                                 </td>
@@ -80,6 +81,13 @@
                                 </td>
                                 <td style="font-size: small;">
                                     {{ nc.ghichu }}
+                                </td>
+                                <td style="text-align: center; font-size: small">
+                                    <a @click="getDN(nc)">
+                                        <span style="color: green" class="icon is-small">
+                                            <i class="far fa-check-circle"></i>
+                                        </span>
+                                    </a>
                                 </td>
                                 <td style="text-align: center; font-size: small">
                                     <a @click="onDelete(nc)">
@@ -338,6 +346,12 @@ export default {
         },
     },
 
+    watch: {
+        filteredItems(newVal, oldVal) {
+            // Perform any necessary updates here
+        }
+    },
+
     computed: {
         filteredItems() {
             return this.dongiacong.filter(item => {
@@ -447,7 +461,6 @@ export default {
                             icon: "success",
                             title: "Cập nhật thông tin thành công",
                         });
-
                         this.isActive = false;
                     } catch (error) {
                         console.log(error);
@@ -472,56 +485,47 @@ export default {
             });
         },
 
-        onAddNc() {
-            Swal.fire({
-                title: "Chắc chắn thêm mới?",
-                icon: "warning",
-                showCancelButton: true,
-                confirmButtonColor: "#3085d6",
-                cancelButtonColor: "#d33",
-                confirmButtonText: "Đồng ý",
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    try {
-                        this.$axios.$post("/api/nguyencong/adddongiacong", this.form);
+        async onAddNc() {
+            try {
+                this.$axios.$post("/api/nguyencong/adddongiacong", this.form);
 
-                        const Toast = Swal.mixin({
-                            toast: true,
-                            position: "top-end",
-                            showConfirmButton: false,
-                            timer: 3000,
-                            timerProgressBar: true,
-                            didOpen: (toast) => {
-                                toast.addEventListener("mouseenter", Swal.stopTimer);
-                                toast.addEventListener("mouseleave", Swal.resumeTimer);
-                            },
-                        });
-                        Toast.fire({
-                            icon: "success",
-                            title: "Thêm mới thành công",
-                        });
-
-                        this.isActive_cre = false
-                    } catch (error) {
-                        console.log(error);
-                        const Toast = Swal.mixin({
-                            toast: true,
-                            position: "top-end",
-                            showConfirmButton: false,
-                            timer: 3000,
-                            timerProgressBar: true,
-                            didOpen: (toast) => {
-                                toast.addEventListener("mouseenter", Swal.stopTimer);
-                                toast.addEventListener("mouseleave", Swal.resumeTimer);
-                            },
-                        });
-                        Toast.fire({
-                            icon: "error",
-                            title: "Có lỗi xảy ra !!!",
-                        });
-                    }
-                }
-            });
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener("mouseenter", Swal.stopTimer);
+                        toast.addEventListener("mouseleave", Swal.resumeTimer);
+                    },
+                });
+                Toast.fire({
+                    icon: "success",
+                    title: "Thêm mới thành công",
+                });
+                this.dongiacong = await this.$axios.$get(
+                    `/api/nguyencong/getalldongiacong`
+                );
+                this.isActive_cre = false
+            } catch (error) {
+                console.log(error);
+                const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                        toast.addEventListener("mouseenter", Swal.stopTimer);
+                        toast.addEventListener("mouseleave", Swal.resumeTimer);
+                    },
+                });
+                Toast.fire({
+                    icon: "error",
+                    title: "Có lỗi xảy ra !!!",
+                });
+            }
         },
 
         onDelete(nc) {
@@ -535,9 +539,14 @@ export default {
                     // xóa công đoạn khỏi bảng
                     this.$axios.$delete(`/api/nguyencong/dongiacong/${nc._id}`)
                         .then(response => {
-                            x(it => it._id === nc._id) // find the post index 
+                            // const index = this.filteredItems.findIndex(it => it._id === nc._id) // find the post index 
+                            // if (~index) // if the post exists in array
+                            //     this.filteredItems.splice(index, 1) //delete the post
+                            const index = this.dongiacong.findIndex(n => n._id === nc._id) // find the post index 
                             if (~index) // if the post exists in array
-                                this.filteredItems.splice(index, 1) //delete the post
+                                // console.log(index);
+                            // console.log(this.filteredItems);
+                            this.dongiacong.splice(index, 1) //delete the post
                         });
                 } else {
                     swal("Bạn đã hủy xóa");

@@ -1131,7 +1131,18 @@ export default {
                 }
                 );
             }
-
+            // lọc xưởng, mã tp và status
+            else if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_matp != "" && this.multiSearch_nhomtp == '') {
+                this.lokehoachpx = await this.$axios.$get(
+                    `/api/lokehoach/filtermapxmatpstatus`, {
+                    params: {
+                        matp: matp,
+                        status: status,
+                        mapx: mapxList,
+                    },
+                }
+                );
+            }
         },
 
         // --------------------------------------------------------------------------------------
