@@ -715,7 +715,7 @@ export default {
         // Lấy danh sách tất cả các lô kế hoạch phân xưởng sắp xếp theo phân xưởng
         async showAllLokhpx() {
             this.lokehoachpx = await this.$axios.$get(
-                `/api/lokehoach/getallkehoachphanxuongwithout0`
+                `/api/lokehoach/getallkehoachphanxuong_chonlkhdesx`
             );
             this.multiSearch_masp = ""
             this.multiSearch_matp = ""

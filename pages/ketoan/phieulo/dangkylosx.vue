@@ -1048,7 +1048,11 @@ export default {
       ],
       dataChildren: [],
       // dữ liệu
-      lokehoachpx: [],
+      lokehoachpx: [], // dữ liệu gốc ban đầu
+      // tìm cách xử lý bộ lọc dữ liệu
+      tempData: [], // dữ liệu sau khi lọc
+      filterOptions: 0,
+
       phanxuong: [],
       showLophanxuong: [], // khi bấm vào lô kế hoạch phân xưởng nào đó sẽ lưu thông tin lô đó vào biến này
       losanxuat: [], // lưu lô sản xuất
@@ -1202,6 +1206,14 @@ export default {
     itemsPerPage() {
       this.currentPage = 1;
     },
+    // dataChildren: {
+    //   immediate: true, // thực hiện truy vấn ngay từ khi component được khởi tạo
+    //   handler: function (newValue, oldValue) {
+    //     // thực hiện truy vấn tiếp theo khi giá trị của this.dataChildren thay đổi
+    //     console.log(newValue); // hiển thị dữ liệu mới nhất
+    //     // thực hiện truy vấn tiếp theo tại đây
+    //   },
+    // },
   },
 
   // bind v-model input type date
@@ -1379,6 +1391,7 @@ export default {
         return;
       }
       // console.log(data);
+      // hiển thị trạng thái đang tải dữ liệu
       this.dataChildren = await this.$axios.$get(
         `/api/lokehoach/getalllsxinkhpx?_id_khpx=${data._id}`
       );
@@ -1723,7 +1736,7 @@ export default {
       const status = this.Options_status;
       const nhomtp = this.multiSearch_nhomtp;
 
-      // chọn lọc full
+      // chọn lọc full 1
       if (
         this.selectedOptions.length > 0 &&
         this.Options_status.length > 0 &&
@@ -1742,7 +1755,7 @@ export default {
           }
         );
       }
-      // chỉ có mã px
+      // chỉ có mã px 2
       else if (
         this.selectedOptions.length > 0 &&
         !this.Options_status.length &&
@@ -1758,7 +1771,7 @@ export default {
           }
         );
       }
-      // chỉ có mã px và mã tp
+      // chỉ có mã px và mã tp 3
       else if (
         this.selectedOptions.length > 0 &&
         !this.Options_status.length &&
@@ -1777,7 +1790,7 @@ export default {
           }
         );
       }
-      // chỉ có mã px và nhomtp
+      // chỉ có mã px và nhomtp 4
       else if (
         this.selectedOptions.length > 0 &&
         !this.Options_status.length &&
@@ -1794,7 +1807,7 @@ export default {
           }
         );
       }
-      // chỉ có mã px và status
+      // chỉ có mã px và status 5
       else if (
         this.selectedOptions.length > 0 &&
         this.Options_status.length > 0 &&
@@ -1811,7 +1824,7 @@ export default {
           }
         );
       }
-      // lọc mỗi trạng thái
+      // lọc mỗi trạng thái 6
       else if (
         !this.selectedOptions.length &&
         this.Options_status.length > 0 &&
@@ -1828,7 +1841,7 @@ export default {
         );
       }
 
-      // lọc mỗi mã thành phẩm
+      // lọc mỗi mã thành phẩm 7
       else if (
         !this.selectedOptions.length &&
         !this.Options_status.length &&
@@ -1845,7 +1858,7 @@ export default {
         );
       }
 
-      // lọc thành phẩm + trạng thái
+      // lọc thành phẩm + trạng thái 8
       else if (
         !this.selectedOptions.length &&
         this.Options_status.length > 0 &&
@@ -1863,14 +1876,23 @@ export default {
         );
       }
 
-      // lọc mỗi nhóm thành phẩm
+      // lọc mỗi nhóm thành phẩm cần phải đặt tên cho mỗi bộ lọc để sau gọi lại 9
       else if (
         !this.selectedOptions.length &&
         !this.Options_status.length &&
         this.multiSearch_matp == "" &&
         this.multiSearch_nhomtp != ""
       ) {
-        this.lokehoachpx = await this.$axios.$get(
+        this.filterOptions = 9;
+        // this.lokehoachpx = await this.$axios.$get(
+        //   `/api/lokehoach/filteronlynhomtp`,
+        //   {
+        //     params: {
+        //       nhomtp: nhomtp,
+        //     },
+        //   }
+        // );
+        this.tempData = await this.$axios.$get(
           `/api/lokehoach/filteronlynhomtp`,
           {
             params: {
@@ -1878,6 +1900,7 @@ export default {
             },
           }
         );
+        this.lokehoachpx = this.tempData;
       }
 
       // lọc mỗi nhóm thành phẩm và mã thành phẩm
@@ -1969,6 +1992,43 @@ export default {
             },
           }
         );
+      }
+    },
+
+    async filterData1(filterOption) {
+      const mapxList = this.selectedOptions;
+      // const masp = this.multiSearch_masp
+      const matp = this.multiSearch_matp;
+      const status = this.Options_status;
+      const nhomtp = this.multiSearch_nhomtp;
+
+      switch (filterOption) {
+        case 1:
+          if (
+            !this.selectedOptions.length &&
+            !this.Options_status.length &&
+            this.multiSearch_matp == "" &&
+            this.multiSearch_nhomtp != ""
+          ) {
+            this.tempData = await this.$axios.$get(
+              `/api/lokehoach/filteronlynhomtp`,
+              {
+                params: {
+                  nhomtp: nhomtp,
+                },
+              }
+            );
+            this.lokehoachpx = this.tempData;
+          }
+          break;
+        case 2:
+          // Gọi lại bộ lọc khác
+          // ...
+          break;
+        // Thêm các case khác tương ứng với các lựa chọn bộ lọc khác
+        default:
+          // Nếu không có lựa chọn nào phù hợp
+          break;
       }
     },
 
@@ -2149,6 +2209,7 @@ export default {
         }
         if (!isDuplicate) {
           try {
+            // console.log(this.items);
             for (let i = 0; i < this.items.length; i++) {
               // console.log('this.items[i]', this.items[i]);
               if (this.items[i].soluonglsx == "") {
@@ -2170,33 +2231,51 @@ export default {
                 return;
               } else {
                 // this.soluonghanmuckhpx = slvuot
-                this.$axios.$post("/api/ketoan/addphieulosx", this.items[i]);
+                await this.$axios.$post(
+                  "/api/ketoan/addphieulosx",
+                  this.items[i]
+                );
+                this.lokehoachpx = await this.$axios.$get(
+                  `/api/lokehoach/getallkehoachphanxuongwithout0`
+                );
+                // ở đây phải lọc lại mới có dữ liệu mới nhất. cần phải cập nhật lại tempData
+                if (this.filterOptions == 9) {
+                  // ở đây phải đẩy dữ liệu vào this.tempData
+                  this.tempData = await this.filterData1(1);
+                }
 
-                const Toast = Swal.mixin({
-                  toast: true,
-                  position: "top-end",
-                  showConfirmButton: false,
-                  timer: 3000,
-                  timerProgressBar: true,
-                  didOpen: (toast) => {
-                    toast.addEventListener("mouseenter", Swal.stopTimer);
-                    toast.addEventListener("mouseleave", Swal.resumeTimer);
-                  },
-                });
-                Toast.fire({
-                  icon: "success",
-                  title: `Tạo phiếu lô sản xuất thành công. số lượng còn lại: ${slvuot}`,
-                });
                 // this.dataChildren.push(this.items[i]);
+                // console.log(this.dataChildren);
               }
             }
-            // this.dataChildren.push(...this.items);
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+              },
+            });
+            Toast.fire({
+              icon: "success",
+              title: `Tạo phiếu lô sản xuất thành công. số lượng còn lại: ${slvuot}`,
+            });
+
+            this.dataChildren.push(...this.items);
+            // console.log(this.items);
             let turn = 1;
             let length = this.items.length;
             while (turn <= length) {
               this.deleteRow(this.items.length - turn);
               turn += 1;
             }
+            
+            this.dataChildren = await this.$axios.$get(
+                  `/api/lokehoach/getalllsxinkhpx?_id_khpx=${datalkh._id}`
+                );
           } catch (error) {
             console.log(error);
           }
@@ -2260,7 +2339,13 @@ export default {
                 return;
               } else {
                 this.$axios.$post("/api/ketoan/addphieulosx", this.items[i]);
-
+                this.lokehoachpx = await this.$axios.$get(
+                  `/api/lokehoach/getallkehoachphanxuongwithout0`
+                );
+                // ở đây phải lọc lại mới có dữ liệu mới nhất. cần phải cập nhật lại tempData
+                if (this.filterOptions == 9) {
+                  this.tempData = await this.filterData1(1);
+                }
                 const Toast = Swal.mixin({
                   toast: true,
                   position: "top-end",
@@ -2292,17 +2377,11 @@ export default {
           }
         }
       }
-      this.lokehoachpx = await this.$axios.$get(
-        `/api/lokehoach/getallkehoachphanxuongwithout0`
-      );
-      this.dataChildren = await this.$axios.$get(
-        `/api/lokehoach/getalllsxinkhpx?_id_khpx=${datalkh._id}`
-      );
     },
 
     // update lô sản xuất
     async onUpdate(data) {
-      console.log(data._id);
+      // console.log(data._id);
       try {
         this.$axios.$patch(`/api/lokehoach/losanxuat/${data._id}`, data);
 
@@ -2311,6 +2390,13 @@ export default {
           (a, b) => new Date(a.ngaykt) - new Date(b.ngaykt)
         );
 
+        this.lokehoachpx = await this.$axios.$get(
+          `/api/lokehoach/getallkehoachphanxuongwithout0`
+        );
+        // ở đây phải lọc lại mới có dữ liệu mới nhất. cần phải cập nhật lại tempData
+        if (this.filterOptions == 9) {
+          this.tempData = await this.filterData1(1);
+        }
         const Toast = Swal.mixin({
           toast: true,
           position: "top-end",
@@ -2434,7 +2520,7 @@ export default {
     // },
 
     async onDeleteLsx(pl) {
-        // console.log(pl);
+      // console.log(pl);
       if (
         pl.status == 1 &&
         pl.status_tinhluong == false &&
@@ -2453,6 +2539,10 @@ export default {
         this.lokehoachpx = await this.$axios.$get(
           `/api/lokehoach/getallkehoachphanxuongwithout0`
         );
+        // ở đây phải lọc lại mới có dữ liệu mới nhất. cần phải cập nhật lại tempData
+        if (this.filterOptions == 9) {
+          this.tempData = await this.filterData1(1);
+        }
       } else {
         const Toast = Swal.mixin({
           toast: true,
