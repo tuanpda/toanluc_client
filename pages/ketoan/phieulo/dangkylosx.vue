@@ -388,7 +388,7 @@
               </td>
             </tr>
             <!-- <template v-for="(item, index) in paginatedTable.filter(el => el.status !== 3)"> -->
-            <template v-for="(item, index) in showData">
+            <template v-for="(item, index) in paginatedTable">
               <tr @click="watchDetail(index, item)">
                 <td>
                   <div
@@ -1145,25 +1145,30 @@ export default {
       ],
       tonhom: [], // lưu lại tổ nhóm
       nhomluong: [], // lưu nhóm lương
-      showData: [],
-      sortedData: [],
     };
   },
 
-  async mounted() {
+  mounted() {
     this.currentDateTime();
-    await this.showAllLokhpx();
-    await this.showAllPx();
+    this.showAllLokhpx();
+    this.showAllPx();
     this.deleteRow(0);
-    await this.maspinlkh();
-    await this.nhomtpinlkh();
-    await this.matpinlkh();
+    this.maspinlkh();
+    this.nhomtpinlkh();
+    this.matpinlkh();
   },
 
   computed: {
-    
+    // phân trang và sắp xếp
+    sortedTable() {
+      return this.lokehoachpx.sort((a, b) => {
+        if (a[this.sortKey] < b[this.sortKey]) return -1 * this.sortDirection;
+        if (a[this.sortKey] > b[this.sortKey]) return 1 * this.sortDirection;
+        return 0;
+      });
+    },
     pageCount() {
-      return Math.ceil(this.sortedData.length / this.itemsPerPage);
+      return Math.ceil(this.sortedTable.length / this.itemsPerPage);
     },
     startIndex() {
       return (this.currentPage - 1) * this.itemsPerPage;
@@ -1171,7 +1176,9 @@ export default {
     endIndex() {
       return this.startIndex + this.itemsPerPage;
     },
-   
+    paginatedTable() {
+      return this.sortedTable.slice(this.startIndex, this.endIndex);
+    },
     pages() {
       const startPage = Math.max(1, this.currentPage - 2);
       const endPage = Math.min(this.pageCount, this.currentPage + 2);
@@ -1227,18 +1234,6 @@ export default {
   },
 
   methods: {
-    paginatedTable() {
-      this.showData = this.sortedData.slice(this.startIndex, this.endIndex);
-    },
-    // phân trang và sắp xếp
-    sortedTable() {
-      this.sortedData = this.lokehoachpx.sort((a, b) => {
-        if (a[this.sortKey] < b[this.sortKey]) return -1 * this.sortDirection;
-        if (a[this.sortKey] > b[this.sortKey]) return 1 * this.sortDirection;
-        return 0;
-      });
-      this.paginatedTable();
-    },
     // --------------------------------------------------------------------------------------
     // 1: Các hàm hỗ trợ tính toán; lọc ...
     // suggest input mã sản phẩm
@@ -1381,7 +1376,6 @@ export default {
       this.isOpen = false;
       this.isOpenst = false;
       this.selectedOptions = [];
-      this.sortedTable();
     },
 
     // --------------------------------------------------------------------------------------
@@ -2418,7 +2412,6 @@ export default {
           icon: "success",
           title: "Đã cập nhật",
         });
-        this.sortedTable();
       } catch (error) {
         // console.log(error);
         const Toast = Swal.mixin({
@@ -2527,6 +2520,7 @@ export default {
     // },
 
     async onDeleteLsx(pl) {
+      // console.log(pl);
       if (
         pl.status == 1 &&
         pl.status_tinhluong == false &&
@@ -2545,7 +2539,6 @@ export default {
         this.lokehoachpx = await this.$axios.$get(
           `/api/lokehoach/getallkehoachphanxuongwithout0`
         );
-        this.sortedTable();
         // ở đây phải lọc lại mới có dữ liệu mới nhất. cần phải cập nhật lại tempData
         if (this.filterOptions == 9) {
           this.tempData = await this.filterData1(1);
