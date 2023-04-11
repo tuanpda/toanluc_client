@@ -2389,7 +2389,7 @@ export default {
     async onUpdate(data) {
       // console.log(data._id);
       try {
-        this.$axios.$patch(`/api/lokehoach/losanxuat/${data._id}`, data);
+        await this.$axios.$patch(`/api/lokehoach/losanxuat/${data._id}`, data);
 
         // Sắp xếp lại bảng theo ngày kết thúc ngay lập tức
         this.dataChildren.sort(
@@ -2527,13 +2527,12 @@ export default {
     // },
 
     async onDeleteLsx(pl) {
-      // console.log(pl);
       if (
         pl.status == 1 &&
         pl.status_tinhluong == false &&
         pl.datinhluong == false
       ) {
-        this.$axios
+        await this.$axios
           .$delete(`/api/lokehoach/losx/${pl._id}`)
           .then((response) => {
             const index = this.dataChildren.findIndex(
