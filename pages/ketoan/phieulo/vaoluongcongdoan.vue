@@ -3345,6 +3345,7 @@ export default {
             },
           }
         );
+        // console.log(this.tempData);
         this.sllosx = this.tempData;
       }
       // chỉ có mã px 2
@@ -3354,7 +3355,9 @@ export default {
         this.multiSearch_masp == ""
       ) {
         this.filterOptions = 2;
-        this.sllosx = await this.$axios.$get(
+        this.tempData = [];
+        this.sllosx = [];
+        this.tempData = await this.$axios.$get(
           `/api/lokehoach/filteronlymapxlosanxuat`,
           {
             params: {
@@ -3371,7 +3374,7 @@ export default {
         this.multiSearch_masp != ""
       ) {
         this.filterOptions = 3;
-        this.sllosx = await this.$axios.$get(
+        this.tempData = await this.$axios.$get(
           `/api/lokehoach/filteronlymapxandmasplosanxuat`,
           {
             params: {
@@ -3389,7 +3392,7 @@ export default {
         this.multiSearch_masp == ""
       ) {
         this.filterOptions = 4;
-        this.sllosx = await this.$axios.$get(
+        this.tempData = await this.$axios.$get(
           `/api/lokehoach/filteronlymapxandstatuslosanxuat`,
           {
             params: {
@@ -3407,7 +3410,7 @@ export default {
         this.multiSearch_masp == ""
       ) {
         this.filterOptions = 5;
-        this.sllosx = await this.$axios.$get(
+        this.tempData = await this.$axios.$get(
           `/api/lokehoach/filteronlystatuslosanxuat`,
           {
             params: {
@@ -3443,7 +3446,7 @@ export default {
         this.multiSearch_masp != ""
       ) {
         this.filterOptions = 7;
-        this.sllosx = await this.$axios.$get(
+        this.tempData = await this.$axios.$get(
           `/api/lokehoach/filteronlymaspandstatuslosx`,
           {
             params: {
@@ -3486,7 +3489,7 @@ export default {
             !this.Options_status.length &&
             this.multiSearch_masp == ""
           ) {
-            this.sllosx = await this.$axios.$get(
+            this.tempData = await this.$axios.$get(
               `/api/lokehoach/filteronlymapxlosanxuat`,
               {
                 params: {
@@ -3503,7 +3506,7 @@ export default {
             !this.Options_status.length &&
             this.multiSearch_masp != ""
           ) {
-            this.sllosx = await this.$axios.$get(
+            this.tempData = await this.$axios.$get(
               `/api/lokehoach/filteronlymapxandmasplosanxuat`,
               {
                 params: {
@@ -3521,7 +3524,7 @@ export default {
             this.Options_status.length > 0 &&
             this.multiSearch_masp == ""
           ) {
-            this.sllosx = await this.$axios.$get(
+            this.tempData = await this.$axios.$get(
               `/api/lokehoach/filteronlymapxandstatuslosanxuat`,
               {
                 params: {
@@ -3539,7 +3542,7 @@ export default {
             this.Options_status.length > 0 &&
             this.multiSearch_masp == ""
           ) {
-            this.sllosx = await this.$axios.$get(
+            this.tempData = await this.$axios.$get(
               `/api/lokehoach/filteronlystatuslosanxuat`,
               {
                 params: {
@@ -3676,8 +3679,31 @@ export default {
             `/api/ketoan/updatetonghong?_id=${this.getinfoplsx._id}`,
             dataUpdate
           );
-
-          this.getSolieuLSX_ALl_cht();
+          this.tempData = []
+          // this.getSolieuLSX_ALl_cht();
+          if (this.filterOptions == 1) {
+            await this.filterData1(1);
+            // console.log(this.tempData);
+            // console.log(this.sllosx);
+          } else if (this.filterOptions == 2) {
+            await this.filterData1(2);
+            // console.log(this.tempData);
+            // console.log(this.sllosx);
+          } else if (this.filterOptions == 3) {
+            await this.filterData1(3);
+          } else if (this.filterOptions == 4) {
+            await this.filterData1(4);
+          } else if (this.filterOptions == 5) {
+            await this.filterData1(5);
+          } else if (this.filterOptions == 6) {
+            await this.filterData1(6);
+          } else if (this.filterOptions == 7) {
+            await this.filterData1(7);
+          } else {
+            this.sllosx = await this.$axios.$get(
+              `/api/ketoan/getallphieulocht`
+            );
+          }
           this.allluongcongdoan = await this.$axios.$get(
             `/api/ketoan/getallluongcongdoaninlsx?_id_losx=${this.getinfoplsx._id}`
           );
@@ -3724,7 +3750,7 @@ export default {
         this.allluongcongnhat = await this.$axios.$get(
           `/api/ketoan/getallluongcongnhatinlsx?_id_losx=${this.getinfoplsx._id}`
         );
-        this.getSolieuLSX_ALl_cht();
+        // this.getSolieuLSX_ALl_cht();
       } catch (error) {
         console.log(error);
         const Toast = Swal.mixin({
@@ -3796,10 +3822,26 @@ export default {
       //   this.sllosx = await this.$axios.$get(`/api/ketoan/getallphieulocht`);
       // }
       // ở đây phải lọc lại mới có dữ liệu mới nhất. cần phải cập nhật lại tempData
-      if (this.filterOptions == 6) {
-        this.tempData = await this.filterData1(6);
+      if (this.filterOptions == 1) {
+        await this.filterData1(1);
+        // console.log(this.tempData);
+        // console.log(this.sllosx);
+      } else if (this.filterOptions == 2) {
+        await this.filterData1(2);
+        // console.log(this.tempData);
+        // console.log(this.sllosx);
+      } else if (this.filterOptions == 3) {
+        await this.filterData1(3);
+      } else if (this.filterOptions == 4) {
+        await this.filterData1(4);
+      } else if (this.filterOptions == 5) {
+        await this.filterData1(5);
+      } else if (this.filterOptions == 6) {
+        await this.filterData1(6);
       } else if (this.filterOptions == 7) {
-        this.tempData = await this.filterData1(7);
+        await this.filterData1(7);
+      } else {
+        this.sllosx = await this.$axios.$get(`/api/ketoan/getallphieulocht`);
       }
     },
     // Hàm update lương công nhật
@@ -3848,8 +3890,9 @@ export default {
               title: "Lô sản xuất đã được chốt, muốn xóa phải hủy chốt!!!",
             });
           } else {
+            console.log(this.tempData);
             // xóa công đoạn khỏi bảng
-            this.$axios
+            await this.$axios
               .$delete(`/api/lokehoach/luongcongnhan/${cd._id}`)
               .then((response) => {
                 const index = this.allluongcongdoan.findIndex(
@@ -3858,51 +3901,69 @@ export default {
                 if (~index)
                   // if the post exists in array
                   this.allluongcongdoan.splice(index, 1); //delete the post
-
-                this.$axios
-                  .$get(
-                    `/api/ketoan/getallluongcongdoaninlsx?_id_losx=${cd._id_losx}`
-                  )
-                  .then((response) => {
-                    // console.log(response);
-                    const tongdat = 0;
-                    if (response.length > 0) {
-                      const tonghong = response.reduce((total, item) => {
-                        const sohong = parseInt(item.sohong);
-                        if (!isNaN(sohong)) {
-                          return total + sohong;
-                        } else {
-                          return total;
-                        }
-                      }, 0);
-                      // console.log(tonghong);
-                      const dataUpdate = { tonghong: tonghong };
-                      this.$axios.$patch(
-                        `/api/ketoan/updateonlytonghong?_id=${cd._id_losx}`,
-                        dataUpdate
-                      );
-                      this.calculateTotals();
-                      this.getSolieuLSX_ALl_cht();
-                    } else {
-                      const tonghongff = 0;
-                      const dataUpdateth = { tonghong: tonghongff };
-                      this.$axios.$patch(
-                        `/api/ketoan/updateonlytonghong?_id=${cd._id_losx}`,
-                        dataUpdateth
-                      );
-                      const dataUpdate = { tongdat: tongdat };
-                      this.$axios.$patch(
-                        `/api/ketoan/updateonlytongdat?_id=${cd._id_losx}`,
-                        dataUpdate
-                      );
-                      this.calculateTotals();
-                      this.getSolieuLSX_ALl_cht();
-                    }
-                  });
               });
-            this.sllosx = await this.$axios.$get(
-              `/api/ketoan/getallphieulocht`
+            // this.sllosx = await this.$axios.$get(
+            //   `/api/ketoan/getallphieulocht`
+            // );
+            const datalcd = await this.$axios.$get(
+              `/api/ketoan/getallluongcongdoaninlsx?_id_losx=${cd._id_losx}`
             );
+            // console.log(datalcd);
+            const tongdat = 0;
+            if (datalcd.length > 0) {
+              const tonghong = datalcd.reduce((total, item) => {
+                const sohong = parseInt(item.sohong);
+                if (!isNaN(sohong)) {
+                  return total + sohong;
+                } else {
+                  return total;
+                }
+              }, 0);
+              // console.log(tonghong);
+              const dataUpdate = { tonghong: tonghong };
+              this.$axios.$patch(
+                `/api/ketoan/updateonlytonghong?_id=${cd._id_losx}`,
+                dataUpdate
+              );
+              this.calculateTotals();
+            } else {
+              const tonghongff = 0;
+              const dataUpdateth = { tonghong: tonghongff };
+              this.$axios.$patch(
+                `/api/ketoan/updateonlytonghong?_id=${cd._id_losx}`,
+                dataUpdateth
+              );
+              const dataUpdate = { tongdat: tongdat };
+              this.$axios.$patch(
+                `/api/ketoan/updateonlytongdat?_id=${cd._id_losx}`,
+                dataUpdate
+              );
+              this.calculateTotals();
+            }
+            this.tempData = []
+            if (this.filterOptions == 1) {
+              this.filterData1(1);
+              // console.log(this.tempData);
+              // console.log(this.sllosx);
+            } else if (this.filterOptions == 2) {
+              this.filterData1(2);
+              // console.log(this.tempData);
+              // console.log(this.sllosx);
+            } else if (this.filterOptions == 3) {
+              this.filterData1(3);
+            } else if (this.filterOptions == 4) {
+              this.filterData1(4);
+            } else if (this.filterOptions == 5) {
+              this.filterData1(5);
+            } else if (this.filterOptions == 6) {
+              this.filterData1(6);
+            } else if (this.filterOptions == 7) {
+              this.filterData1(7);
+            } else {
+              this.sllosx = await this.$axios.$get(
+                `/api/ketoan/getallphieulocht`
+              );
+            }
           }
         } catch (error) {
           // console.log(error);

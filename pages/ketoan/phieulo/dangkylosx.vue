@@ -1561,169 +1561,6 @@ export default {
 
     // --------------------------------------------------------------------------------------
     // Hàm lọc theo nhiều tiêu chí để cắt bớt độ dài dữ liệu
-    // async filterData() {
-    //     // console.log(this.selectedOptions)
-    //     // console.log(this.multiSearch_masp)
-    //     this.isOpen = false
-    //     this.isOpenst = false
-
-    //     const mapxList = this.selectedOptions
-    //     const masp = this.multiSearch_masp
-    //     const status = this.Options_status
-    //     const nhomsp = this.multiSearch_nhomsp
-
-    //     // chọn lọc  4 tiêu chí
-    //     if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp != "" && this.multiSearch_nhomsp != '') {
-    //         this.lokehoachpx = await this.$axios.$get(
-    //             `/api/lokehoach/filterfulldk`, {
-    //             params: {
-    //                 mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
-    //                 masp: masp,
-    //                 status: status,
-    //                 nhomsp: nhomsp
-    //             },
-    //         }
-    //         );
-    //     }
-    //     // chỉ có mã px
-    //     else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_masp == "" && this.multiSearch_nhomsp == '') {
-    //         this.lokehoachpx = await this.$axios.$get(
-    //             `/api/lokehoach/filteronlymapx`, {
-    //             params: {
-    //                 mapx: mapxList,
-    //             },
-    //         }
-    //         );
-    //     }
-    //     // chỉ có mã px và mã sp
-    //     else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_masp != "" && this.multiSearch_nhomsp == '') {
-    //         this.lokehoachpx = await this.$axios.$get(
-    //             `/api/lokehoach/filteronlymapxandmasp`, {
-    //             params: {
-    //                 mapx: mapxList,
-    //                 masp: masp
-    //             },
-    //         }
-    //         );
-    //     }
-    //     // chỉ có mã px và nhomsp
-    //     else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_masp == "" && this.multiSearch_nhomsp != '') {
-    //         this.lokehoachpx = await this.$axios.$get(
-    //             `/api/lokehoach/filteronlymapxandnhomsp`, {
-    //             params: {
-    //                 mapx: mapxList,
-    //                 nhomsp: nhomsp
-    //             },
-    //         }
-    //         );
-    //     }
-    //     // chỉ có mã px và status
-    //     else if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp == "" && this.multiSearch_nhomsp == '') {
-    //         this.lokehoachpx = await this.$axios.$get(
-    //             `/api/lokehoach/filteronlymapxandstatus`, {
-    //             params: {
-    //                 mapx: mapxList,
-    //                 status: status
-    //             },
-    //         }
-    //         );
-    //     }
-    //     // lọc mỗi trạng thái
-    //     else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.multiSearch_masp == "" && this.multiSearch_nhomsp == '') {
-    //         this.lokehoachpx = await this.$axios.$get(
-    //             `/api/lokehoach/filteronlystatus`, {
-    //             params: {
-    //                 status: status
-    //             },
-    //         }
-    //         );
-    //     }
-
-    //     // lọc mỗi mã sản phẩm
-    //     else if (!this.selectedOptions.length && !this.Options_status.length && this.multiSearch_masp != "" && this.multiSearch_nhomsp == '') {
-    //         this.lokehoachpx = await this.$axios.$get(
-    //             `/api/lokehoach/filteronlymasp`, {
-    //             params: {
-    //                 masp: masp
-    //             },
-    //         }
-    //         );
-    //     }
-
-    //     // lọc sản phẩm + trạng thái
-    //     else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.multiSearch_masp != "" && this.multiSearch_nhomsp == '') {
-    //         this.lokehoachpx = await this.$axios.$get(
-    //             `/api/lokehoach/filteronlymaspandstatus`, {
-    //             params: {
-    //                 masp: masp,
-    //                 status: status
-    //             },
-    //         }
-    //         );
-    //     }
-
-    //     // lọc mỗi nhóm px
-    //     else if (!this.selectedOptions.length && !this.Options_status.length && this.multiSearch_masp == "" && this.multiSearch_nhomsp != '') {
-    //         this.lokehoachpx = await this.$axios.$get(
-    //             `/api/lokehoach/filteronlynhomsp`, {
-    //             params: {
-    //                 nhomsp: nhomsp,
-    //             },
-    //         }
-    //         );
-    //     }
-
-    //     // lọc mỗi nhóm sp và sản phẩm
-    //     else if (!this.selectedOptions.length && !this.Options_status.length && this.multiSearch_masp != "" && this.multiSearch_nhomsp != '') {
-    //         this.lokehoachpx = await this.$axios.$get(
-    //             `/api/lokehoach/filteronlynhomspandmasp`, {
-    //             params: {
-    //                 nhomsp: nhomsp,
-    //                 masp: masp
-    //             },
-    //         }
-    //         );
-    //     }
-
-    //     // lọc mỗi nhóm sp và trạng thái
-    //     else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.multiSearch_masp == "" && this.multiSearch_nhomsp != '') {
-    //         this.lokehoachpx = await this.$axios.$get(
-    //             `/api/lokehoach/filteronlynhomspandstatus`, {
-    //             params: {
-    //                 nhomsp: nhomsp,
-    //                 status: status
-    //             },
-    //         }
-    //         );
-    //     }
-
-    //     // lọc xưởng, nhóm sp và status
-    //     else if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp == "" && this.multiSearch_nhomsp != '') {
-    //         this.lokehoachpx = await this.$axios.$get(
-    //             `/api/lokehoach/filteronlypxandnhomspandstatus`, {
-    //             params: {
-    //                 nhomsp: nhomsp,
-    //                 status: status,
-    //                 mapx: mapxList,
-    //             },
-    //         }
-    //         );
-    //     }
-
-    //     // lọc xưởng, mã sp và status
-    //     else if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp != "" && this.multiSearch_nhomsp == '') {
-    //         this.lokehoachpx = await this.$axios.$get(
-    //             `/api/lokehoach/filteronlypxandmaspandstatus`, {
-    //             params: {
-    //                 masp: masp,
-    //                 status: status,
-    //                 mapx: mapxList,
-    //             },
-    //         }
-    //         );
-    //     }
-
-    // },
     async filterData() {
       // console.log(this.selectedOptions)
       // console.log(this.Options_status)
@@ -1743,7 +1580,7 @@ export default {
         this.multiSearch_matp != "" &&
         this.multiSearch_nhomtp != ""
       ) {
-        this.lokehoachpx = await this.$axios.$get(
+        this.tempData = await this.$axios.$get(
           `/api/lokehoach/filterfulldkmtp`,
           {
             params: {
@@ -1754,6 +1591,7 @@ export default {
             },
           }
         );
+        this.lokehoachpx = this.tempData;
       }
       // chỉ có mã px 2
       else if (
@@ -1762,7 +1600,7 @@ export default {
         this.multiSearch_matp == "" &&
         this.multiSearch_nhomtp == ""
       ) {
-        this.lokehoachpx = await this.$axios.$get(
+        this.tempData = await this.$axios.$get(
           `/api/lokehoach/filteronlymapx`,
           {
             params: {
@@ -1770,6 +1608,7 @@ export default {
             },
           }
         );
+        this.lokehoachpx = this.tempData;
       }
       // chỉ có mã px và mã tp 3
       else if (
@@ -1778,9 +1617,9 @@ export default {
         this.multiSearch_matp != "" &&
         this.multiSearch_nhomtp == ""
       ) {
-        console.log(this.selectedOptions);
-
-        this.lokehoachpx = await this.$axios.$get(
+        // console.log(this.selectedOptions);
+        this.filterOptions = 3;
+        this.tempData = await this.$axios.$get(
           `/api/lokehoach/filteronlymapxandmatp`,
           {
             params: {
@@ -1789,6 +1628,7 @@ export default {
             },
           }
         );
+        this.lokehoachpx = this.tempData;
       }
       // chỉ có mã px và nhomtp 4
       else if (
@@ -1797,7 +1637,8 @@ export default {
         this.multiSearch_matp == "" &&
         this.multiSearch_nhomtp != ""
       ) {
-        this.lokehoachpx = await this.$axios.$get(
+        this.filterOptions = 4;
+        this.tempData = await this.$axios.$get(
           `/api/lokehoach/filteronlymapxandnhomtp`,
           {
             params: {
@@ -1806,6 +1647,7 @@ export default {
             },
           }
         );
+        this.lokehoachpx = this.tempData;
       }
       // chỉ có mã px và status 5
       else if (
@@ -1814,7 +1656,8 @@ export default {
         this.multiSearch_matp == "" &&
         this.multiSearch_nhomtp == ""
       ) {
-        this.lokehoachpx = await this.$axios.$get(
+        this.filterOptions = 5;
+        this.tempData = await this.$axios.$get(
           `/api/lokehoach/filteronlymapxandstatus`,
           {
             params: {
@@ -1823,6 +1666,7 @@ export default {
             },
           }
         );
+        this.lokehoachpx = this.tempData;
       }
       // lọc mỗi trạng thái 6
       else if (
@@ -1831,7 +1675,8 @@ export default {
         this.multiSearch_matp == "" &&
         this.multiSearch_nhomtp == ""
       ) {
-        this.lokehoachpx = await this.$axios.$get(
+        this.filterOptions = 6;
+        this.tempData = await this.$axios.$get(
           `/api/lokehoach/filteronlystatus`,
           {
             params: {
@@ -1839,6 +1684,7 @@ export default {
             },
           }
         );
+        this.lokehoachpx = this.tempData;
       }
 
       // lọc mỗi mã thành phẩm 7
@@ -1848,7 +1694,8 @@ export default {
         this.multiSearch_matp != "" &&
         this.multiSearch_nhomtp == ""
       ) {
-        this.lokehoachpx = await this.$axios.$get(
+        this.filterOptions = 7;
+        this.tempData = await this.$axios.$get(
           `/api/lokehoach/filteronlymatp`,
           {
             params: {
@@ -1856,6 +1703,7 @@ export default {
             },
           }
         );
+        this.lokehoachpx = this.tempData;
       }
 
       // lọc thành phẩm + trạng thái 8
@@ -1865,7 +1713,8 @@ export default {
         this.multiSearch_matp != "" &&
         this.multiSearch_nhomtp == ""
       ) {
-        this.lokehoachpx = await this.$axios.$get(
+        this.filterOptions = 8;
+        this.tempData = await this.$axios.$get(
           `/api/lokehoach/filteronlymatpandstatus`,
           {
             params: {
@@ -1874,6 +1723,7 @@ export default {
             },
           }
         );
+        this.lokehoachpx = this.tempData;
       }
 
       // lọc mỗi nhóm thành phẩm cần phải đặt tên cho mỗi bộ lọc để sau gọi lại 9
@@ -1884,14 +1734,6 @@ export default {
         this.multiSearch_nhomtp != ""
       ) {
         this.filterOptions = 9;
-        // this.lokehoachpx = await this.$axios.$get(
-        //   `/api/lokehoach/filteronlynhomtp`,
-        //   {
-        //     params: {
-        //       nhomtp: nhomtp,
-        //     },
-        //   }
-        // );
         this.tempData = await this.$axios.$get(
           `/api/lokehoach/filteronlynhomtp`,
           {
@@ -1903,14 +1745,15 @@ export default {
         this.lokehoachpx = this.tempData;
       }
 
-      // lọc mỗi nhóm thành phẩm và mã thành phẩm
+      // lọc mỗi nhóm thành phẩm và mã thành phẩm 10
       else if (
         !this.selectedOptions.length &&
         !this.Options_status.length &&
         this.multiSearch_matp != "" &&
         this.multiSearch_nhomtp != ""
       ) {
-        this.lokehoachpx = await this.$axios.$get(
+        this.filterOptions = 10;
+        this.tempData = await this.$axios.$get(
           `/api/lokehoach/filteronlynhomtpandmatp`,
           {
             params: {
@@ -1919,16 +1762,18 @@ export default {
             },
           }
         );
+        this.lokehoachpx = this.tempData;
       }
 
-      // lọc mỗi nhóm tp và trạng thái
+      // lọc mỗi nhóm tp và trạng thái 11
       else if (
         !this.selectedOptions.length &&
         this.Options_status.length > 0 &&
         this.multiSearch_matp == "" &&
         this.multiSearch_nhomtp != ""
       ) {
-        this.lokehoachpx = await this.$axios.$get(
+        this.filterOptions = 11;
+        this.tempData = await this.$axios.$get(
           `/api/lokehoach/filteronlynhomtpandstatus`,
           {
             params: {
@@ -1937,16 +1782,18 @@ export default {
             },
           }
         );
+        this.lokehoachpx = this.tempData;
       }
 
-      // lọc nhóm thành phẩm; nhóm sản phẩm và trạng thái
+      // lọc nhóm thành phẩm; nhóm sản phẩm và trạng thái 12
       else if (
         !this.selectedOptions.length &&
         this.Options_status.length > 0 &&
         this.multiSearch_matp != "" &&
         this.multiSearch_nhomtp != ""
       ) {
-        this.lokehoachpx = await this.$axios.$get(
+        this.filterOptions = 12;
+        this.tempData = await this.$axios.$get(
           `/api/lokehoach/filteronlynhomtpnhomtpstatus`,
           {
             params: {
@@ -1956,15 +1803,17 @@ export default {
             },
           }
         );
+        this.lokehoachpx = this.tempData;
       }
-      // lọc xưởng, nhóm tp và status
+      // lọc xưởng, nhóm tp và status 13
       else if (
         this.selectedOptions.length > 0 &&
         this.Options_status.length > 0 &&
         this.multiSearch_matp == "" &&
         this.multiSearch_nhomtp != ""
       ) {
-        this.lokehoachpx = await this.$axios.$get(
+        this.filterOptions = 13;
+        this.tempData = await this.$axios.$get(
           `/api/lokehoach/filteronlypxandnhomtpandstatus`,
           {
             params: {
@@ -1974,15 +1823,17 @@ export default {
             },
           }
         );
+        this.lokehoachpx = this.tempData;
       }
-      // lọc xưởng, nhóm tp và mã thành phẩm
+      // lọc xưởng, nhóm tp và mã thành phẩm 14
       else if (
         this.selectedOptions.length > 0 &&
         !this.Options_status.length &&
         this.multiSearch_matp != "" &&
         this.multiSearch_nhomtp != ""
       ) {
-        this.lokehoachpx = await this.$axios.$get(
+        this.filterOptions = 14;
+        this.tempData = await this.$axios.$get(
           `/api/lokehoach/filteronlypxandnhomtpmatp`,
           {
             params: {
@@ -1992,6 +1843,27 @@ export default {
             },
           }
         );
+        this.lokehoachpx = this.tempData;
+      }
+      // lọc xưởng, mã thành phẩm trạng thái 15
+      else if (
+        this.selectedOptions.length > 0 &&
+        this.Options_status.length > 0 &&
+        this.multiSearch_matp != "" &&
+        this.multiSearch_nhomtp == ""
+      ) {
+        this.filterOptions = 15;
+        this.tempData = await this.$axios.$get(
+          `/api/lokehoach/filteronlypxandmatptrangthai`,
+          {
+            params: {
+              status: status,
+              matp: matp,
+              mapx: mapxList,
+            },
+          }
+        );
+        this.lokehoachpx = this.tempData;
       }
     },
 
@@ -2004,6 +1876,158 @@ export default {
 
       switch (filterOption) {
         case 1:
+          if (
+            this.selectedOptions.length > 0 &&
+            this.Options_status.length > 0 &&
+            this.multiSearch_matp != "" &&
+            this.multiSearch_nhomtp != ""
+          ) {
+            this.tempData = await this.$axios.$get(
+              `/api/lokehoach/filterfulldkmtp`,
+              {
+                params: {
+                  mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
+                  matp: matp,
+                  status: status,
+                  nhomtp: nhomtp,
+                },
+              }
+            );
+            this.lokehoachpx = this.tempData;
+          }
+          break;
+        case 2:
+          if (
+            this.selectedOptions.length > 0 &&
+            !this.Options_status.length &&
+            this.multiSearch_matp == "" &&
+            this.multiSearch_nhomtp == ""
+          ) {
+            this.tempData = await this.$axios.$get(
+              `/api/lokehoach/filteronlymapx`,
+              {
+                params: {
+                  mapx: mapxList,
+                },
+              }
+            );
+            this.lokehoachpx = this.tempData;
+          }
+          break;
+        case 3:
+          if (
+            this.selectedOptions.length > 0 &&
+            !this.Options_status.length &&
+            this.multiSearch_matp != "" &&
+            this.multiSearch_nhomtp == ""
+          ) {
+            // console.log(this.selectedOptions);
+            this.tempData = await this.$axios.$get(
+              `/api/lokehoach/filteronlymapxandmatp`,
+              {
+                params: {
+                  mapx: mapxList,
+                  matp: matp,
+                },
+              }
+            );
+            this.lokehoachpx = this.tempData;
+          }
+          break;
+        case 4:
+          if (
+            this.selectedOptions.length > 0 &&
+            !this.Options_status.length &&
+            this.multiSearch_matp == "" &&
+            this.multiSearch_nhomtp != ""
+          ) {
+            this.tempData = await this.$axios.$get(
+              `/api/lokehoach/filteronlymapxandnhomtp`,
+              {
+                params: {
+                  mapx: mapxList,
+                  nhomtp: nhomtp,
+                },
+              }
+            );
+            this.lokehoachpx = this.tempData;
+          }
+          break;
+        case 5:
+          if (
+            this.selectedOptions.length > 0 &&
+            this.Options_status.length > 0 &&
+            this.multiSearch_matp == "" &&
+            this.multiSearch_nhomtp == ""
+          ) {
+            this.tempData = await this.$axios.$get(
+              `/api/lokehoach/filteronlymapxandstatus`,
+              {
+                params: {
+                  mapx: mapxList,
+                  status: status,
+                },
+              }
+            );
+            this.lokehoachpx = this.tempData;
+          }
+          break;
+        case 6:
+          if (
+            !this.selectedOptions.length &&
+            this.Options_status.length > 0 &&
+            this.multiSearch_matp == "" &&
+            this.multiSearch_nhomtp == ""
+          ) {
+            this.tempData = await this.$axios.$get(
+              `/api/lokehoach/filteronlystatus`,
+              {
+                params: {
+                  status: status,
+                },
+              }
+            );
+            this.lokehoachpx = this.tempData;
+          }
+          break;
+        case 7:
+          if (
+            !this.selectedOptions.length &&
+            !this.Options_status.length &&
+            this.multiSearch_matp != "" &&
+            this.multiSearch_nhomtp == ""
+          ) {
+            this.tempData = await this.$axios.$get(
+              `/api/lokehoach/filteronlymatp`,
+              {
+                params: {
+                  matp: matp,
+                },
+              }
+            );
+            this.lokehoachpx = this.tempData;
+          }
+          break;
+        case 8:
+          if (
+            !this.selectedOptions.length &&
+            this.Options_status.length > 0 &&
+            this.multiSearch_matp != "" &&
+            this.multiSearch_nhomtp == ""
+          ) {
+            this.tempData = await this.$axios.$get(
+              `/api/lokehoach/filteronlymatpandstatus`,
+              {
+                params: {
+                  matp: matp,
+                  status: status,
+                },
+              }
+            );
+            this.lokehoachpx = this.tempData;
+          }
+          break;
+        case 9:
           if (
             !this.selectedOptions.length &&
             !this.Options_status.length &&
@@ -2021,9 +2045,124 @@ export default {
             this.lokehoachpx = this.tempData;
           }
           break;
-        case 2:
-          // Gọi lại bộ lọc khác
-          // ...
+        case 10:
+          if (
+            !this.selectedOptions.length &&
+            !this.Options_status.length &&
+            this.multiSearch_matp != "" &&
+            this.multiSearch_nhomtp != ""
+          ) {
+            this.tempData = await this.$axios.$get(
+              `/api/lokehoach/filteronlynhomtpandmatp`,
+              {
+                params: {
+                  nhomtp: nhomtp,
+                  matp: matp,
+                },
+              }
+            );
+            this.lokehoachpx = this.tempData;
+          }
+          break;
+        case 11:
+          if (
+            !this.selectedOptions.length &&
+            this.Options_status.length > 0 &&
+            this.multiSearch_matp == "" &&
+            this.multiSearch_nhomtp != ""
+          ) {
+            this.filterOptions = 11;
+            this.tempData = await this.$axios.$get(
+              `/api/lokehoach/filteronlynhomtpandstatus`,
+              {
+                params: {
+                  nhomtp: nhomtp,
+                  status: status,
+                },
+              }
+            );
+            this.lokehoachpx = this.tempData;
+          }
+          break;
+        case 12:
+          if (
+            !this.selectedOptions.length &&
+            this.Options_status.length > 0 &&
+            this.multiSearch_matp != "" &&
+            this.multiSearch_nhomtp != ""
+          ) {
+            this.tempData = await this.$axios.$get(
+              `/api/lokehoach/filteronlynhomtpnhomtpstatus`,
+              {
+                params: {
+                  nhomtp: nhomtp,
+                  status: status,
+                  matp: matp,
+                },
+              }
+            );
+            this.lokehoachpx = this.tempData;
+          }
+          break;
+        case 13:
+          if (
+            this.selectedOptions.length > 0 &&
+            this.Options_status.length > 0 &&
+            this.multiSearch_matp == "" &&
+            this.multiSearch_nhomtp != ""
+          ) {
+            this.tempData = await this.$axios.$get(
+              `/api/lokehoach/filteronlypxandnhomtpandstatus`,
+              {
+                params: {
+                  nhomtp: nhomtp,
+                  status: status,
+                  mapx: mapxList,
+                },
+              }
+            );
+            this.lokehoachpx = this.tempData;
+          }
+          break;
+        case 14:
+          if (
+            this.selectedOptions.length > 0 &&
+            !this.Options_status.length &&
+            this.multiSearch_matp != "" &&
+            this.multiSearch_nhomtp != ""
+          ) {
+            this.tempData = await this.$axios.$get(
+              `/api/lokehoach/filteronlypxandnhomtpmatp`,
+              {
+                params: {
+                  nhomtp: nhomtp,
+                  matp: matp,
+                  mapx: mapxList,
+                },
+              }
+            );
+            this.lokehoachpx = this.tempData;
+          }
+          break;
+        case 15:
+          if (
+            this.selectedOptions.length > 0 &&
+            this.Options_status.length > 0 &&
+            this.multiSearch_matp != "" &&
+            this.multiSearch_nhomtp == ""
+          ) {
+            this.tempData = await this.$axios.$get(
+              `/api/lokehoach/filteronlypxandmatptrangthai`,
+              {
+                params: {
+                  status: status,
+                  matp: matp,
+                  mapx: mapxList,
+                },
+              }
+            );
+            this.lokehoachpx = this.tempData;
+          }
           break;
         // Thêm các case khác tương ứng với các lựa chọn bộ lọc khác
         default:
@@ -2272,10 +2411,10 @@ export default {
               this.deleteRow(this.items.length - turn);
               turn += 1;
             }
-            
+
             this.dataChildren = await this.$axios.$get(
-                  `/api/lokehoach/getalllsxinkhpx?_id_khpx=${datalkh._id}`
-                );
+              `/api/lokehoach/getalllsxinkhpx?_id_khpx=${datalkh._id}`
+            );
           } catch (error) {
             console.log(error);
           }
