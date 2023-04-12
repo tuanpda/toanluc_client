@@ -1519,7 +1519,7 @@ export default {
         };
       }
 
-      this.$axios.$post("/api/ketoan/addphieulosx", formData).then(async () => {
+      let newItem = await this.$axios.$post("/api/ketoan/addphieulosx", formData).then(async () => {
         const Toast = Swal.mixin({
           toast: true,
           position: "top-end",
@@ -2097,6 +2097,7 @@ export default {
       // console.log(number_lsx)
       this.isaddlosx = 1;
       this.items.push({
+        _id: null,
         _id_khnam: dataAdd._id_khnam,
         _id_lonhamay: dataAdd._id_lonhamay,
         _id_khpx: dataAdd._id,
@@ -2231,10 +2232,11 @@ export default {
                 return;
               } else {
                 // this.soluonghanmuckhpx = slvuot
-                await this.$axios.$post(
+                let newItem = await this.$axios.$post(
                   "/api/ketoan/addphieulosx",
                   this.items[i]
                 );
+                this.items[i]._id = newItem._id;
                 this.lokehoachpx = await this.$axios.$get(
                   `/api/lokehoach/getallkehoachphanxuongwithout0`
                 );
@@ -2338,7 +2340,8 @@ export default {
                 });
                 return;
               } else {
-                this.$axios.$post("/api/ketoan/addphieulosx", this.items[i]);
+                let newItem = await this.$axios.$post("/api/ketoan/addphieulosx", this.items[i]);
+                this.items[i]._id = newItem._id;
                 this.lokehoachpx = await this.$axios.$get(
                   `/api/lokehoach/getallkehoachphanxuongwithout0`
                 );
@@ -2377,6 +2380,7 @@ export default {
           }
         }
       }
+      this.filterData();
     },
 
     // update lô sản xuất
@@ -2430,6 +2434,7 @@ export default {
           title: "Có lỗi xảy ra !!!",
         });
       }
+      this.filterData();
     },
 
     // update lô kế hoạch phân xưởng
@@ -2437,7 +2442,7 @@ export default {
       // console.log(data)
       try {
         // data.status = this.status
-        this.$axios.$patch(
+        await this.$axios.$patch(
           `/api/lokehoach/updatelokehoachpxatdangkylodesanxuat/${data._id}`,
           data
         );
@@ -2560,6 +2565,7 @@ export default {
           title: "Lô đã được đưa vào sản xuất, không thể xóa!!!",
         });
       }
+      this.filterData();
     },
   },
 };
