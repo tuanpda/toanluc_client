@@ -615,6 +615,7 @@ export default {
                 `/api/ketoan/getallphieulo`
             );
             this.multiSearch_masp = ""
+            this.multiSearch_nhomsp = ''
             this.Options_status = []
             this.isOpen = false
             this.isOpenst = false
@@ -770,6 +771,42 @@ export default {
                     params: {
                         nhomsp: nhomsp,
                         status: status,
+                        masp: masp
+                    },
+                }
+                );
+            }
+
+            // lọc mã phân xưởng; nhóm sp; mã sp
+            else if (this.selectedOptions.length > 0 && !this.Options_status.length && this.multiSearch_masp != "" && this.multiSearch_nhomsp != '') {
+                this.lokehoachsx = await this.$axios.$get(
+                    `/api/lokehoach/filtermapxnhomspmasp`, {
+                    params: {
+                        nhomsp: nhomsp,
+                        mapx: mapxList,
+                        masp: masp
+                    },
+                }
+                );
+            }
+
+            // lọc nhóm sp
+            else if (!this.selectedOptions.length && !this.Options_status.length && this.multiSearch_masp == "" && this.multiSearch_nhomsp != '') {
+                this.lokehoachsx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlynhomsp`, {
+                    params: {
+                        nhomsp: nhomsp,
+                    },
+                }
+                );
+            }
+
+            // lọc nhóm sp; mã sp
+            else if (!this.selectedOptions.length && !this.Options_status.length && this.multiSearch_masp != "" && this.multiSearch_nhomsp != '') {
+                this.lokehoachsx = await this.$axios.$get(
+                    `/api/lokehoach/filternhomspmasp`, {
+                    params: {
+                        nhomsp: nhomsp,
                         masp: masp
                     },
                 }

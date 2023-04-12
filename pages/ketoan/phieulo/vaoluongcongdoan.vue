@@ -332,33 +332,22 @@
             <tr
               v-for="(item, index) in paginatedTable"
               :key="index + 'llllkiq'"
-              :class="{ highlight: item._id == phieulosx }"
+              :class="{ highlighted: item === highlightedRow }"
+              @click="highlightRow(item)"
             >
               <td style="text-align: center">
                 <input v-model="selected" :value="item" type="checkbox" />
               </td>
-              <td
-                style="
-                  font-size: small;
-                  text-align: center;
-                  background-color: #effaf5;
-                "
-              >
+              <td style="font-size: small; text-align: center">
                 {{ index + 1 }}
               </td>
-              <td style="font-size: small; background-color: #effaf5">
+              <td style="font-size: small">
                 {{ item.mapx }}
               </td>
-              <td style="font-size: small; background-color: #effaf5">
-                {{ item.makh }}
+              <td style="font-size: small">
+                {{ item.malonhamay }}
               </td>
-              <td
-                style="
-                  font-size: small;
-                  background-color: #effaf5;
-                  text-align: center;
-                "
-              >
+              <td style="font-size: small; text-align: center">
                 {{ item.makhpx }}
               </td>
               <td
@@ -371,38 +360,20 @@
               >
                 {{ item.malosx }}
               </td>
-              <td style="font-size: small; background-color: #effaf5">
+              <td style="font-size: small">
                 {{ item.masp }}
               </td>
               <!-- <td style="font-size: small; background-color: #effaf5;">{{ item.tensp }}</td> -->
-              <td
-                style="
-                  font-size: small;
-                  background-color: #effaf5;
-                  text-align: center;
-                "
-              >
+              <td style="font-size: small; text-align: center">
                 {{ item.nhomluong }}
               </td>
-              <td
-                style="
-                  font-size: small;
-                  text-align: center;
-                  background-color: #effaf5;
-                "
-              >
+              <td style="font-size: small; text-align: center">
                 {{ item.ngaybd | formatDate }}
               </td>
               <!-- <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
                                 item.ngaykt | formatDate
                             }}</td> -->
-              <td
-                style="
-                  font-size: small;
-                  text-align: center;
-                  background-color: #effaf5;
-                "
-              >
+              <td style="font-size: small; text-align: center">
                 {{ item.soluonglsx }}
               </td>
               <template>
@@ -533,19 +504,19 @@
         <br />
         <label class="checkbox">
           <!-- <input type="checkbox" v-model="checkViewluong"> -->
-          <span>Chi tiết lương tại lô sản xuất: </span>
-          <span style="color: red; font-weight: 500">{{
+          <span style="font-size: small">Chi tiết lương tại lô sản xuất: </span>
+          <span style="color: red; font-weight: 500; font-size: small">{{
             getinfoplsx.malosx
           }}</span>
-          <span style="font-weight: 500">
+          <span style="font-weight: 500; font-size: small">
             - {{ getinfoplsx.tenpx }} - {{ getinfoplsx.mapx }}</span
           >
           |
-          <span style="font-weight: 500; color: blue"
-            >Mã kế hoạch: {{ getinfoplsx.makh }}</span
+          <span style="font-weight: 500; color: blue; font-size: small"
+            >Mã lô nhà máy: {{ getinfoplsx.malonhamay }}</span
           >
           |
-          <span style="font-weight: 500; color: green"
+          <span style="font-weight: 500; color: green; font-size: small"
             >Mã kế hoạch PX: {{ getinfoplsx.makhpx }}</span
           >
           <br />
@@ -563,7 +534,7 @@
             }}</span></span
           >
         </label>
-        <div v-if="checkViewluong == true">
+        <div v-if="checkViewluong == true" style="margin-top: 5px">
           <div class="table_wrapper">
             <table
               class="table is-responsive is-bordered is-narrow is-fullwidth"
@@ -1888,7 +1859,8 @@ export default {
       ],
       multiSearch_masp: "",
       multiSearch_nhomsp: "",
-
+      // hightligh
+      highlightedRow: null,
       tempData: [], // dữ liệu sau khi lọc
       filterOptions: 0,
 
@@ -2252,6 +2224,10 @@ export default {
       }
       return new Date(value);
     },
+    // hàm highlight để đánh dấu row nào được chọn
+    highlightRow(row) {
+      this.highlightedRow = row;
+    },
     // format date
     prefixformatDate(value) {
       if (!value) {
@@ -2490,8 +2466,18 @@ export default {
     },
     // Sự kiện bấm nút thêm công nhật của công nhân
     async addCongnhat() {
+      if (this.getinfoplsx.mapx && !this.getinfoplsx.mato) {
+        this.cong_nhan = await this.$axios.$get(
+          `/api/congnhan/allcongnhanpx?mapx=${this.getinfoplsx.mapx}`
+        );
+      } else {
+        this.cong_nhan = await this.$axios.$get(
+          `/api/congnhan/allcongnhanto?mato=${this.getinfoplsx.mato}`
+        );
+      }
       this.dmcongnhat = await this.$axios.$get(`/api/ketoan/alldmcongnhat`);
       this.iscongnhat = 1;
+      // console.log(this.items_cn);
       this.items_cn.push({
         _id_losx: this.getinfoplsx._id,
         kehoachnam: this.getinfoplsx.kehoachnam,
@@ -2512,14 +2498,16 @@ export default {
         stopday_losx: "",
         status: 0,
         ngaythuchien: this.getinfoplsx.ngaybd,
-        nhomto_cnt: {
-          maxuong: "",
-          tenxuong: "",
-          tento: "",
-          mato: "",
-          tencn: "",
-          macn: "",
-        },
+        nhomto_cnt: [
+          {
+            maxuong: "",
+            tenxuong: "",
+            tento: "",
+            mato: "",
+            tencn: "",
+            macn: "",
+          },
+        ],
         nhomto: [
           {
             maxuong: "",
@@ -2529,6 +2517,22 @@ export default {
           },
         ],
       });
+
+      for (let i = 0; i < this.items_cn.length; i++) {
+        // console.log(this.cong_nhan)
+        for (let k = 0; k < this.cong_nhan.length; k++) {
+          let cn = {
+            maxuong: this.cong_nhan[k].mapx,
+            tenxuong: this.cong_nhan[k].tenpx,
+            tento: this.cong_nhan[k].tento,
+            mato: this.cong_nhan[k].mato,
+            tencn: this.cong_nhan[k].tencn,
+            macn: this.cong_nhan[k].macn,
+          };
+          this.items_cn[i].nhomto_cnt.push(cn);
+          // console.log(this.items[i].nhomto_cnt)
+        }
+      }
     },
     // Copy công đoạn sản xuất
     async copyCongdoan(data, index) {
@@ -3319,6 +3323,8 @@ export default {
     // Hàm lọc dữ liệu
     // Lọc nhiều tiêu chí
     async filterData() {
+      this.allluongcongdoan = [];
+      this.allluongcongnhat = [];
       // console.log(this.selectedOptions)
       // console.log(this.Options_status)
       this.isOpen = false;
@@ -3626,15 +3632,7 @@ export default {
             return total;
           }
         }, 0);
-        // console.log(this.tonghonginlo);
-        // for (let i = 0; i < this.items.length; i++) {
-        //         if (
-        //             this.items[i].congnhan == "" &&
-        //             this.items[i].sodat == ""
-        //         ) {
-        //             this.items.splice(i,1)
-        //             }
-        // }
+
         this.items = this.items.filter(
           (item) => item.congnhan != "" && item.sodat != ""
         );
@@ -3642,24 +3640,26 @@ export default {
         if (this.items.length > 0) {
           for (let i = 0; i < this.items.length; i++) {
             // cập nhật lương công đoạn
-            this.$axios.$post("/api/ketoan/addluongcongdoan", this.items[i]);
-
-            const Toast = Swal.mixin({
-              toast: true,
-              position: "top-end",
-              showConfirmButton: false,
-              timer: 3000,
-              timerProgressBar: true,
-              didOpen: (toast) => {
-                toast.addEventListener("mouseenter", Swal.stopTimer);
-                toast.addEventListener("mouseleave", Swal.resumeTimer);
-              },
-            });
-            Toast.fire({
-              icon: "success",
-              title: "Đã thêm công đoạn lương",
-            });
+            await this.$axios.$post(
+              "/api/ketoan/addluongcongdoan",
+              this.items[i]
+            );
           }
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
+          Toast.fire({
+            icon: "success",
+            title: "Đã thêm công đoạn lương",
+          });
           //   console.log(this.items);
           // tinh tong hong cu
 
@@ -3675,11 +3675,11 @@ export default {
             tonghong: th,
             ngayhoanthanhtt: this.ngayhoanthanh,
           };
-          this.$axios.$patch(
+          await this.$axios.$patch(
             `/api/ketoan/updatetonghong?_id=${this.getinfoplsx._id}`,
             dataUpdate
           );
-          this.tempData = []
+          this.tempData = [];
           // this.getSolieuLSX_ALl_cht();
           if (this.filterOptions == 1) {
             await this.filterData1(1);
@@ -3722,24 +3722,28 @@ export default {
 
         if (this.items_cn.length > 0) {
           for (let i = 0; i < this.items_cn.length; i++) {
-            this.$axios.$post("/api/ketoan/addcongnhat", this.items_cn[i]);
-            const Toast = Swal.mixin({
-              toast: true,
-              position: "top-end",
-              showConfirmButton: false,
-              timer: 1000,
-              timerProgressBar: true,
-              didOpen: (toast) => {
-                toast.addEventListener("mouseenter", Swal.stopTimer);
-                toast.addEventListener("mouseleave", Swal.resumeTimer);
-              },
-            });
-            Toast.fire({
-              icon: "success",
-              title: "Cập nhật phiếu lô sản xuất",
-            });
+            await this.$axios.$post(
+              "/api/ketoan/addcongnhat",
+              this.items_cn[i]
+            );
           }
         }
+
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 1000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+        Toast.fire({
+          icon: "success",
+          title: "Cập nhật phiếu lô sản xuất",
+        });
 
         let turncn = 1;
         let lengthcn = this.items_cn.length;
@@ -3811,7 +3815,7 @@ export default {
       // console.log(tonghong)
       // cap nhat lai tong hong trong losx
       const dataUpdate = { tonghong: tonghong };
-      this.$axios.$patch(
+      await this.$axios.$patch(
         `/api/ketoan/updateonlytonghong?_id=${item._id_losx}`,
         dataUpdate
       );
@@ -3850,7 +3854,7 @@ export default {
         sogiocong: sogiocong.trim(),
       };
       //   console.log(data)
-      this.$axios.$patch(`/api/ketoan/updateluongcongnhat/${id}`, data);
+      await this.$axios.$patch(`/api/ketoan/updateluongcongnhat/${id}`, data);
       const Toast = Swal.mixin({
         toast: true,
         position: "top-end",
@@ -3921,7 +3925,7 @@ export default {
               }, 0);
               // console.log(tonghong);
               const dataUpdate = { tonghong: tonghong };
-              this.$axios.$patch(
+              await this.$axios.$patch(
                 `/api/ketoan/updateonlytonghong?_id=${cd._id_losx}`,
                 dataUpdate
               );
@@ -3929,18 +3933,18 @@ export default {
             } else {
               const tonghongff = 0;
               const dataUpdateth = { tonghong: tonghongff };
-              this.$axios.$patch(
+              await this.$axios.$patch(
                 `/api/ketoan/updateonlytonghong?_id=${cd._id_losx}`,
                 dataUpdateth
               );
               const dataUpdate = { tongdat: tongdat };
-              this.$axios.$patch(
+              await this.$axios.$patch(
                 `/api/ketoan/updateonlytongdat?_id=${cd._id_losx}`,
                 dataUpdate
               );
               this.calculateTotals();
             }
-            this.tempData = []
+            this.tempData = [];
             if (this.filterOptions == 1) {
               this.filterData1(1);
               // console.log(this.tempData);
@@ -4186,5 +4190,9 @@ tr:hover {
 
 .autocomplete-item:hover {
   background-color: #fffaeb;
+}
+
+.highlighted {
+  background-color: lightblue;
 }
 </style>
