@@ -24,8 +24,8 @@
                   </span>
                   &ensp; Danh mục
                 </a>
-                <div class="navbar-dropdown is-boxed">
-                  <nav-link to="/danhmuc/phongban/" class="navbar-item">
+                <div ref="navbarDropDown-1" class="navbar-dropdown is-boxed " @click="closeNavbar(1)">
+                  <nav-link to="/danhmuc/phongban/" class="navbar-item" >
                     <span style="color: #3850b7" class="icon is-small is-left">
                       <i class="fas fa-fax"></i>
                     </span>
@@ -86,7 +86,7 @@
                   </span>
                   &ensp; Quản lý Lô phiếu
                 </a>
-                <div class="navbar-dropdown is-boxed">
+                <div ref="navbarDropDown-2" class="navbar-dropdown is-boxed " @click="closeNavbar(2)">
                   <nav-link to="/ketoan/phieulo/importsolieu" class="navbar-item">
                     <span style="color: #f14668" class="icon is-small is-left">
                       <i class="far fa-arrow-alt-circle-down"></i>
@@ -151,7 +151,7 @@
                   </span>
                   &ensp; Lương
                 </a>
-                <div class="navbar-dropdown is-boxed">
+                <div ref="navbarDropDown-3" class="navbar-dropdown is-boxed " @click="closeNavbar(3)">
                   <nav-link to="/ketoan/phieulo/vaoluongcongdoan" class="navbar-item">
                     <span style="color: #9b6dff" class="icon is-small is-left">
                       <i class="fas fa-clipboard-list"></i>
@@ -220,7 +220,7 @@
                   </span>
                   &ensp; Báo cáo
                 </a>
-                <div class="navbar-dropdown is-boxed">
+                <div ref="navbarDropDown-4" class="navbar-dropdown is-boxed " @click="closeNavbar(4)">
                   <!-- <nav-link to="/report/nhansu" class="navbar-item">
                     <span style="color: #48c78e" class="icon is-small is-left">
                       <i class="fas fa-address-card"></i>
@@ -249,7 +249,7 @@
                   </span>
                   &ensp; Hệ thống
                 </a>
-                <div class="navbar-dropdown is-boxed">
+                <div ref="navbarDropDown-5" class="navbar-dropdown is-boxed " @click="closeNavbar(5)">
                   <div class="nested navbar-item dropdown">
                     <div class="dropdown-trigger">
                       <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
@@ -333,7 +333,7 @@
                 <template v-else>
                   <a class="navbar-link"><img alt="" width="40" height="40" style="border-radius: 50%" />
                     &ensp; Mời đăng nhập !</a></template>
-                <div class="navbar-dropdown is-boxed">
+                    <div ref="navbarDropDown-6" class="navbar-dropdown is-boxed " @click="closeNavbar(6)">
                   <nav-link to="#" class="navbar-item">
                     <span class="icon is-small is-left" style="color: #3e8ed0">
                       <i class="fab fa-github-alt"></i>
@@ -413,6 +413,13 @@ export default {
       // console.log('logout')
       // console.log(this.$auth.$state.loggedIn)
       this.$auth.$state.loggedIn = false
+    },
+    closeNavbar(num){
+
+      this.$refs[`navbarDropDown-${num}`].style.display = 'none';
+      setTimeout(() => {
+        this.$refs[`navbarDropDown-${num}`].style.display = 'block';
+      }, 300);
     },
 
     async updateProfile() {
