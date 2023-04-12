@@ -615,23 +615,11 @@
                   "
                 ></td>
               </tr>
-              <!-- open row 
-              'display': arrRowWatchDetail.length > 0 && arrRowWatchDetail.findIndex(el => el.key === index) > -1
-              -->
-              <!-- <tr style="display: none" :style="{
-                display:
-                  item.expand
-                    ? 'table-row'
-                    : 'none',
-              }"> -->
+              <!-- open row -->
               <tr
-                style="display: none"
                 :style="{
                   display:
-                    arrRowWatchDetail.length > 0 &&
-                    arrRowWatchDetail.findIndex((el) => el.key === index) > -1
-                      ? 'table-row'
-                      : 'none',
+                    arrExpand[index] ? 'table-row' : 'none',
                 }"
               >
                 <td
@@ -1183,11 +1171,13 @@ export default {
     },
     paginatedTable() {
       return this.sortedTable.slice(this.startIndex, this.endIndex);
-      // let list = this.sortedTable.slice(this.startIndex, this.endIndex);
-      // list.map((item) => {
-      //   item.expand = false;
-      // })
-      // return list;
+    },
+    arrExpand() {
+      let arr = [];
+      for (let i = this.startIndex; i < this.endIndex; i++) {
+        arr[i]= false;
+      }
+      return arr;
     },
     pages() {
       const startPage = Math.max(1, this.currentPage - 2);
@@ -1392,13 +1382,14 @@ export default {
     // 3: Các hàm chức năng
     // Hàm bấm vào lô kế hoạch phân xưởng sẽ expand ra dữ liệu lô sản xuất
     async watchDetail(value, data) {
-      // this.paginatedTable.map((item, index) => {
-      //   if(value === index){
-      //     item.expand = !item.expand;
-      //   }else{
-      //     item.expand = false;
-      //   }
-      // })
+      
+      this.arrExpand.map((e, index) => {
+        if(value == index){
+          this.arrExpand[index]= !this.arrExpand[index];
+        }else{
+          this.arrExpand[index] = false;
+        }
+      })
       this.dataLokehoachpx = data;
       const indexValue = this.arrRowWatchDetail.findIndex(
         (el) => el?.key === value
