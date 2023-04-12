@@ -1037,6 +1037,7 @@
 
 <script>
 import Swal from "sweetalert2";
+import Vue from "vue";
 export default {
   middleware: "auth",
   data() {
@@ -1206,14 +1207,14 @@ export default {
     itemsPerPage() {
       this.currentPage = 1;
     },
-    // dataChildren: {
-    //   immediate: true, // thực hiện truy vấn ngay từ khi component được khởi tạo
-    //   handler: function (newValue, oldValue) {
-    //     // thực hiện truy vấn tiếp theo khi giá trị của this.dataChildren thay đổi
-    //     console.log(newValue); // hiển thị dữ liệu mới nhất
-    //     // thực hiện truy vấn tiếp theo tại đây
-    //   },
-    // },
+    dataChildren: {
+      immediate: true, // thực hiện truy vấn ngay từ khi component được khởi tạo
+      handler: function (newValue, oldValue) {
+        // thực hiện truy vấn tiếp theo khi giá trị của this.dataChildren thay đổi
+        console.log(newValue); // hiển thị dữ liệu mới nhất
+        // thực hiện truy vấn tiếp theo tại đây
+      },
+    },
   },
 
   // bind v-model input type date
@@ -1519,44 +1520,46 @@ export default {
         };
       }
 
-      let newItem = await this.$axios.$post("/api/ketoan/addphieulosx", formData).then(async () => {
-        const Toast = Swal.mixin({
-          toast: true,
-          position: "top-end",
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.addEventListener("mouseenter", Swal.stopTimer);
-            toast.addEventListener("mouseleave", Swal.resumeTimer);
-          },
-        });
-        Toast.fire({
-          icon: "success",
-          title: "Tạo phiếu lô sản xuất thành công",
-        });
-        this.dataChildren = await this.$axios.$get(
-          `/api/lokehoach/getalllsxinkhpx?makh=${dataTemp?.dataParent?.makh}&makhpx=${dataTemp?.dataParent?.makhpx}&mapx=${dataTemp?.dataParent?.mapx}`
-        );
-        const dataNew = {
-          ...dataTemp,
-          dataChildren: this.dataChildren,
-          input: {
-            inputMaTo: "",
-            inputMaLo: "",
-            inputSoLuong: "",
-            inputDateOpen: null,
-            inputDateEnd: null,
-          },
-        };
-        let index = this.arrRowWatchDetail.findIndex(
-          (el) => el.key === valueIndex
-        );
+      let newItem = await this.$axios
+        .$post("/api/ketoan/addphieulosx", formData)
+        .then(async () => {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
+          Toast.fire({
+            icon: "success",
+            title: "Tạo phiếu lô sản xuất thành công",
+          });
+          this.dataChildren = await this.$axios.$get(
+            `/api/lokehoach/getalllsxinkhpx?makh=${dataTemp?.dataParent?.makh}&makhpx=${dataTemp?.dataParent?.makhpx}&mapx=${dataTemp?.dataParent?.mapx}`
+          );
+          const dataNew = {
+            ...dataTemp,
+            dataChildren: this.dataChildren,
+            input: {
+              inputMaTo: "",
+              inputMaLo: "",
+              inputSoLuong: "",
+              inputDateOpen: null,
+              inputDateEnd: null,
+            },
+          };
+          let index = this.arrRowWatchDetail.findIndex(
+            (el) => el.key === valueIndex
+          );
 
-        if (index !== -1) {
-          this.arrRowWatchDetail.splice(index, 1, dataNew);
-        }
-      });
+          if (index !== -1) {
+            this.arrRowWatchDetail.splice(index, 1, dataNew);
+          }
+        });
     },
 
     // --------------------------------------------------------------------------------------
@@ -2380,10 +2383,10 @@ export default {
                   `/api/lokehoach/getallkehoachphanxuongwithout0`
                 );
                 // ở đây phải lọc lại mới có dữ liệu mới nhất. cần phải cập nhật lại tempData
-                if (this.filterOptions == 9) {
-                  // ở đây phải đẩy dữ liệu vào this.tempData
-                  this.tempData = await this.filterData1(1);
-                }
+                // if (this.filterOptions == 9) {
+                //   // ở đây phải đẩy dữ liệu vào this.tempData
+                //   this.tempData = await this.filterData1(1);
+                // }
 
                 // this.dataChildren.push(this.items[i]);
                 // console.log(this.dataChildren);
@@ -2479,15 +2482,18 @@ export default {
                 });
                 return;
               } else {
-                let newItem = await this.$axios.$post("/api/ketoan/addphieulosx", this.items[i]);
+                let newItem = await this.$axios.$post(
+                  "/api/ketoan/addphieulosx",
+                  this.items[i]
+                );
                 this.items[i]._id = newItem._id;
                 this.lokehoachpx = await this.$axios.$get(
                   `/api/lokehoach/getallkehoachphanxuongwithout0`
                 );
                 // ở đây phải lọc lại mới có dữ liệu mới nhất. cần phải cập nhật lại tempData
-                if (this.filterOptions == 9) {
-                  this.tempData = await this.filterData1(1);
-                }
+                // if (this.filterOptions == 9) {
+                //   this.tempData = await this.filterData1(1);
+                // }
                 const Toast = Swal.mixin({
                   toast: true,
                   position: "top-end",
@@ -2621,48 +2627,6 @@ export default {
     },
 
     // xóa lô sản xuất
-    // async onDeleteLsx(pl) {
-    //     swal({
-    //         title: "Bạn muốn xóa?",
-    //         text: "Chỉ xóa được những lô chưa được sản xuất!",
-    //         buttons: true,
-    //         dangerMode: true,
-    //     }).then((willDelete) => {
-    //         if (willDelete) {
-    //             if (pl.status == 1 && pl.status_tinhluong == false && pl.datinhluong == false) {
-    //                 this.$axios.$delete(`/api/lokehoach/losx/${pl._id}`)
-    //                     .then(response => {
-    //                         const index = this.dataChildren.findIndex(lsx => lsx._id === pl._id) // find the post index
-    //                         if (~index) // if the post exists in array
-    //                             this.dataChildren.splice(index, 1) //delete the post
-    //                     });
-    //                     this.lokehoachpx = await this.$axios.$get(
-    //             `/api/lokehoach/getallkehoachphanxuongwithout0`
-    //         );
-    //             } else {
-    //                 const Toast = Swal.mixin({
-    //                     toast: true,
-    //                     position: "top-end",
-    //                     showConfirmButton: false,
-    //                     timer: 3000,
-    //                     timerProgressBar: true,
-    //                     didOpen: (toast) => {
-    //                         toast.addEventListener("mouseenter", Swal.stopTimer);
-    //                         toast.addEventListener("mouseleave", Swal.resumeTimer);
-    //                     },
-    //                 });
-    //                 Toast.fire({
-    //                     icon: "error",
-    //                     title: "Lô đã được đưa vào sản xuất, không thể xóa!!!",
-    //                 });
-    //             }
-
-    //         } else {
-    //             swal("Bạn đã hủy xóa");
-    //         }
-    //     });
-    // },
-
     async onDeleteLsx(pl) {
       // console.log(pl);
       if (
@@ -2670,23 +2634,39 @@ export default {
         pl.status_tinhluong == false &&
         pl.datinhluong == false
       ) {
-        await this.$axios
-          .$delete(`/api/lokehoach/losx/${pl._id}`)
-          .then((response) => {
-            const index = this.dataChildren.findIndex(
-              (lsx) => lsx._id === pl._id
-            ); // find the post index
-            if (~index)
-              // if the post exists in array
-              this.dataChildren.splice(index, 1); //delete the post
-          });
+        // console.log(this.dataChildren);
+        // await this.$axios
+        //   .$delete(`/api/lokehoach/losx/${pl._id}`)
+        //   .then((response) => {
+        //     const index = this.dataChildren.findIndex(
+        //       (lsx) => lsx._id === pl._id
+        //     ); // find the post index
+        //     console.log(index)
+        //     if (~index)
+        //       // if the post exists in array
+        //       this.dataChildren.splice(index, 1); //delete the post
+        //   });
+        await this.$axios.$delete(`/api/lokehoach/losx/${pl._id}`);
+        console.log(this.dataChildren);
+        const index = this.dataChildren.findIndex((lsx) => lsx._id === pl._id);
+        console.log(index);
+        if (~index) {
+          // Xóa phần tử trong mảng chỉ sau khi kết quả trả về từ API đã được xử lý
+          // await this.$nextTick();
+          // this.dataChildren.splice(index, 1);
+          console.log("vị trí", index);
+          this.dataChildren.splice(index, 1);
+          this.dataChildren = await this.$axios.$get(
+            `/api/lokehoach/getalllsxinkhpx?_id_khpx=${pl._id_khpx}`
+          );
+          console.log(this.dataChildren);
+          // Vue.set(this, 'dataChildren', this.dataChildren);
+          this.$set(this, "dataChildren", this.dataChildren);
+          this.$forceUpdate();
+        }
         this.lokehoachpx = await this.$axios.$get(
           `/api/lokehoach/getallkehoachphanxuongwithout0`
         );
-        // ở đây phải lọc lại mới có dữ liệu mới nhất. cần phải cập nhật lại tempData
-        if (this.filterOptions == 9) {
-          this.tempData = await this.filterData1(1);
-        }
       } else {
         const Toast = Swal.mixin({
           toast: true,
