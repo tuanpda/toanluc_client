@@ -686,14 +686,14 @@
                 </td>
                 <td style="font-size: small; text-align: center">
                   <input
-                    type="text"
+                    type="number"
                     class="input is-small"
                     v-model="item.sodat"
                   />
                 </td>
                 <td style="font-size: small; text-align: center">
                   <input
-                    type="text"
+                    type="number"
                     class="input is-small"
                     v-model="item.sohong"
                   />
