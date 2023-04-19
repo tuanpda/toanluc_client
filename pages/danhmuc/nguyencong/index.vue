@@ -444,7 +444,7 @@ export default {
       this.isActive_cre = true
     },
 
-    async onUpdate() {
+    async onUpdate(id) {
       try {
         this.$axios.$patch(
           `/api/nguyencong/nc/${id}`,
