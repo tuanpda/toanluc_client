@@ -59,7 +59,7 @@
               class="table is-responsive is-bordered is-narrow is-fullwidth"
             >
               <tr style="background-color: #feecf0">
-                <td style="font-size: small; width: 20%">
+                <!-- <td style="font-size: small; width: 20%">
                   <div class="control has-icons-left">
                     <div class="select is-small is-fullwidth">
                       <select>
@@ -73,11 +73,10 @@
                       <i style="color: #48c78e" class="fas fa-kaaba"></i>
                     </span>
                   </div>
-                </td>
+                </td> -->
                 <td style="width: 12.65%">
                   <div class="autocomplete">
                     <input
-                      @change="searchNhomsp"
                       class="input is-small is-danger"
                       type="text"
                       v-model="search_nhomsp"
@@ -98,7 +97,6 @@
                 <td style="width: 12.65%">
                   <div class="autocomplete">
                     <input
-                      @change="searchMasp"
                       class="input is-small is-danger"
                       type="text"
                       v-model="search_masp"
@@ -120,12 +118,15 @@
                   </div>
                 </td>
                 <td style="width: 7.7%">
-                  <button class="button is-small is-fullwidth is-success">
+                  <button
+                    @click="searhData"
+                    class="button is-small is-fullwidth is-success"
+                  >
                     Lọc
                   </button>
                 </td>
                 <td style="width: 7.7%">
-                  <button class="button is-small is-danger is-fullwidth">
+                  <button @click="getNguyencong" class="button is-small is-danger is-fullwidth">
                     Refresh
                   </button>
                 </td>
@@ -764,19 +765,19 @@ export default {
       }
     },
 
-    async searchNhomsp() {
+    async searhData() {
       // console.log(this.suggestions);
-      this.nguyencong = await this.$axios.$get(
-        `/api/lokehoach/searchnhomspinnc?nhomsp=${this.search_nhomsp}`
-      );
-      // console.log(this.nguyencong);
-    },
 
-    async searchMasp() {
-      this.nguyencong = await this.$axios.$get(
-        `/api/lokehoach/searchMaspinnc?mavt=${this.search_masp}`
-      );
-      console.log(this.nguyencong);
+      // console.log(this.nguyencong);
+      if (this.search_nhomsp != "" && this.search_masp == "") {
+        this.nguyencong = await this.$axios.$get(
+          `/api/lokehoach/searchnhomspinnc?nhomsp=${this.search_nhomsp}`
+        );
+      } else if (this.search_nhomsp == "" && this.search_masp != "") {
+        this.nguyencong = await this.$axios.$get(
+          `/api/lokehoach/searchMaspinnc?mavt=${this.search_masp}`
+        );
+      }
     },
 
     async getPhanxuong() {
@@ -798,6 +799,8 @@ export default {
     },
 
     async getNguyencong() {
+      this.search_masp = ''
+      this.search_nhomsp = ''
       this.nguyencong = await this.$axios.$get(
         `/api/nguyencong/getallnguyencong`
       );
