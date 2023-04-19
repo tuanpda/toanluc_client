@@ -58,7 +58,7 @@
                 <label class="label">Diễn giải thêm</label>
                 <div class="control">
                   <textarea
-                    v-model="form.diengiai"
+                    v-model="form.ghichu"
                     class="textarea is-small"
                     placeholder="Ghi chú thêm ..."
                   ></textarea>
