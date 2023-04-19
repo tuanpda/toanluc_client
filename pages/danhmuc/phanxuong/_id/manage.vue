@@ -109,7 +109,7 @@
         form: {
           mapx: null,
           tenpx: null,
-          diengiai: null,
+          ghichu: null,
           createdAt: null,
           updatedAt: null,
           createdBy: null,
@@ -144,6 +144,7 @@
       );
       this.form.mapx = this.phanxuong.mapx;
       this.form.tenpx = this.phanxuong.tenpx;
+      this.form.ghichu = this.phanxuong.ghichu;
       this.form.createdAt = this.phanxuong.createdAt;
       this.form.createdBy = this.phanxuong.createdBy;
     },

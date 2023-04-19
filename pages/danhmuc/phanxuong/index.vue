@@ -75,7 +75,7 @@
                 </td>
                 <td style="font-size: smaller;">{{ px.mapx }}</td>
                 <td style="font-size: smaller;">{{ px.tenpx }}</td>
-                <td style="font-size: smaller;">{{ px.diengiai }}</td>
+                <td style="font-size: smaller;">{{ px.ghichu }}</td>
               </tr>
             </tbody>
           </table>
