@@ -139,35 +139,35 @@
           <table class="table is-responsive is-bordered is-narrow is-fullwidth">
             <tr style="background-color: #f4f2f8">
               <td style="
-                    font-size: small;
-                    text-align: center;
-                    font-weight: 600;
-                    width: 3%;
-                  ">
+                      font-size: small;
+                      text-align: center;
+                      font-weight: 600;
+                      width: 3%;
+                    ">
                 --
               </td>
               <td style="
-                    font-size: small;
-                    text-align: center;
-                    font-weight: 600;
-                    width: 3%;
-                  ">
+                      font-size: small;
+                      text-align: center;
+                      font-weight: 600;
+                      width: 3%;
+                    ">
                 STT
               </td>
               <td @click="sortTable('malonhamay')" style="
-                    font-size: small;
-                    text-align: center;
-                    font-weight: 600;
-                    width: 5%;
-                  ">
+                      font-size: small;
+                      text-align: center;
+                      font-weight: 600;
+                      width: 5%;
+                    ">
                 Mã lô nhà máy
               </td>
               <td @click="sortTable('mapx')" style="
-                    font-size: small;
-                    text-align: center;
-                    font-weight: 600;
-                    width: 5%;
-                  ">
+                      font-size: small;
+                      text-align: center;
+                      font-weight: 600;
+                      width: 5%;
+                    ">
                 Mã PX
               </td>
               <!-- <td @click="sortTable('makhpx')"
@@ -179,35 +179,35 @@
                                 TTQT
                             </td> -->
               <td @click="sortTable('nhomthanhpham')" style="
-                    font-size: small;
-                    text-align: center;
-                    font-weight: 600;
-                    width: 7%;
-                  ">
+                      font-size: small;
+                      text-align: center;
+                      font-weight: 600;
+                      width: 7%;
+                    ">
                 Nhóm TP
               </td>
               <td @click="sortTable('mathanhpham')" style="
-                    font-size: small;
-                    text-align: center;
-                    font-weight: 600;
-                    width: 7%;
-                  ">
+                      font-size: small;
+                      text-align: center;
+                      font-weight: 600;
+                      width: 7%;
+                    ">
                 Mã TP
               </td>
               <td @click="sortTable('nhomspkhpx')" style="
-                    font-size: small;
-                    text-align: center;
-                    font-weight: 600;
-                    width: 7%;
-                  ">
+                      font-size: small;
+                      text-align: center;
+                      font-weight: 600;
+                      width: 7%;
+                    ">
                 Nhóm SP
               </td>
               <td @click="sortTable('maspkhpx')" style="
-                    font-size: small;
-                    text-align: center;
-                    font-weight: 600;
-                    width: 7%;
-                  ">
+                      font-size: small;
+                      text-align: center;
+                      font-weight: 600;
+                      width: 7%;
+                    ">
                 Mã sản phẩm
               </td>
               <!-- <td @click="sortTable('ngaybdkhpx')"
@@ -217,43 +217,43 @@
                                 style="font-size: small; text-align: center; font-weight: 600; width: 9%;">Ngày kết thúc
                             </td> -->
               <td @click="sortTable('tuanbd')" style="
-                    font-size: small;
-                    text-align: center;
-                    font-weight: 600;
-                    width: 9%;
-                  ">
+                      font-size: small;
+                      text-align: center;
+                      font-weight: 600;
+                      width: 9%;
+                    ">
                 Tuần BĐ (T1)
               </td>
               <td @click="sortTable('tuankt')" style="
-                    font-size: small;
-                    text-align: center;
-                    font-weight: 600;
-                    width: 9%;
-                  ">
+                      font-size: small;
+                      text-align: center;
+                      font-weight: 600;
+                      width: 9%;
+                    ">
                 Tuần KT (T2)
               </td>
               <td @click="sortTable('tuanexc')" style="
-                    font-size: small;
-                    text-align: center;
-                    font-weight: 600;
-                    width: 9%;
-                  ">
+                      font-size: small;
+                      text-align: center;
+                      font-weight: 600;
+                      width: 9%;
+                    ">
                 Tuần chạy
               </td>
               <td @click="sortTable('soluongkhpx')" style="
-                    font-size: small;
-                    text-align: center;
-                    font-weight: 600;
-                    width: 7%;
-                  ">
+                      font-size: small;
+                      text-align: center;
+                      font-weight: 600;
+                      width: 7%;
+                    ">
                 Số lượng
               </td>
               <td @click="sortTable('status')" style="
-                    font-size: small;
-                    text-align: center;
-                    font-weight: 600;
-                    width: 5%;
-                  ">
+                      font-size: small;
+                      text-align: center;
+                      font-weight: 600;
+                      width: 5%;
+                    ">
                 Trạng thái
               </td>
 
@@ -261,35 +261,35 @@
                                 style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Chọn Trạng thái
                             </td> -->
               <td style="
-                    font-size: small;
-                    text-align: center;
-                    font-weight: 600;
-                    width: 7%;
-                  ">
+                      font-size: small;
+                      text-align: center;
+                      font-weight: 600;
+                      width: 7%;
+                    ">
                 SL đã ĐK
               </td>
               <td style="
-                    font-size: small;
-                    text-align: center;
-                    font-weight: 600;
-                    width: 7%;
-                  ">
+                      font-size: small;
+                      text-align: center;
+                      font-weight: 600;
+                      width: 7%;
+                    ">
                 SL thực hiện
               </td>
               <td style="
-                    font-size: small;
-                    text-align: center;
-                    font-weight: 600;
-                    width: 7%;
-                  ">
+                      font-size: small;
+                      text-align: center;
+                      font-weight: 600;
+                      width: 7%;
+                    ">
                 Ngày BDTT
               </td>
               <td style="
-                    font-size: small;
-                    text-align: center;
-                    font-weight: 600;
-                    width: 7%;
-                  ">
+                      font-size: small;
+                      text-align: center;
+                      font-weight: 600;
+                      width: 7%;
+                    ">
                 Ngày KTTT
               </td>
             </tr>
@@ -298,42 +298,33 @@
               <tr @click="watchDetail(index, item)">
                 <td>
                   <div style="
-                        display: flex;
-                        gap: 10px;
-                        justify-content: space-around;
-                        align-items: center;
-                        width: 100%;
-                        height: 100%;
-                        margin-top: 5px;
-                      ">
+                          display: flex;
+                          gap: 10px;
+                          justify-content: space-around;
+                          align-items: center;
+                          width: 100%;
+                          height: 100%;
+                          margin-top: 5px;
+                        ">
                     <span class="icon is-small is-left" style="color: #55acee">
-                      <i v-if="
-                        arrRowWatchDetail.findIndex(
-                          (el) => el.key === index
-                        ) < 0
-                      " class="far fa-arrow-alt-circle-down"></i>
-                      <i v-if="
-                        arrRowWatchDetail.length > 0 &&
-                        arrRowWatchDetail.findIndex(
-                          (el) => el.key === index
-                        ) > -1
-                      " class="far fa-arrow-alt-circle-left"></i>
+                      <i v-if="arrExpand[index]" class="far fa-arrow-alt-circle-down"></i>
+                      <i v-else class="far fa-arrow-alt-circle-left"></i>
                     </span>
                   </div>
                 </td>
                 <td style="
-                      font-size: small;
-                      text-align: center;
-                      background-color: #effaf5;
-                    ">
+                        font-size: small;
+                        text-align: center;
+                        background-color: #effaf5;
+                      ">
                   {{ index + 1 }}
                 </td>
                 <td style="font-size: small">{{ item.malonhamay }}</td>
                 <td style="
-                      font-size: small;
-                      background-color: #effaf5;
-                      text-align: center;
-                    ">
+                        font-size: small;
+                        background-color: #effaf5;
+                        text-align: center;
+                      ">
                   {{ item.mapx }}
                 </td>
                 <!-- <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
@@ -343,31 +334,31 @@
                                 <td style="font-size: small; background-color: #effaf5; text-align: center;">{{ item.ttqt }} 
                                 </td> -->
                 <td style="
-                      font-size: small;
-                      background-color: #effaf5;
-                      text-align: center;
-                    ">
+                        font-size: small;
+                        background-color: #effaf5;
+                        text-align: center;
+                      ">
                   {{ item.nhomthanhpham }}
                 </td>
                 <td style="
-                      font-size: small;
-                      background-color: #effaf5;
-                      text-align: center;
-                    ">
+                        font-size: small;
+                        background-color: #effaf5;
+                        text-align: center;
+                      ">
                   {{ item.mathanhpham }}
                 </td>
                 <td style="
-                      font-size: small;
-                      background-color: #effaf5;
-                      text-align: center;
-                    ">
+                        font-size: small;
+                        background-color: #effaf5;
+                        text-align: center;
+                      ">
                   {{ item.nhomspkhpx }}
                 </td>
                 <td style="
-                      font-size: small;
-                      background-color: #effaf5;
-                      text-align: center;
-                    ">
+                        font-size: small;
+                        background-color: #effaf5;
+                        text-align: center;
+                      ">
                   {{ item.maspkhpx }}
                 </td>
                 <!-- <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
@@ -377,95 +368,95 @@
                                     item.ngayktkhpx | formatDate
                                 }}</td> -->
                 <td style="
-                      font-size: small;
-                      text-align: center;
-                      background-color: #effaf5;
-                    ">
+                        font-size: small;
+                        text-align: center;
+                        background-color: #effaf5;
+                      ">
                   {{ item.tuanbdkhpx }}
                 </td>
                 <td style="
-                      font-size: small;
-                      text-align: center;
-                      background-color: #effaf5;
-                    ">
+                        font-size: small;
+                        text-align: center;
+                        background-color: #effaf5;
+                      ">
                   {{ item.tuanktkhpx }}
                 </td>
                 <td style="
-                      font-size: small;
-                      text-align: center;
-                      background-color: #effaf5;
-                    ">
+                        font-size: small;
+                        text-align: center;
+                        background-color: #effaf5;
+                      ">
                   {{ item.tuanexc }}
                 </td>
                 <td style="
-                      font-size: small;
-                      text-align: center;
-                      background-color: #effaf5;
-                    ">
+                        font-size: small;
+                        text-align: center;
+                        background-color: #effaf5;
+                      ">
                   {{ item.soluongkhpx | formatNumber }}
                 </td>
                 <template>
                   <td v-if="item.status == 0" style="
-                        font-size: small;
-                        text-align: center;
-                        background-color: whitesmoke;
-                      ">
+                          font-size: small;
+                          text-align: center;
+                          background-color: whitesmoke;
+                        ">
                     0
                   </td>
                   <td v-else-if="item.status == 1" style="font-size: small; text-align: center">
                     <span style="
-                          color: white;
-                          font-weight: bold;
-                          background-color: red;
-                          padding-left: 7px;
-                          padding-right: 7px;
-                        ">DK</span>
+                            color: white;
+                            font-weight: bold;
+                            background-color: red;
+                            padding-left: 7px;
+                            padding-right: 7px;
+                          ">DK</span>
                   </td>
                   <td v-else-if="item.status == 2" style="font-size: small; text-align: center">
                     <span style="
-                          color: red;
-                          font-weight: bold;
-                          background-color: yellow;
-                          padding-left: 7px;
-                          padding-right: 7px;
-                        ">SX</span>
+                            color: red;
+                            font-weight: bold;
+                            background-color: yellow;
+                            padding-left: 7px;
+                            padding-right: 7px;
+                          ">SX</span>
                   </td>
                   <td v-else style="font-size: small; text-align: center">
                     <span style="
-                          color: white;
-                          font-weight: bold;
-                          background-color: green;
-                          padding-left: 7px;
-                          padding-right: 7px;
-                        ">HT</span>
+                            color: white;
+                            font-weight: bold;
+                            background-color: green;
+                            padding-left: 7px;
+                            padding-right: 7px;
+                          ">HT</span>
                   </td>
                 </template>
                 <td style="
-                      font-size: small;
-                      text-align: center;
-                      background-color: #effaf5;
-                    ">
+                        font-size: small;
+                        text-align: center;
+                        background-color: #effaf5;
+                      ">
                   {{ item.tong_soluong }}
                 </td>
                 <td style="
-                      font-size: small;
-                      text-align: center;
-                      background-color: #effaf5;
-                    ">
+                        font-size: small;
+                        text-align: center;
+                        background-color: #effaf5;
+                      ">
                   {{ item.tongso_luongnhanh }}
                 </td>
                 <td style="
-                      font-size: small;
-                      text-align: center;
-                      background-color: #effaf5;
-                    ">
+                        font-size: small;
+                        text-align: center;
+                        background-color: #effaf5;
+                      ">
                   {{ item.ngaybdthucte | formatDate }}
                 </td>
                 <td style="
-                      font-size: small;
-                      text-align: center;
-                      background-color: #effaf5;
-                    "></td>
+                        font-size: small;
+                        text-align: center;
+                        background-color: #effaf5;
+                      "></td>
               </tr>
               <!-- open row -->
               <tr :style="{
@@ -476,113 +467,113 @@
                   <table class="table is-responsive is-bordered is-narrow is-fullwidth">
                     <tr style="background-color: #f4f2f8">
                       <td style="
-                            text-align: center;
-                            font-size: small;
-                            font-weight: 600;
-                            width: 3.53%;
-                            color: red;
-                          ">
+                              text-align: center;
+                              font-size: small;
+                              font-weight: 600;
+                              width: 3.53%;
+                              color: red;
+                            ">
                         STT
                       </td>
                       <td style="
-                            text-align: center;
-                            font-size: small;
-                            font-weight: 600;
-                            width: 20%;
-                            color: red;
-                          ">
+                              text-align: center;
+                              font-size: small;
+                              font-weight: 600;
+                              width: 20%;
+                              color: red;
+                            ">
                         Tổ / nhóm
                       </td>
                       <td style="
-                            text-align: center;
-                            font-size: small;
-                            font-weight: 600;
-                            width: 16.7%;
-                            color: red;
-                          ">
+                              text-align: center;
+                              font-size: small;
+                              font-weight: 600;
+                              width: 16.7%;
+                              color: red;
+                            ">
                         Mã Lô sản xuất
                       </td>
                       <td style="
-                            text-align: center;
-                            font-size: small;
-                            font-weight: 600;
-                            width: 8.2%;
-                            color: red;
-                          ">
+                              text-align: center;
+                              font-size: small;
+                              font-weight: 600;
+                              width: 8.2%;
+                              color: red;
+                            ">
                         Số lượng
                       </td>
                       <td style="
-                            text-align: center;
-                            font-size: small;
-                            font-weight: 600;
-                            width: 8%;
-                            color: red;
-                          ">
+                              text-align: center;
+                              font-size: small;
+                              font-weight: 600;
+                              width: 8%;
+                              color: red;
+                            ">
                         Ngày BĐ
                       </td>
                       <td style="
-                            text-align: center;
-                            font-size: small;
-                            font-weight: 600;
-                            width: 5%;
-                            color: red;
-                          ">
+                              text-align: center;
+                              font-size: small;
+                              font-weight: 600;
+                              width: 5%;
+                              color: red;
+                            ">
                         Ngày KT
                       </td>
                       <td style="
-                            text-align: center;
-                            font-size: small;
-                            font-weight: 600;
-                            width: 5%;
-                            color: red;
-                          ">
+                              text-align: center;
+                              font-size: small;
+                              font-weight: 600;
+                              width: 5%;
+                              color: red;
+                            ">
                         Trạng thái
                       </td>
                       <td style="
-                            text-align: center;
-                            font-size: small;
-                            font-weight: 600;
-                            width: 4%;
-                            color: red;
-                          ">
+                              text-align: center;
+                              font-size: small;
+                              font-weight: 600;
+                              width: 4%;
+                              color: red;
+                            ">
                         Cập nhật
                       </td>
                       <td style="
-                            text-align: center;
-                            font-size: small;
-                            font-weight: 600;
-                            width: 4.1%;
-                            color: red;
-                          ">
+                              text-align: center;
+                              font-size: small;
+                              font-weight: 600;
+                              width: 4.1%;
+                              color: red;
+                            ">
                         Xóa
                       </td>
                       <td style="
-                            text-align: center;
-                            font-size: small;
-                            font-weight: 600;
-                            width: 4.1%;
-                            color: red;
-                          ">
+                              text-align: center;
+                              font-size: small;
+                              font-weight: 600;
+                              width: 4.1%;
+                              color: red;
+                            ">
                         Copy
                       </td>
                       <td style="
-                            text-align: center;
-                            font-size: small;
-                            font-weight: 600;
-                            width: 4.1%;
-                            color: red;
-                          ">
+                              text-align: center;
+                              font-size: small;
+                              font-weight: 600;
+                              width: 4.1%;
+                              color: red;
+                            ">
                         <button @click="addLosanxuat(item, index)" class="button is-small is-danger">
                           Đăng ký
                         </button>
                       </td>
                       <td style="
-                            text-align: center;
-                            font-size: small;
-                            font-weight: 600;
-                            width: 4.1%;
-                            color: red;
-                          ">
+                              text-align: center;
+                              font-size: small;
+                              font-weight: 600;
+                              width: 4.1%;
+                              color: red;
+                            ">
                         <button @click="ghidulieu(item)" class="button is-small is-success">
                           Ghi dữ liệu
                         </button>
@@ -605,10 +596,10 @@
                             {{ item.tento }}
                           </td>
                           <td style="
-                                font-size: small;
-                                text-align: center;
-                                font-weight: 600;
-                              ">
+                                  font-size: small;
+                                  text-align: center;
+                                  font-weight: 600;
+                                ">
                             <input type="text" v-model="item.malosx" class="input is-small" />
                           </td>
                           <td style="font-size: small; text-align: center">
@@ -629,30 +620,30 @@
                           <template>
                             <td v-if="item.status == 1" style="font-size: small; text-align: center">
                               <span style="
-                                    color: white;
-                                    font-weight: bold;
-                                    background-color: red;
-                                    padding-left: 7px;
-                                    padding-right: 7px;
-                                  ">DK</span>
+                                      color: white;
+                                      font-weight: bold;
+                                      background-color: red;
+                                      padding-left: 7px;
+                                      padding-right: 7px;
+                                    ">DK</span>
                             </td>
                             <td v-else-if="item.status == 2" style="font-size: small; text-align: center">
                               <span style="
-                                    color: red;
-                                    font-weight: bold;
-                                    background-color: yellow;
-                                    padding-left: 7px;
-                                    padding-right: 7px;
-                                  ">SX</span>
+                                      color: red;
+                                      font-weight: bold;
+                                      background-color: yellow;
+                                      padding-left: 7px;
+                                      padding-right: 7px;
+                                    ">SX</span>
                             </td>
                             <td v-else-if="item.status == 3" style="font-size: small; text-align: center">
                               <span style="
-                                    color: white;
-                                    font-weight: bold;
-                                    background-color: green;
-                                    padding-left: 7px;
-                                    padding-right: 7px;
-                                  ">HT</span>
+                                      color: white;
+                                      font-weight: bold;
+                                      background-color: green;
+                                      padding-left: 7px;
+                                      padding-right: 7px;
+                                    ">HT</span>
                             </td>
                             <td v-else style="font-size: small; text-align: center"></td>
                           </template>
@@ -1127,17 +1118,15 @@ export default {
       const indexValue = this.arrRowWatchDetail.findIndex(
         (el) => el?.key === value
       );
-      if (indexValue > -1) {
-        this.arrRowWatchDetail.splice(indexValue, 1);
-        return;
-      }
+      // if (indexValue > -1) {
+      //   this.arrRowWatchDetail.splice(indexValue, 1);
+      //   return;
+      // }
       // console.log(data);
       // hiển thị trạng thái đang tải dữ liệu
       this.dataChildren = await this.$axios.$get(
         `/api/lokehoach/getalllsxinkhpx?_id_khpx=${data._id}`
       );
-
-      // console.log(this.dataChildren)
 
       const grWorkTemp = await this.$axios.$get(
         `/api/phongban/alltoinxuong?mapx=${data.mapx}`
