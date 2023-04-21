@@ -142,6 +142,29 @@
                   max="10"
                 />
               </td>
+              <td style="font-size: small; width: 8%; font-weight: 600">
+                <input
+                  v-model="search_maphieu_id"
+                  type="number"
+                  class="input is-small"
+                  placeholder="Mã phiếu"
+                />
+              </td>
+              <td style="font-size: small; width: 5.5%; font-weight: 600">
+                <input
+                  v-model="search_ngayhttt"
+                  type="date"
+                  class="input is-small"
+                />
+              </td>
+              <td style="width: 5%">
+                <button
+                  @click="searchPhieu()"
+                  class="button is-small is-info is-fullwidth"
+                >
+                  Tìm
+                </button>
+              </td>
               <td></td>
             </tr>
           </table>
@@ -165,7 +188,17 @@
                 STT
               </td>
               <td
-                @click="sortTable('mapx')"
+                style="
+                  font-size: small;
+                  text-align: center;
+                  font-weight: 600;
+                  width: 5%;
+                "
+              >
+                Mã phiếu
+              </td>
+              <td
+                @click="sortTable('_id')"
                 style="
                   font-size: small;
                   text-align: center;
@@ -340,6 +373,16 @@
               </td>
               <td style="font-size: small; text-align: center">
                 {{ index + 1 }}
+              </td>
+              <td
+                style="
+                  font-size: small;
+                  text-align: center;
+                  color: red;
+                  font-weight: 700;
+                "
+              >
+                {{ item._id }}
               </td>
               <td style="font-size: small">
                 {{ item.mapx }}
@@ -916,7 +959,11 @@
                       <span class="icon is-small is-left">
                         <i style="color: #ffd863ff" class="fas fa-tags"></i>
                       </span>
-                      Phiếu lô sản xuất: {{ getinfoplsx.malosx }}
+                      MÃ PHIẾU:
+                      <span style="font-weight: 700">{{
+                        getinfoplsx._id
+                      }}</span>
+                      | Mã lô: {{ getinfoplsx.malosx }}
                     </p>
                   </div>
                   <div class="column" style="text-align: right">
@@ -1882,6 +1929,10 @@ export default {
       currentPage: 1,
       filter: "",
 
+      // tìm theo mã id và
+      search_maphieu_id: "",
+      search_ngayhttt: "",
+
       // nhóm nguyên công trong chi tiết lương
       groups: {},
       totals: {},
@@ -2333,6 +2384,8 @@ export default {
     async getSolieuLSX_ALl_cht() {
       this.multiSearch_masp = "";
       this.multiSearch_nhomsp = "";
+      this.search_maphieu_id = "";
+      this.search_ngayhttt = "";
       this.Options_status = [];
       this.isOpen = false;
       this.isOpenst = false;
@@ -2534,6 +2587,39 @@ export default {
         }
       }
     },
+    // search phiếu
+    async searchPhieu() {
+      if (this.search_maphieu_id != "" && this.search_ngayhttt == "") {
+        this.tempData = [];
+        this.sllosx = [];
+        this.sllosx = await this.$axios.$get(
+          `/api/lokehoach/searchwithid?_id=${this.search_maphieu_id}`
+        );
+      } else if (this.search_maphieu_id == "" && this.search_ngayhttt != "") {
+        this.tempData = [];
+        this.sllosx = [];
+        this.sllosx = await this.$axios.$get(
+          `/api/lokehoach/searchwithngayhttt?ngayhoanthanhtt=${this.search_ngayhttt}`
+        );
+      } else {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 1000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+        Toast.fire({
+          icon: "error",
+          title: "Chỉ chọn tìm bằng mã phiếu hoặc là ngày hoàn thành",
+        });
+      }
+    },
+
     // Copy công đoạn sản xuất
     async copyCongdoan(data, index) {
       let arrayCongdoan;
@@ -2813,7 +2899,7 @@ export default {
       for (let i = 0; i < this.items.length; i++) {
         if (i == index) {
           this.items[i].congnhan = this.items[i].nhomto_cnt[selectedIndex].macn;
-          console.log(this.items[i].nhomto_cnt[selectedIndex].macn);
+          // console.log(this.items[i].nhomto_cnt[selectedIndex].macn);
           this.items[i].tencn = this.items[i].nhomto_cnt[selectedIndex].tencn;
           this.items[i].phanxuong_cn =
             this.items[i].nhomto_cnt[selectedIndex].maxuong;
@@ -3340,6 +3426,7 @@ export default {
         this.Options_status.length > 0 &&
         this.multiSearch_masp != ""
       ) {
+        this.tempData = [];
         this.filterOptions = 1;
         this.tempData = await this.$axios.$get(
           `/api/lokehoach/filterfulldklosanxuat`,
@@ -3360,6 +3447,7 @@ export default {
         !this.Options_status.length &&
         this.multiSearch_masp == ""
       ) {
+        this.tempData = [];
         this.filterOptions = 2;
         this.tempData = [];
         this.sllosx = [];
@@ -3379,6 +3467,7 @@ export default {
         !this.Options_status.length &&
         this.multiSearch_masp != ""
       ) {
+        this.tempData = [];
         this.filterOptions = 3;
         this.tempData = await this.$axios.$get(
           `/api/lokehoach/filteronlymapxandmasplosanxuat`,
@@ -3397,6 +3486,7 @@ export default {
         this.Options_status.length > 0 &&
         this.multiSearch_masp == ""
       ) {
+        this.tempData = [];
         this.filterOptions = 4;
         this.tempData = await this.$axios.$get(
           `/api/lokehoach/filteronlymapxandstatuslosanxuat`,
@@ -3415,6 +3505,7 @@ export default {
         this.Options_status.length > 0 &&
         this.multiSearch_masp == ""
       ) {
+        this.tempData = [];
         this.filterOptions = 5;
         this.tempData = await this.$axios.$get(
           `/api/lokehoach/filteronlystatuslosanxuat`,
@@ -3433,6 +3524,7 @@ export default {
         !this.Options_status.length &&
         this.multiSearch_masp != ""
       ) {
+        this.tempData = [];
         this.filterOptions = 6;
         this.tempData = await this.$axios.$get(
           `/api/lokehoach/filteronlymasplosanxuat`,
@@ -3451,6 +3543,7 @@ export default {
         this.Options_status.length > 0 &&
         this.multiSearch_masp != ""
       ) {
+        this.tempData = [];
         this.filterOptions = 7;
         this.tempData = await this.$axios.$get(
           `/api/lokehoach/filteronlymaspandstatuslosx`,
@@ -3461,6 +3554,7 @@ export default {
             },
           }
         );
+        this.sllosx = this.tempData;
       }
     },
 
