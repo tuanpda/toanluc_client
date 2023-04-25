@@ -1415,6 +1415,7 @@
                         v-if="iscongdoan == 1"
                         v-for="(item, index) in items"
                         :key="index + 'cm-a'"
+                        ref="rows"
                       >
                         <td
                           style="
@@ -1486,19 +1487,41 @@
                                   index
                                 )
                               "
+                              @keydown="locOption($event)"
                               v-model="item.macn"
                             >
                               <option
-                                v-for="it in item.nhomto_cnt"
+                                v-for="(it, index) in item.nhomto_cnt"
                                 :value="it.macn"
+                                :key="index"
                               >
-                                {{ it.tencn }}
+                                {{ index + 1 }} - {{ it.tencn }}
                               </option>
                             </select>
                           </div>
+                          <!-- <div>
+                            <input
+                              @change="
+                                getTencn(
+                                  $event,
+                                  $event.target.selectedIndex,
+                                  index
+                                )
+                              "
+                              v-model="item.congnhan"
+                              class="input is-small"
+                              type="text"
+                              id="myInput"
+                              list="congnhan"
+                            />
+                            <datalist id="congnhan">
+                              <option
+                                v-for="it in item.nhomto_cnt"
+                                :value="it.tencn"
+                              ></option>
+                            </datalist>
+                          </div> -->
                         </td>
-                        <!-- <td><input type="date" class="input is-small" v-model="item.ngaythuchien">
-                                                </td> -->
                         <td>
                           <input
                             class="input is-small"
@@ -1511,16 +1534,26 @@
                         </td>
                         <td>
                           <input
-                            type="number"
+                            type="text"
                             v-model="item.sodat"
                             class="input is-small"
+                            @keydown.arrow-down="moveToNextRow(index, $event)"
+                            @keydown.arrow-up="moveToPreviousRow(index, $event)"
+                            @keydown.arrow-right="moveToNextColumn(index)"
+                            @keydown.arrow-left="moveToPreviousColumn(index)"
+                            @keydown.enter.prevent="moveToNextRow(index)"
                           />
                         </td>
                         <td>
                           <input
-                            type="number"
+                            type="text"
                             v-model="item.sohong"
                             class="input is-small"
+                            @keydown.arrow-down="moveToNextRow(index, $event)"
+                            @keydown.arrow-up="moveToPreviousRow(index, $event)"
+                            @keydown.arrow-right="moveToNextColumn(index)"
+                            @keydown.arrow-left="moveToPreviousColumn(index)"
+                            @keydown.enter.prevent="moveToNextRow(index)"
                           />
                         </td>
 
@@ -2369,6 +2402,66 @@ export default {
       this.totals = totals;
     },
 
+    // hàm xử lý việc điều hướng qua lại giữa các input
+    moveToNextRow(index, e) {
+      const currentRowInputs =
+        e.target.parentNode.parentNode.getElementsByTagName("input");
+      const currentInputIndex = Array.prototype.indexOf.call(
+        currentRowInputs,
+        e.target
+      );
+      const nextRow = this.$refs.rows[index + 1];
+      if (nextRow) {
+        const nextRowInputs = nextRow.getElementsByTagName("input");
+        // if (nextRowInputs.length > 0) {
+        //   nextRowInputs[0].focus();
+        // }
+        if (nextRowInputs.length > currentInputIndex) {
+          nextRowInputs[currentInputIndex].focus();
+        }
+      }
+    },
+    moveToPreviousRow(index, e) {
+      const currentRowInputs =
+        e.target.parentNode.parentNode.getElementsByTagName("input");
+      const currentInputIndex = Array.prototype.indexOf.call(
+        currentRowInputs,
+        e.target
+      );
+
+      const previousRow = this.$refs.rows[index - 1];
+      if (previousRow) {
+        const previousRowInputs = previousRow.getElementsByTagName("input");
+        if (previousRowInputs.length > currentInputIndex) {
+          previousRowInputs[currentInputIndex].focus();
+        }
+      }
+    },
+    moveToNextColumn(index) {
+      const currentRowInputs =
+        this.$refs.rows[index].getElementsByTagName("input");
+      const currentInput = document.activeElement;
+      const currentIndex = Array.prototype.indexOf.call(
+        currentRowInputs,
+        currentInput
+      );
+      if (currentIndex < currentRowInputs.length - 1) {
+        currentRowInputs[currentIndex + 1].focus();
+      }
+    },
+    moveToPreviousColumn(index) {
+      const currentRowInputs =
+        this.$refs.rows[index].getElementsByTagName("input");
+      const currentInput = document.activeElement;
+      const currentIndex = Array.prototype.indexOf.call(
+        currentRowInputs,
+        currentInput
+      );
+      if (currentIndex > 0) {
+        currentRowInputs[currentIndex - 1].focus();
+      }
+    },
+
     // hàm lấy thẳng dữ liệu trực tiếp từ store
     async asyncDataLosx() {
       const losanxuats = await fetchLosanxuat();
@@ -2453,6 +2546,8 @@ export default {
         );
       }
 
+      // console.log(this.cong_nhan);
+
       for (let i = 0; i < arrayCongdoan.length; i++) {
         this.iscongdoan = 1;
         this.items.push({
@@ -2478,29 +2573,12 @@ export default {
           stopday_losx: "",
           status: 0,
           ngaythuchien: this.getinfoplsx.ngaybd,
-          nhomto_cnt: [
-            {
-              maxuong: "",
-              tenxuong: "",
-              tento: "",
-              mato: "",
-              tencn: "",
-              macn: "",
-            },
-          ],
-          nhomto: [
-            {
-              maxuong: "",
-              tenxuong: "",
-              tento: "",
-              mato: "",
-            },
-          ],
+          nhomto_cnt: [],
+          nhomto: [],
           selectedIndex: i,
         });
-        // console.log(this.items)
+        // console.log(this.items);
       }
-
       for (let i = 0; i < this.items.length; i++) {
         // console.log(this.cong_nhan)
         for (let k = 0; k < this.cong_nhan.length; k++) {
@@ -2895,7 +2973,9 @@ export default {
     },
     // Lấy tên công nhân
     getTencn(event, selectedIndex, index) {
-      //   console.log(this.selectedIndex, index);
+      // console.log(event);
+      // console.log(selectedIndex, index);
+      // console.log(this.items);
       for (let i = 0; i < this.items.length; i++) {
         if (i == index) {
           this.items[i].congnhan = this.items[i].nhomto_cnt[selectedIndex].macn;
@@ -2907,6 +2987,21 @@ export default {
         }
       }
     },
+
+    locOption(event) {
+      var select = event.target;
+      var options = select.options;
+      var key = event.key;
+      var index = parseInt(key, 10) - 1;
+      if (isNaN(index) || index < 0 || index >= options.length) {
+        return;
+      }
+      var option = options[index];
+      select.selectedIndex = index;
+      select.dispatchEvent(new Event("change"));
+      event.preventDefault();
+    },
+
     getTencnCN(event, selectedIndex, index) {
       // console.log(this.cong_nhan[this.selectedIndex])
       this.selectedIndex = selectedIndex;
@@ -4288,5 +4383,24 @@ tr:hover {
 
 .highlighted {
   background-color: lightblue;
+}
+
+datalist {
+  max-height: 200px;
+  overflow-y: auto;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #fff;
+  position: absolute;
+  z-index: 1;
+}
+
+option {
+  padding: 5px;
+  cursor: pointer;
+}
+
+option:hover {
+  background-color: #ccc;
 }
 </style>

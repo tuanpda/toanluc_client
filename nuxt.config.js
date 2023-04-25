@@ -20,6 +20,8 @@ module.exports = {
     link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
 
     script: [{ src: "https://kit.fontawesome.com/d33a83f69c.js" }],
+
+    
   },
   /*
    ** Customize the progress-bar color
@@ -43,6 +45,7 @@ module.exports = {
     { src: "~/plugins/sweetalert", ssr: false },
     { src: "~/plugins/sweetalert2", ssr: false },
     { src: "~/plugins/excelxlsx", ssr: false },
+    { src: "~/plugins/vue-select", ssr: false },
   ],
   /*
    ** Nuxt.js modules
@@ -71,7 +74,7 @@ module.exports = {
     // port: 8080, // default: 3000
     port: 80,
     // host: '10.42.240.200' // default: localhost
-    host: "192.168.2.97", // default: localhost
+    // host: "192.168.2.97", // default: localhost
   },
   /* proxy: {
     "/api": URL,

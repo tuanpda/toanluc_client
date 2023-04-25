@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div class="table_wrapper" style="margin-right: 10px;" ref="wrapper">
     <table class="table is-responsive is-bordered is-narrow is-fullwidth" ref="table">
       <thead>
@@ -266,4 +266,237 @@ table {
   overflow-y: visible;
   padding: 0;
 }
-</style>
+</style> -->
+
+<!-- <template>
+  <div>
+    <table>
+      <tr v-for="(item, index) in items" :key="index + 'cm-a'">
+        <td style="text-align: center; font-size: small; font-weight: bold">
+          {{ index + 1 }}
+        </td>
+        <td style="font-size: small; font-weight: bold">
+          {{ item.nguyencong }}
+        </td>
+        <td style="font-size: small; font-weight: bold">
+          <input
+            v-model="item.sohong"
+            ref="sodat{{index}}"
+            @keydown="onKeyDown($event, index, 0)"
+          />
+        </td>
+        <td style="font-size: small; font-weight: bold">
+          <input
+            v-model="item.sohong"
+            ref="sohong{{index}}"
+            @keydown="onKeyDown($event, index, 1)"
+          />
+        </td>
+      </tr>
+    </table>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      items: [
+        { nguyencong: "Item 1", sodat: "", sohong: "" },
+        { nguyencong: "Item 2", sodat: "", sohong: "" },
+        { nguyencong: "Item 3", sodat: "", sohong: "" },
+      ],
+    };
+  },
+  methods: {
+    onKeyDown(event, rowIndex, colIndex) {
+      const rowLen = this.items.length;
+      const colLen = 2; // Số cột của bảng (nguyencong, sohong)
+      let nextRow = rowIndex;
+      let nextCol = colIndex;
+
+      // Xử lý phím di chuyển
+      switch (event.keyCode) {
+        case 37: // ArrowLeft
+          nextCol = colIndex > 0 ? colIndex - 1 : colLen - 1;
+          break;
+        case 38: // ArrowUp
+          nextRow = rowIndex > 0 ? rowIndex - 1 : rowLen - 1;
+          break;
+        case 39: // ArrowRight
+          nextCol = colIndex < colLen - 1 ? colIndex + 1 : 0;
+          break;
+        case 40: // ArrowDown
+          nextRow = rowIndex < rowLen - 1 ? rowIndex + 1 : 0;
+          break;
+        case 13: // Enter
+          nextRow = rowIndex + 1;
+          break;
+      }
+
+      // Di chuyển tới ô input mới
+      if (nextRow !== rowIndex || nextCol !== colIndex) {
+        const nextRef = `sodat${nextRow}${nextCol === 0 ? "" : "sohong"}`;
+        this.$nextTick(() => {
+          const nextInput = this.$refs[nextRef];
+          if (nextInput) {
+            nextInput.focus();
+          }
+        });
+      }
+    },
+  },
+};
+</script> -->
+
+<template>
+  <div>
+    <table>
+      <thead>
+        <tr>
+          <th>STT</th>
+          <th>Nguyên công</th>
+          <th>Nguyên công</th>
+          <th>Nguyên công</th>
+          <th>Số đạt</th>
+          <th>Số hỏng</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(item, index) in items" :key="index + 'cm-a'" ref="rows">
+          <td style="text-align: center; font-size: small; font-weight: bold">
+            {{ index + 1 }}
+          </td>
+          <td style="font-size: small; font-weight: bold">
+            {{ item.nguyencong }}
+          </td>
+          <td style="font-size: small; font-weight: bold">
+            {{ item.doangia }}
+          </td>
+          <td style="font-size: small; font-weight: bold">
+            <v-select :options="options" label="tencn" v-model="tencn"></v-select>
+          </td>
+          <td style="font-size: small; font-weight: bold">
+            <input
+              v-model="item.sodat"
+              type="text"
+              @keydown.arrow-down="moveToNextRow(index, $event)"
+              @keydown.arrow-up="moveToPreviousRow(index, $event)"
+              @keydown.arrow-right="moveToNextColumn(index)"
+              @keydown.arrow-left="moveToPreviousColumn(index)"
+              @keydown.enter.prevent="moveToNextRow(index)"
+            />
+          </td>
+          <td style="font-size: small; font-weight: bold">
+            <input
+              v-model="item.sohong"
+              type="text"
+              @keydown.arrow-down="moveToNextRow(index, $event)"
+              @keydown.arrow-up="moveToPreviousRow(index, $event)"
+              @keydown.arrow-right="moveToNextColumn(index)"
+              @keydown.arrow-left="moveToPreviousColumn(index)"
+              @keydown.enter.prevent="moveToNextRow(index)"
+            />
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</template>
+
+<script>
+import "vue-select/dist/vue-select.css";
+export default {
+  data() {
+    return {
+      items: [
+        { nguyencong: "A", doangia: "C", ho: 2, sodat: "", sohong: "" },
+        { nguyencong: "A", doangia: "C", ho: 2, sodat: "", sohong: "" },
+        { nguyencong: "A", doangia: "C", ho: 2, sodat: "", sohong: "" },
+        { nguyencong: "A", doangia: "C", ho: 2, sodat: "", sohong: "" },
+        { nguyencong: "A", doangia: "C", ho: 2, sodat: "", sohong: "" },
+        { nguyencong: "A", doangia: "C", ho: 2, sodat: "", sohong: "" },
+        { nguyencong: "A", doangia: "C", ho: 2, sodat: "", sohong: "" },
+        { nguyencong: "A", doangia: "C", ho: 2, sodat: "", sohong: "" },
+        { nguyencong: "A", doangia: "C", ho: 2, sodat: "", sohong: "" },
+        { nguyencong: "A", doangia: "C", ho: 2, sodat: "", sohong: "" },
+      ],
+      selectedOption: null,
+      options: [],
+    };
+  },
+  mounted() {
+    // lấy dữ liệu cho danh sách options
+    // ví dụ:
+    this.options = [
+      { tencn: "Công nhân 1", stt: 1 },
+      { tencn: "Công nhân 2", stt: 2 },
+      { tencn: "Công nhân 3", stt: 3 },
+      // ...
+    ];
+  },
+  methods: {
+    onSelect(selectedOption) {
+      // xử lý khi người dùng chọn một mục trong danh sách
+    },
+    moveToNextRow(index, e) {
+      const currentRowInputs =
+        e.target.parentNode.parentNode.getElementsByTagName("input");
+      const currentInputIndex = Array.prototype.indexOf.call(
+        currentRowInputs,
+        e.target
+      );
+      const nextRow = this.$refs.rows[index + 1];
+      if (nextRow) {
+        const nextRowInputs = nextRow.getElementsByTagName("input");
+        // if (nextRowInputs.length > 0) {
+        //   nextRowInputs[0].focus();
+        // }
+        if (nextRowInputs.length > currentInputIndex) {
+          nextRowInputs[currentInputIndex].focus();
+        }
+      }
+    },
+    moveToPreviousRow(index, e) {
+      const currentRowInputs =
+        e.target.parentNode.parentNode.getElementsByTagName("input");
+      const currentInputIndex = Array.prototype.indexOf.call(
+        currentRowInputs,
+        e.target
+      );
+
+      const previousRow = this.$refs.rows[index - 1];
+      if (previousRow) {
+        const previousRowInputs = previousRow.getElementsByTagName("input");
+        if (previousRowInputs.length > currentInputIndex) {
+          previousRowInputs[currentInputIndex].focus();
+        }
+      }
+    },
+    moveToNextColumn(index) {
+      const currentRowInputs =
+        this.$refs.rows[index].getElementsByTagName("input");
+      const currentInput = document.activeElement;
+      const currentIndex = Array.prototype.indexOf.call(
+        currentRowInputs,
+        currentInput
+      );
+      if (currentIndex < currentRowInputs.length - 1) {
+        currentRowInputs[currentIndex + 1].focus();
+      }
+    },
+    moveToPreviousColumn(index) {
+      const currentRowInputs =
+        this.$refs.rows[index].getElementsByTagName("input");
+      const currentInput = document.activeElement;
+      const currentIndex = Array.prototype.indexOf.call(
+        currentRowInputs,
+        currentInput
+      );
+      if (currentIndex > 0) {
+        currentRowInputs[currentIndex - 1].focus();
+      }
+    },
+  },
+};
+</script>
