@@ -1541,7 +1541,7 @@
                             @keydown.arrow-up="moveToPreviousRow(index, $event)"
                             @keydown.arrow-right="moveToNextColumn(index)"
                             @keydown.arrow-left="moveToPreviousColumn(index)"
-                            @keydown.enter.prevent="moveToNextRow(index. $event)"
+                            @keydown.enter.prevent="moveToNextRow(index, $event)"
                           />
                         </td>
                         <td>
