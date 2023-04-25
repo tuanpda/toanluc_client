@@ -374,7 +374,7 @@ export default {
             {{ item.doangia }}
           </td>
           <td style="font-size: small; font-weight: bold">
-            <v-select :options="options" label="tencn" v-model="tencn"></v-select>
+          
           </td>
           <td style="font-size: small; font-weight: bold">
             <input
@@ -405,7 +405,7 @@ export default {
 </template>
 
 <script>
-import "vue-select/dist/vue-select.css";
+
 export default {
   data() {
     return {
@@ -421,24 +421,11 @@ export default {
         { nguyencong: "A", doangia: "C", ho: 2, sodat: "", sohong: "" },
         { nguyencong: "A", doangia: "C", ho: 2, sodat: "", sohong: "" },
       ],
-      selectedOption: null,
-      options: [],
     };
   },
-  mounted() {
-    // lấy dữ liệu cho danh sách options
-    // ví dụ:
-    this.options = [
-      { tencn: "Công nhân 1", stt: 1 },
-      { tencn: "Công nhân 2", stt: 2 },
-      { tencn: "Công nhân 3", stt: 3 },
-      // ...
-    ];
-  },
+ 
   methods: {
-    onSelect(selectedOption) {
-      // xử lý khi người dùng chọn một mục trong danh sách
-    },
+
     moveToNextRow(index, e) {
       const currentRowInputs =
         e.target.parentNode.parentNode.getElementsByTagName("input");
