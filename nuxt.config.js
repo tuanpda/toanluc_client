@@ -45,7 +45,6 @@ module.exports = {
     { src: "~/plugins/sweetalert", ssr: false },
     { src: "~/plugins/sweetalert2", ssr: false },
     { src: "~/plugins/excelxlsx", ssr: false },
-    { src: "~/plugins/vue-select", ssr: false },
   ],
   /*
    ** Nuxt.js modules
