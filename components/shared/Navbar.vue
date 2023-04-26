@@ -56,6 +56,12 @@
                     </span>
                     &ensp; Công nhân
                   </nav-link>
+                  <nav-link to="/danhmuc/congnhan/chonstt" class="navbar-item">
+                    <span style="color: #3850b7" class="icon is-small is-left">
+                      <i class="fas fa-barcode"></i>
+                    </span>
+                    &ensp; Gán số thứ tự công nhân
+                  </nav-link>
                   <hr class="navbar-divider" />
                   <!-- <nav-link to="" class="navbar-item">
                     <span style="color: #3850b7" class="icon is-small is-left">

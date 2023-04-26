@@ -1495,7 +1495,7 @@
                                 :value="it.macn"
                                 :key="index"
                               >
-                                {{ index + 1 }} - {{ it.tencn }}
+                                {{ it.sttchon }} - {{ it.tencn }}
                               </option>
                             </select>
                           </div>
@@ -2002,6 +2002,7 @@ export default {
             mato: "",
             tencn: "",
             macn: "",
+            sttchon: '',
           },
           nhomto: [
             {
@@ -2589,6 +2590,7 @@ export default {
             mato: this.cong_nhan[k].mato,
             tencn: this.cong_nhan[k].tencn,
             macn: this.cong_nhan[k].macn,
+            sttchon: this.cong_nhan[k].sttchon
           };
           this.items[i].nhomto_cnt.push(cn);
           // console.log(this.items[i].nhomto_cnt)
@@ -4254,7 +4256,7 @@ export default {
 
 .modal-content,
 .modal-card {
-  width: 1320px;
+  width: 1420px;
   height: 800px;
 }
 
