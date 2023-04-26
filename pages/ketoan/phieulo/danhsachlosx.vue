@@ -718,6 +718,18 @@ export default {
                 }
                 );
             }
+            // chỉ có mã px và status và sp
+            else if (this.selectedOptions.length > 0 && this.Options_status.length > 0 && this.multiSearch_masp != "" && this.multiSearch_nhomsp == '') {
+                this.lokehoachsx = await this.$axios.$get(
+                    `/api/lokehoach/filteronlymapxandstatusmasplosanxuat`, {
+                    params: {
+                        mapx: mapxList,
+                        status: status,
+                        masp: masp
+                    },
+                }
+                );
+            }
             // lọc mỗi trạng thái
             else if (!this.selectedOptions.length && this.Options_status.length > 0 && this.multiSearch_masp == "" && this.multiSearch_nhomsp == '') {
                 this.lokehoachsx = await this.$axios.$get(
