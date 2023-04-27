@@ -81,7 +81,12 @@
                     </span>
                     &ensp; Nguyên công
                   </nav-link>
-
+                  <nav-link to="/danhmuc/congnhat/" class="navbar-item">
+                    <span style="color: #3850b7" class="icon is-small is-left">
+                      <i class="fab fa-firstdraft"></i>
+                    </span>
+                    &ensp; Công nhật
+                  </nav-link>
                 </div>
               </div>
               <!-- Tài chính -->

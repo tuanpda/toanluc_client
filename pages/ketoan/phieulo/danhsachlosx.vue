@@ -4,7 +4,7 @@
       <br />
       <div class="box" style="margin-left: 20px; margin-right: 20px">
         <div class="columns">
-          <div class="column is-11">
+          <div class="column is-10">
             <div class="control">
               <span class="icon is-small is-left">
                 <i style="color: #ff55acee" class="far fa-calendar-alt"></i>
@@ -13,6 +13,14 @@
                 >Danh sách lô sản xuất</span
               >
             </div>
+          </div>
+          <div class="column">
+            <button @click="printphieu" class="button is-success is-fullwidth is-small">
+              <span class="icon is-small">
+                <i style="color: red" class="far fa-file-pdf"></i>
+              </span>
+              <span>In Phiếu Lô</span>
+            </button>
           </div>
           <div class="column" style="text-align: right">
             <button class="button is-info is-fullwidth is-small">
@@ -26,14 +34,6 @@
 
         <div>
           <table class="table is-responsive is-bordered is-narrow is-fullwidth">
-            <!-- <tr style="background-color: #eff5fb;">
-
-                            <td colspan="5"></td>
-                            <td colspan="2" style="font-size: small; font-weight: bold; text-align: right;"><span>Có: <span
-                                        style="color: red;">{{ lokehoachsx.length
-                                        }}</span> bản
-                                    ghi</span></td>
-                        </tr> -->
             <tr style="background-color: #feecf0">
               <td style="font-size: small; width: 15.15%">
                 <div class="select-wrapper">
@@ -174,7 +174,7 @@
                   max="10"
                 />
               </td>
-              <td></td>
+              <!-- <td></td> -->
             </tr>
           </table>
         </div>
@@ -218,7 +218,7 @@
               >
                 Mã PX
               </td>
-              <td
+              <!-- <td
                 @click="sortTable('makhpx')"
                 style="
                   font-size: small;
@@ -228,7 +228,7 @@
                 "
               >
                 Mã KHPX
-              </td>
+              </td> -->
               <td
                 @click="sortTable('malosx')"
                 style="
@@ -354,7 +354,7 @@
               >
                 Cập nhật
               </td>
-              <td></td>
+              <!-- <td></td> -->
             </tr>
             <tr
               v-for="(item, index) in paginatedTable"
@@ -382,7 +382,7 @@
               >
                 {{ item.mapx }}
               </td>
-              <td
+              <!-- <td
                 style="
                   font-size: small;
                   background-color: #effaf5;
@@ -390,7 +390,7 @@
                 "
               >
                 {{ item.makhpx }}
-              </td>
+              </td> -->
               <td
                 style="
                   font-size: small;
@@ -552,7 +552,7 @@
                   Cập nhật
                 </button>
               </td>
-              <td></td>
+              <!-- <td></td> -->
             </tr>
           </table>
           <div class="pagination">
@@ -1320,90 +1320,72 @@ export default {
         this.$axios.$patch(`/api/lokehoach/losanxuat/status/${item._id}`, item);
       }
     },
+
     // in PDF
     async printphieu() {
-      // console.log(this.selected_print)
-      const columns = [
-        { title: "Mã lô sản xuất", dataKey: "malosx" },
-        { title: "Tên Sản phẩm", dataKey: "masp" },
-        { title: "Kế hoạch", dataKey: "soluonglsx" },
-        { title: "Ca1/Số lượng" },
-        { title: "Ca2/Số lượng" },
-        { title: "Báo cáo hoàn thành" },
-        { title: "Ghi chú", dataKey: "....." },
-      ];
+      console.log(this.selected_print)
+      // const columns = [
+      //   { title: "Mã lô sản xuất", dataKey: "malosx" },
+      //   { title: "Tên Sản phẩm", dataKey: "masp" },
+      //   { title: "Kế hoạch", dataKey: "soluonglsx" },
+      //   { title: "Ca1/Số lượng" },
+      //   { title: "Ca2/Số lượng" },
+      //   { title: "Báo cáo hoàn thành" },
+      //   { title: "Ghi chú", dataKey: "....." },
+      // ];
 
-      const columnWidths = [10, 10, 10, 10, 10, 10, 40]; // định dạng chiều rộng của các cột
+      // const columnWidths = [10, 10, 10, 10, 10, 10, 40]; // định dạng chiều rộng của các cột
 
-      const rows = this.selected_print;
+      // const rows = this.selected_print;
 
-      const doc = new jsPDF({
-        orientation: "l",
-        format: "a4",
-      });
+      // const doc = new jsPDF({
+      //   orientation: "l",
+      //   format: "a4",
+      // });
 
-      doc.addFont("OpenSans-Light-normal.ttf", "OpenSans-Light", "normal");
-      doc.setFont("OpenSans-Light");
-      doc.setFontSize(12);
-      doc.setFont("OpenSans-SemiBold");
-      doc.setFontSize(13);
-      doc.text("TOÀN LỰC JSC", 17, 19);
-      doc.addFont("OpenSans-Light-normal.ttf", "OpenSans-Light", "normal");
-      doc.setFont("OpenSans-Light");
-      doc.setFontSize(12);
-      doc.text("CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM", 200, 13);
-      doc.text("Độc lập - Tự do - Hạnh phúc", 212, 19);
+      // doc.addFont("OpenSans-Light-normal.ttf", "OpenSans-Light", "normal");
+      // doc.setFont("OpenSans-Light");
+      // doc.setFontSize(12);
+      // doc.setFont("OpenSans-SemiBold");
+      // doc.setFontSize(13);
+      // doc.text("TOÀN LỰC JSC", 17, 19);
+      // doc.addFont("OpenSans-Light-normal.ttf", "OpenSans-Light", "normal");
+      // doc.setFont("OpenSans-Light");
+      // doc.setFontSize(12);
+      // doc.text("CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM", 200, 13);
+      // doc.text("Độc lập - Tự do - Hạnh phúc", 212, 19);
 
-      doc.addFont(
-        "OpenSans-SemiBold-normal.ttf",
-        "OpenSans-SemiBold",
-        "normal"
-      );
-      doc.setFont("OpenSans-SemiBold");
-      doc.setFontSize(14);
-      doc.text("BẢNG KẾ HOẠCH SẢN XUẤT THEO NGÀY", 100, 32);
-      doc.setFontSize(10);
-      doc.text("Phân xưởng: ..................................", 15, 45);
-      doc.setFontSize(10);
-      doc.text("Ngày: ........................................", 15, 55);
-      doc.setFontSize(10);
+      // doc.addFont(
+      //   "OpenSans-SemiBold-normal.ttf",
+      //   "OpenSans-SemiBold",
+      //   "normal"
+      // );
+      // doc.setFont("OpenSans-SemiBold");
+      // doc.setFontSize(14);
+      // doc.text("BẢNG KẾ HOẠCH SẢN XUẤT THEO NGÀY", 100, 32);
+      // doc.setFontSize(10);
+      // doc.text("Phân xưởng: ..................................", 15, 45);
+      // doc.setFontSize(10);
+      // doc.text("Ngày: ........................................", 15, 55);
+      // doc.setFontSize(10);
 
-      doc.autoTable(columns, rows, {
-        startY: doc.lastAutoTable + 65, // Giúp cho trang 2 không bị lặp lại phần add text phía trên
-        styles: { font: "OpenSans-Light" | "Unicode" },
-        theme: "grid",
-        //margin: { top: 110 }, không dùng margin vì sẽ apply all page, như vậy không đúng
-        headerStyles: {
-          fillColor: [246, 248, 255],
-          textColor: 20,
-          fontStyle: "bold", // normal, bold, italic, bolditalic
-          lineColor: 200,
-          lineWidth: 0.1,
-          halign: "center", // left, center, right
-          valign: "top", // top, middle, bottom
-        },
-        // Set the widths of the columns
-        setWidths: [200],
-        // drawHeaderCell: function (cell, data) {
-        //     if (cell.raw === "ID") {
-        //         //paint.Name header red
-        //         cell.styles.fontSize = 15;
-        //         cell.styles.textColor = [255, 0, 0];
-        //     } else {
-        //         cell.styles.textColor = 255;
-        //         cell.styles.fontSize = 10;
-        //     }
-        // },
-        // willDrawCell: (data) => {
-        //     if (
-        //         data.column.dataKey === "soluonglsx"
-        //     ) {
-        //         data.cell.styles.halign = "center";
-        //     }
-        // },
-      });
-      doc.output("dataurlnewwindow");
-      this.isPdf = false;
+      // doc.autoTable(columns, rows, {
+      //   startY: doc.lastAutoTable + 65, // Giúp cho trang 2 không bị lặp lại phần add text phía trên
+      //   styles: { font: "OpenSans-Light" | "Unicode" },
+      //   theme: "grid",
+      //   //margin: { top: 110 }, không dùng margin vì sẽ apply all page, như vậy không đúng
+      //   headerStyles: {
+      //     fillColor: [246, 248, 255],
+      //     textColor: 20,
+      //     fontStyle: "bold", // normal, bold, italic, bolditalic
+      //     lineColor: 200,
+      //     lineWidth: 0.1,
+      //     halign: "center", // left, center, right
+      //     valign: "top", // top, middle, bottom
+      //   },
+      // });
+      // doc.output("dataurlnewwindow");
+      // this.isPdf = false;
     },
 
     // --------------------------------------------------------------------------------------
