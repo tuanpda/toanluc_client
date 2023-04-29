@@ -632,7 +632,6 @@ import "jspdf-autotable";
 import "~/assets/font/OpenSans-Light-normal";
 import "~/assets/font/OpenSans-SemiBold-normal";
 import XLSX from "xlsx";
-import { PDFDocument, StandardFonts } from "pdf-lib";
 export default {
   middleware: "auth",
   data() {

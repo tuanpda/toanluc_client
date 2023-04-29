@@ -25,7 +25,6 @@
     "moment": "^2.24.0",
     "numeral": "^2.0.6",
     "nuxt": "^2.15.7",
-    "pdf-lib": "^1.17.1",
     "portal-vue": "^2.1.6",
     "read-excel-file": "^5.2.4",
     "sweetalert": "^2.1.2",
