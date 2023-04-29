@@ -167,7 +167,7 @@
                     <span style="color: #9b6dff" class="icon is-small is-left">
                       <i class="fas fa-clipboard-list"></i>
                     </span>
-                    &ensp; Vào lương công đoạn sản xuất
+                    &ensp; Vào lương
                   </nav-link>
                   <div class="nested navbar-item dropdown">
                     <div class="dropdown-trigger">
@@ -193,7 +193,7 @@
                           &ensp; Công nhân xưởng
                         </nav-link>
                       </div>
-                    </div>
+                    </div>                  
                   </div>
                   <div class="nested navbar-item dropdown">
                     <div class="dropdown-trigger">
@@ -221,6 +221,12 @@
                       </div>
                     </div>
                   </div>
+                  <nav-link to="/ketoan/phieulo/exportdata" class="navbar-item">
+                    <span style="color: #9b6dff" class="icon is-small is-left">
+                      <i class="far fa-file-excel"></i>
+                    </span>
+                    &ensp; Xuất dữ liệu
+                  </nav-link>
                 </div>
               </div>
               <!-- Báo cáo -->

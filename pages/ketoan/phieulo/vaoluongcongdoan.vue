@@ -802,8 +802,19 @@
               class="table is-responsive is-bordered is-narrow is-fullwidth"
             >
               <tr style="background-color: #feecf0">
-                <td colspan="8" style="font-weight: bold; font-size: small">
+                <td colspan="7" style="font-weight: bold; font-size: small">
                   Công nhật đã thực hiện
+                </td>
+                <td>
+                  <vue-excel-xlsx
+                    :data="allluongcongnhat"
+                    :columns="columns_cn"
+                    :file-name="'Lương công nhật'"
+                    :file-type="'xlsx'"
+                    :sheet-name="'Lương công nhật'"
+                  >
+                    Download Excel
+                  </vue-excel-xlsx>
                 </td>
               </tr>
               <tr>
@@ -1541,7 +1552,9 @@
                             @keydown.arrow-up="moveToPreviousRow(index, $event)"
                             @keydown.arrow-right="moveToNextColumn(index)"
                             @keydown.arrow-left="moveToPreviousColumn(index)"
-                            @keydown.enter.prevent="moveToNextRow(index, $event)"
+                            @keydown.enter.prevent="
+                              moveToNextRow(index, $event)
+                            "
                           />
                         </td>
                         <td>
@@ -1553,7 +1566,9 @@
                             @keydown.arrow-up="moveToPreviousRow(index, $event)"
                             @keydown.arrow-right="moveToNextColumn(index)"
                             @keydown.arrow-left="moveToPreviousColumn(index)"
-                            @keydown.enter.prevent="moveToNextRow(index, $event)"
+                            @keydown.enter.prevent="
+                              moveToNextRow(index, $event)
+                            "
                           />
                         </td>
 
@@ -1793,13 +1808,15 @@
                                   index
                                 )
                               "
+                              @keydown="locOption($event)"
                               v-model="item.macn"
                             >
                               <option
-                                v-for="it in item.nhomto_cnt"
+                                v-for="(it, index) in item.nhomto_cnt"
                                 :value="it.macn"
+                                :key="index"
                               >
-                                {{ it.tencn }}
+                                {{ it.sttchon }} - {{ it.tencn }}
                               </option>
                             </select>
                           </div>
@@ -1880,7 +1897,7 @@ export default {
       tonghonginlo: 0,
       tongdatinlo: "",
       form: {
-        makh: "",
+        malonhamay: "",
         makhpx: "",
         tenpx: "",
         mapx: "",
@@ -2002,7 +2019,7 @@ export default {
             mato: "",
             tencn: "",
             macn: "",
-            sttchon: '',
+            sttchon: "",
           },
           nhomto: [
             {
@@ -2039,6 +2056,7 @@ export default {
             mato: "",
             tencn: "",
             macn: "",
+            sttchon: "",
           },
           nhomto: [
             {
@@ -2146,6 +2164,110 @@ export default {
           label: "Ngày thực hiện",
           field: "ngaythuchien",
           dataFormat: this.prefixformatDate,
+        },
+      ],
+
+      columns_cn: [
+        {
+          label: "Id Lô sản xuất",
+          field: "_id_losx",
+          // dataFormat: this.trimData
+        },
+        {
+          label: "Kế hoạch năm",
+          field: "kehoachnam",
+          /* dataFormat: this.priceFormat */
+          // dataFormat: this.trimData
+        },
+        {
+          label: "Mã lô nhà máy",
+          field: "malonhamay",
+          /* dataFormat: this.priceFormat */
+          // dataFormat: this.trimData
+        },
+        {
+          label: "Mã kế hoạch PX",
+          field: "makhpx",
+          /* dataFormat: this.priceFormat */
+          // dataFormat: this.trimData
+        },
+        {
+          label: "Mã lô sản xuất",
+          field: "malosx",
+        },
+        {
+          label: "Mã phân xưởng",
+          field: "mapx",
+          // dataFormat: this.prefixformatDate
+        },
+        // {
+        //   label: "Mã tổ",
+        //   field: "mato",
+        // },
+        {
+          label: "Mã sản phẩm",
+          field: "masp",
+          // dataFormat: this.prefixformatDate
+        },
+        {
+          label: "Tên sản phẩm",
+          field: "tensp",
+          // dataFormat: this.prefixformatDate
+        },
+        {
+          label: "Mã công",
+          field: "macongnhat",
+          // dataFormat: this.trimData
+        },
+
+        {
+          label: "Tên công",
+          field: "tencongnhat",
+          // dataFormat: this.trimData
+        },
+        {
+          label: "Mã công nhân",
+          field: "macongnhan",
+          // dataFormat: this.trimData
+        },
+        {
+          label: "Người thực hiện",
+          field: "nguoithuchien",
+          // dataFormat: this.trimData
+        },
+        {
+          label: "Số giờ công",
+          field: "sogiocong",
+          // dataFormat: this.prefixformatDate
+        },
+        {
+          label: "Đơn giá",
+          field: "dongia",
+          // dataFormat: this.prefixformatDate
+        },
+        {
+          label: "Phân xưởng công nhân",
+          field: "phanxuong_cn",
+        },
+        {
+          label: "Tổ công nhân",
+          field: "to_cn",
+          // dataFormat: this.prefixformatDate
+        },
+        {
+          label: "Ngày thực hiện",
+          field: "ngaythuchien",
+          dataFormat: this.prefixformatDate
+        },
+        {
+          label: "Ngày hoàn thành",
+          field: "ngayhoanthanh",
+          dataFormat: this.prefixformatDate,
+        },
+        {
+          label: "Ghi chú",
+          field: "ghichu",
+          // dataFormat: this.prefixformatDate
         },
       ],
     };
@@ -2590,7 +2712,7 @@ export default {
             mato: this.cong_nhan[k].mato,
             tencn: this.cong_nhan[k].tencn,
             macn: this.cong_nhan[k].macn,
-            sttchon: this.cong_nhan[k].sttchon
+            sttchon: this.cong_nhan[k].sttchon,
           };
           this.items[i].nhomto_cnt.push(cn);
           // console.log(this.items[i].nhomto_cnt)
@@ -2614,7 +2736,7 @@ export default {
       this.items_cn.push({
         _id_losx: this.getinfoplsx._id,
         kehoachnam: this.getinfoplsx.kehoachnam,
-        makh: this.getinfoplsx.makh,
+        malonhamay: this.getinfoplsx.malonhamay,
         makhpx: this.getinfoplsx.makhpx,
         malosx: this.malosx,
         macongnhat: "",
@@ -2631,24 +2753,8 @@ export default {
         stopday_losx: "",
         status: 0,
         ngaythuchien: this.getinfoplsx.ngaybd,
-        nhomto_cnt: [
-          {
-            maxuong: "",
-            tenxuong: "",
-            tento: "",
-            mato: "",
-            tencn: "",
-            macn: "",
-          },
-        ],
-        nhomto: [
-          {
-            maxuong: "",
-            tenxuong: "",
-            tento: "",
-            mato: "",
-          },
-        ],
+        nhomto_cnt: [],
+        nhomto: [],
       });
 
       for (let i = 0; i < this.items_cn.length; i++) {
@@ -2661,6 +2767,7 @@ export default {
             mato: this.cong_nhan[k].mato,
             tencn: this.cong_nhan[k].tencn,
             macn: this.cong_nhan[k].macn,
+            sttchon: this.cong_nhan[k].sttchon,
           };
           this.items_cn[i].nhomto_cnt.push(cn);
           // console.log(this.items[i].nhomto_cnt)
@@ -3031,14 +3138,14 @@ export default {
             this.dmcongnhat[this.selectedIndex].tencn;
           this.items_cn[i].dongia = this.dmcongnhat[this.selectedIndex].dongia;
           this.items_cn[i].malosx = this.form.malosx;
-          this.items_cn[i].makh = this.form.makh;
+          this.items_cn[i].malonhamay = this.form.malonhamay;
           this.items_cn[i].makhpx = this.form.makhpx;
           this.items_cn[i].tensp = this.form.tensp;
           this.items_cn[i].mapx = this.form.mapx;
           this.items_cn[i]._id_losx = this.getinfoplsx._id;
         }
       }
-      // console.log(this.items_cn)
+      console.log(this.items_cn)
       if (this.form.mato == "") {
         for (let i = 0; i < this.items_cn.length; i++) {
           if (i == index) {
@@ -3056,6 +3163,7 @@ export default {
                 mato: this.cong_nhan_cn[k].mato,
                 tencn: this.cong_nhan_cn[k].tencn,
                 macn: this.cong_nhan_cn[k].macn,
+                sttchon: this.cong_nhan_cn[k].sttchon,
               };
               this.items_cn[i].nhomto_cnt.push(cn);
               // console.log(cn)
@@ -3081,6 +3189,7 @@ export default {
                 mato: this.cong_nhan_cn[k].mato,
                 tencn: this.cong_nhan_cn[k].tencn,
                 macn: this.cong_nhan_cn[k].macn,
+                sttchon: this.cong_nhan_cn[k].sttchon,
               };
               this.items_cn[i].nhomto_cnt.push(cn);
             }
@@ -3111,14 +3220,14 @@ export default {
       this.getinfoplsx = infoPhieulo;
       // console.log(this.getinfoplsx);
       this.form.id_losx = this.getinfoplsx._id;
-      this.form.nhomluong = infoPhieulo.nhomluong.trim();
-      this.form.mapx = infoPhieulo.mapx.trim();
-      this.form.malosx = infoPhieulo.malosx.trim();
-      this.form.makh = infoPhieulo.malonhamay.trim();
-      this.form.makhpx = infoPhieulo.makhpx.trim();
-      this.form.tensp = infoPhieulo.tensp.trim();
-      this.form.mato = infoPhieulo.mato.trim();
-      this.form.tento = infoPhieulo.tento.trim();
+      this.form.nhomluong = infoPhieulo.nhomluong;
+      this.form.mapx = infoPhieulo.mapx;
+      this.form.malosx = infoPhieulo.malosx;
+      this.form.malonhamay = infoPhieulo.malonhamay;
+      this.form.makhpx = infoPhieulo.makhpx;
+      this.form.tensp = infoPhieulo.tensp;
+      this.form.mato = infoPhieulo.mato;
+      this.form.tento = infoPhieulo.tento;
 
       // lấy mã nhóm lương dựa vào mã sp và mã phân xưởng
       if (

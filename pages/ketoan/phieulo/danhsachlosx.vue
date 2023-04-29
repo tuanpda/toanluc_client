@@ -2,7 +2,7 @@
   <div class="columns">
     <div class="column">
       <br />
-      <div class="box" style="margin-left: 20px; margin-right: 20px">
+      <div class="box" style="margin-left: 5px; margin-right: 5px">
         <div class="columns">
           <div class="column is-10">
             <div class="control">
@@ -15,7 +15,10 @@
             </div>
           </div>
           <div class="column">
-            <button @click="printphieu" class="button is-success is-fullwidth is-small">
+            <button
+              @click="printphieu"
+              class="button is-success is-fullwidth is-small"
+            >
               <span class="icon is-small">
                 <i style="color: red" class="far fa-file-pdf"></i>
               </span>
@@ -241,6 +244,16 @@
                 Mã lô sản xuất
               </td>
               <td
+                style="
+                  font-size: small;
+                  text-align: center;
+                  font-weight: 600;
+                  width: 2%;
+                "
+              >
+                In
+              </td>
+              <td
                 @click="sortTable('nhomsp')"
                 style="
                   font-size: small;
@@ -400,6 +413,19 @@
                 "
               >
                 {{ item.malosx }}
+              </td>
+              <td
+                style="
+                  font-size: small;
+                  background-color: #eff5fb;
+                  text-align: center;
+                  font-weight: 600;
+                "
+              >
+                <a @click="printphieu(item)"
+                  ><span class="icon is-small">
+                    <i style="color: red" class="far fa-file-pdf"></i> </span
+                ></a>
               </td>
               <td
                 style="
@@ -606,6 +632,7 @@ import "jspdf-autotable";
 import "~/assets/font/OpenSans-Light-normal";
 import "~/assets/font/OpenSans-SemiBold-normal";
 import XLSX from "xlsx";
+import { PDFDocument, StandardFonts } from "pdf-lib";
 export default {
   middleware: "auth",
   data() {
@@ -1322,70 +1349,419 @@ export default {
     },
 
     // in PDF
-    async printphieu() {
-      console.log(this.selected_print)
-      // const columns = [
-      //   { title: "Mã lô sản xuất", dataKey: "malosx" },
-      //   { title: "Tên Sản phẩm", dataKey: "masp" },
-      //   { title: "Kế hoạch", dataKey: "soluonglsx" },
-      //   { title: "Ca1/Số lượng" },
-      //   { title: "Ca2/Số lượng" },
-      //   { title: "Báo cáo hoàn thành" },
-      //   { title: "Ghi chú", dataKey: "....." },
-      // ];
+    async printphieu(phieu) {
+      // console.log(phieu)
+      const doc = new jsPDF({
+        orientation: "p",
+        format: "a5",
+      });
+      let phanxuong;
+      if (phieu.mapx == "AL_PXD" || phieu.mapx == "DV_PXD") {
+        phanxuong = "DUC";
+      } else if (phieu.mapx == "PXGC") {
+        phanxuong = "GCC";
+      } else if (phieu.mapx == "PXVSBMTL") {
+        phanxuong = "VSBM";
+      } else if (phieu.mapx == "PXS") {
+        phanxuong = "SON";
+      } else if (phieu.mapx == "PXLR") {
+        phanxuong = "LAPRAP";
+      }
 
-      // const columnWidths = [10, 10, 10, 10, 10, 10, 40]; // định dạng chiều rộng của các cột
+      const moment = require("moment");
+      const formattedDate = moment(phieu.ngaybd).format("DD/MM/YYYY");
 
-      // const rows = this.selected_print;
+      // công đoạn
+      let arrayCongdoan;
+      let px;
 
-      // const doc = new jsPDF({
-      //   orientation: "l",
-      //   format: "a4",
+      if (phieu.mapx.trim() == "AL_PXD" || phieu.mapx.trim() == "DV_PXD") {
+        px = "PXD";
+        arrayCongdoan = await this.$axios.$get(
+          `/api/ketoan/getnguyencong?khsp=${phieu.nhomluong}&px=${px}`
+        );
+      } else {
+        arrayCongdoan = await this.$axios.$get(
+          `/api/ketoan/getnguyencong?khsp=${phieu.nhomluong}&px=${phieu.mapx}`
+        );
+      }
+
+      doc.rect(2, 5, 50, 8);
+      doc.addFont("OpenSans-SemiBold-normal.ttf", "OpenSans-SemiBold", "bold");
+      doc.setFont("OpenSans-SemiBold", "bold");
+      doc.setFontSize(12);
+      doc.text(`${phanxuong}`, 10, 10, {
+        align: "center",
+        fontWeight: "bold",
+      });
+      doc.text(`${formattedDate}`, 30, 10, {
+        align: "center",
+        fontWeight: "bold",
+      });
+
+      doc.rect(2 + 50, 5, 93, 8);
+      doc.addFont("OpenSans-SemiBold-normal.ttf", "OpenSans-SemiBold", "bold");
+      doc.setFont("OpenSans-SemiBold", "bold");
+      doc.setFontSize(12);
+      doc.text("PHIẾU LÔ SẢN XUẤT PHÂN XƯỞNG", 2 + 40 + 50, 5 + 6, {
+        align: "center",
+        fontWeight: "bold",
+      });
+      // logo
+      doc.rect(2, 5 + 8, 20, 16);
+      doc.addImage(require("~/assets/image/re_logo.png"), "PNG", 3, 14, 18, 14);
+      // mã kế hoạch
+      doc.rect(2 + 20, 5 + 8, 50, 16);
+      doc.addFont("OpenSans-SemiBold-normal.ttf", "OpenSans-SemiBold", "bold");
+      doc.setFont("OpenSans-SemiBold", "bold");
+      doc.setFontSize(9);
+      doc.text("Mã kế hoạch", 2 + 20 + 24, 20 + 2, {
+        align: "center",
+        fontWeight: "bold",
+      });
+      // ngày bắt đầu
+      doc.rect(2 + 20 + 50, 5 + 8, 20, 16);
+      doc.addFont("OpenSans-SemiBold-normal.ttf", "OpenSans-SemiBold", "bold");
+      doc.setFont("OpenSans-SemiBold", "bold");
+      doc.setFontSize(7);
+      doc.text("Ngày bắt đầu", 2 + 20 + 60, 20 + 2, {
+        align: "center",
+      });
+      // ngày kết thúc
+      doc.rect(2 + 20 + 50 + 20, 5 + 8, 20, 16);
+      doc.addFont("OpenSans-SemiBold-normal.ttf", "OpenSans-SemiBold", "bold");
+      doc.setFont("OpenSans-SemiBold", "bold");
+      doc.setFontSize(7);
+      doc.text("Ngày kết thúc", 2 + 20 + 80, 20 + 2, {
+        align: "center",
+      });
+      // số lượng đặt hàng
+      doc.rect(2 + 20 + 50 + 20 + 20, 5 + 8, 17, 16);
+      doc.addFont("OpenSans-SemiBold-normal.ttf", "OpenSans-SemiBold", "bold");
+      doc.setFont("OpenSans-SemiBold", "bold");
+      doc.setFontSize(7);
+      doc.text("SL đặt hàng", 2 + 20 + 99, 20 + 2, {
+        align: "center",
+      });
+      // số lượng sản xuất
+      doc.rect(2 + 20 + 50 + 20 + 20 + 17, 5 + 8, 16, 16);
+      doc.addFont("OpenSans-SemiBold-normal.ttf", "OpenSans-SemiBold", "bold");
+      doc.setFont("OpenSans-SemiBold", "bold");
+      doc.setFontSize(7);
+      doc.text("SL sản xuất", 2 + 20 + 115, 20 + 2, {
+        align: "center",
+      });
+
+      // hàng thứ 3
+      doc.rect(2, 5 + 24, 20, 10);
+      doc.addFont("OpenSans-SemiBold-normal.ttf", "OpenSans-SemiBold", "bold");
+      doc.setFont("OpenSans-SemiBold", "bold");
+      doc.setFontSize(9);
+      doc.text("TOÀN LỰC", 12, 30 + 3, {
+        align: "center",
+        fontWeight: "bold",
+      });
+      doc.text("JSC", 12, 33 + 4, {
+        align: "center",
+        fontWeight: "bold",
+      });
+      doc.rect(2 + 20, 5 + 24, 50, 10);
+      doc.addFont("OpenSans-SemiBold-normal.ttf", "OpenSans-SemiBold", "bold");
+      doc.setFont("OpenSans-SemiBold", "bold");
+      doc.setFontSize(10);
+      doc.text(`${phieu.masp + "-" + phieu.makhpx}`, 46, 32 + 3, {
+        align: "center",
+        fontWeight: "bold",
+      });
+      // ngày bắt đầu
+      // doc.rect(2 + 20 + 50, 5 + 24, 20, 10);
+      // doc.addFont("OpenSans-SemiBold-normal.ttf", "OpenSans-SemiBold", "bold");
+      // doc.setFont("OpenSans-SemiBold", "bold");
+      // doc.setFontSize(7);
+      // doc.text("Ngày bắt đầu", 2 + 20 + 60, 20 + 2, {
+      //   align: "center",
+      // });
+      // ngày kết thúc
+      // doc.rect(2 + 20 + 50 + 20, 5 + 24, 20, 10);
+      // doc.addFont("OpenSans-SemiBold-normal.ttf", "OpenSans-SemiBold", "bold");
+      // doc.setFont("OpenSans-SemiBold", "bold");
+      // doc.setFontSize(7);
+      // doc.text("Ngày kết thúc", 2 + 20 + 80, 20 + 2, {
+      //   align: "center",
+      // });
+      // số lượng đặt hàng
+      doc.rect(2 + 20 + 50 + 20 + 20, 5 + 24, 17, 10);
+      doc.addFont("OpenSans-SemiBold-normal.ttf", "OpenSans-SemiBold", "bold");
+      doc.setFont("OpenSans-SemiBold", "bold");
+      doc.setFontSize(10);
+      doc.text(`${phieu.soluong}`, 120, 35, {
+        align: "center",
+      });
+      // số lượng sản xuất
+      doc.rect(2 + 20 + 50 + 20 + 20 + 17, 5 + 24, 16, 10);
+      // doc.addFont("OpenSans-SemiBold-normal.ttf", "OpenSans-SemiBold", "bold");
+      // doc.setFont("OpenSans-SemiBold", "bold");
+      // doc.setFontSize(7);
+      // doc.text("SL sản xuất", 2 + 20 + 115, 20 + 2, {
+      //   align: "center",
       // });
 
-      // doc.addFont("OpenSans-Light-normal.ttf", "OpenSans-Light", "normal");
-      // doc.setFont("OpenSans-Light");
-      // doc.setFontSize(12);
-      // doc.setFont("OpenSans-SemiBold");
-      // doc.setFontSize(13);
-      // doc.text("TOÀN LỰC JSC", 17, 19);
-      // doc.addFont("OpenSans-Light-normal.ttf", "OpenSans-Light", "normal");
-      // doc.setFont("OpenSans-Light");
-      // doc.setFontSize(12);
-      // doc.text("CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM", 200, 13);
-      // doc.text("Độc lập - Tự do - Hạnh phúc", 212, 19);
+      // hàng thứ 4
+      doc.rect(2, 5 + 34, 40, 16);
+      doc.addFont("OpenSans-SemiBold-normal.ttf", "OpenSans-SemiBold", "bold");
+      doc.setFont("OpenSans-SemiBold", "bold");
+      doc.setFontSize(11);
+      doc.text("Thẻ lưu trình", 2 + 20, 46, {
+        align: "center",
+      });
+      doc.text("Công nghệ", 2 + 20, 51, {
+        align: "center",
+      });
+      // mã sản phẩm mã bản vẽ
+      doc.rect(2 + 40, 5 + 34, 70, 8);
+      doc.addFont("OpenSans-SemiBold-normal.ttf", "OpenSans-SemiBold", "bold");
+      doc.setFont("OpenSans-SemiBold", "bold");
+      doc.setFontSize(9);
+      doc.text("Mã sản phẩm / Mã bản vẽ", 2 + 40 + 32, 20 + 24, {
+        align: "center",
+      });
+      doc.rect(2 + 40, 5 + 42, 70, 8);
+      // phiên bản vẽ
+      doc.rect(2 + 20 + 50 + 20 + 20, 5 + 34, 17, 8);
+      doc.addFont("OpenSans-SemiBold-normal.ttf", "OpenSans-SemiBold", "bold");
+      doc.setFont("OpenSans-SemiBold", "bold");
+      doc.setFontSize(6);
+      doc.text("Phiên bản", 2 + 40 + 78, 20 + 22, {
+        align: "center",
+      });
+      doc.text("Bản vẽ", 2 + 40 + 78, 20 + 25, {
+        align: "center",
+      });
+      doc.rect(2 + 20 + 50 + 20 + 20, 5 + 42, 17, 8);
+      // ô tích phiên bản
+      doc.rect(2 + 20 + 50 + 20 + 20 + 20, 5 + 35, 3, 2);
+      doc.rect(2 + 20 + 50 + 20 + 20 + 20, 5 + 38, 3, 2);
 
-      // doc.addFont(
-      //   "OpenSans-SemiBold-normal.ttf",
-      //   "OpenSans-SemiBold",
-      //   "normal"
-      // );
-      // doc.setFont("OpenSans-SemiBold");
-      // doc.setFontSize(14);
-      // doc.text("BẢNG KẾ HOẠCH SẢN XUẤT THEO NGÀY", 100, 32);
-      // doc.setFontSize(10);
-      // doc.text("Phân xưởng: ..................................", 15, 45);
-      // doc.setFontSize(10);
-      // doc.text("Ngày: ........................................", 15, 55);
-      // doc.setFontSize(10);
+      // dữ liệu mã sản phẩm
+      doc.rect(2 + 20 + 50 + 20 + 37, 5 + 34, 16, 8);
+      doc.addFont("OpenSans-SemiBold-normal.ttf", "OpenSans-SemiBold", "bold");
+      doc.setFont("OpenSans-SemiBold", "bold");
+      doc.setFontSize(13);
+      doc.text(`${phieu.masp}`, 78, 53, {
+        align: "center",
+      });
+      doc.rect(2 + 20 + 50 + 20 + 37, 5 + 42, 16, 8);
 
-      // doc.autoTable(columns, rows, {
-      //   startY: doc.lastAutoTable + 65, // Giúp cho trang 2 không bị lặp lại phần add text phía trên
-      //   styles: { font: "OpenSans-Light" | "Unicode" },
-      //   theme: "grid",
-      //   //margin: { top: 110 }, không dùng margin vì sẽ apply all page, như vậy không đúng
-      //   headerStyles: {
-      //     fillColor: [246, 248, 255],
-      //     textColor: 20,
-      //     fontStyle: "bold", // normal, bold, italic, bolditalic
-      //     lineColor: 200,
-      //     lineWidth: 0.1,
-      //     halign: "center", // left, center, right
-      //     valign: "top", // top, middle, bottom
-      //   },
-      // });
-      // doc.output("dataurlnewwindow");
-      // this.isPdf = false;
+      // row 5
+      doc.rect(2, 55, 70, 8);
+      doc.addFont("OpenSans-SemiBold-normal.ttf", "OpenSans-SemiBold", "bold");
+      doc.setFont("OpenSans-SemiBold", "bold");
+      doc.setFontSize(9);
+      doc.text("Danh mục sản phẩm", 37, 60, {
+        align: "center",
+      });
+      doc.rect(2 + 70, 55, 40, 8);
+      doc.addFont("OpenSans-SemiBold-normal.ttf", "OpenSans-SemiBold", "bold");
+      doc.setFont("OpenSans-SemiBold", "bold");
+      doc.setFontSize(8);
+      doc.text("Vật liệu/Quy cách", 92, 60, {
+        align: "center",
+      });
+      doc.rect(2 + 110, 55, 33, 8);
+      doc.addFont("OpenSans-SemiBold-normal.ttf", "OpenSans-SemiBold", "bold");
+      doc.setFont("OpenSans-SemiBold", "bold");
+      doc.setFontSize(8);
+      doc.text("Số lô vật liệu/Đầu vào", 129, 60, {
+        align: "center",
+      });
+
+      // row 6
+      doc.rect(2, 55 + 8, 70, 8);
+      doc.addFont("OpenSans-SemiBold-normal.ttf", "OpenSans-SemiBold", "bold");
+      doc.setFont("OpenSans-SemiBold", "bold");
+      doc.setFontSize(10);
+      doc.text("Lô:", 6, 68, {
+        align: "center",
+      });
+      doc.text(`${phieu.malosx}`, 30, 68, {
+        align: "center",
+      });
+      doc.setFontSize(8);
+      doc.text(`${phieu._id}`, 60, 68, {
+        align: "center",
+      });
+      doc.rect(2 + 70, 55 + 8, 40, 16);
+      doc.rect(2 + 110, 55 + 8, 33, 16);
+
+      // row 7
+      doc.rect(2, 55 + 16, 70, 8);
+      doc.addFont("OpenSans-SemiBold-normal.ttf", "OpenSans-SemiBold", "bold");
+      doc.setFont("OpenSans-SemiBold", "bold");
+      doc.setFontSize(10);
+      doc.text("Số lượng: ", 12, 76, {
+        align: "center",
+      });
+      doc.text(`${phieu.soluonglsx}`, 26, 76, {
+        align: "center",
+      });
+
+      // row 8
+      doc.rect(2, 55 + 16 + 8, 70, 16);
+      doc.addFont("OpenSans-SemiBold-normal.ttf", "OpenSans-SemiBold", "bold");
+      doc.setFont("OpenSans-SemiBold", "bold");
+      doc.setFontSize(10);
+      doc.text("Phân xưởng:", 14, 88, {
+        align: "center",
+      });
+      doc.text(`${phanxuong}`, 34, 88, {
+        align: "center",
+      });
+      doc.rect(2 + 70, 70 + 9, 73, 8);
+      doc.addFont("OpenSans-SemiBold-normal.ttf", "OpenSans-SemiBold", "bold");
+      doc.setFont("OpenSans-SemiBold", "bold");
+      doc.setFontSize(8);
+      doc.text(`Ngày sản xuất: `, 84, 84, {
+        align: "center",
+      });
+      doc.rect(2 + 70, 79 + 8, 73, 8);
+      doc.addFont("OpenSans-SemiBold-normal.ttf", "OpenSans-SemiBold", "bold");
+      doc.setFont("OpenSans-SemiBold", "bold");
+      doc.setFontSize(8);
+      doc.text(`Ngày hoàn thành: `, 86, 92, {
+        align: "center",
+      });
+
+      // table data
+      let yPoint = 95; // tọa độ y
+      let textyPoint = 100; // tọa độ chữ
+      const lengthPrint = 12; // độ dài của bảng dữ liệu in ra
+      const heightRow = 8; // độ cao của dòng
+      doc.rect(2, yPoint, 8, heightRow); // 2: toạn độ x; 105: tọa độ y; 8: độ rộng; 10: độ cao
+      doc.addFont("OpenSans-SemiBold-normal.ttf", "OpenSans-SemiBold", "bold");
+      doc.setFont("OpenSans-SemiBold", "bold");
+      doc.setFontSize(9);
+      doc.text("STT", 6, textyPoint, {
+        align: "center",
+      });
+      doc.rect(2 + 8, yPoint, 10, heightRow);
+      doc.addFont("OpenSans-SemiBold-normal.ttf", "OpenSans-SemiBold", "bold");
+      doc.setFont("OpenSans-SemiBold", "bold");
+      doc.setFontSize(9);
+      doc.text("Máy", 15, textyPoint, {
+        align: "center",
+      });
+      doc.rect(2 + 18, yPoint, 20, heightRow);
+      doc.addFont("OpenSans-SemiBold-normal.ttf", "OpenSans-SemiBold", "bold");
+      doc.setFont("OpenSans-SemiBold", "bold");
+      doc.setFontSize(9);
+      doc.text("Công đoạn", 30, textyPoint, {
+        align: "center",
+      });
+      doc.rect(2 + 38, yPoint, 32, heightRow);
+      doc.addFont("OpenSans-SemiBold-normal.ttf", "OpenSans-SemiBold", "bold");
+      doc.setFont("OpenSans-SemiBold", "bold");
+      doc.setFontSize(9);
+      doc.text("Người thực hiện", 55, textyPoint, {
+        align: "center",
+      });
+      doc.rect(2 + 70, yPoint, 20, heightRow);
+      doc.addFont("OpenSans-SemiBold-normal.ttf", "OpenSans-SemiBold", "bold");
+      doc.setFont("OpenSans-SemiBold", "bold");
+      doc.setFontSize(9);
+      doc.text("Số đạt", 82, textyPoint, {
+        align: "center",
+      });
+      doc.rect(2 + 90, yPoint, 20, heightRow);
+      doc.addFont("OpenSans-SemiBold-normal.ttf", "OpenSans-SemiBold", "bold");
+      doc.setFont("OpenSans-SemiBold", "bold");
+      doc.setFontSize(9);
+      doc.text("Số hỏng", 101, textyPoint, {
+        align: "center",
+      });
+      doc.rect(2 + 110, yPoint, 33, heightRow);
+      doc.addFont("OpenSans-SemiBold-normal.ttf", "OpenSans-SemiBold", "bold");
+      doc.setFont("OpenSans-SemiBold", "bold");
+      doc.setFontSize(9);
+      doc.text("Ghi chú", 128, textyPoint, {
+        align: "center",
+      });
+
+      // + 8 ở tọa độ y là thêm được 1 dòng nếu dùng vòng lặp
+      // vậy đặt biến là tọa độ y
+      // lặp cái mảng arrCongdoan
+      // console.log(arrayCongdoan); // in ra 14 dòng bất kể chiều dài mảng
+      for (let i = 0; i < lengthPrint; i++) {
+        textyPoint = textyPoint + 8;
+        yPoint = yPoint + 8;
+        if (i < arrayCongdoan.length) {
+          // Vẽ các rect có dữ liệu chữ
+          doc.rect(2, yPoint, 8, heightRow);
+          doc.addFont(
+            "OpenSans-SemiBold-normal.ttf",
+            "OpenSans-SemiBold",
+            "bold"
+          );
+          doc.setFont("OpenSans-SemiBold", "bold");
+          doc.setFontSize(7);
+          doc.text(`${i + 1}`, 6, textyPoint, { align: "center" });
+          doc.rect(2 + 8, yPoint, 10, heightRow);
+          doc.rect(2 + 18, yPoint, 20, heightRow);
+          doc.addFont(
+            "OpenSans-SemiBold-normal.ttf",
+            "OpenSans-SemiBold",
+            "bold"
+          );
+          doc.setFont("OpenSans-SemiBold", "bold");
+          doc.setFontSize(9);
+          doc.text(`${arrayCongdoan[i].congdoan}`, 30, textyPoint, {
+            align: "center",
+          });
+          doc.rect(2 + 38, yPoint, 32, heightRow);
+          doc.rect(2 + 70, yPoint, 20, heightRow);
+          doc.rect(2 + 90, yPoint, 20, heightRow);
+          if (i > 0) {
+            doc.rect(2 + 110, yPoint, 33, heightRow);
+            doc.setDrawColor(255, 255, 255);
+            doc.line(2 + 110, yPoint, 2 + 110 + 33, yPoint);
+            doc.setDrawColor(0, 0, 0);
+          } else {
+            doc.rect(2 + 110, yPoint, 33, heightRow);
+          }
+        } else {
+          // Vẽ các rect trống không có dữ liệu chữ
+          doc.rect(2, yPoint, 8, heightRow);
+          doc.addFont(
+            "OpenSans-SemiBold-normal.ttf",
+            "OpenSans-SemiBold",
+            "bold"
+          );
+          doc.setFont("OpenSans-SemiBold", "bold");
+          doc.setFontSize(7);
+          doc.text(`${i + 1}`, 6, textyPoint, { align: "center" });
+          doc.rect(2 + 8, yPoint, 10, heightRow);
+          doc.rect(2 + 18, yPoint, 20, heightRow);
+          doc.rect(2 + 38, yPoint, 32, heightRow);
+          doc.rect(2 + 70, yPoint, 20, heightRow);
+          doc.rect(2 + 90, yPoint, 20, heightRow);
+          doc.rect(2 + 110, yPoint, 33, heightRow);
+          doc.setDrawColor(255, 255, 255);
+          doc.line(2 + 110, yPoint, 2 + 110 + 33, yPoint);
+          doc.setDrawColor(0, 0, 0);
+        }
+      }
+
+      // vẽ rect cuối cùng của phiếu lô
+      doc.rect(2, 199, 143, 9);
+      doc.addFont("OpenSans-SemiBold-normal.ttf", "OpenSans-SemiBold", "bold");
+      doc.setFont("OpenSans-SemiBold", "bold");
+      doc.setFontSize(8);
+      doc.text("Tổ trưởng", 30, 202, { align: "center" });
+      doc.text("QC", 75, 202, { align: "center" });
+      doc.text("KHSX", 110, 202, { align: "center" });
+
+      // Lưu file PDF trên một tab mới
+      doc.output("dataurlnewwindow");
+      // doc.save("a4.pdf");
     },
 
     // --------------------------------------------------------------------------------------
