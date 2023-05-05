@@ -2365,6 +2365,8 @@ export default {
                 return;
               } else {
                 this.soluonghanmuckhpx = slvuot;
+                this.items[i].createdAt = this.form.createdAt;
+                this.items[i].createdBy = this.form.createdBy;
                 let newItem = await this.$axios.$post(
                   "/api/ketoan/addphieulosx",
                   this.items[i]
@@ -2446,6 +2448,8 @@ export default {
         if (!isDuplicate) {
           try {
             for (let i = 0; i < this.items.length; i++) {
+              this.items[i].createdAt = this.form.createdAt;
+              this.items[i].createdBy = this.form.createdBy;
               // console.log('this.items[i]', this.items[i]);
               if (this.items[i].soluonglsx == "") {
                 const Toast = Swal.mixin({

@@ -354,7 +354,7 @@
                             {{ form.masp }}
                           </td>
                           <td style="font-size: small; text-align: center; font-weight: 700;">
-                            {{ form.makh }}
+                            {{ form.malonhamay }}
                           </td>
                           <td colspan="2" style="font-size: small; text-align: center; font-weight: 700;">
                             {{ form.makhpx }}
@@ -669,7 +669,7 @@ export default {
       isActive_listcd: false,
       phieulosx: {},
       form: {
-        makh: "",
+        malonhamay: "",
         malosx: "",
         mapx: "",
         ngaybd: "",
@@ -824,22 +824,23 @@ export default {
 
     async getdataPhieulo(phieulo) {
       // console.log(phieulo.malosx);
-      this.form.malosx = phieulo.malosx;
-      this.form.masp = phieulo.masp;
-      this.form.mapx = phieulo.mapx;
-      this.form.makhpx = phieulo.makhpx;
-      this.form.tensp = phieulo.tensp;
-      this.form.makh = phieulo.makh;
-      this.form.nhomluong = phieulo.nhomluong;
-      this.form.ngaybd = phieulo.ngaybd;
-      this.form.ngaykt = phieulo.ngaykt;
-      this.form.soluong = phieulo.soluong;
-      this.form.soluonglsx = phieulo.soluonglsx;
-      this.form.slthuctetaixuong = phieulo.slthuctetaixuong;
-      this.form.tongdat = phieulo.tongdat;
-      this.form.tonghong = phieulo.tonghong;
-      this.form.status = phieulo.status;
-      this.form.stopday_losx = phieulo.stopday_losx;
+      // this.form.malosx = phieulo.malosx;
+      // this.form.masp = phieulo.masp;
+      // this.form.mapx = phieulo.mapx;
+      // this.form.makhpx = phieulo.makhpx;
+      // this.form.tensp = phieulo.tensp;
+      // this.form.makh = phieulo.makh;
+      // this.form.nhomluong = phieulo.nhomluong;
+      // this.form.ngaybd = phieulo.ngaybd;
+      // this.form.ngaykt = phieulo.ngaykt;
+      // this.form.soluong = phieulo.soluong;
+      // this.form.soluonglsx = phieulo.soluonglsx;
+      // this.form.slthuctetaixuong = phieulo.slthuctetaixuong;
+      // this.form.tongdat = phieulo.tongdat;
+      // this.form.tonghong = phieulo.tonghong;
+      // this.form.status = phieulo.status;
+      // this.form.stopday_losx = phieulo.stopday_losx;
+      this.form = {...phieulo}
       // get info công đoạn
       this.luongcongdoan = await this.$axios.$get(
         `/api/ketoan/getphieulocongdoan?malosx=${this.form.malosx}&mapx=${this.form.mapx}`
@@ -987,7 +988,6 @@ export default {
     onAddLuongthang() {
       Swal.fire({
         title: `Bạn có chắc chắn lập lương tháng ${this.thang} / ${this.nam}?`,
-        icon: "warning",
         showCancelButton: true,
         confirmButtonColor: "#3085d6",
         cancelButtonColor: "#d33",

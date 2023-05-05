@@ -4,17 +4,17 @@
       <br />
       <div class="box" style="margin-left: 5px; margin-right: 5px">
         <div class="columns">
-          <div class="column is-11">
+          <div class="column is-8">
             <div class="control">
               <span class="icon is-small is-left">
-                <i style="color: #ff55acee" class="fas fa-broom"></i>
+                <i style="color: #ff55acee" class="fab fa-hornbill"></i>
               </span>
               <span style="color: #3850b7; font-size: 17px; font-weight: bold"
-                >Vào lương công đoạn</span
+                >Kiểm và chốt lương</span
               >
             </div>
           </div>
-          <!-- <div class="column" style="text-align: right">
+          <div class="column" style="text-align: right">
             <button
               @click="huychotallPhieulo"
               class="button is-warning is-fullwidth is-small"
@@ -35,7 +35,7 @@
               </span>
               <span>Chốt phiếu đã chọn</span>
             </button>
-          </div> -->
+          </div>
           <div class="column" style="text-align: right">
             <button class="button is-info is-fullwidth is-small">
               <span class="icon is-small">
@@ -71,7 +71,7 @@
                   </div>
                 </div>
               </td>
-              <td style="width: 15%">
+              <!-- <td style="width: 15%">
                 <div class="autocomplete">
                   <input
                     class="input is-small is-danger"
@@ -112,10 +112,17 @@
                     </label>
                   </div>
                 </div>
-              </td>
+              </td> -->
               <td style="font-size: small; width: 5.5%; font-weight: 600">
                 <input
                   v-model="search_ngayhttt"
+                  type="date"
+                  class="input is-small"
+                />
+              </td>
+              <td style="font-size: small; width: 5.5%; font-weight: 600">
+                <input
+                  v-model="search_ngayhtttend"
                   type="date"
                   class="input is-small"
                 />
@@ -164,6 +171,11 @@
                 >
                   Tìm
                 </button>
+              </td>
+              <td style="font-size: small; width: 8%; font-weight: 600">
+                <span style="color: red; font-weight: bold"
+                  >Có {{ sllosx.length }} phiếu</span
+                >
               </td>
               <td></td>
             </tr>
@@ -351,7 +363,7 @@
               >
                 SL nhanh
               </td>
-              <td
+              <!-- <td
                 style="
                   font-size: small;
                   text-align: center;
@@ -360,7 +372,7 @@
                 "
               >
                 Nhập lương
-              </td>
+              </td> -->
             </tr>
             <tr
               v-for="(item, index) in paginatedTable"
@@ -494,40 +506,40 @@
                 /> -->
                 <template v-if="item.ngayhoanthanhtt != null">
                   <input
-                  class="input is-small is-success"
-                  type="date"
-                  :value="formattedNgayhoanthanhtt(item)"
-                  @blur="updateNgayhoanttt($event.target.value, item)"
-                />
+                    class="input is-small is-success"
+                    type="date"
+                    :value="formattedNgayhoanthanhtt(item)"
+                    @blur="updateNgayhoanttt($event.target.value, item)"
+                  />
                 </template>
                 <template v-else>
                   <input
-                  class="input is-small is-danger"
-                  type="date"
-                  :value="formattedNgayhoanthanhtt(item)"
-                  @blur="updateNgayhoanttt($event.target.value, item)"
-                />
+                    class="input is-small is-danger"
+                    type="date"
+                    :value="formattedNgayhoanthanhtt(item)"
+                    @blur="updateNgayhoanttt($event.target.value, item)"
+                  />
                 </template>
               </td>
               <td style="font-size: small; text-align: center">
                 <template v-if="item.soluongkhsx != 0">
                   <input
-                  @change="updateStatus(item)"
-                  type="text"
-                  class="input is-small is-success"
-                  v-model="item.soluongkhsx"
-                />
+                    @change="updateStatus(item)"
+                    type="text"
+                    class="input is-small is-success"
+                    v-model="item.soluongkhsx"
+                  />
                 </template>
                 <template v-else>
                   <input
-                  @change="updateStatus(item)"
-                  type="text"
-                  class="input is-small is-danger"
-                  v-model="item.soluongkhsx"
-                />
+                    @change="updateStatus(item)"
+                    type="text"
+                    class="input is-small is-danger"
+                    v-model="item.soluongkhsx"
+                  />
                 </template>
               </td>
-              <td style="font-size: small; text-align: center">
+              <!-- <td style="font-size: small; text-align: center">
                 <a @click="vaoPhieuluong(item)"
                   ><span>
                     <i
@@ -535,7 +547,7 @@
                       class="fa fa-check-square-o"
                     ></i> </span
                 ></a>
-              </td>
+              </td> -->
             </tr>
           </table>
           <div class="pagination">
@@ -1024,13 +1036,13 @@
               </header>
               <section class="modal-card-body">
                 <div class="columns">
-                  <div class="column is-10">
+                  <div class="column is-8">
                     <template v-if="form.tento">
                       <span>Tổ được chỉ định: </span>
                       <span>{{ form.tento }} </span>
                     </template>
                   </div>
-                  <!-- <div class="column is-2" style="text-align: right">
+                  <div class="column is-2" style="text-align: right">
                     <button
                       @click="xacnhanHuyChotphieu"
                       class="button is-danger is-small is-fullwidth"
@@ -1040,7 +1052,7 @@
                       </span>
                       <span>Hủy chốt phiếu</span>
                     </button>
-                  </div> -->
+                  </div>
                   <div class="column" style="text-align: right">
                     <button
                       @click="onTaophieu"
@@ -2015,6 +2027,7 @@ export default {
       // tìm theo mã id và
       search_maphieu_id: "",
       search_ngayhttt: "",
+      search_ngayhtttend: "",
 
       // nhóm nguyên công trong chi tiết lương
       groups: {},
@@ -2638,11 +2651,14 @@ export default {
       this.multiSearch_nhomsp = "";
       this.search_maphieu_id = "";
       this.search_ngayhttt = "";
+      this.search_ngayhtttend = "";
       this.Options_status = [];
       this.isOpen = false;
       this.isOpenst = false;
       this.selectedOptions = [];
-      this.sllosx = await this.$axios.$get(`/api/ketoan/getallphieulocht`);
+      this.sllosx = await this.$axios.$get(
+        `/api/ketoan/getallphieulosxatcholuong`
+      );
       if (this.sllosx.length <= 0) {
         const Toast = Swal.mixin({
           toast: true,
@@ -3275,7 +3291,6 @@ export default {
         );
         // console.log(this.dmnguyencong)
       }
-
     },
     // Bấm vào nhập lương sẽ ra popup nhập lương
     async vaoPhieuluong(infoPhieulo) {
@@ -3426,15 +3441,7 @@ export default {
       // 2. Chốt các lương công đoạn, công nhật trong nội tại từng lô đó
       // với status = 0 và ngày chốt
 
-      // console.log(this.selected.length)
-
-      const listPhieulo = [];
-      for (let i = 0; i < this.selected.length; i++) {
-        listPhieulo.push(this.selected[i].malosx);
-      }
-      // console.log(listPhieulo)
-      var message = `${listPhieulo.join(", ")}`;
-      Swal.fire(message, "success");
+      // console.log(this.selected.length);
 
       if (this.selected.length < 1) {
         const Toast = Swal.mixin({
@@ -3454,103 +3461,110 @@ export default {
         });
         return;
       } else {
-        Swal.fire({
-          title: `Bạn chắc chắn chốt các phiếu lô sản xuất: ${message}?`,
-          icon: "warning",
-          showCancelButton: true,
-          confirmButtonColor: "#3085d6",
-          cancelButtonColor: "#d33",
-          confirmButtonText: "Chắc chắn",
-          customClass: {
-            title: "custom-swal",
-          },
-        }).then((result) => {
-          if (result.isConfirmed) {
-            try {
-              for (let i = 0; i < this.selected.length; i++) {
-                let data = {
-                  stopday_losx: this.selected[i].ngaykt,
-                  status: 1,
-                };
-                let data_losanxuat = {
-                  status: 3,
-                  stopday_losx: this.selected[i].ngaykt,
-                  status_tinhluong: 1,
-                };
-                // cập nhật status và stopday_losx cho từng lô sản xuất ứng với từng lô sản xuất theo kế hoạch trong xưởng đó
-                // status đổi thành số 3 là hoàn thành
-                this.$axios.$patch(
-                  `/api/ketoan/capnhatstatuslosx/${this.selected[i]._id}`,
-                  data_losanxuat
-                );
-                // cập nhật status và stopday_losx cho từng lương công đoạn có trong mỗi lô sản xuất ứng với kế hoạch tại xưởng
-
-                this.$axios.$patch(
-                  `/api/ketoan/capnhatstatuslcd/${this.selected[i]._id}`,
-                  data
-                );
-                // cập nhật status và stopday_losx cho từng lương công nhật có trong mỗi lô sản xuất ứng với kế hoạch tại xưởng
-                // kiểm tra có công nhật trong lô hay không?
-                var check_congdoan = [];
-                this.$axios
-                  .$get(
-                    `/api/ketoan/checkcongnhat?_id_losx=${this.selected[i]._id}`
-                  )
-                  .then((resp) => {
-                    // console.log(resp);
-                    check_congdoan = resp;
-                    // console.log(check_congdoan);
-                  })
-                  .catch((err) => {
-                    // Handle Error Here
-                    console.error(err);
-                  });
-                if (check_congdoan.length > 0) {
-                  this.$axios.$patch(
-                    `/api/ketoan/capnhatstatusluongcnhat/${this.selected[i]._id}`,
-                    data
-                  );
-                }
-              }
-
-              const Toast = Swal.mixin({
-                toast: true,
-                position: "top-end",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                  toast.addEventListener("mouseenter", Swal.stopTimer);
-                  toast.addEventListener("mouseleave", Swal.resumeTimer);
-                },
-              });
-              Toast.fire({
-                icon: "success",
-                title: "Đã chốt thành công",
-              });
-
-              this.getSolieuLSX_ALl_cht();
-            } catch (error) {
-              console.log(error);
-              const Toast = Swal.mixin({
-                toast: true,
-                position: "top-end",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                  toast.addEventListener("mouseenter", Swal.stopTimer);
-                  toast.addEventListener("mouseleave", Swal.resumeTimer);
-                },
-              });
-              Toast.fire({
-                icon: "error",
-                title: "Có lỗi xảy ra !!!",
-              });
-            }
-          }
+        const result = await Swal.fire({
+          title: `Bạn chắc chắn chốt toàn bộ phiếu lương đã chọn?`,
+          showDenyButton: true,
+          confirmButtonText: "Có, Chốt tất cả",
+          denyButtonText: `Hủy chốt`,
         });
+        if (result.isConfirmed) {
+          try {
+            for (let i = 0; i < this.selected.length; i++) {
+              let data = {
+                stopday_losx: this.selected[i].ngaykt,
+                status: 1,
+              };
+              let data_losanxuat = {
+                status: 3,
+                stopday_losx: this.selected[i].ngayhoanthanhtt,
+                status_tinhluong: 1,
+              };
+              // cập nhật status và stopday_losx cho từng lô sản xuất ứng với từng lô sản xuất theo kế hoạch trong xưởng đó
+              // status đổi thành số 3 là hoàn thành
+              this.$axios.$patch(
+                `/api/ketoan/capnhatstatuslosx/${this.selected[i]._id}`,
+                data_losanxuat
+              );
+
+              // cập nhật status và stopday_losx cho từng lương công đoạn có trong mỗi lô sản xuất ứng với kế hoạch tại xưởng
+              this.$axios.$patch(
+                `/api/ketoan/capnhatstatuslcd/${this.selected[i]._id}`,
+                data
+              );
+
+              this.$axios.$patch(
+                `/api/ketoan/capnhatstatusluongcnhat/${this.selected[i]._id}`,
+                data
+              );
+
+              this.$axios.$patch(
+                `/api/ketoan/capnhatstatusluongcnhat/${this.selected[i]._id}`,
+                data
+              );
+
+              // cập nhật status và stopday_losx cho từng lương công nhật có trong mỗi lô sản xuất ứng với kế hoạch tại xưởng
+              // kiểm tra có công nhật trong lô hay không?
+              // var check_congnhat = [];
+              // this.$axios
+              //   .$get(
+              //     `/api/ketoan/checkcongnhat?_id_losx=${this.selected[i]._id}`
+              //   )
+              //   .then((resp) => {
+              //     // console.log(resp);
+              //     check_congnhat = resp;
+              //     console.log(check_congnhat);
+              //   })
+              //   .catch((err) => {
+              //     // Handle Error Here
+              //     console.error(err);
+              //   });
+              // if (check_congnhat.length > 0) {
+              //   console.log('patch');
+              //   this.$axios.$patch(
+              //     `/api/ketoan/capnhatstatusluongcnhat/${this.selected[i]._id}`,
+              //     data
+              //   );
+              // }
+            }
+
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+              },
+            });
+            Toast.fire({
+              icon: "success",
+              title: "Đã chốt thành công",
+            });
+
+            this.getSolieuLSX_ALl_cht();
+          } catch (error) {
+            console.log(error);
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+              },
+            });
+            Toast.fire({
+              icon: "error",
+              title: "Có lỗi xảy ra !!!",
+            });
+          }
+        }
       }
+      this.filterData();
     },
     // Hủy từng phiếu
     async xacnhanHuyChotphieu() {
@@ -3621,7 +3635,7 @@ export default {
           status: 0,
         };
         let data_losx = {
-          status: 2,
+          status: 3,
           stopday_losx: "",
           status_tinhluong: 0,
         };
@@ -3635,27 +3649,10 @@ export default {
           `/api/ketoan/capnhatstatuslcd/${this.selected[i]._id}`,
           data
         );
-        // cập nhật status và stopday_losx cho từng lương công nhật có trong mỗi lô sản xuất ứng với kế hoạch tại xưởng
-        // cập nhật status và stopday_losx cho từng lương công nhật có trong mỗi lô sản xuất ứng với kế hoạch tại xưởng
-        // kiểm tra có công nhật trong lô hay không?
-        var check_congdoan = [];
-        this.$axios
-          .$get(`/api/ketoan/checkcongnhat?_id_losx=${this.selected[i]._id}`)
-          .then((resp) => {
-            // console.log(resp);
-            check_congdoan = resp;
-            // console.log(check_congdoan);
-          })
-          .catch((err) => {
-            // Handle Error Here
-            console.error(err);
-          });
-        if (check_congdoan.length > 0) {
-          this.$axios.$patch(
-            `/api/ketoan/capnhatstatusluongcnhat/${this.selected[i]._id}`,
-            data
-          );
-        }
+        this.$axios.$patch(
+          `/api/ketoan/capnhatstatusluongcnhat/${this.selected[i]._id}`,
+          data
+        );
       }
 
       const Toast = Swal.mixin({
@@ -3691,294 +3688,331 @@ export default {
       const mapxList = this.selectedOptions;
       const masp = this.multiSearch_masp;
       const status = this.Options_status;
-      const ngayhoanthanh = this.search_ngayhttt;
+      const dateFrom = this.search_ngayhttt;
+      const dateTo = this.search_ngayhtttend;
 
-      // chọn lọc full 1
+      // console.log(this.search_ngayhttt, this.search_ngayhtttend);
       if (
         this.selectedOptions.length > 0 &&
-        this.Options_status.length > 0 &&
-        this.multiSearch_masp != "" &&
-        this.search_ngayhttt != ""
+        this.search_ngayhttt != "" &&
+        this.search_ngayhtttend != ""
       ) {
         this.tempData = [];
-        this.filterOptions = 8;
         this.tempData = await this.$axios.$get(
-          `/api/lokehoach/filterfulldklosanxuatwithngayhttt`,
+          `/api/lokehoach/locphanxuonggiaidoanhoanthanh`,
           {
             params: {
               mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
-              masp: masp,
-              status: status,
-              ngayhoanthanh: ngayhoanthanh,
-            },
-          }
-        );
-        // console.log(this.tempData);
-        this.sllosx = this.tempData;
-      }
-      // mã px mã sản phẩm ngày hoàn thành
-      else if (
-        this.selectedOptions.length > 0 &&
-        !this.Options_status.length &&
-        this.multiSearch_masp != "" &&
-        this.search_ngayhttt != ""
-      ) {
-        this.tempData = [];
-        this.filterOptions = 8;
-        this.tempData = await this.$axios.$get(
-          `/api/lokehoach/mapxmaspngayhoanthanhlsx`,
-          {
-            params: {
-              mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
-              masp: masp,
-              ngayhoanthanh: ngayhoanthanh,
-            },
-          }
-        );
-        // console.log(this.tempData);
-        this.sllosx = this.tempData;
-      }
-      // mã px trạng thái ngày hoàn thành
-      else if (
-        this.selectedOptions.length > 0 &&
-        this.Options_status.length > 0 &&
-        this.multiSearch_masp == "" &&
-        this.search_ngayhttt != ""
-      ) {
-        this.tempData = [];
-        this.filterOptions = 8;
-        this.tempData = await this.$axios.$get(
-          `/api/lokehoach/mapxstatusngayhoanthanhlsx`,
-          {
-            params: {
-              mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
-              status: status,
-              ngayhoanthanh: ngayhoanthanh,
-            },
-          }
-        );
-        // console.log(this.tempData);
-        this.sllosx = this.tempData;
-      }
-      // sản phẩm trạng thái ngày hoàn thành
-      else if (
-        !this.selectedOptions.length &&
-        this.Options_status.length > 0 &&
-        this.multiSearch_masp != "" &&
-        this.search_ngayhttt != ""
-      ) {
-        this.tempData = [];
-        this.filterOptions = 8;
-        this.tempData = await this.$axios.$get(
-          `/api/lokehoach/maspstatusngayhoanthanhlsx`,
-          {
-            params: {
-              masp: masp, // Truyền danh sách mã phân xưởng lên server
-              status: status,
-              ngayhoanthanh: ngayhoanthanh,
-            },
-          }
-        );
-        // console.log(this.tempData);
-        this.sllosx = this.tempData;
-      }
-      // phân xưởng ngày hoàn thành
-      else if (
-        this.selectedOptions.length > 0 &&
-        !this.Options_status.length &&
-        this.multiSearch_masp == "" &&
-        this.search_ngayhttt != ""
-      ) {
-        this.tempData = [];
-        this.filterOptions = 8;
-        this.tempData = await this.$axios.$get(
-          `/api/lokehoach/filterphanxuongandngayhttt`,
-          {
-            params: {
-              mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
-              ngayhoanthanh: ngayhoanthanh,
-            },
-          }
-        );
-        // console.log(this.tempData);
-        this.sllosx = this.tempData;
-      }
-      // mã sp ngày hoàn thành
-      else if (
-        !this.selectedOptions.length &&
-        !this.Options_status.length &&
-        this.multiSearch_masp != "" &&
-        this.search_ngayhttt != ""
-      ) {
-        this.tempData = [];
-        this.filterOptions = 8;
-        this.tempData = await this.$axios.$get(
-          `/api/lokehoach/maspngayhoanthanhlsx`,
-          {
-            params: {
-              masp: masp, // Truyền danh sách mã phân xưởng lên server
-              ngayhoanthanh: ngayhoanthanh,
-            },
-          }
-        );
-        // console.log(this.tempData);
-        this.sllosx = this.tempData;
-      }
-      // status ngày hoàn thành
-      else if (
-        !this.selectedOptions.length &&
-        this.Options_status.length > 0 &&
-        this.multiSearch_masp == "" &&
-        this.search_ngayhttt != ""
-      ) {
-        this.tempData = [];
-        this.filterOptions = 8;
-        this.tempData = await this.$axios.$get(
-          `/api/lokehoach/statusngayhoanthanhlsx`,
-          {
-            params: {
-              status: status, // Truyền danh sách mã phân xưởng lên server
-              ngayhoanthanh: ngayhoanthanh,
+              dateFrom: dateFrom,
+              dateTo: dateTo,
             },
           }
         );
         // console.log(this.tempData);
         this.sllosx = this.tempData;
       } else if (
-        this.selectedOptions.length > 0 &&
-        this.Options_status.length > 0 &&
-        this.multiSearch_masp != ""
-      ) {
-        this.tempData = [];
-        this.filterOptions = 1;
-        this.tempData = await this.$axios.$get(
-          `/api/lokehoach/filterfulldklosanxuat`,
-          {
-            params: {
-              mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
-              masp: masp,
-              status: status,
-            },
-          }
-        );
-        // console.log(this.tempData);
-        this.sllosx = this.tempData;
-      }
-      // chỉ có mã px 2
-      else if (
-        this.selectedOptions.length > 0 &&
-        !this.Options_status.length &&
-        this.multiSearch_masp == ""
-      ) {
-        this.tempData = [];
-        this.filterOptions = 2;
-        this.tempData = [];
-        this.sllosx = [];
-        this.tempData = await this.$axios.$get(
-          `/api/lokehoach/filteronlymapxlosanxuat`,
-          {
-            params: {
-              mapx: mapxList,
-            },
-          }
-        );
-        this.sllosx = this.tempData;
-      }
-      // chỉ có mã px và mã sp 3
-      else if (
-        this.selectedOptions.length > 0 &&
-        !this.Options_status.length &&
-        this.multiSearch_masp != ""
-      ) {
-        this.tempData = [];
-        this.filterOptions = 3;
-        this.tempData = await this.$axios.$get(
-          `/api/lokehoach/filteronlymapxandmasplosanxuat`,
-          {
-            params: {
-              mapx: mapxList,
-              masp: masp,
-            },
-          }
-        );
-        this.sllosx = this.tempData;
-      }
-      // chỉ có mã px và status 4
-      else if (
-        this.selectedOptions.length > 0 &&
-        this.Options_status.length > 0 &&
-        this.multiSearch_masp == ""
-      ) {
-        this.tempData = [];
-        this.filterOptions = 4;
-        this.tempData = await this.$axios.$get(
-          `/api/lokehoach/filteronlymapxandstatuslosanxuat`,
-          {
-            params: {
-              mapx: mapxList,
-              status: status,
-            },
-          }
-        );
-        this.sllosx = this.tempData;
-      }
-      // lọc mỗi trạng thái 5
-      else if (
         !this.selectedOptions.length &&
-        this.Options_status.length > 0 &&
-        this.multiSearch_masp == ""
+        this.search_ngayhttt != "" &&
+        this.search_ngayhtttend != ""
       ) {
         this.tempData = [];
-        this.filterOptions = 5;
         this.tempData = await this.$axios.$get(
-          `/api/lokehoach/filteronlystatuslosanxuat`,
+          `/api/lokehoach/locgiaidoanhoanthanh`,
           {
             params: {
-              status: status,
+              dateFrom: dateFrom,
+              dateTo: dateTo,
             },
           }
         );
         this.sllosx = this.tempData;
       }
+      // chọn lọc full 1
+      // if (
+      //   this.selectedOptions.length > 0 &&
+      //   this.Options_status.length > 0 &&
+      //   this.multiSearch_masp != "" &&
+      //   this.search_ngayhttt != ""
+      // ) {
+      //   this.tempData = [];
+      //   this.filterOptions = 8;
+      //   this.tempData = await this.$axios.$get(
+      //     `/api/lokehoach/filterfulldklosanxuatwithngayhttt`,
+      //     {
+      //       params: {
+      //         mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
+      //         masp: masp,
+      //         status: status,
+      //         ngayhoanthanh: ngayhoanthanh,
+      //       },
+      //     }
+      //   );
+      //   // console.log(this.tempData);
+      //   this.sllosx = this.tempData;
+      // }
+      // // mã px mã sản phẩm ngày hoàn thành
+      // else if (
+      //   this.selectedOptions.length > 0 &&
+      //   !this.Options_status.length &&
+      //   this.multiSearch_masp != "" &&
+      //   this.search_ngayhttt != ""
+      // ) {
+      //   this.tempData = [];
+      //   this.filterOptions = 8;
+      //   this.tempData = await this.$axios.$get(
+      //     `/api/lokehoach/mapxmaspngayhoanthanhlsx`,
+      //     {
+      //       params: {
+      //         mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
+      //         masp: masp,
+      //         ngayhoanthanh: ngayhoanthanh,
+      //       },
+      //     }
+      //   );
+      //   // console.log(this.tempData);
+      //   this.sllosx = this.tempData;
+      // }
+      // // mã px trạng thái ngày hoàn thành
+      // else if (
+      //   this.selectedOptions.length > 0 &&
+      //   this.Options_status.length > 0 &&
+      //   this.multiSearch_masp == "" &&
+      //   this.search_ngayhttt != ""
+      // ) {
+      //   this.tempData = [];
+      //   this.filterOptions = 8;
+      //   this.tempData = await this.$axios.$get(
+      //     `/api/lokehoach/mapxstatusngayhoanthanhlsx`,
+      //     {
+      //       params: {
+      //         mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
+      //         status: status,
+      //         ngayhoanthanh: ngayhoanthanh,
+      //       },
+      //     }
+      //   );
+      //   // console.log(this.tempData);
+      //   this.sllosx = this.tempData;
+      // }
+      // // sản phẩm trạng thái ngày hoàn thành
+      // else if (
+      //   !this.selectedOptions.length &&
+      //   this.Options_status.length > 0 &&
+      //   this.multiSearch_masp != "" &&
+      //   this.search_ngayhttt != ""
+      // ) {
+      //   this.tempData = [];
+      //   this.filterOptions = 8;
+      //   this.tempData = await this.$axios.$get(
+      //     `/api/lokehoach/maspstatusngayhoanthanhlsx`,
+      //     {
+      //       params: {
+      //         masp: masp, // Truyền danh sách mã phân xưởng lên server
+      //         status: status,
+      //         ngayhoanthanh: ngayhoanthanh,
+      //       },
+      //     }
+      //   );
+      //   // console.log(this.tempData);
+      //   this.sllosx = this.tempData;
+      // }
+      // // phân xưởng ngày hoàn thành
+      // else if (
+      //   this.selectedOptions.length > 0 &&
+      //   !this.Options_status.length &&
+      //   this.multiSearch_masp == "" &&
+      //   this.search_ngayhttt != ""
+      // ) {
+      //   this.tempData = [];
+      //   this.filterOptions = 8;
+      //   this.tempData = await this.$axios.$get(
+      //     `/api/lokehoach/filterphanxuongandngayhttt`,
+      //     {
+      //       params: {
+      //         mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
+      //         ngayhoanthanh: ngayhoanthanh,
+      //       },
+      //     }
+      //   );
+      //   // console.log(this.tempData);
+      //   this.sllosx = this.tempData;
+      // }
+      // // mã sp ngày hoàn thành
+      // else if (
+      //   !this.selectedOptions.length &&
+      //   !this.Options_status.length &&
+      //   this.multiSearch_masp != "" &&
+      //   this.search_ngayhttt != ""
+      // ) {
+      //   this.tempData = [];
+      //   this.filterOptions = 8;
+      //   this.tempData = await this.$axios.$get(
+      //     `/api/lokehoach/maspngayhoanthanhlsx`,
+      //     {
+      //       params: {
+      //         masp: masp, // Truyền danh sách mã phân xưởng lên server
+      //         ngayhoanthanh: ngayhoanthanh,
+      //       },
+      //     }
+      //   );
+      //   // console.log(this.tempData);
+      //   this.sllosx = this.tempData;
+      // }
+      // // status ngày hoàn thành
+      // else if (
+      //   !this.selectedOptions.length &&
+      //   this.Options_status.length > 0 &&
+      //   this.multiSearch_masp == "" &&
+      //   this.search_ngayhttt != ""
+      // ) {
+      //   this.tempData = [];
+      //   this.filterOptions = 8;
+      //   this.tempData = await this.$axios.$get(
+      //     `/api/lokehoach/statusngayhoanthanhlsx`,
+      //     {
+      //       params: {
+      //         status: status, // Truyền danh sách mã phân xưởng lên server
+      //         ngayhoanthanh: ngayhoanthanh,
+      //       },
+      //     }
+      //   );
+      //   // console.log(this.tempData);
+      //   this.sllosx = this.tempData;
+      // } else if (
+      //   this.selectedOptions.length > 0 &&
+      //   this.Options_status.length > 0 &&
+      //   this.multiSearch_masp != ""
+      // ) {
+      //   this.tempData = [];
+      //   this.filterOptions = 1;
+      //   this.tempData = await this.$axios.$get(
+      //     `/api/lokehoach/filterfulldklosanxuat`,
+      //     {
+      //       params: {
+      //         mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
+      //         masp: masp,
+      //         status: status,
+      //       },
+      //     }
+      //   );
+      //   // console.log(this.tempData);
+      //   this.sllosx = this.tempData;
+      // }
+      // // chỉ có mã px 2
+      // else if (
+      //   this.selectedOptions.length > 0 &&
+      //   !this.Options_status.length &&
+      //   this.multiSearch_masp == ""
+      // ) {
+      //   this.tempData = [];
+      //   this.filterOptions = 2;
+      //   this.tempData = [];
+      //   this.sllosx = [];
+      //   this.tempData = await this.$axios.$get(
+      //     `/api/lokehoach/filteronlymapxlosanxuat`,
+      //     {
+      //       params: {
+      //         mapx: mapxList,
+      //       },
+      //     }
+      //   );
+      //   this.sllosx = this.tempData;
+      // }
+      // // chỉ có mã px và mã sp 3
+      // else if (
+      //   this.selectedOptions.length > 0 &&
+      //   !this.Options_status.length &&
+      //   this.multiSearch_masp != ""
+      // ) {
+      //   this.tempData = [];
+      //   this.filterOptions = 3;
+      //   this.tempData = await this.$axios.$get(
+      //     `/api/lokehoach/filteronlymapxandmasplosanxuat`,
+      //     {
+      //       params: {
+      //         mapx: mapxList,
+      //         masp: masp,
+      //       },
+      //     }
+      //   );
+      //   this.sllosx = this.tempData;
+      // }
+      // // chỉ có mã px và status 4
+      // else if (
+      //   this.selectedOptions.length > 0 &&
+      //   this.Options_status.length > 0 &&
+      //   this.multiSearch_masp == ""
+      // ) {
+      //   this.tempData = [];
+      //   this.filterOptions = 4;
+      //   this.tempData = await this.$axios.$get(
+      //     `/api/lokehoach/filteronlymapxandstatuslosanxuat`,
+      //     {
+      //       params: {
+      //         mapx: mapxList,
+      //         status: status,
+      //       },
+      //     }
+      //   );
+      //   this.sllosx = this.tempData;
+      // }
+      // // lọc mỗi trạng thái 5
+      // else if (
+      //   !this.selectedOptions.length &&
+      //   this.Options_status.length > 0 &&
+      //   this.multiSearch_masp == ""
+      // ) {
+      //   this.tempData = [];
+      //   this.filterOptions = 5;
+      //   this.tempData = await this.$axios.$get(
+      //     `/api/lokehoach/filteronlystatuslosanxuat`,
+      //     {
+      //       params: {
+      //         status: status,
+      //       },
+      //     }
+      //   );
+      //   this.sllosx = this.tempData;
+      // }
 
-      // lọc mỗi mã sản phẩm 6
-      else if (
-        !this.selectedOptions.length &&
-        !this.Options_status.length &&
-        this.multiSearch_masp != ""
-      ) {
-        this.tempData = [];
-        this.filterOptions = 6;
-        this.tempData = await this.$axios.$get(
-          `/api/lokehoach/filteronlymasplosanxuat`,
-          {
-            params: {
-              masp: masp,
-            },
-          }
-        );
-        this.sllosx = this.tempData;
-      }
+      // // lọc mỗi mã sản phẩm 6
+      // else if (
+      //   !this.selectedOptions.length &&
+      //   !this.Options_status.length &&
+      //   this.multiSearch_masp != ""
+      // ) {
+      //   this.tempData = [];
+      //   this.filterOptions = 6;
+      //   this.tempData = await this.$axios.$get(
+      //     `/api/lokehoach/filteronlymasplosanxuat`,
+      //     {
+      //       params: {
+      //         masp: masp,
+      //       },
+      //     }
+      //   );
+      //   this.sllosx = this.tempData;
+      // }
 
-      // lọc sản phẩm + trạng thái 7
-      else if (
-        !this.selectedOptions.length &&
-        this.Options_status.length > 0 &&
-        this.multiSearch_masp != ""
-      ) {
-        this.tempData = [];
-        this.filterOptions = 7;
-        this.tempData = await this.$axios.$get(
-          `/api/lokehoach/filteronlymaspandstatuslosx`,
-          {
-            params: {
-              masp: masp,
-              status: status,
-            },
-          }
-        );
-        this.sllosx = this.tempData;
-      }
+      // // lọc sản phẩm + trạng thái 7
+      // else if (
+      //   !this.selectedOptions.length &&
+      //   this.Options_status.length > 0 &&
+      //   this.multiSearch_masp != ""
+      // ) {
+      //   this.tempData = [];
+      //   this.filterOptions = 7;
+      //   this.tempData = await this.$axios.$get(
+      //     `/api/lokehoach/filteronlymaspandstatuslosx`,
+      //     {
+      //       params: {
+      //         masp: masp,
+      //         status: status,
+      //       },
+      //     }
+      //   );
+      //   this.sllosx = this.tempData;
+      // }
       // lọc thêm ngày hoàn thành
     },
 
@@ -4157,8 +4191,8 @@ export default {
         // console.log(this.items);
         if (this.items.length > 0) {
           for (let i = 0; i < this.items.length; i++) {
-            this.items[i].createdAt = this.form.createdAt
-            this.items[i].createdBy = this.form.createdBy
+            this.items[i].createdAt = this.form.createdAt;
+            this.items[i].createdBy = this.form.createdBy;
             // cập nhật lương công đoạn
             await this.$axios.$post(
               "/api/ketoan/addluongcongdoan",
@@ -4242,8 +4276,8 @@ export default {
 
         if (this.items_cn.length > 0) {
           for (let i = 0; i < this.items_cn.length; i++) {
-            this.items_cn[i].createdAt = this.form.createdAt
-            this.items_cn[i].createdBy = this.form.createdBy
+            this.items_cn[i].createdAt = this.form.createdAt;
+            this.items_cn[i].createdBy = this.form.createdBy;
             await this.$axios.$post(
               "/api/ketoan/addcongnhat",
               this.items_cn[i]
@@ -4279,7 +4313,7 @@ export default {
           title: "Có lỗi xảy ra !!!",
         });
       }
-      this.filterData()
+      this.filterData();
     },
     // Hàm update số đạt lương công đoạn
     async onUpdateCd(item) {

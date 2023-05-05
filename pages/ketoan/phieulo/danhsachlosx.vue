@@ -4,7 +4,7 @@
       <br />
       <div class="box" style="margin-left: 5px; margin-right: 5px">
         <div class="columns">
-          <div class="column is-10">
+          <div class="column is-11">
             <div class="control">
               <span class="icon is-small is-left">
                 <i style="color: #ff55acee" class="far fa-calendar-alt"></i>
@@ -13,17 +13,6 @@
                 >Danh sách lô sản xuất</span
               >
             </div>
-          </div>
-          <div class="column">
-            <button
-              @click="printphieu"
-              class="button is-success is-fullwidth is-small"
-            >
-              <span class="icon is-small">
-                <i style="color: red" class="far fa-file-pdf"></i>
-              </span>
-              <span>In Phiếu Lô</span>
-            </button>
           </div>
           <div class="column" style="text-align: right">
             <button class="button is-info is-fullwidth is-small">
@@ -449,22 +438,42 @@
                                 item.ngaybdkhpx | formatDate
                             }} -->
               <td style="background-color: #fffaeb">
-                <input
+                <!-- <input
                   class="input is-small"
                   type="date"
                   v-bind:value="item.ngaybd | inputDateFilter"
                   v-on:input="item.ngaybd = getDate($event.target.value)"
+                /> -->
+                <input
+                  class="input is-small"
+                  type="date"
+                  :value="formattedNgaybd(item)"
+                  @blur="updateNgaybd($event.target.value, item)"
                 />
               </td>
               <!-- <td style="font-size: small; text-align: center; background-color: #fffaeb;">{{
                                 item.ngayktkhpx | formatDate
                             }}</td> -->
-              <td style="background-color: #fffaeb">
+              <!-- <td style="background-color: #fffaeb">
                 <input
                   class="input is-small"
                   type="date"
                   v-bind:value="item.ngaykt | inputDateFilter"
                   v-on:input="item.ngaykt = getDate($event.target.value)"
+                />
+              </td> -->
+              <td
+                style="
+                  font-size: small;
+                  text-align: center;
+                  background-color: #fffaeb;
+                "
+              >
+                <input
+                  class="input is-small"
+                  type="date"
+                  :value="formattedNgaykt(item)"
+                  @blur="updateNgaykt($event.target.value, item)"
                 />
               </td>
               <td
@@ -827,6 +836,28 @@ export default {
 
       return pages;
     },
+
+    formattedNgaybd() {
+      return function (item) {
+        if (!item.ngaybd) return "";
+        const date = new Date(item.ngaybd);
+        const year = date.getFullYear();
+        const month = ("0" + (date.getMonth() + 1)).slice(-2);
+        const day = ("0" + date.getDate()).slice(-2);
+        return `${year}-${month}-${day}`;
+      };
+    },
+
+    formattedNgaykt() {
+      return function (item) {
+        if (!item.ngaykt) return "";
+        const date = new Date(item.ngaykt);
+        const year = date.getFullYear();
+        const month = ("0" + (date.getMonth() + 1)).slice(-2);
+        const day = ("0" + date.getDate()).slice(-2);
+        return `${year}-${month}-${day}`;
+      };
+    },
   },
 
   watch: {
@@ -938,13 +969,59 @@ export default {
       }
       return new Date(value);
     },
-    // hàm xuất execl
-    // exportExcel() {
-    //     const worksheet = XLSX.utils.aoa_to_sheet(this.reportData)
-    //     const wb = XLSX.utils.book_new()
-    //     XLSX.utils.book_append_sheet(wb, worksheet, 'Báo cáo doanh thu')
-    //     XLSX.writeFile(wb, 'bao-cao-doanh-thu.xlsx')
-    // },
+    // hàm cập nhật ngày bắt đầu; kết thúc
+    async updateNgaybd(value, item) {
+      // console.log(value);
+      // console.log(item);
+      const ngaybdktData = {
+        ngaybd: value,
+        ngaykt: item.ngaykt,
+      };
+      await this.$axios.$patch(
+        `/api/ketoan/updatengaybdngayktlosx/${item._id}`,
+        ngaybdktData
+      );
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 1000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
+      Toast.fire({
+        icon: "success",
+        title: `Cập nhật ngày HTTT của lô sx ${item._id}`,
+      });
+    },
+    async updateNgaykt(value, item) {
+      const ngaybdktData = {
+        ngaybd: item.ngaybd,
+        ngaykt: value,
+      };
+      await this.$axios.$patch(
+        `/api/ketoan/updatengaybdngayktlosx/${item._id}`,
+        ngaybdktData
+      );
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 1000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
+      Toast.fire({
+        icon: "success",
+        title: `Cập nhật ngày HTTT của lô sx ${item._id}`,
+      });
+    },
     exportExcel() {
       const selectedColumns = this.selected_print.map((item) => ({
         masp: item.masp.trim(),
@@ -1770,14 +1847,14 @@ export default {
       // console.log(data)
       try {
         // Đầu tiên là cập nhật ngày bắt đầu và ngày kết thúc cho cái lô sản xuất được thay đổi
-        const ngaybdktData = {
-          ngaybd: data.ngaybd,
-          ngaykt: data.ngaykt,
-        };
-        await this.$axios.$patch(
-          `/api/ketoan/updatengaybdngayktlosx/${data._id}`,
-          ngaybdktData
-        );
+        // const ngaybdktData = {
+        //   ngaybd: data.ngaybd,
+        //   ngaykt: data.ngaykt,
+        // };
+        // await this.$axios.$patch(
+        //   `/api/ketoan/updatengaybdngayktlosx/${data._id}`,
+        //   ngaybdktData
+        // );
 
         // tìm xem có bao nhiêu lô sản xuất trong lô kế hoạch phân xưởng
         const losxs = await this.$axios.$get(

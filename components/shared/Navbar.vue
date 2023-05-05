@@ -169,6 +169,12 @@
                     </span>
                     &ensp; Vào lương
                   </nav-link>
+                  <nav-link to="/ketoan/phieulo/kiemvachotluong" class="navbar-item">
+                    <span style="color: #9b6dff" class="icon is-small is-left">
+                      <i class="fab fa-hornbill"></i>
+                    </span>
+                    &ensp; Kiểm và chốt lương
+                  </nav-link>
                   <div class="nested navbar-item dropdown">
                     <div class="dropdown-trigger">
                       <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
@@ -310,11 +316,43 @@
                           </span>
                           &ensp; Chấm công hằng ngày
                         </nav-link>
-                        <nav-link to="/quantri/phienbanluong/dsphienbanluong" class="navbar-item">
+                        <nav-link to="/quantri/chamcong/baocaoquanso" class="navbar-item">
                           <span style="color: #6e4dc3" class="icon is-small is-left">
                             <i class="fa fa-calendar-check-o"></i>
                           </span>
-                          &ensp; Số liệu chấm công
+                          &ensp; Quân số hàng ngày
+                        </nav-link>
+                        <nav-link to="/quantri/chamcong/chamcongthang" class="navbar-item">
+                          <span style="color: #6e4dc3" class="icon is-small is-left">
+                            <i class="far fa-calendar-alt"></i>
+                          </span>
+                          &ensp; Chấm công tháng
+                        </nav-link>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="nested navbar-item dropdown">
+                    <div class="dropdown-trigger">
+                      <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                        <span style="color: #6e4dc3" class="icon is-small is-left">
+                          <i class="fas fa-candy-cane"></i>
+                        </span>
+                        &ensp; Hồ sơ vi phạm
+                      </button>
+                    </div>
+                    <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                      <div class="dropdown-content">
+                        <nav-link to="/quantri/vipham/nhapvipham" class="navbar-item">
+                          <span style="color: #6e4dc3" class="icon is-small is-left">
+                            <i class="fas fa-fire-alt"></i>
+                          </span>
+                          &ensp; Nhập vi phạm
+                        </nav-link>
+                        <nav-link to="/quantri/vipham/hosovipham" class="navbar-item">
+                          <span style="color: #6e4dc3" class="icon is-small is-left">
+                            <i class="fa fa-book"></i>
+                          </span>
+                          &ensp; Hồ sơ vi phạm
                         </nav-link>
                       </div>
                     </div>
