@@ -28,7 +28,7 @@
                 <i style="color: #48c78e" class="fas fa-kaaba"></i>
               </span>
               <div class="select is-small">
-                <select @change="vanphong($event)" :disabled="!isSelectsEnabled">
+                <select @change="vanphong($event)" :disabled="!isSelectsEnabled_VP">
                   <option selected>-- Văn phòng --</option>
                   <option value="vanphong">
                     Nhân viên văn phòng
@@ -228,6 +228,7 @@ export default {
       weekNumber: 0,
       selected: [],
       isSelectsEnabled: false,
+      isSelectsEnabled_VP: false,
       form: {
         mapx: "",
         tenpx: "",
@@ -327,9 +328,11 @@ export default {
     // yêu cầu chọn ngày chấm công trước
     async lockChoosee(){
       this.isSelectsEnabled = true
+      this.isSelectsEnabled_VP = true
     },
 
     async loadCongnhan(e) {
+      this.isSelectsEnabled_VP = false
       var name = e.target.options[e.target.options.selectedIndex].text;
       let position = name.split("--");
       this.form.mapx = position[0].trim();
@@ -418,6 +421,7 @@ export default {
     },
 
     async vanphong(){
+      this.isSelectsEnabled = false
       this.nhanvien = await this.$axios.$get(
         `/api/nhanvien/`
       );
