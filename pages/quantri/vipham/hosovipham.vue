@@ -146,7 +146,7 @@
                 {{ item.noidung }}
               </td>
               <td style="font-size: small">
-                {{ item.loaivipham }}
+                {{ item.loaivp }}
               </td>
               <td style="font-size: small">
                 {{ item.mucdovp }}
