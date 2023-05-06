@@ -1,12 +1,15 @@
 <template>
   <div class="columns is-mobile">
     <div class="column is-10 is-offset-1">
-      <div class="box" style="margin-top: 10px;">
+      <div class="box" style="margin-top: 10px">
         <div class="columns">
           <div class="column">
             <div class="control has-icons-left">
               <div class="select is-small">
-                <select @change="loadCongnhan($event)" :disabled="!isSelectsEnabled">
+                <select
+                  @change="loadCongnhan($event)"
+                  :disabled="!isSelectsEnabled"
+                >
                   <option selected>-- Chọn phân xưởng --</option>
                   <option v-for="item in phanxuong" :value="item.mapx">
                     {{ item.mapx }} -- {{ item.tenpx }}
@@ -17,7 +20,10 @@
                 <i style="color: #48c78e" class="fas fa-kaaba"></i>
               </span>
               <div class="select is-small">
-                <select @change="getWithTo($event)" :disabled="!isSelectsEnabled">
+                <select
+                  @change="getWithTo($event)"
+                  :disabled="!isSelectsEnabled"
+                >
                   <option selected>-- Chọn tổ --</option>
                   <option v-for="item in tonhomid" :value="item.mapx">
                     {{ item.mato }} -- {{ item.tento }}
@@ -28,11 +34,12 @@
                 <i style="color: #48c78e" class="fas fa-kaaba"></i>
               </span>
               <div class="select is-small">
-                <select @change="vanphong($event)" :disabled="!isSelectsEnabled_VP">
+                <select
+                  @change="vanphong($event)"
+                  :disabled="!isSelectsEnabled_VP"
+                >
                   <option selected>-- Văn phòng --</option>
-                  <option value="vanphong">
-                    Nhân viên văn phòng
-                  </option>
+                  <option value="vanphong">Nhân viên văn phòng</option>
                 </select>
               </div>
               <span class="icon is-small is-left">
@@ -260,8 +267,8 @@ export default {
           listChamcong: [{ machamcong: "", chamcong: "" }],
           diengiai: "",
           ghichu: "",
-          ngaychamcong: this.currentDate,
-          tuanchamcong: "",
+          ngaychamcong: this.ngaychamcong,
+          tuanchamcong: this.weekNumber,
           createdAt: "",
           createdBy: this.$auth.$state.user.username,
         },
@@ -325,14 +332,27 @@ export default {
       this.phanxuong = await this.$axios.$get(`/api/phongban/allphanxuong`);
     },
 
+    getWeek(date) {
+      const firstDayOfYear = new Date(date.getFullYear(), 0, 1);
+      const daysSinceFirstDay = (date - firstDayOfYear) / 86400000;
+      const daysUntilFirstThursday = 4 - (firstDayOfYear.getDay() || 7);
+      const weekNumber =
+        Math.floor((daysSinceFirstDay + daysUntilFirstThursday) / 7) + 1;
+      return weekNumber;
+    },
+
     // yêu cầu chọn ngày chấm công trước
-    async lockChoosee(){
-      this.isSelectsEnabled = true
-      this.isSelectsEnabled_VP = true
+    async lockChoosee() {
+      this.isSelectsEnabled = true;
+      this.isSelectsEnabled_VP = true;
+      // console.log(this.ngaychamcong);
+      const date = new Date(this.ngaychamcong);
+      const weekNumber = this.getWeek(date);
+      this.weekNumber = weekNumber
     },
 
     async loadCongnhan(e) {
-      this.isSelectsEnabled_VP = false
+      this.isSelectsEnabled_VP = false;
       var name = e.target.options[e.target.options.selectedIndex].text;
       let position = name.split("--");
       this.form.mapx = position[0].trim();
@@ -420,11 +440,9 @@ export default {
       // console.log(this.items);
     },
 
-    async vanphong(){
-      this.isSelectsEnabled = false
-      this.nhanvien = await this.$axios.$get(
-        `/api/nhanvien/`
-      );
+    async vanphong() {
+      this.isSelectsEnabled = false;
+      this.nhanvien = await this.$axios.$get(`/api/nhanvien/`);
       // console.log(this.nhanvien);
       this.items = [];
       for (let i = 0; i < this.nhanvien.length; i++) {
@@ -441,7 +459,7 @@ export default {
           diengiai: "",
           ghichu: "",
           ngaychamcong: this.ngaychamcong,
-          tuanchamcong: "",
+          tuanchamcong: this.weekNumber,
           createdAt: this.form.createdAt,
           createdBy: this.$auth.$state.user.username,
         });
@@ -501,7 +519,7 @@ export default {
               });
               return;
             } else {
-              console.log(this.ngaychamcong);
+              // console.log(this.ngaychamcong);
               // gọi api ghi dữ liệu chấm công vào db
               for (let i = 0; i < this.selected.length; i++) {
                 const data = this.selected[i].value;
@@ -524,8 +542,8 @@ export default {
                 title: "Đã chấm công",
               });
 
-              this.isSelectsEnabled = false
-              this.selected = []
+              this.isSelectsEnabled = false;
+              this.selected = [];
             }
           }
         } catch (error) {
