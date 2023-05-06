@@ -17,11 +17,13 @@ module.exports = {
         content: process.env.npm_package_description || "",
       },
     ],
-    link: [{ rel: "icon", type: "image/x-icon", href: "/favicon.ico" }],
-
-    script: [{ src: "https://kit.fontawesome.com/d33a83f69c.js" }],
-
-    
+    link: [
+      { rel: "icon", type: "image/x-icon", href: "/favicon.ico" },
+      {
+        rel: "stylesheet",
+        href: "/fontawesome-free-6.4.0-web/css/all.css",
+      },
+    ],
   },
   /*
    ** Customize the progress-bar color
@@ -68,13 +70,13 @@ module.exports = {
     // baseURL: "http://10.42.240.200:9999",
     // baseURL: "http://localhost:8888",
     baseURL: "http://14.224.129.177:8888/",
-    timeout: 20000
+    timeout: 20000,
   },
   server: {
     // port: 8080, // default: 3000
     port: 80,
     // host: '10.42.240.200' // default: localhost
-    host: "192.168.2.97", // default: localhost
+    // host: "192.168.2.97", // default: localhost
   },
   /* proxy: {
     "/api": URL,

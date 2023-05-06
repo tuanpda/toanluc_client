@@ -85,32 +85,36 @@
         v-if="dataChamcong.length > 0"
         class="table is-responsive is-bordered is-narrow is-fullwidth"
       >
-        <tr style="background-color: antiquewhite">
-          <th style="text-align: center; font-size: small; font-weight: bold">
+        <tr style="background-color: honeydew">
+          <th style="text-align: center; font-size: small; font-weight: bold; width: 3%;">
             STT
           </th>
-          <th style="text-align: center; font-size: small; font-weight: bold">
+          <th style="text-align: center; font-size: small; font-weight: bold; width: 7%;">
+            Mã công nhân
+          </th>
+          <th style="text-align: center; font-size: small; font-weight: bold; width: 10%;">
             Tên công nhân
           </th>
-          <!-- <th>Tổng số ngày nghỉ phép</th> -->
           <th
-            style="text-align: center; font-size: small; font-weight: bold"
+            style="text-align: center; font-size: small; font-weight: bold; width: 5%"
             v-for="date in dates"
           >
-            {{ formatDate(date) }}
+            {{ date }}
           </th>
+          <th></th>
         </tr>
         <tr v-for="(cc, index) in dataChamcong" :key="index">
           <td style="text-align: center; font-size: small">{{ index + 1 }}</td>
+          <td style="font-size: small; text-align: center;">{{ cc.macn }}</td>
           <td style="font-size: small">{{ cc.tencn }}</td>
-          <!-- <td></td> -->
           <td
             style="font-size: small; text-align: center"
             v-for="(date, index) in dates"
             :key="index"
           >
-            {{ getThongtinCC(cc, date) }}
+            {{ cc[date] }}
           </td>
+          <td></td>
         </tr>
       </table>
     </div>
@@ -124,7 +128,6 @@ export default {
       phanxuong: [],
       tonhomid: [],
       dataChamcong: [],
-      dates: [],
       khoangtime: "",
       startDate: "",
       endDate: "",
@@ -133,8 +136,8 @@ export default {
       namcc: "",
       phanxuongcc: "",
       tocc: "",
-      columns:[
-      {
+      columns: [
+        {
           label: "Mã công nhân",
           field: "macn",
         },
@@ -198,11 +201,20 @@ export default {
           field: "createdAt",
           dataFormat: this.prefixformatDate,
         },
-      ]
+      ],
     };
   },
+
   mounted() {
     this.get_phanxuong();
+  },
+
+  computed: {
+    dates() {
+      return Object.keys(this.dataChamcong[0])
+        .filter((key) => key !== "macn" && key !== "tencn")
+        .sort();
+    },
   },
 
   methods: {
@@ -279,46 +291,53 @@ export default {
         this.namcc = date.getFullYear(); // Lấy năm
         this.thangcc = date.getMonth() + 1;
         this.phanxuongcc = tenpx;
-        const firstDayOfMonth = new Date(
-          date.getFullYear(),
-          date.getMonth(),
-          1
-        );
-        const lastDayOfMonth = new Date(
-          date.getFullYear(),
-          date.getMonth() + 1,
-          0
-        );
 
-        // ngày đầu trong tháng
-        const yearFd = firstDayOfMonth.getFullYear();
-        const monthFd = (firstDayOfMonth.getMonth() + 1)
-          .toString()
-          .padStart(2, "0"); // Tháng bắt đầu từ 0 nên cần phải cộng thêm 1
-        const dayFd = firstDayOfMonth.getDate().toString().padStart(2, "0");
-
-        // ngày cuối trong tháng
-        const yearLd = lastDayOfMonth.getFullYear();
-        const monthLd = (lastDayOfMonth.getMonth() + 1)
-          .toString()
-          .padStart(2, "0"); // Tháng bắt đầu từ 0 nên cần phải cộng thêm 1
-        const dayLd = lastDayOfMonth.getDate().toString().padStart(2, "0");
-
-        const ngaybdtt = yearFd + "-" + monthFd + "-" + dayFd;
-        const ngaykttt = yearLd + "-" + monthLd + "-" + dayLd;
-
-        //   console.log(ngaybdtt);
-        //   console.log(ngaykttt);
-
-        this.startDate = ngaybdtt;
-        this.endDate = ngaykttt;
-        this.createDays();
         const response = await this.$axios.get(
-          `/api/congnhan/baocaothangtheopx?mapx=${mapx}&startDate=${this.startDate}&endDate=${this.endDate}`
+          `/api/congnhan/baocaochamcongthangphanxuong?mapx=${mapx}&nam=${this.namcc}&thang=${this.thangcc}`
         );
-        //   this.dataChamcong.
-        //   console.log(response);
+        // console.log(response.data);
         this.dataChamcong = response.data;
+
+        // const firstDayOfMonth = new Date(
+        //   date.getFullYear(),
+        //   date.getMonth(),
+        //   1
+        // );
+        // const lastDayOfMonth = new Date(
+        //   date.getFullYear(),
+        //   date.getMonth() + 1,
+        //   0
+        // );
+
+        // // ngày đầu trong tháng
+        // const yearFd = firstDayOfMonth.getFullYear();
+        // const monthFd = (firstDayOfMonth.getMonth() + 1)
+        //   .toString()
+        //   .padStart(2, "0"); // Tháng bắt đầu từ 0 nên cần phải cộng thêm 1
+        // const dayFd = firstDayOfMonth.getDate().toString().padStart(2, "0");
+
+        // // ngày cuối trong tháng
+        // const yearLd = lastDayOfMonth.getFullYear();
+        // const monthLd = (lastDayOfMonth.getMonth() + 1)
+        //   .toString()
+        //   .padStart(2, "0"); // Tháng bắt đầu từ 0 nên cần phải cộng thêm 1
+        // const dayLd = lastDayOfMonth.getDate().toString().padStart(2, "0");
+
+        // const ngaybdtt = yearFd + "-" + monthFd + "-" + dayFd;
+        // const ngaykttt = yearLd + "-" + monthLd + "-" + dayLd;
+
+        // //   console.log(ngaybdtt);
+        // //   console.log(ngaykttt);
+
+        // this.startDate = ngaybdtt;
+        // this.endDate = ngaykttt;
+        // this.createDays();
+        // const response = await this.$axios.get(
+        //   `/api/congnhan/baocaothangtheopx?mapx=${mapx}&startDate=${this.startDate}&endDate=${this.endDate}`
+        // );
+        // //   this.dataChamcong.
+        // //   console.log(response);
+        // this.dataChamcong = response.data;
       } else {
         const date = new Date(this.khoangtime);
         this.namcc = date.getFullYear(); // Lấy năm
@@ -332,51 +351,58 @@ export default {
       const tento = position[1];
       this.phanxuongcc = "";
       this.tocc = tento;
-      //   console.log(this.khoangtime);
-      const date = new Date(this.khoangtime);
-      //   console.log(date);
-      const firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
-      const lastDayOfMonth = new Date(
-        date.getFullYear(),
-        date.getMonth() + 1,
-        0
-      );
-
-      // ngày đầu trong tháng
-      const yearFd = firstDayOfMonth.getFullYear();
-      const monthFd = (firstDayOfMonth.getMonth() + 1)
-        .toString()
-        .padStart(2, "0"); // Tháng bắt đầu từ 0 nên cần phải cộng thêm 1
-      const dayFd = firstDayOfMonth.getDate().toString().padStart(2, "0");
-
-      // ngày cuối trong tháng
-      const yearLd = lastDayOfMonth.getFullYear();
-      const monthLd = (lastDayOfMonth.getMonth() + 1)
-        .toString()
-        .padStart(2, "0"); // Tháng bắt đầu từ 0 nên cần phải cộng thêm 1
-      const dayLd = lastDayOfMonth.getDate().toString().padStart(2, "0");
-
-      const ngaybdtt = yearFd + "-" + monthFd + "-" + dayFd;
-      const ngaykttt = yearLd + "-" + monthLd + "-" + dayLd;
-
-      //   console.log(ngaybdtt);
-      //   console.log(ngaykttt);
-
-      this.startDate = ngaybdtt;
-      this.endDate = ngaykttt;
-      this.createDays();
+      
       const response = await this.$axios.get(
-        `/api/congnhan/baocaothangtheoto?mato=${mato}&startDate=${this.startDate}&endDate=${this.endDate}`
-      );
-      //   this.dataChamcong.
-      //   console.log(response);
-      this.dataChamcong = response.data;
+          `/api/congnhan/baocaochamcongthangto?mato=${mato}&nam=${this.namcc}&thang=${this.thangcc}`
+        );
+        // console.log(response.data);
+        this.dataChamcong = response.data;
+      
+      // //   console.log(this.khoangtime);
+      // const date = new Date(this.khoangtime);
+      // //   console.log(date);
+      // const firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
+      // const lastDayOfMonth = new Date(
+      //   date.getFullYear(),
+      //   date.getMonth() + 1,
+      //   0
+      // );
+
+      // // ngày đầu trong tháng
+      // const yearFd = firstDayOfMonth.getFullYear();
+      // const monthFd = (firstDayOfMonth.getMonth() + 1)
+      //   .toString()
+      //   .padStart(2, "0"); // Tháng bắt đầu từ 0 nên cần phải cộng thêm 1
+      // const dayFd = firstDayOfMonth.getDate().toString().padStart(2, "0");
+
+      // // ngày cuối trong tháng
+      // const yearLd = lastDayOfMonth.getFullYear();
+      // const monthLd = (lastDayOfMonth.getMonth() + 1)
+      //   .toString()
+      //   .padStart(2, "0"); // Tháng bắt đầu từ 0 nên cần phải cộng thêm 1
+      // const dayLd = lastDayOfMonth.getDate().toString().padStart(2, "0");
+
+      // const ngaybdtt = yearFd + "-" + monthFd + "-" + dayFd;
+      // const ngaykttt = yearLd + "-" + monthLd + "-" + dayLd;
+
+      // //   console.log(ngaybdtt);
+      // //   console.log(ngaykttt);
+
+      // this.startDate = ngaybdtt;
+      // this.endDate = ngaykttt;
+      // this.createDays();
+      // const response = await this.$axios.get(
+      //   `/api/congnhan/baocaothangtheoto?mato=${mato}&startDate=${this.startDate}&endDate=${this.endDate}`
+      // );
+      // //   this.dataChamcong.
+      // //   console.log(response);
+      // this.dataChamcong = response.data;
     },
   },
 };
 </script>
 
-<style>
+<style scoped>
 .table_wrapper {
   display: block;
   overflow-x: auto;

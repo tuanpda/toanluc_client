@@ -359,7 +359,7 @@
                   width: 5%;
                 "
               >
-                Nhập lương
+                Lương
               </td>
             </tr>
             <tr
@@ -532,7 +532,7 @@
                   ><span>
                     <i
                       style="color: #9b6dff"
-                      class="fa fa-check-square-o"
+                      class="fa fa-check-circle"
                     ></i> </span
                 ></a>
               </td>

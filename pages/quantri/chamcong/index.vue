@@ -6,7 +6,7 @@
           <div class="column">
             <div class="control has-icons-left">
               <div class="select is-small">
-                <select @change="loadCongnhan($event)">
+                <select @change="loadCongnhan($event)" :disabled="!isSelectsEnabled">
                   <option selected>-- Chọn phân xưởng --</option>
                   <option v-for="item in phanxuong" :value="item.mapx">
                     {{ item.mapx }} -- {{ item.tenpx }}
@@ -17,7 +17,7 @@
                 <i style="color: #48c78e" class="fas fa-kaaba"></i>
               </span>
               <div class="select is-small">
-                <select @change="getWithTo($event)">
+                <select @change="getWithTo($event)" :disabled="!isSelectsEnabled">
                   <option selected>-- Chọn tổ --</option>
                   <option v-for="item in tonhomid" :value="item.mapx">
                     {{ item.mato }} -- {{ item.tento }}
@@ -28,7 +28,7 @@
                 <i style="color: #48c78e" class="fas fa-kaaba"></i>
               </span>
               <div class="select is-small">
-                <select @change="vanphong($event)">
+                <select @change="vanphong($event)" :disabled="!isSelectsEnabled">
                   <option selected>-- Văn phòng --</option>
                   <option value="vanphong">
                     Nhân viên văn phòng
@@ -47,9 +47,9 @@
               <td style="width: 5%">
                 <input
                   type="date"
-                  v-bind:value="currentDate"
+                  v-model="ngaychamcong"
                   class="input is-small is-danger"
-                  disabled
+                  @blur="lockChoosee"
                 />
               </td>
               <td style="width: 5%">
@@ -224,8 +224,10 @@ export default {
       tonhomid: [],
       nhanvien: [],
       currentDate: "",
+      ngaychamcong: "",
       weekNumber: 0,
       selected: [],
+      isSelectsEnabled: false,
       form: {
         mapx: "",
         tenpx: "",
@@ -322,6 +324,11 @@ export default {
       this.phanxuong = await this.$axios.$get(`/api/phongban/allphanxuong`);
     },
 
+    // yêu cầu chọn ngày chấm công trước
+    async lockChoosee(){
+      this.isSelectsEnabled = true
+    },
+
     async loadCongnhan(e) {
       var name = e.target.options[e.target.options.selectedIndex].text;
       let position = name.split("--");
@@ -349,8 +356,8 @@ export default {
             chamcong: "",
             diengiai: "",
             ghichu: "",
-            ngaychamcong: this.currentDate,
-            tuanchamcong: "",
+            ngaychamcong: this.ngaychamcong,
+            tuanchamcong: this.weekNumber,
             createdAt: this.form.createdAt,
             createdBy: this.$auth.$state.user.username,
           });
@@ -358,7 +365,6 @@ export default {
       } else {
         this.items = [];
       }
-
       // console.log(this.items);
     },
 
@@ -402,8 +408,8 @@ export default {
           chamcong: "",
           diengiai: "",
           ghichu: "",
-          ngaychamcong: this.currentDate,
-          tuanchamcong: "",
+          ngaychamcong: this.ngaychamcong,
+          tuanchamcong: this.weekNumber,
           createdAt: this.form.createdAt,
           createdBy: this.$auth.$state.user.username,
         });
@@ -430,7 +436,7 @@ export default {
           chamcong: "",
           diengiai: "",
           ghichu: "",
-          ngaychamcong: this.currentDate,
+          ngaychamcong: this.ngaychamcong,
           tuanchamcong: "",
           createdAt: this.form.createdAt,
           createdBy: this.$auth.$state.user.username,
@@ -491,6 +497,7 @@ export default {
               });
               return;
             } else {
+              console.log(this.ngaychamcong);
               // gọi api ghi dữ liệu chấm công vào db
               for (let i = 0; i < this.selected.length; i++) {
                 const data = this.selected[i].value;
@@ -512,6 +519,9 @@ export default {
                 icon: "success",
                 title: "Đã chấm công",
               });
+
+              this.isSelectsEnabled = false
+              this.selected = []
             }
           }
         } catch (error) {
