@@ -494,37 +494,37 @@
                 /> -->
                 <template v-if="item.ngayhoanthanhtt != null">
                   <input
-                  class="input is-small is-success"
-                  type="date"
-                  :value="formattedNgayhoanthanhtt(item)"
-                  @blur="updateNgayhoanttt($event.target.value, item)"
-                />
+                    class="input is-small is-success"
+                    type="date"
+                    :value="formattedNgayhoanthanhtt(item)"
+                    @blur="updateNgayhoanttt($event.target.value, item)"
+                  />
                 </template>
                 <template v-else>
                   <input
-                  class="input is-small is-danger"
-                  type="date"
-                  :value="formattedNgayhoanthanhtt(item)"
-                  @blur="updateNgayhoanttt($event.target.value, item)"
-                />
+                    class="input is-small is-danger"
+                    type="date"
+                    :value="formattedNgayhoanthanhtt(item)"
+                    @blur="updateNgayhoanttt($event.target.value, item)"
+                  />
                 </template>
               </td>
               <td style="font-size: small; text-align: center">
                 <template v-if="item.soluongkhsx != 0">
                   <input
-                  @change="updateStatus(item)"
-                  type="text"
-                  class="input is-small is-success"
-                  v-model="item.soluongkhsx"
-                />
+                    @change="updateStatus(item)"
+                    type="text"
+                    class="input is-small is-success"
+                    v-model="item.soluongkhsx"
+                  />
                 </template>
                 <template v-else>
                   <input
-                  @change="updateStatus(item)"
-                  type="text"
-                  class="input is-small is-danger"
-                  v-model="item.soluongkhsx"
-                />
+                    @change="updateStatus(item)"
+                    type="text"
+                    class="input is-small is-danger"
+                    v-model="item.soluongkhsx"
+                  />
                 </template>
               </td>
               <td style="font-size: small; text-align: center">
@@ -2001,7 +2001,7 @@ export default {
 
       // lọc talble lô sản xuất đang được sản xuất
       sortDirection: 1,
-      sortKey: "ngayhoanthanhtt",
+      sortKey: "_id",
       currentPage: 1,
       itemsPerPage: 10,
 
@@ -3275,7 +3275,6 @@ export default {
         );
         // console.log(this.dmnguyencong)
       }
-
     },
     // Bấm vào nhập lương sẽ ra popup nhập lương
     async vaoPhieuluong(infoPhieulo) {
@@ -3335,6 +3334,7 @@ export default {
           data.status = 3;
         } else {
           data.status = 2;
+          data.ngayhoanthanhtt = null
         }
         this.$axios.$patch(`/api/lokehoach/losanxuat/status/${data._id}`, data);
 
@@ -3378,10 +3378,11 @@ export default {
       try {
         // console.log(value);
         const data = { ngayhoanthanhtt: value };
-        this.$axios.$patch(
+        const response = await this.$axios.$patch(
           `/api/lokehoach/losanxuat/updatengayhttt/${item._id}`,
           data
         );
+        // console.log(response);
         const Toast = Swal.mixin({
           toast: true,
           position: "top-end",
@@ -3397,6 +3398,16 @@ export default {
           icon: "success",
           title: `Cập nhật ngày HTTT của lô sx ${item._id}`,
         });
+        if (
+          !this.selectedOptions.length &&
+          !this.Options_status.length &&
+          this.multiSearch_masp == "" &&
+          this.search_ngayhttt == ""
+        ) {
+          this.getSolieuLSX_ALl_cht();
+        } else {
+          this.filterData();
+        }
       } catch (error) {
         // console.log(error);
         const Toast = Swal.mixin({
@@ -3980,6 +3991,24 @@ export default {
         this.sllosx = this.tempData;
       }
       // lọc thêm ngày hoàn thành
+      else if (
+        !this.selectedOptions.length &&
+        !this.Options_status.length &&
+        this.multiSearch_masp == "" &&
+        this.search_ngayhttt != ""
+      ) {
+        this.tempData = [];
+        this.tempData = await this.$axios.$get(
+          `/api/lokehoach/onlyngayhoanthanh`,
+          {
+            params: {
+              ngayhoanthanh: ngayhoanthanh,
+            },
+          }
+        );
+        // console.log(this.tempData);
+        this.sllosx = this.tempData;
+      }
     },
 
     async filterData1(filterOption) {
@@ -4157,8 +4186,8 @@ export default {
         // console.log(this.items);
         if (this.items.length > 0) {
           for (let i = 0; i < this.items.length; i++) {
-            this.items[i].createdAt = this.form.createdAt
-            this.items[i].createdBy = this.form.createdBy
+            this.items[i].createdAt = this.form.createdAt;
+            this.items[i].createdBy = this.form.createdBy;
             // cập nhật lương công đoạn
             await this.$axios.$post(
               "/api/ketoan/addluongcongdoan",
@@ -4242,8 +4271,8 @@ export default {
 
         if (this.items_cn.length > 0) {
           for (let i = 0; i < this.items_cn.length; i++) {
-            this.items_cn[i].createdAt = this.form.createdAt
-            this.items_cn[i].createdBy = this.form.createdBy
+            this.items_cn[i].createdAt = this.form.createdAt;
+            this.items_cn[i].createdBy = this.form.createdBy;
             await this.$axios.$post(
               "/api/ketoan/addcongnhat",
               this.items_cn[i]
@@ -4279,7 +4308,7 @@ export default {
           title: "Có lỗi xảy ra !!!",
         });
       }
-      this.filterData()
+      this.filterData();
     },
     // Hàm update số đạt lương công đoạn
     async onUpdateCd(item) {

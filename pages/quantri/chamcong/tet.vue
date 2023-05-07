@@ -88,6 +88,7 @@
           </tr>
         </tbody>
       </table>
+      <button @click="show">show</button>
     </div>
   </template>
   
@@ -126,6 +127,7 @@
         ],
       };
     },
+
     computed: {
       columns() {
         const dates = Object.keys(this.datas[0])
@@ -152,6 +154,12 @@
         });
       },
     },
+
+    methods:{
+      show(){
+        console.log(this.rows);
+      }
+    }
   };
   </script>
   
