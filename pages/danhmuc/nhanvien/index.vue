@@ -57,7 +57,17 @@
             </div>
           </div>
         </div>
-
+        <div style="margin-bottom: 3px;">
+          <vue-excel-xlsx
+            :data="dsnhanvien"
+            :columns="columns"
+            :file-name="'Danh_nhan_vien'"
+            :file-type="'xlsx'"
+            :sheet-name="'Danh mục nhân viên'"
+          >
+            Download Excel
+          </vue-excel-xlsx>
+        </div>
         <div class="table_wrapper table-height">
           <table class="
               table
@@ -415,6 +425,109 @@ export default {
       // Modals
       isActive: false,
       isActive_update: false,
+
+      columns: [
+        {
+          label: "Id nhân viên",
+          field: "_id",
+          // dataFormat: this.trimData
+        },
+        {
+          label: "Mã nhân viên",
+          field: "manv",
+          /* dataFormat: this.priceFormat */
+          // dataFormat: this.trimData
+        },
+        {
+          label: "Tên nhân viên",
+          field: "tennv",
+          /* dataFormat: this.priceFormat */
+          // dataFormat: this.trimData
+        },
+        {
+          label: "Mã phòng",
+          field: "mapb",
+          /* dataFormat: this.priceFormat */
+          // dataFormat: this.trimData
+        },
+        {
+          label: "Tên phòng",
+          field: "tenphong",
+          /* dataFormat: this.priceFormat */
+          // dataFormat: this.trimData
+        },
+        {
+          label: "Số điện thoại",
+          field: "sdt",
+        },
+        {
+          label: "CCCD",
+          field: "cccd",
+        },
+        {
+          label: "Ngày sinh",
+          field: "ngaysinh",
+          dataFormat: this.prefixformatDate,
+        },
+        {
+          label: "Giới tính",
+          field: "gioitinh",
+        },
+        {
+          label: "Mức lương",
+          field: "mucluong",
+        },
+        {
+          label: "Liên hệ khẩn cấp",
+          field: "lhkhancap",
+        },
+        {
+          label: "Địa chỉ liên hệ",
+          field: "diachilh",
+        },
+        {
+          label: "Số tài khoản ngân hàng",
+          field: "sotknh",
+        },
+        {
+          label: "Tên ngân hàng",
+          field: "tennh",
+        },
+        {
+          label: "Phụ cấp",
+          field: "phucaptn",
+        },
+        {
+          label: "Lương phát sinh",
+          field: "luongphatsinh",
+        },
+        {
+          label: "Thưởng doanh thu",
+          field: "thuongdoanhthu",
+        },
+        {
+          label: "Ngày công",
+          field: "ngaycong",
+        },
+        {
+          label: "Lương thêm giờ",
+          field: "luongthemgio",
+        },
+        {
+          label: "Tạo ngày",
+          field: "createdAt",
+          dataFormat: this.prefixformatDate,
+        },
+        {
+          label: "Tạo bởi",
+          field: "accadd",
+        },
+        {
+          label: "Cập nhật ngày",
+          field: "updatedAt",
+          dataFormat: this.prefixformatDate,
+        },
+      ],
     };
   },
 
@@ -470,6 +583,21 @@ export default {
         current.getSeconds();
       this.form.createdAt = date + " " + time;
       this.hisform.createdAt = date + " " + time;
+    },
+
+    // format date
+    prefixformatDate(value) {
+      if (!value) {
+        return "";
+      }
+      value = new Date(value);
+      return (
+        value.getFullYear() +
+        "-" +
+        ("0" + (value.getMonth() + 1)).slice(-2) +
+        "-" +
+        ("0" + value.getDate()).slice(-2)
+      );
     },
 
     onFileChange(e) {

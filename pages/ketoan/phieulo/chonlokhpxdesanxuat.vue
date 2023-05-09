@@ -160,7 +160,7 @@
                                 style="font-size: small; text-align: center; font-weight: 600; width: 7%;">TTQT
                             </td>
                             <td @click="sortTable('status')"
-                                style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Trạng thái
+                                style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Status
                             </td>
                             <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Chọn TT
                             </td>
@@ -168,7 +168,7 @@
                             </td>
                             <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">SL đã ĐK
                             </td>
-                            <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">SL thực hiện
+                            <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">SL TH
                             </td>
                             <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Tổng đạt
                             </td>
@@ -229,14 +229,14 @@
                                 item.ttqt
                             }}</td>
                             <template>
-                                <td v-if="item.status == 1" style="font-size: small; text-align: center; "><span
+                                <td v-if="item.status == 1" style="font-size: small; text-align: center; vertical-align: middle;"><span
                                         style="color: white; font-weight: bold; background-color: red; padding-left: 7px; padding-right: 7px;">DK</span>
                                 </td>
-                                <td v-else-if="item.status == 2" style="font-size: small; text-align: center;">
+                                <td v-else-if="item.status == 2" style="font-size: small; text-align: center; vertical-align: middle;">
                                     <span
                                         style="color: red; font-weight: bold; background-color: yellow; padding-left: 7px; padding-right: 7px;">SX</span>
                                 </td>
-                                <td v-else-if="item.status == 3" style="font-size: small; text-align: center;">
+                                <td v-else-if="item.status == 3" style="font-size: small; text-align: center; vertical-align: middle;">
                                     <span
                                         style="color: white; font-weight: bold; background-color: green; padding-left: 7px; padding-right: 7px;">HT</span>
                                 </td>

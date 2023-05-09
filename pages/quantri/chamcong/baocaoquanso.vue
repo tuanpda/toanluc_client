@@ -47,64 +47,129 @@
           <table class="table is-responsive is-bordered is-narrow is-fullwidth">
             <tr style="background-color: beige">
               <td
-                style="text-align: center; font-weight: bold; font-size: small"
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 10%;
+                "
               >
                 Mã phân xưởng
               </td>
-              <td
+              <!-- <td
                 style="text-align: center; font-weight: bold; font-size: small"
               >
                 Tên phân xưởng
-              </td>
+              </td> -->
               <td
-                style="text-align: center; font-weight: bold; font-size: small"
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 10%;
+                "
               >
                 Mã tổ
               </td>
-              <td
+              <!-- <td
                 style="text-align: center; font-weight: bold; font-size: small"
               >
                 Tên tổ
-              </td>
+              </td> -->
               <td
-                style="text-align: center; font-weight: bold; font-size: small"
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 7%;
+                "
               >
                 Tổng người
               </td>
               <td
-                style="text-align: center; font-weight: bold; font-size: small"
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 6%;
+                "
               >
                 Ca 1 + HC
               </td>
               <td
-                style="text-align: center; font-weight: bold; font-size: small"
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 6%;
+                "
               >
                 Ca 2 / 3
               </td>
               <td
-                style="text-align: center; font-weight: bold; font-size: small"
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 5%;
+                "
               >
                 Nghỉ P
               </td>
               <td
-                style="text-align: center; font-weight: bold; font-size: small"
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 5%;
+                "
               >
                 Nghỉ M
               </td>
               <td
-                style="text-align: center; font-weight: bold; font-size: small"
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 5%;
+                "
               >
                 Nghỉ K
               </td>
               <td
-                style="text-align: center; font-weight: bold; font-size: small"
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 5%;
+                "
               >
                 Nghỉ X
               </td>
               <td
-                style="text-align: center; font-weight: bold; font-size: small"
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 5%;
+                "
               >
                 Nghỉ L
+              </td>
+              <td
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                Ghi chú
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 5%;
+                "
+              >
+                Xác nhận
               </td>
             </tr>
             <tr
@@ -114,9 +179,9 @@
               @click="[highlightRow(item), detail(item)]"
             >
               <td style="font-size: smaller">{{ item.mapx }}</td>
-              <td style="font-size: smaller">{{ item.tenpx }}</td>
+              <!-- <td style="font-size: smaller">{{ item.tenpx }}</td> -->
               <td style="font-size: smaller">{{ item.mato }}</td>
-              <td style="font-size: smaller">{{ item.tento }}</td>
+              <!-- <td style="font-size: smaller">{{ item.tento }}</td> -->
               <td style="font-size: smaller; text-align: center">
                 {{ item.tong_nguoi }}
               </td>
@@ -141,99 +206,72 @@
               <td style="font-size: smaller; text-align: center">
                 {{ item.nghil }}
               </td>
+              <td style="font-size: smaller; text-align: center">
+                <input
+                  v-model="item.ghichu"
+                  type="text"
+                  class="input is-small"
+                />
+              </td>
+              <td style="font-size: smaller; text-align: center">
+                <a @click="onUpdateCc(item)"
+                  ><span>
+                    <i style="color: red" class="fa fa-check-circle"></i> </span
+                ></a>
+              </td>
             </tr>
           </table>
-        </div>
 
-        <div class="">
-          <!-- Toggle class  -->
-          <div :class="{ 'is-active': isActive }" class="modal">
-            <div class="modal-background"></div>
-            <div class="modal-content modal-card">
-              <header
+          <table
+            v-if="this.detailData.length > 0"
+            class="table is-responsive is-bordered is-narrow is-fullwidth"
+          >
+            <tr style="background-color: beige">
+              <td
                 style="
-                  background-color: #3e8ed0;
-                  border-top-left-radius: 8px;
-                  border-top-right-radius: 8px;
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 3%;
                 "
               >
-                <div class="columns">
-                  <div class="column is-9">
-                    <p
-                      style="
-                        font-size: small;
-                        font-weight: bold;
-                        color: white;
-                        padding: 15px;
-                      "
-                    >
-                      Phân xưởng: {{ tenpx }} |
-                      <template v-if="tento != ''">
-                        Tổ:
-                        {{ tento }}
-                      </template>
-                    </p>
-                  </div>
-
-                  <div class="column" style="text-align: right">
-                    <a @click="isActive = false">
-                      <span
-                        style="color: red; padding: 20px"
-                        class="icon is-small"
-                      >
-                        <i class="fas fa-power-off"></i>
-                      </span>
-                    </a>
-                  </div>
-                </div>
-              </header>
-              <section class="modal-card-body">
-                <table
-                  class="table is-responsive is-bordered is-narrow is-fullwidth"
-                >
-                  <tr style="background-color: beige">
-                    <td
-                      style="
-                        font-size: small;
-                        font-weight: bold;
-                        text-align: center;
-                        width: 5%;
-                      "
-                    >
-                      STT
-                    </td>
-                    <td
-                      style="
-                        font-size: small;
-                        font-weight: bold;
-                        text-align: center;
-                        width: 30%;
-                      "
-                    >
-                      Nội dung
-                    </td>
-                    <td
-                      style="
-                        font-size: small;
-                        font-weight: bold;
-                        text-align: center;
-                      "
-                    >
-                      Công nhân / Nhân viên
-                    </td>
-                  </tr>
-                  <tr
-                    v-for="(item, index) in detailData"
-                    :key="index + 'lkkoko'"
-                  >
-                    <td style="font-size: small">{{ index + 1 }}</td>
-                    <td style="font-size: small">{{ item.chamcong }}</td>
-                    <td style="font-size: small">{{ item.tencn }}</td>
-                  </tr>
-                </table>
-              </section>
-            </div>
-          </div>
+                STT
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 10%;
+                "
+              >
+                Chấm công
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 15%;
+                "
+              >
+                Công nhân / Nhân viên
+              </td>
+              <td
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                Ghi chú
+              </td>
+            </tr>
+            <tr v-for="(item, index) in detailData" :key="index + 'lkkoko'">
+              <td style="font-size: small; text-align: center">
+                {{ index + 1 }}
+              </td>
+              <td style="font-size: small">{{ item.chamcong }}</td>
+              <td style="font-size: small">{{ item.tencn }}</td>
+              <td style="font-size: small">{{ item.ghichu }}</td>
+            </tr>
+          </table>
         </div>
       </div>
     </div>
@@ -258,11 +296,31 @@ export default {
       },
       tento: "",
       tenpx: "",
+      form_data: {
+        ngaychamcong: "",
+        mapx: "",
+        tenpx: "",
+        mato: "",
+        tento: "",
+        tongnguoi: "",
+        ca1hc: "",
+        ca23: "",
+        nghip: "",
+        nghim: "",
+        nghik: "",
+        nghix: "",
+        nghil: "",
+        tongnghi: "",
+        ghichu: "",
+        createdAt: "",
+        createdBy: this.$auth.$state.user.username,
+      },
     };
   },
 
   mounted() {
     this.getPhanxuong();
+    this.currentDateTime();
   },
 
   methods: {
@@ -271,12 +329,30 @@ export default {
       this.highlightedRow = row;
     },
 
+    currentDateTime() {
+      const current = new Date();
+      const date =
+        current.getFullYear() +
+        "-" +
+        (current.getMonth() + 1) +
+        "-" +
+        current.getDate();
+      const time =
+        current.getHours() +
+        ":" +
+        current.getMinutes() +
+        ":" +
+        current.getSeconds();
+      this.form_data.createdAt = date + " " + time;
+    },
+
     async getPhanxuong() {
       this.phanxuong = await this.$axios.$get(`/api/phongban/allphanxuong`);
     },
 
     async baocaoquanso() {
       // console.log(this.ngaychamcong);
+      this.detailData = [];
       this.chamcong = await this.$axios.$get(
         `/api/congnhan/baocaoquanso?ngaychamcong=${this.ngaychamcong}`
       );
@@ -300,10 +376,28 @@ export default {
     },
 
     async detail(data) {
-      //   console.log(data);
-      this.tento = data.tento;
+      // console.log(data);
+      const tongnghi =
+        data.nghip + data.nghim + data.nghik + data.nghix + data.nghil;
+      (this.form_data.ngaychamcong = data.ngaychamcong),
+        (this.form_data.mapx = data.mapx),
+        (this.form_data.tenpx = data.tenpx),
+        (this.form_data.mato = data.mato),
+        (this.form_data.tento = data.tento),
+        (this.form_data.tongnguoi = data.tong_nguoi),
+        (this.form_data.ca1hc = data.ca_1),
+        (this.form_data.ca23 = data.ca_2_3),
+        (this.form_data.nghip = data.nghip),
+        (this.form_data.nghim = data.nghim),
+        (this.form_data.nghik = data.nghik),
+        (this.form_data.nghix = data.nghix),
+        (this.form_data.nghil = data.nghil),
+        (this.form_data.tongnghi = tongnghi),
+        (this.form_data.ghichu = data.ghichu),
+        // console.log(data.ghichu);
+
+        (this.tento = data.tento);
       this.tenpx = data.tenpx;
-      this.isActive = true;
       if (data.mato === "") {
         this.detailData = await this.$axios.$get(
           `/api/congnhan/detailquansowithdonvi?ngaychamcong=${this.ngaychamcong}&mapx=${data.mapx}`
@@ -313,7 +407,32 @@ export default {
           `/api/congnhan/detailquansowithdonvito?ngaychamcong=${this.ngaychamcong}&mato=${data.mato}`
         );
       }
-      console.log(this.detailData);
+      // console.log(this.detailData);
+    },
+
+    async onUpdateCc(item) {
+      // console.log(this.form_data);
+      this.form_data.ghichu = item.ghichu;
+      const reponse = await this.$axios.$post(
+        `/api/congnhan/addchamcongphanxuong`,
+        this.form_data
+      );
+      // console.log(reponse);
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
+      Toast.fire({
+        icon: "success",
+        title: "Updated!",
+      });
     },
   },
 };

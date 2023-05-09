@@ -77,9 +77,9 @@
                   </nav-link>
                   <nav-link to="/danhmuc/nguyencong/" class="navbar-item">
                     <span style="color: #3850b7" class="icon is-small is-left">
-                      <i class="fa fa-linode"></i>
+                      <i class="fas fa-funnel-dollar"></i>
                     </span>
-                    &ensp; Nguyên công
+                    &ensp; Sản phẩm
                   </nav-link>
                   <nav-link to="/danhmuc/congnhat/" class="navbar-item">
                     <span style="color: #3850b7" class="icon is-small is-left">
@@ -118,7 +118,7 @@
                   </nav-link>
                   <nav-link to="/ketoan/phieulo/dangkylokhphanxuong" class="navbar-item">
                     <span style="color: #f14668" class="icon is-small is-left">
-                      <i class="fa fa-calendar-check-o"></i>
+                      <i class="far fa-calendar-alt"></i>
                     </span>
                     &ensp; Đăng ký kế hoạch phân xưởng
                   </nav-link>
@@ -252,7 +252,7 @@
                   </nav-link> -->
                   <nav-link to="/report/bangluong" class="navbar-item">
                     <span style="color: #48c78e" class="icon is-small is-left">
-                      <i class="fa fa-file-text-o"></i>
+                      <i class="fas fa-calculator"></i>
                     </span>
                     &ensp; Bảng chi trả lương
                   </nav-link>
@@ -318,13 +318,13 @@
                         </nav-link>
                         <nav-link to="/quantri/chamcong/baocaoquanso" class="navbar-item">
                           <span style="color: #6e4dc3" class="icon is-small is-left">
-                            <i class="fa fa-calendar-check-o"></i>
+                            <i class="fab fa-elementor"></i>
                           </span>
                           &ensp; Quân số hàng ngày
                         </nav-link>
                         <nav-link to="/quantri/chamcong/chamcongthang" class="navbar-item">
                           <span style="color: #6e4dc3" class="icon is-small is-left">
-                            <i class="far fa-calendar-alt"></i>
+                            <i class="fas fa-clipboard-check"></i>
                           </span>
                           &ensp; Chấm công tháng
                         </nav-link>
@@ -359,7 +359,7 @@
                   </div>
                   <nav-link to="/quantri/admin/users/admin" class="navbar-item">
                     <span style="color: #6e4dc3" class="icon is-small is-left">
-                      <i class="fa fa-address-card-o"></i>
+                      <i class="far fa-address-card"></i>
                     </span>
                     &ensp; Người dùng
                   </nav-link>

@@ -2,14 +2,16 @@
   <div class="columns">
     <div class="column container">
       <br />
-      <div class="box" style="margin-left: 100px; margin-right: 100px;">
+      <div class="box" style="margin-left: 100px; margin-right: 100px">
         <div class="columns">
           <div class="column">
             <div class="control">
               <span class="icon is-small is-left">
                 <i style="color: #00d1b2" class="fas fa-fax"></i>
               </span>
-              <span style="color: #3850b7; font-size: 17px; font-weight: bold;">Danh mục Phòng ban</span>
+              <span style="color: #3850b7; font-size: 17px; font-weight: bold"
+                >Danh mục Phòng ban</span
+              >
             </div>
           </div>
         </div>
@@ -23,11 +25,14 @@
             <span>Phòng</span>
           </div>
           <div class="column" style="text-align: right">
-            <button @click="isActive = true" class="button is-success is-fullwidth is-small">
+            <button
+              @click="isActive = true"
+              class="button is-success is-fullwidth is-small"
+            >
               <span class="icon is-small">
                 <i class="fas fa-pen-fancy"></i>
               </span>
-              <span>Thêm Phòng ban</span>
+              <span>Thêm</span>
             </button>
           </div>
           <div class="column" style="text-align: right">
@@ -39,24 +44,46 @@
             </button>
           </div>
         </div>
+        <div style="margin-bottom: 3px;">
+          <vue-excel-xlsx
+            :data="phongban"
+            :columns="columns"
+            :file-name="'Danh_muc_phong_ban'"
+            :file-type="'xlsx'"
+            :sheet-name="'Danh mục phòng ban'"
+          >
+            Download Excel
+          </vue-excel-xlsx>
+        </div>
         <div class="table_wrapper">
-          <table class="
-              table
-              is-bordered is-striped is-narrow is-hoverable is-fullwidth
-            ">
+          <table
+            class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
+          >
             <thead>
-              <tr style="background-color: #fffaeb;">
-                <th style="text-align: center; font-size: smaller; width: 3%">STT</th>
-                <th style="text-align: center; font-size: smaller; width: 5%">Sửa</th>
-                <th style="text-align: center; font-size: smaller; width: 5%">Xóa</th>
-                <th style="text-align: center; font-size: smaller; width: 10%">Mã phòng</th>
-                <th style="text-align: center; font-size: smaller; width: 50%">Tên phòng</th>
-                <th style="text-align: center; font-size: smaller;">Ghi chú</th>
+              <tr style="background-color: #fffaeb">
+                <th style="text-align: center; font-size: smaller; width: 3%">
+                  STT
+                </th>
+                <th style="text-align: center; font-size: smaller; width: 5%">
+                  Sửa
+                </th>
+                <th style="text-align: center; font-size: smaller; width: 5%">
+                  Xóa
+                </th>
+                <th style="text-align: center; font-size: smaller; width: 10%">
+                  Mã phòng
+                </th>
+                <th style="text-align: center; font-size: smaller; width: 50%">
+                  Tên phòng
+                </th>
+                <th style="text-align: center; font-size: smaller">Ghi chú</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(phong, index) in phongban" :key="index">
-                <td style="text-align: center; font-size: smaller;">{{ index + 1 }}</td>
+                <td style="text-align: center; font-size: smaller">
+                  {{ index + 1 }}
+                </td>
                 <td style="text-align: center; color: green">
                   <nuxt-link :to="`/danhmuc/phongban/${phong._id}/manage`">
                     <span class="icon is-small">
@@ -71,9 +98,9 @@
                     </span>
                   </a>
                 </td>
-                <td style="font-size: smaller;">{{ phong.maphong }}</td>
-                <td style="font-size: smaller;">{{ phong.tenphong }}</td>
-                <td style="font-size: smaller;">{{ phong.ghichu }}</td>
+                <td style="font-size: smaller">{{ phong.maphong }}</td>
+                <td style="font-size: smaller">{{ phong.tenphong }}</td>
+                <td style="font-size: smaller">{{ phong.ghichu }}</td>
               </tr>
             </tbody>
           </table>
@@ -85,19 +112,38 @@
           <div :class="{ 'is-active': isActive }" class="modal">
             <div class="modal-background"></div>
             <div class="modal-content modal-card">
-              <header style="background-color: #3e8ed0; border-top-left-radius: 8px; border-top-right-radius: 8px;">
+              <header
+                style="
+                  background-color: #3e8ed0;
+                  border-top-left-radius: 8px;
+                  border-top-right-radius: 8px;
+                "
+              >
                 <div class="columns">
                   <div class="column is-9">
-                    <p style="font-size: small; font-weight: bold; color: white; padding: 15px;">
+                    <p
+                      style="
+                        font-size: small;
+                        font-weight: bold;
+                        color: white;
+                        padding: 15px;
+                      "
+                    >
                       <span class="icon is-small is-left">
-                        <i style="color: #ffd863ff" class="fas fa-feather-alt"></i>
+                        <i
+                          style="color: #ffd863ff"
+                          class="fas fa-feather-alt"
+                        ></i>
                       </span>
                       Thêm Phòng ban
                     </p>
                   </div>
-                  <div class="column" style="text-align:right;">
+                  <div class="column" style="text-align: right">
                     <a @click="isActive = false">
-                      <span style="color: red; padding: 20px;" class="icon is-small">
+                      <span
+                        style="color: red; padding: 20px"
+                        class="icon is-small"
+                      >
                         <i class="fas fa-power-off"></i>
                       </span>
                     </a>
@@ -108,39 +154,67 @@
                 <div class="field">
                   <label class="label">Mã phòng ban</label>
                   <div class="control">
-                    <input v-model="form.maphong" @blur="$v.form.maphong.$touch()" class="input is-small" type="text"
-                      placeholder="Nhập mã phòng ban" />
+                    <input
+                      v-model="form.maphong"
+                      @blur="$v.form.maphong.$touch()"
+                      class="input is-small"
+                      type="text"
+                      placeholder="Nhập mã phòng ban"
+                    />
                   </div>
                   <div v-if="$v.form.maphong.$error" class="form-error">
-                    <span v-if="!$v.form.maphong.required" class="help is-danger">Yêu cầu nhập mã phòng</span>
+                    <span
+                      v-if="!$v.form.maphong.required"
+                      class="help is-danger"
+                      >Yêu cầu nhập mã phòng</span
+                    >
                   </div>
                 </div>
                 <div class="field">
                   <label class="label">Tên phòng ban</label>
                   <div class="control">
-                    <input v-model="form.tenphong" @blur="$v.form.tenphong.$touch()" class="input is-small" type="text"
-                      placeholder="Nhập tên phòng ban" />
+                    <input
+                      v-model="form.tenphong"
+                      @blur="$v.form.tenphong.$touch()"
+                      class="input is-small"
+                      type="text"
+                      placeholder="Nhập tên phòng ban"
+                    />
                   </div>
                   <div v-if="$v.form.tenphong.$error" class="form-error">
-                    <span v-if="!$v.form.tenphong.required" class="help is-danger">Yêu cầu nhập tên phòng</span>
+                    <span
+                      v-if="!$v.form.tenphong.required"
+                      class="help is-danger"
+                      >Yêu cầu nhập tên phòng</span
+                    >
                   </div>
                 </div>
                 <div class="field">
                   <label class="label">Diễn giải thêm</label>
                   <div class="control">
-                    <textarea v-model="form.ghichu" class="textarea is-small" placeholder="Ghi chú thêm ..."></textarea>
+                    <textarea
+                      v-model="form.ghichu"
+                      class="textarea is-small"
+                      placeholder="Ghi chú thêm ..."
+                    ></textarea>
                   </div>
                 </div>
 
                 <div class="columns">
                   <div class="column">
-                    <button :disabled="$v.form.$invalid" @click.prevent="onAddPhongban"
-                      class="button is-success is-fullwidth is-small">
+                    <button
+                      :disabled="$v.form.$invalid"
+                      @click.prevent="onAddPhongban"
+                      class="button is-success is-fullwidth is-small"
+                    >
                       Ghi nhận
                     </button>
                   </div>
                   <div class="column">
-                    <button @click="isActive = false" class="button is-danger is-light is-fullwidth is-small">
+                    <button
+                      @click="isActive = false"
+                      class="button is-danger is-light is-fullwidth is-small"
+                    >
                       Hủy bỏ
                     </button>
                   </div>
@@ -156,15 +230,8 @@
 
 <script>
 import Swal from "sweetalert2";
-
-import {
-  required,
-  email,
-  minLength,
-  url,
-  sameAs,
-} from "vuelidate/lib/validators";
-import { mapActions } from "vuex";
+import { required } from "vuelidate/lib/validators";
+import XLSX from "xlsx";
 export default {
   middleware: "auth",
   data() {
@@ -187,6 +254,44 @@ export default {
 
       // Modals
       isActive: false,
+
+      columns: [
+        {
+          label: "Id phòng ban",
+          field: "_id",
+          // dataFormat: this.trimData
+        },
+        {
+          label: "Mã phòng",
+          field: "maphong",
+          /* dataFormat: this.priceFormat */
+          // dataFormat: this.trimData
+        },
+        {
+          label: "Tên phòng",
+          field: "tenphong",
+          /* dataFormat: this.priceFormat */
+          // dataFormat: this.trimData
+        },
+        {
+          label: "Ghi chú",
+          field: "ghichu",
+        },
+        {
+          label: "Tạo ngày",
+          field: "createdAt",
+          dataFormat: this.prefixformatDate,
+        },
+        {
+          label: "Tạo bởi",
+          field: "createdBy",
+        },
+        {
+          label: "Cập nhật ngày",
+          field: "updatedAt",
+          dataFormat: this.prefixformatDate,
+        },
+      ],
     };
   },
 
@@ -245,6 +350,21 @@ export default {
       this.hisform.createdAt = date + " " + time;
     },
 
+    // format date
+    prefixformatDate(value) {
+      if (!value) {
+        return "";
+      }
+      value = new Date(value);
+      return (
+        value.getFullYear() +
+        "-" +
+        ("0" + (value.getMonth() + 1)).slice(-2) +
+        "-" +
+        ("0" + value.getDate()).slice(-2)
+      );
+    },
+
     async getDspb() {
       this.phongban = await this.$axios.$get(`/api/phongban/allphongban`);
       if (this.phongban.length <= 0) {
@@ -270,7 +390,7 @@ export default {
             // console.log(this.$auth.$state.user.username);
 
             this.$store.dispatch("phongban/createPhongban", this.form);
-            this.getDspb()
+            this.getDspb();
 
             // this.$store
             //   .dispatch("phongban/createPhongban", this.form)
@@ -330,12 +450,12 @@ export default {
         dangerMode: true,
       }).then((willDelete) => {
         if (willDelete) {
-          this.$axios.$delete(`/api/phongban/${pb._id}`)
-            .then(response => {
-              const index = this.phongban.findIndex(p => p._id === pb._id) // find the post index 
-              if (~index) // if the post exists in array
-                this.phongban.splice(index, 1) //delete the post
-            });
+          this.$axios.$delete(`/api/phongban/${pb._id}`).then((response) => {
+            const index = this.phongban.findIndex((p) => p._id === pb._id); // find the post index
+            if (~index)
+              // if the post exists in array
+              this.phongban.splice(index, 1); //delete the post
+          });
           const Toast = Swal.mixin({
             toast: true,
             position: "top-end",
@@ -351,7 +471,6 @@ export default {
             icon: "success",
             title: "Xóa thành công",
           });
-
         } else {
           swal("Bạn đã hủy xóa phòng ban");
         }

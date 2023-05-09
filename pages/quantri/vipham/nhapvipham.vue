@@ -482,7 +482,7 @@ export default {
               `/api/congnhan/lapbienbanvipham`,
               this.form
             );
-            console.log(reponse);
+            // console.log(reponse);
             if (reponse.success == true) {
               const Toast = Swal.mixin({
                 toast: true,

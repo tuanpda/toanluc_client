@@ -41,6 +41,17 @@
             </nuxt-link>
           </div>
         </div>
+        <div style="margin-bottom: 3px;">
+          <vue-excel-xlsx
+            :data="tonhom"
+            :columns="columns"
+            :file-name="'Danh_muc_to'"
+            :file-type="'xlsx'"
+            :sheet-name="'Danh mục tổ'"
+          >
+            Download Excel
+          </vue-excel-xlsx>
+        </div>
         <div class="table_wrapper">
           <table class="
                     table
@@ -214,6 +225,56 @@ export default {
 
       // Modals
       isActive: false,
+
+      columns: [
+        {
+          label: "Id tổ",
+          field: "_id",
+          // dataFormat: this.trimData
+        },
+        {
+          label: "Mã phân xưởng",
+          field: "mapx",
+          /* dataFormat: this.priceFormat */
+          // dataFormat: this.trimData
+        },
+        {
+          label: "Tên tổ",
+          field: "tento",
+          /* dataFormat: this.priceFormat */
+          // dataFormat: this.trimData
+        },
+        {
+          label: "Mã tổ",
+          field: "mato",
+          /* dataFormat: this.priceFormat */
+          // dataFormat: this.trimData
+        },
+        {
+          label: "Tên phân xưởng",
+          field: "tenpx",
+          /* dataFormat: this.priceFormat */
+          // dataFormat: this.trimData
+        },
+        {
+          label: "Ghi chú",
+          field: "ghichu",
+        },
+        {
+          label: "Tạo ngày",
+          field: "createdAt",
+          dataFormat: this.prefixformatDate,
+        },
+        {
+          label: "Tạo bởi",
+          field: "createdBy",
+        },
+        {
+          label: "Cập nhật ngày",
+          field: "updatedAt",
+          dataFormat: this.prefixformatDate,
+        },
+      ],
     };
   },
 

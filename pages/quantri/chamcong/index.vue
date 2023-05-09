@@ -343,12 +343,38 @@ export default {
 
     // yêu cầu chọn ngày chấm công trước
     async lockChoosee() {
-      this.isSelectsEnabled = true;
-      this.isSelectsEnabled_VP = true;
-      // console.log(this.ngaychamcong);
-      const date = new Date(this.ngaychamcong);
-      const weekNumber = this.getWeek(date);
-      this.weekNumber = weekNumber
+      // kiểm tra xem có dữ liệu ngày chấm công trong csdl chưa
+      const getNgaychamcong = await this.$axios.$get(
+        `/api/congnhan/getngaychamcongonsv`
+      );
+      const exits = getNgaychamcong.find(
+        (item) => item.ngaychamcong.substring(0, 10) === this.ngaychamcong
+      );
+
+      if (exits) {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+        Toast.fire({
+          icon: "error",
+          title: "Ngày này đã được chấm công rồi. Liên hệ người quản trị",
+        });
+      } else {
+        this.isSelectsEnabled = true;
+        this.isSelectsEnabled_VP = true;
+        // console.log(this.ngaychamcong);
+        const date = new Date(this.ngaychamcong);
+        const weekNumber = this.getWeek(date);
+        this.weekNumber = weekNumber;
+      }
     },
 
     async loadCongnhan(e) {
@@ -520,11 +546,16 @@ export default {
               return;
             } else {
               // console.log(this.ngaychamcong);
+              // kiểm tra xem có dữ liệu ngày chấm công trong csdl chưa
+              const getNgaychamcong = await this.$axios.$get(
+                `/api/congnhan/getngaychamcongonsv`
+              );
+              console.log(getNgaychamcong);
               // gọi api ghi dữ liệu chấm công vào db
-              for (let i = 0; i < this.selected.length; i++) {
-                const data = this.selected[i].value;
-                await this.$axios.$post(`/api/congnhan/addchamcong`, data);
-              }
+              // for (let i = 0; i < this.selected.length; i++) {
+              //   const data = this.selected[i].value;
+              //   await this.$axios.$post(`/api/congnhan/addchamcong`, data);
+              // }
 
               const Toast = Swal.mixin({
                 toast: true,

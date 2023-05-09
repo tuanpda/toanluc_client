@@ -431,6 +431,7 @@
                       background-color: red;
                       padding-left: 7px;
                       padding-right: 7px;
+                      vertical-align: middle;
                     "
                     >DK</span
                   >
@@ -446,6 +447,7 @@
                       background-color: yellow;
                       padding-left: 7px;
                       padding-right: 7px;
+                      vertical-align: middle;
                     "
                     >SX</span
                   >
@@ -461,13 +463,14 @@
                       background-color: green;
                       padding-left: 7px;
                       padding-right: 7px;
+                      vertical-align: middle;
                     "
                     >HT</span
                   >
                 </td>
                 <td v-else style="font-size: small; text-align: center"></td>
               </template>
-              <td style="font-size: small; text-align: center">
+              <td style="font-size: small; text-align: center; vertical-align: middle;">
                 <span v-if="item.status_tinhluong == false">
                   <i style="color: #ffd863" class="fa fa-circle"></i>
                 </span>
@@ -788,6 +791,20 @@
                     </span>
                   </a>
                 </td>
+              </tr>
+              <tr style="background-color: #f4f2f8;">
+                <td
+                  colspan="6"
+                  style="
+                    font-size: small;
+                    font-weight: 700;
+                  "
+                >
+                  Tổng đạt / Tổng hỏng
+                </td>
+                <td style="text-align: right; font-size: small">{{ getinfoplsx.tongdat }}</td>
+                <td style="text-align: right; font-size: small">{{ getinfoplsx.tonghong }}</td>
+                <td colspan="2"></td>
               </tr>
               <tr>
                 <td
@@ -3249,15 +3266,16 @@ export default {
       this.iscongdoan = 1;
       this.getinfoplsx = infoPhieulo;
       // console.log(this.getinfoplsx);
-      this.form.id_losx = this.getinfoplsx._id;
-      this.form.nhomluong = infoPhieulo.nhomluong;
-      this.form.mapx = infoPhieulo.mapx;
-      this.form.malosx = infoPhieulo.malosx;
-      this.form.malonhamay = infoPhieulo.malonhamay;
-      this.form.makhpx = infoPhieulo.makhpx;
-      this.form.tensp = infoPhieulo.tensp;
-      this.form.mato = infoPhieulo.mato;
-      this.form.tento = infoPhieulo.tento;
+      // this.form.id_losx = this.getinfoplsx._id;
+      // this.form.nhomluong = infoPhieulo.nhomluong;
+      // this.form.mapx = infoPhieulo.mapx;
+      // this.form.malosx = infoPhieulo.malosx;
+      // this.form.malonhamay = infoPhieulo.malonhamay;
+      // this.form.makhpx = infoPhieulo.makhpx;
+      // this.form.tensp = infoPhieulo.tensp;
+      // this.form.mato = infoPhieulo.mato;
+      // this.form.tento = infoPhieulo.tento;
+      this.form = {...infoPhieulo}
 
       // lấy mã nhóm lương dựa vào mã sp và mã phân xưởng
       if (
@@ -4509,30 +4527,43 @@ export default {
               );
               this.calculateTotals();
             }
-            this.tempData = [];
-            if (this.filterOptions == 1) {
-              this.filterData1(1);
-              // console.log(this.tempData);
-              // console.log(this.sllosx);
-            } else if (this.filterOptions == 2) {
-              this.filterData1(2);
-              // console.log(this.tempData);
-              // console.log(this.sllosx);
-            } else if (this.filterOptions == 3) {
-              this.filterData1(3);
-            } else if (this.filterOptions == 4) {
-              this.filterData1(4);
-            } else if (this.filterOptions == 5) {
-              this.filterData1(5);
-            } else if (this.filterOptions == 6) {
-              this.filterData1(6);
-            } else if (this.filterOptions == 7) {
-              this.filterData1(7);
-            } else {
-              this.sllosx = await this.$axios.$get(
-                `/api/ketoan/getallphieulocht`
+            
+            const tonghongff = 0;
+              const dataUpdateth = { tonghong: tonghongff };
+              await this.$axios.$patch(
+                `/api/ketoan/updateonlytonghong?_id=${cd._id_losx}`,
+                dataUpdateth
               );
-            }
+              const dataUpdate = { tongdat: tongdat };
+              await this.$axios.$patch(
+                `/api/ketoan/updateonlytongdat?_id=${cd._id_losx}`,
+                dataUpdate
+              );
+              this.calculateTotals();
+            this.tempData = [];
+            // if (this.filterOptions == 1) {
+            //   this.filterData1(1);
+            //   // console.log(this.tempData);
+            //   // console.log(this.sllosx);
+            // } else if (this.filterOptions == 2) {
+            //   this.filterData1(2);
+            //   // console.log(this.tempData);
+            //   // console.log(this.sllosx);
+            // } else if (this.filterOptions == 3) {
+            //   this.filterData1(3);
+            // } else if (this.filterOptions == 4) {
+            //   this.filterData1(4);
+            // } else if (this.filterOptions == 5) {
+            //   this.filterData1(5);
+            // } else if (this.filterOptions == 6) {
+            //   this.filterData1(6);
+            // } else if (this.filterOptions == 7) {
+            //   this.filterData1(7);
+            // } else {
+            //   this.sllosx = await this.$axios.$get(
+            //     `/api/ketoan/getallphieulocht`
+            //   );
+            // }
           }
         } catch (error) {
           // console.log(error);
@@ -4591,6 +4622,8 @@ export default {
                   // if the post exists in array
                   this.allluongcongnhat.splice(index, 1); //delete the post
               });
+
+              // this.getinfoplsx
           }
         } else {
           swal("Bạn đã hủy xóa");

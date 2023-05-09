@@ -76,18 +76,25 @@
                       </button>
                     </div>
                     <div style="width: 100%" class="column">
-                      <template v-if="data.length>0">
+                      <template v-if="data.length > 0">
                         <vue-excel-xlsx
                           :data="data"
                           :columns="columns"
-                          :file-name="'Lương công đoạn'"
+                          :file-name="
+                            'Lương công đoạn ' +
+                            tenxuong +
+                            ' ' +
+                            from +
+                            '_' +
+                            to
+                          "
                           :file-type="'xlsx'"
                           :sheet-name="'Lương công đoạn'"
                         >
                           Download Công đoạn
                         </vue-excel-xlsx>
                       </template>
-                      <template v-if="data_cn.length>0">
+                      <template v-if="data_cn.length > 0">
                         <vue-excel-xlsx
                           :data="data_cn"
                           :columns="columns_cn"
@@ -135,6 +142,7 @@ export default {
       data: [],
       data_cn: [],
       choose: null,
+      name_file: "abc",
       columns: [
         {
           label: "Id Lô sản xuất",
@@ -397,7 +405,23 @@ export default {
           this.data = await this.$axios.$get(
             `/api/report/execldatawithphanxuong?mapx=${this.maxuong}`
           );
-          // console.log(this.data);
+          if (this.data.length <= 0) {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+              },
+            });
+            Toast.fire({
+              icon: "error",
+              title: "Không có số liệu",
+            });
+          }
         } else if (
           this.maxuong !== "" &&
           this.mato !== "" &&
@@ -407,6 +431,23 @@ export default {
           this.data = await this.$axios.$get(
             `/api/report/execldatawithto?mato=${this.mato}`
           );
+          if (this.data.length <= 0) {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+              },
+            });
+            Toast.fire({
+              icon: "error",
+              title: "Không có số liệu",
+            });
+          }
         } else if (
           this.maxuong !== "" &&
           this.mato === "" &&
@@ -416,6 +457,23 @@ export default {
           this.data = await this.$axios.$get(
             `/api/report/execldatawithtimeandxuong?mapx=${this.maxuong}&tungay=${this.from}&denngay=${this.to}`
           );
+          if (this.data.length <= 0) {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+              },
+            });
+            Toast.fire({
+              icon: "error",
+              title: "Không có số liệu",
+            });
+          }
         } else if (
           this.maxuong !== "" &&
           this.mato !== "" &&
@@ -425,7 +483,23 @@ export default {
           this.data = await this.$axios.$get(
             `/api/report/execldatawithtimeandto?mapx=${this.mato}&tungay=${this.from}&denngay=${this.to}`
           );
-          // console.log(this.data);
+          if (this.data.length <= 0) {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+              },
+            });
+            Toast.fire({
+              icon: "error",
+              title: "Không có số liệu",
+            });
+          }
         } else if (
           this.maxuong === "" &&
           this.mato === "" &&
@@ -435,7 +509,23 @@ export default {
           this.data = await this.$axios.$get(
             `/api/report/execldatawithtime?tungay=${this.from}&denngay=${this.to}`
           );
-          // console.log(this.data);
+          if (this.data.length <= 0) {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+              },
+            });
+            Toast.fire({
+              icon: "error",
+              title: "Không có số liệu",
+            });
+          }
         }
       } else {
         this.data = [];
@@ -448,7 +538,23 @@ export default {
           this.data_cn = await this.$axios.$get(
             `/api/report/execldatawithphanxuongcongnhat?mapx=${this.maxuong}`
           );
-          // console.log(this.data);
+          if (this.data.length <= 0) {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+              },
+            });
+            Toast.fire({
+              icon: "error",
+              title: "Không có số liệu",
+            });
+          }
         } else if (
           this.maxuong !== "" &&
           this.mato === "" &&
@@ -458,6 +564,23 @@ export default {
           this.data_cn = await this.$axios.$get(
             `/api/report/execldatawithtimeandxuongcongnhat?mapx=${this.maxuong}&tungay=${this.from}&denngay=${this.to}`
           );
+          if (this.data_cn.length <= 0) {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+              },
+            });
+            Toast.fire({
+              icon: "error",
+              title: "Không có số liệu",
+            });
+          }
         } else if (
           this.maxuong === "" &&
           this.mato === "" &&
@@ -467,7 +590,23 @@ export default {
           this.data_cn = await this.$axios.$get(
             `/api/report/execldatawithtimecongnhat?tungay=${this.from}&denngay=${this.to}`
           );
-          // console.log(this.data);
+          if (this.data_cn.length <= 0) {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+              },
+            });
+            Toast.fire({
+              icon: "error",
+              title: "Không có số liệu",
+            });
+          }
         }
       }
     },

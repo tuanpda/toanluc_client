@@ -434,7 +434,7 @@
               <template>
                 <td
                   v-if="item.status == 1"
-                  style="font-size: small; text-align: center"
+                  style="font-size: small; text-align: center; vertical-align: middle;"
                 >
                   <span
                     style="
@@ -449,7 +449,7 @@
                 </td>
                 <td
                   v-else-if="item.status == 2"
-                  style="font-size: small; text-align: center"
+                  style="font-size: small; text-align: center; vertical-align: middle;"
                 >
                   <span
                     style="
@@ -464,7 +464,7 @@
                 </td>
                 <td
                   v-else-if="item.status == 3"
-                  style="font-size: small; text-align: center"
+                  style="font-size: small; text-align: center; vertical-align: middle;"
                 >
                   <span
                     style="
@@ -479,7 +479,7 @@
                 </td>
                 <td v-else style="font-size: small; text-align: center"></td>
               </template>
-              <td style="font-size: small; text-align: center">
+              <td style="font-size: small; text-align: center; vertical-align: middle;">
                 <span v-if="item.status_tinhluong == false">
                   <i style="color: #ffd863" class="fa fa-circle"></i>
                 </span>

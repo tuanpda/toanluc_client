@@ -515,7 +515,7 @@
               <template>
                 <td
                   v-if="item.status == 1"
-                  style="font-size: small; text-align: center"
+                  style="font-size: small; text-align: center; vertical-align: middle;"
                 >
                   <span
                     style="
@@ -530,7 +530,7 @@
                 </td>
                 <td
                   v-else-if="item.status == 2"
-                  style="font-size: small; text-align: center"
+                  style="font-size: small; text-align: center; vertical-align: middle;"
                 >
                   <span
                     style="
@@ -545,7 +545,7 @@
                 </td>
                 <td
                   v-else-if="item.status == 3"
-                  style="font-size: small; text-align: center"
+                  style="font-size: small; text-align: center; vertical-align: middle;"
                 >
                   <span
                     style="
@@ -558,7 +558,7 @@
                     >HT</span
                   >
                 </td>
-                <td v-else style="font-size: small; text-align: center"></td>
+                <td v-else style="font-size: small; text-align: center; vertical-align: middle;"></td>
               </template>
 
               <td style="font-size: small">

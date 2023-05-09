@@ -7,9 +7,9 @@
           <div class="column">
             <div class="control">
               <span class="icon is-small is-left">
-                <i class="fas fa-anchor"></i>
+                <i style="color: #00d1b2" class="fas fa-anchor"></i>
               </span>
-              Danh mục sản phẩm
+              <span style="color: #3850b7; font-size: 17px; font-weight: bold;">Danh mục sản phẩm</span>
             </div>
           </div>
         </div>
@@ -52,6 +52,17 @@
               </button>
             </nuxt-link>
           </div>
+        </div>
+        <div style="margin-bottom: 3px;">
+          <vue-excel-xlsx
+            :data="nguyencong"
+            :columns="columns"
+            :file-name="'Danh_muc_san_pham'"
+            :file-type="'xlsx'"
+            :sheet-name="'Danh mục sản phẩm'"
+          >
+            Download Excel
+          </vue-excel-xlsx>
         </div>
         <div class="table_wrapper table-height">
           <div>
@@ -609,6 +620,62 @@ export default {
       suggestions: [],
       search_masp: "",
       suggestions_masp: [],
+
+      columns: [
+        {
+          label: "Id",
+          field: "_id",
+          // dataFormat: this.trimData
+        },
+        {
+          label: "Phân xưởng",
+          field: "mapx",
+          /* dataFormat: this.priceFormat */
+          // dataFormat: this.trimData
+        },
+        {
+          label: "Mã sản phẩm",
+          field: "mavt",
+          /* dataFormat: this.priceFormat */
+          // dataFormat: this.trimData
+        },
+        {
+          label: "Tên vật tư",
+          field: "tenvt",
+          /* dataFormat: this.priceFormat */
+          // dataFormat: this.trimData
+        },
+        {
+          label: "Nhóm sản phẩm",
+          field: "nhomsp",
+          /* dataFormat: this.priceFormat */
+          // dataFormat: this.trimData
+        },
+        {
+          label: "Nhóm lương",
+          field: "nhomluong",
+          /* dataFormat: this.priceFormat */
+          // dataFormat: this.trimData
+        },
+        {
+          label: "Ghi chú",
+          field: "diengiai",
+        },
+        // {
+        //   label: "Tạo ngày",
+        //   field: "createdAt",
+        //   dataFormat: this.prefixformatDate,
+        // },
+        // {
+        //   label: "Tạo bởi",
+        //   field: "createdBy",
+        // },
+        // {
+        //   label: "Cập nhật ngày",
+        //   field: "updatedAt",
+        //   dataFormat: this.prefixformatDate,
+        // },
+      ],
     };
   },
 
