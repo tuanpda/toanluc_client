@@ -322,11 +322,17 @@
                           </span>
                           &ensp; Quân số hàng ngày
                         </nav-link>
+                        <nav-link to="/quantri/chamcong/solieutonghop" class="navbar-item">
+                          <span style="color: #6e4dc3" class="icon is-small is-left">
+                            <i class="far fa-calendar-alt"></i>
+                          </span>
+                          &ensp; Số liệu tổng hợp
+                        </nav-link>
                         <nav-link to="/quantri/chamcong/chamcongthang" class="navbar-item">
                           <span style="color: #6e4dc3" class="icon is-small is-left">
                             <i class="fas fa-clipboard-check"></i>
                           </span>
-                          &ensp; Chấm công tháng
+                          &ensp; Chi tiết chấm công
                         </nav-link>
                       </div>
                     </div>
