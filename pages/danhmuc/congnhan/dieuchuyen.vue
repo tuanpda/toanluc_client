@@ -151,7 +151,7 @@
                 <td style="font-size: small">{{ px.tento }}</td>
                 <td style="font-size: small">{{ px.mapx }}</td>
                 <td style="font-size: small">{{ px.tenpx }}</td>
-                <td style="font-size: small; text-align: center;">
+                <td style="font-size: small; text-align: center">
                   <a @click="dieuChuyen(px)"
                     ><span>
                       <i
@@ -538,7 +538,7 @@
                     </p>
                   </div>
                   <div class="column" style="text-align: right">
-                    <a @click="isActive = false">
+                    <a @click="isActive_dieuchuyen = false">
                       <span
                         style="color: red; padding: 20px"
                         class="icon is-small"
@@ -550,6 +550,13 @@
                 </div>
               </header>
               <section class="modal-card-body">
+                <div class="notification">
+                  1 - Chọn phân xưởng hoặc tổ mới cho công nhân cần điều chuyển.
+                  <br />
+                  2 - Xem danh sách mã công nhân đã có trong xưởng/tổ muốn điều
+                  công nhân đến. 3 - Sau khi bấm điều chuyển thì công nhân sẽ
+                  được điều chuyển về xưởng/tổ mới, với mã công nhân vừa gõ vào.
+                </div>
                 <div class="table_wrapper">
                   <table
                     class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
@@ -567,10 +574,7 @@
                       </td>
                     </tr>
                     <tr>
-                      <td colspan="2" style="font-size: small;">Các mã công nhân đã gán trong tổ:</td>
-                    </tr>
-                    <tr>
-                      <td>
+                      <td style="width: 50%">
                         <div class="control has-icons-left">
                           <div class="select is-small is-fullwidth">
                             <select @change="showmapx($event)">
@@ -604,16 +608,43 @@
                         </div>
                       </td>
                     </tr>
-                    
+                    <tr>
+                      <td colspan="2" style="font-size: small">
+                        <div class="select is-small is-fullwidth">
+                          <select>
+                            <option selected>
+                              -- Xem danh sách mã công nhân đã có trong phân
+                              xưởng--
+                            </option>
+                            <option v-for="item in dataMacn" :value="item.macn">
+                              {{ item.macn }}
+                            </option>
+                          </select>
+                        </div>
+                      </td>
+                    </tr>
+                    <tr v-if="form.macn != null">
+                      <td style="font-size: small">
+                        <input
+                          type="text"
+                          class="input is-small is-danger"
+                          v-model="form.macn"
+                        />
+                      </td>
+                      <td style="font-size: small; vertical-align: middle">
+                        {{ form.tencn }}
+                      </td>
+                    </tr>
                   </table>
                 </div>
 
-                <div class="columns">
+                <div class="columns" style="margin-top: 10px">
                   <div class="column">
                     <button
+                      @click="onDieuchuyen"
                       class="button is-success is-fullwidth is-small"
                     >
-                      Ghi nhận
+                      Điều chuyển
                     </button>
                   </div>
                   <div class="column">
@@ -664,6 +695,7 @@ export default {
       tonhom: [],
       tonhomid: [],
       mask: currencyMask,
+      dataMacn: [],
       form: {
         macn: null,
         tencn: null,
@@ -691,6 +723,15 @@ export default {
         createdAt: null,
         createdBy: this.$auth.$state.user.username,
         ghichu: null,
+      },
+
+      data_dieuchuyen: {
+        macn: null,
+        tencn: null,
+        mapx: "",
+        tenpx: "",
+        mato: "",
+        tento: "",
       },
 
       // Modals
@@ -892,6 +933,11 @@ export default {
 
     async showmapx(e) {
       // console.log(this.mapx)
+      this.dataMacn = [];
+    //   this.data_dieuchuyen.mapx = "";
+    //   this.data_dieuchuyen.tenpx = "";
+    //   this.data_dieuchuyen.mato = "";
+    //   this.data_dieuchuyen.tento = "";
       var name = e.target.options[e.target.options.selectedIndex].text;
       // console.log(name)
       let position = name.split("--");
@@ -900,6 +946,17 @@ export default {
       this.tonhom = await this.$axios.$get(
         `/api/phongban/alltoinxuong?mapx=${this.form.mapx}`
       );
+
+    //   this.data_dieuchuyen.mapx = position[0].trim();
+    //   this.data_dieuchuyen.tenpx = position[1].trim();
+      if (this.tonhom.length <= 0) {
+        const dataMacn = await this.$axios.$get(
+          `/api/congnhan/showmacninpx?mapx=${this.form.mapx}`
+        );
+        this.dataMacn = dataMacn;
+        this.form.mato = "";
+        this.form.tento = "";
+      }
     },
 
     async showmato(e) {
@@ -909,6 +966,12 @@ export default {
       let position = name.split("--");
       this.form.mato = position[0].trim();
       this.form.tento = position[1].trim();
+    //   this.data_dieuchuyen.mato = position[0].trim();
+    //   this.data_dieuchuyen.tento = position[1].trim();
+      const dataMacn = await this.$axios.$get(
+        `/api/congnhan/showmacninto?mato=${this.form.mato}`
+      );
+      this.dataMacn = dataMacn;
     },
 
     async getWithPX(e) {
@@ -992,10 +1055,64 @@ export default {
       });
     },
 
-    async dieuChuyen(item){
-        this.isActive_dieuchuyen = true
-        console.log(item);
-        
+    async dieuChuyen(item) {
+      this.dataMacn = [];
+      this.isActive_dieuchuyen = true;
+      // console.log(item);
+      //   const dataMacn = await this.$axios.$get(
+      //     `/api/congnhan/showmacninpx?mapx=${item.mapx}`
+      //   );
+      //   // console.log(dataMacn);
+      //   // const arrMacn = dataMacn.map(item => item.macn);
+      //   this.dataMacn = dataMacn;
+      this.form = {...item}
+    },
+
+    async onDieuchuyen() {
+      //   console.log(this.data_dieuchuyen);
+      //   console.log(this.dataMacn);
+      const arrMacn = this.dataMacn.map((item) => item.macn);
+      //   console.log(arrMacn);
+      if (arrMacn.includes(this.form.macn)) {
+        // console.log(`${this.data_dieuchuyen.macn} đã tồn tại trong mảng.`);
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+        Toast.fire({
+          icon: "error",
+          title: `Mã công nhân: ${this.form.macn} đã tồn tại trong xưởng/tổ rồi.`,
+        });
+      } else {
+        // cập nhật việc điều chuyển công nhân sang tổ khác.
+        // và chuyển trạng thái công nhân thành 0
+        console.log(this.form);
+        // this.$axios.$post("/api/congnhan/addcongnhan", this.form);
+
+
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+        Toast.fire({
+          icon: "success",
+          title: "Thêm mới công nhân thành công",
+        });
+      }
     },
 
     onDelete(cn) {
@@ -1056,7 +1173,7 @@ export default {
 
 .modal-content,
 .modal-card {
-  width: 920px;
+  width: 720px;
 }
 
 #preview {

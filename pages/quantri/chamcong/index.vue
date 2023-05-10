@@ -425,7 +425,7 @@ export default {
             title: `Phân xưởng ${this.form.tenpx} đã được chấm công vào ngày ${this.ngaychamcong} rồi!!!`,
           });
         } else {
-          this.isSelectsEnabled_Chamcong = true
+          this.isSelectsEnabled_Chamcong = true;
           for (let i = 0; i < this.cong_nhan.length; i++) {
             this.items.push({
               macn: this.cong_nhan[i].macn,
@@ -478,26 +478,49 @@ export default {
         `/api/congnhan/allcongnhanto?mato=${this.mato}`
       );
       // console.log(this.cong_nhan);
-      this.items = [];
-      for (let i = 0; i < this.cong_nhan.length; i++) {
-        this.items.push({
-          macn: this.cong_nhan[i].macn,
-          tencn: this.cong_nhan[i].tencn,
-          mapx: this.cong_nhan[i].mapx,
-          tenpx: this.cong_nhan[i].tenpx,
-          mato: this.cong_nhan[i].mato,
-          tento: this.cong_nhan[i].tento,
-          sttchon: this.cong_nhan[i].sttchon,
-          machamcong: "",
-          chamcong: "",
-          diengiai: "",
-          ghichu: "",
-          ngaychamcong: this.ngaychamcong,
-          tuanchamcong: this.weekNumber,
-          createdAt: this.form.createdAt,
-          createdBy: this.$auth.$state.user.username,
+      const getNgaychamcong = await this.$axios.$get(
+        `/api/congnhan/showngaychamcongandmapx?mapx=${this.form.mapx}&ngaychamcong=${this.ngaychamcong}`
+      );
+      if (getNgaychamcong.length > 0) {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
         });
+        Toast.fire({
+          icon: "error",
+          title: `Tổ ${this.form.tento} đã được chấm công vào ngày ${this.ngaychamcong} rồi!!!`,
+        });
+      } else {
+        this.isSelectsEnabled_Chamcong = true;
+        this.items = [];
+        for (let i = 0; i < this.cong_nhan.length; i++) {
+          this.items.push({
+            macn: this.cong_nhan[i].macn,
+            tencn: this.cong_nhan[i].tencn,
+            mapx: this.cong_nhan[i].mapx,
+            tenpx: this.cong_nhan[i].tenpx,
+            mato: this.cong_nhan[i].mato,
+            tento: this.cong_nhan[i].tento,
+            sttchon: this.cong_nhan[i].sttchon,
+            machamcong: "",
+            chamcong: "",
+            diengiai: "",
+            ghichu: "",
+            ngaychamcong: this.ngaychamcong,
+            tuanchamcong: this.weekNumber,
+            createdAt: this.form.createdAt,
+            createdBy: this.$auth.$state.user.username,
+          });
+        }
       }
+
       // console.log(this.items);
     },
 
@@ -585,12 +608,12 @@ export default {
               const getNgaychamcong = await this.$axios.$get(
                 `/api/congnhan/getngaychamcongonsv`
               );
-              console.log(getNgaychamcong);
+              // console.log(getNgaychamcong);
               // gọi api ghi dữ liệu chấm công vào db
-              // for (let i = 0; i < this.selected.length; i++) {
-              //   const data = this.selected[i].value;
-              //   await this.$axios.$post(`/api/congnhan/addchamcong`, data);
-              // }
+              for (let i = 0; i < this.selected.length; i++) {
+                const data = this.selected[i].value;
+                await this.$axios.$post(`/api/congnhan/addchamcong`, data);
+              }
 
               const Toast = Swal.mixin({
                 toast: true,
