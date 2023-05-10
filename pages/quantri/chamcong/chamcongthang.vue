@@ -27,14 +27,14 @@
       <table class="table is-responsive is-bordered is-narrow is-fullwidth">
         <tr>
           <td
-            colspan="5"
+            colspan="6"
             style="
               text-align: center;
               font-weight: bold;
               text-transform: uppercase;
             "
           >
-            Bảng chấm công: {{ thangcc }}/{{ namcc }} -
+            Bảng chấm công
             <template v-if="phanxuongcc != ''">{{ phanxuongcc }}</template>
             <template v-if="tocc != ''">{{ tocc }}</template>
           </td>
@@ -43,7 +43,14 @@
           <td style="width: 45%"></td>
           <td>
             <input
-              v-model="khoangtime"
+              v-model="startDate"
+              type="date"
+              class="input is-success is-small"
+            />
+          </td>
+          <td>
+            <input
+              v-model="endDate"
               type="date"
               class="input is-success is-small"
             />
@@ -293,7 +300,7 @@ export default {
         this.phanxuongcc = tenpx;
 
         const response = await this.$axios.get(
-          `/api/congnhan/baocaochamcongthangphanxuong?mapx=${mapx}&nam=${this.namcc}&thang=${this.thangcc}`
+          `/api/congnhan/baocaochamcongthangphanxuong?mapx=${mapx}&startDate=${this.startDate}&endDate=${this.endDate}`
         );
         // console.log(response.data);
         this.dataChamcong = response.data;
@@ -338,11 +345,12 @@ export default {
         // //   this.dataChamcong.
         // //   console.log(response);
         // this.dataChamcong = response.data;
-      } else {
-        const date = new Date(this.khoangtime);
-        this.namcc = date.getFullYear(); // Lấy năm
-        this.thangcc = date.getMonth() + 1;
-      }
+      } 
+      // else {
+      //   const date = new Date(this.khoangtime);
+      //   this.namcc = date.getFullYear(); // Lấy năm
+      //   this.thangcc = date.getMonth() + 1;
+      // }
     },
     async loadBc(e) {
       var name = e.target.options[e.target.options.selectedIndex].text;
@@ -353,7 +361,7 @@ export default {
       this.tocc = tento;
       
       const response = await this.$axios.get(
-          `/api/congnhan/baocaochamcongthangto?mato=${mato}&nam=${this.namcc}&thang=${this.thangcc}`
+          `/api/congnhan/baocaochamcongthangto?mato=${mato}&startDate=${this.startDate}&endDate=${this.endDate}`
         );
         // console.log(response.data);
         this.dataChamcong = response.data;

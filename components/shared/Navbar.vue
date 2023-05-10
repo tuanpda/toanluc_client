@@ -62,6 +62,12 @@
                     </span>
                     &ensp; Gán số thứ tự công nhân
                   </nav-link>
+                  <nav-link to="/danhmuc/congnhan/dieuchuyen" class="navbar-item">
+                    <span style="color: #3850b7" class="icon is-small is-left">
+                      <i class="fas fa-compress-alt"></i>
+                    </span>
+                    &ensp; Điều chuyển công nhân
+                  </nav-link>
                   <hr class="navbar-divider" />
                   <!-- <nav-link to="" class="navbar-item">
                     <span style="color: #3850b7" class="icon is-small is-left">
@@ -333,6 +339,12 @@
                             <i class="fas fa-clipboard-check"></i>
                           </span>
                           &ensp; Chi tiết chấm công
+                        </nav-link>
+                        <nav-link to="/quantri/chamcong/xemlaibaocaohangngay" class="navbar-item">
+                          <span style="color: #6e4dc3" class="icon is-small is-left">
+                            <i class="far fa-calendar"></i>
+                          </span>
+                          &ensp; Xem lại quân số hằng ngày
                         </nav-link>
                       </div>
                     </div>

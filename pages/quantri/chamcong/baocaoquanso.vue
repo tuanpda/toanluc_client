@@ -413,26 +413,54 @@ export default {
     async onUpdateCc(item) {
       // console.log(this.form_data);
       this.form_data.ghichu = item.ghichu;
-      const reponse = await this.$axios.$post(
-        `/api/congnhan/addchamcongphanxuong`,
-        this.form_data
+      const viewData = await this.$axios.$get(
+        `/api/congnhan/xemlaibaocaoquanso?ngaychamcong=${this.ngaychamcong}`
       );
-      // console.log(reponse);
-      const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
-        },
-      });
-      Toast.fire({
-        icon: "success",
-        title: "Updated!",
-      });
+      // console.log(viewData);
+      const exits = viewData.find(
+        (item) =>
+          item.ngaychamcong.substring(0, 10) === this.ngaychamcong &&
+          item.mapx === this.form_data.mapx
+      );
+      // console.log(exits);
+      if (exits) {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+        Toast.fire({
+          icon: "error",
+          title: "Ngày chấm công này đã được xác nhận rồi",
+        });
+      } else {
+        const reponse = await this.$axios.$post(
+          `/api/congnhan/addchamcongphanxuong`,
+          this.form_data
+        );
+        // console.log(reponse);
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+        Toast.fire({
+          icon: "success",
+          title: "Updated!",
+        });
+      }
     },
   },
 };

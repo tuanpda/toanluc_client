@@ -66,7 +66,10 @@
               </td>
               <td style="width: 5%">
                 <div class="select is-small">
-                  <select @change="chamcong($event)">
+                  <select
+                    @change="chamcong($event)"
+                    :disabled="!isSelectsEnabled_Chamcong"
+                  >
                     <option selected>-- Chấm công --</option>
                     <option
                       v-for="item in chamcongList"
@@ -236,6 +239,7 @@ export default {
       selected: [],
       isSelectsEnabled: false,
       isSelectsEnabled_VP: false,
+      isSelectsEnabled_Chamcong: false,
       form: {
         mapx: "",
         tenpx: "",
@@ -399,24 +403,48 @@ export default {
       // console.log(this.cong_nhan);
       this.items = [];
       if (this.tonhomid.length <= 0) {
-        for (let i = 0; i < this.cong_nhan.length; i++) {
-          this.items.push({
-            macn: this.cong_nhan[i].macn,
-            tencn: this.cong_nhan[i].tencn,
-            mapx: this.cong_nhan[i].mapx,
-            tenpx: this.cong_nhan[i].tenpx,
-            mato: "",
-            tento: "",
-            sttchon: this.cong_nhan[i].sttchon,
-            machamcong: "",
-            chamcong: "",
-            diengiai: "",
-            ghichu: "",
-            ngaychamcong: this.ngaychamcong,
-            tuanchamcong: this.weekNumber,
-            createdAt: this.form.createdAt,
-            createdBy: this.$auth.$state.user.username,
+        // kiểm tra xem có dữ liệu ngày chấm công trong csdl chưa
+        const getNgaychamcong = await this.$axios.$get(
+          `/api/congnhan/showngaychamcongandmapx?mapx=${this.form.mapx}&ngaychamcong=${this.ngaychamcong}`
+        );
+        // console.log(getNgaychamcong);
+        if (getNgaychamcong.length > 0) {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
           });
+          Toast.fire({
+            icon: "error",
+            title: `Phân xưởng ${this.form.tenpx} đã được chấm công vào ngày ${this.ngaychamcong} rồi!!!`,
+          });
+        } else {
+          this.isSelectsEnabled_Chamcong = true
+          for (let i = 0; i < this.cong_nhan.length; i++) {
+            this.items.push({
+              macn: this.cong_nhan[i].macn,
+              tencn: this.cong_nhan[i].tencn,
+              mapx: this.cong_nhan[i].mapx,
+              tenpx: this.cong_nhan[i].tenpx,
+              mato: "",
+              tento: "",
+              sttchon: this.cong_nhan[i].sttchon,
+              machamcong: "",
+              chamcong: "",
+              diengiai: "",
+              ghichu: "",
+              ngaychamcong: this.ngaychamcong,
+              tuanchamcong: this.weekNumber,
+              createdAt: this.form.createdAt,
+              createdBy: this.$auth.$state.user.username,
+            });
+          }
         }
       } else {
         this.items = [];

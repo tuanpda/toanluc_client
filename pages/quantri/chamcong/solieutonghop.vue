@@ -34,7 +34,7 @@
               text-transform: uppercase;
             "
           >
-            Bảng chấm công: {{ thangcc }}/{{ namcc }} -
+            Bảng chấm công
             <template v-if="phanxuongcc != ''">{{ phanxuongcc }}</template>
             <template v-if="tocc != ''">{{ tocc }}</template>
           </td>
@@ -128,11 +128,60 @@
               text-align: center;
               font-size: small;
               font-weight: bold;
-              width: 5%;
+              width: 6%;
             "
-            v-for="date in dates"
           >
-            {{ date }}
+            Tổng ngày làm
+          </th>
+          <th
+            style="
+              text-align: center;
+              font-size: small;
+              font-weight: bold;
+              width: 6%;
+            "
+          >
+            Tổng nghỉ phép
+          </th>
+          <th
+            style="
+              text-align: center;
+              font-size: small;
+              font-weight: bold;
+              width: 6%;
+            "
+          >
+            Tổng nghỉ ốm
+          </th>
+          <th
+            style="
+              text-align: center;
+              font-size: small;
+              font-weight: bold;
+              width: 6%;
+            "
+          >
+            Tổng Không phép
+          </th>
+          <th
+            style="
+              text-align: center;
+              font-size: small;
+              font-weight: bold;
+              width: 8%;
+            "
+          >
+            Tổng nghỉ lễ, KH, cuối tuần
+          </th>
+          <th
+            style="
+              text-align: center;
+              font-size: small;
+              font-weight: bold;
+              width: 8%;
+            "
+          >
+            Tổng số ngày nghỉ
           </th>
           <th></th>
         </tr>
@@ -140,12 +189,41 @@
           <td style="text-align: center; font-size: small">{{ index + 1 }}</td>
           <td style="font-size: small; text-align: center">{{ cc.macn }}</td>
           <td style="font-size: small">{{ cc.tencn }}</td>
-          <td
-            style="font-size: small; text-align: center"
-            v-for="(date, index) in dates"
-            :key="index"
-          >
-            {{ cc[date] }}
+          <td style="font-size: small; text-align: center">{{ cc.tonglam }}</td>
+          <td style="font-size: small; text-align: center">
+            {{ cc.tongphep }}
+          </td>
+          <td style="font-size: small; text-align: center">{{ cc.tongom }}</td>
+          <td style="font-size: small; text-align: center">
+            {{ cc.tongkhongphep }}
+          </td>
+          <td style="font-size: small; text-align: center">
+            {{ cc.tongkehoachlecuoituan }}
+          </td>
+          <td style="font-size: small; text-align: center">
+            {{ cc.tongnghi }}
+          </td>
+          <td></td>
+        </tr>
+        <tr>
+          <td colspan="3" style="font-size: small; text-align: left; font-weight: bold;">Tổng cộng</td>
+          <td style="font-size: small; text-align: center; font-weight: bold;">
+            {{ sumTonglam }}
+          </td>
+          <td style="font-size: small; text-align: center; font-weight: bold;">
+            {{ sumTongphep }}
+          </td>
+          <td style="font-size: small; text-align: center; font-weight: bold;">
+            {{ sumTongom }}
+          </td>
+          <td style="font-size: small; text-align: center; font-weight: bold;">
+            {{ sumTongkhongphep }}
+          </td>
+          <td style="font-size: small; text-align: center; font-weight: bold;">
+            {{ sumTongkehoachlecuoituan }}
+          </td>
+          <td style="font-size: small; text-align: center; font-weight: bold;">
+            {{ sumTongdanghi }}
           </td>
           <td></td>
         </tr>
@@ -179,60 +257,25 @@ export default {
           field: "tencn",
         },
         {
-          label: "Mã phân xưởng",
-          field: "mapx",
+          label: "Tổng ngày làm",
+          field: "tonglam",
         },
         {
-          label: "Tên phân xưởng",
-          field: "tenpx",
-        },
-
-        {
-          label: "Mã tổ",
-          field: "mato",
-        },
-        {
-          label: "Tên tổ",
-          field: "tento",
-        },
-        {
-          label: "STT CN",
-          field: "sttchon",
-        },
-        {
-          label: "Mã chấm công",
-          field: "machamcong",
-        },
-        {
-          label: "Chấm công",
-          field: "chamcong",
-        },
-        {
-          label: "Diễn giải",
-          field: "diengiai",
+          label: "Tổng nghỉ phép",
+          field: "tongphep",
         },
 
         {
-          label: "Ghi chú",
-          field: "diachi",
+          label: "Tổng nghỉ ốm",
+          field: "tongom",
         },
         {
-          label: "Ngày chấm công",
-          field: "ngaychamcong",
-          dataFormat: this.prefixformatDate,
+          label: "Tổng không phép",
+          field: "tongkhongphep",
         },
         {
-          label: "Tuần chấm công",
-          field: "tuanchamcong",
-        },
-        {
-          label: "Lập bởi user",
-          field: "createdBy",
-        },
-        {
-          label: "Lập ngày",
-          field: "createdAt",
-          dataFormat: this.prefixformatDate,
+          label: "Tổng nghỉ lễ, cuối tuần, kế hoạch",
+          field: "tongkehoachlecuoituan",
         },
       ],
     };
@@ -247,6 +290,33 @@ export default {
       return Object.keys(this.dataChamcong[0])
         .filter((key) => key !== "macn" && key !== "tencn")
         .sort();
+    },
+    sumTonglam() {
+      return this.dataChamcong.reduce((total, cc) => total + cc.tonglam, 0);
+    },
+    sumTongphep() {
+      return this.dataChamcong.reduce((total, cc) => total + cc.tongphep, 0);
+    },
+    sumTongom() {
+      return this.dataChamcong.reduce((total, cc) => total + cc.tongom, 0);
+    },
+    sumTongkhongphep() {
+      return this.dataChamcong.reduce(
+        (total, cc) => total + cc.tongkhongphep,
+        0
+      );
+    },
+    sumTongkehoachlecuoituan() {
+      return this.dataChamcong.reduce(
+        (total, cc) => total + cc.tongkehoachlecuoituan,
+        0
+      );
+    },
+    sumTongdanghi() {
+      return this.dataChamcong.reduce(
+        (total, cc) => total + cc.tongnghi,
+        0
+      );
     },
   },
 
@@ -325,18 +395,14 @@ export default {
         //   this.thangcc = date.getMonth() + 1;
         //   this.phanxuongcc = tenpx;
 
-          const response = await this.$axios.get(
-            `/api/congnhan/baocaothangtheopx?mapx=${mapx}&tungay=${this.startDate}&denngay=${this.endDate}`
-          );
-          this.dataChamcong = response.data;
-          console.log(this.dataChamcong);
+        const response = await this.$axios.get(
+          `/api/congnhan/baocaotonghoptheophanxuong?mapx=${mapx}&tungay=${this.startDate}&denngay=${this.endDate}`
+        );
+        this.dataChamcong = response.data;
+        //   console.log(this.dataChamcong);
       }
-      // else {
-      //   const date = new Date(this.khoangtime);
-      //   this.namcc = date.getFullYear(); // Lấy năm
-      //   this.thangcc = date.getMonth() + 1;
-      // }
     },
+
     async loadBc(e) {
       var name = e.target.options[e.target.options.selectedIndex].text;
       let position = name.split("--");
@@ -346,50 +412,10 @@ export default {
       this.tocc = tento;
 
       const response = await this.$axios.get(
-        `/api/congnhan/baocaochamcongthangto?mato=${mato}&nam=${this.namcc}&thang=${this.thangcc}`
+        `/api/congnhan/baocaotonghoptheoto?mato=${mato}&tungay=${this.startDate}&denngay=${this.endDate}`
       );
       // console.log(response.data);
       this.dataChamcong = response.data;
-
-      // //   console.log(this.khoangtime);
-      // const date = new Date(this.khoangtime);
-      // //   console.log(date);
-      // const firstDayOfMonth = new Date(date.getFullYear(), date.getMonth(), 1);
-      // const lastDayOfMonth = new Date(
-      //   date.getFullYear(),
-      //   date.getMonth() + 1,
-      //   0
-      // );
-
-      // // ngày đầu trong tháng
-      // const yearFd = firstDayOfMonth.getFullYear();
-      // const monthFd = (firstDayOfMonth.getMonth() + 1)
-      //   .toString()
-      //   .padStart(2, "0"); // Tháng bắt đầu từ 0 nên cần phải cộng thêm 1
-      // const dayFd = firstDayOfMonth.getDate().toString().padStart(2, "0");
-
-      // // ngày cuối trong tháng
-      // const yearLd = lastDayOfMonth.getFullYear();
-      // const monthLd = (lastDayOfMonth.getMonth() + 1)
-      //   .toString()
-      //   .padStart(2, "0"); // Tháng bắt đầu từ 0 nên cần phải cộng thêm 1
-      // const dayLd = lastDayOfMonth.getDate().toString().padStart(2, "0");
-
-      // const ngaybdtt = yearFd + "-" + monthFd + "-" + dayFd;
-      // const ngaykttt = yearLd + "-" + monthLd + "-" + dayLd;
-
-      // //   console.log(ngaybdtt);
-      // //   console.log(ngaykttt);
-
-      // this.startDate = ngaybdtt;
-      // this.endDate = ngaykttt;
-      // this.createDays();
-      // const response = await this.$axios.get(
-      //   `/api/congnhan/baocaothangtheoto?mato=${mato}&startDate=${this.startDate}&endDate=${this.endDate}`
-      // );
-      // //   this.dataChamcong.
-      // //   console.log(response);
-      // this.dataChamcong = response.data;
     },
   },
 };
