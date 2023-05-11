@@ -707,12 +707,12 @@ export default {
         mato: null,
         tento: null,
         chucvu: null,
-        chucnang: null,
         luongcb: null,
         nguoilienhe: null,
         sotknh: null,
         tennh: null,
         ghichu: null,
+        trangthai: 1,
         createdAt: null,
         createdBy: this.$auth.$state.user.username,
         // updatedAt: new Date().toISOString().substr(0, 10),
@@ -934,10 +934,10 @@ export default {
     async showmapx(e) {
       // console.log(this.mapx)
       this.dataMacn = [];
-    //   this.data_dieuchuyen.mapx = "";
-    //   this.data_dieuchuyen.tenpx = "";
-    //   this.data_dieuchuyen.mato = "";
-    //   this.data_dieuchuyen.tento = "";
+      //   this.data_dieuchuyen.mapx = "";
+      //   this.data_dieuchuyen.tenpx = "";
+      //   this.data_dieuchuyen.mato = "";
+      //   this.data_dieuchuyen.tento = "";
       var name = e.target.options[e.target.options.selectedIndex].text;
       // console.log(name)
       let position = name.split("--");
@@ -947,8 +947,8 @@ export default {
         `/api/phongban/alltoinxuong?mapx=${this.form.mapx}`
       );
 
-    //   this.data_dieuchuyen.mapx = position[0].trim();
-    //   this.data_dieuchuyen.tenpx = position[1].trim();
+      //   this.data_dieuchuyen.mapx = position[0].trim();
+      //   this.data_dieuchuyen.tenpx = position[1].trim();
       if (this.tonhom.length <= 0) {
         const dataMacn = await this.$axios.$get(
           `/api/congnhan/showmacninpx?mapx=${this.form.mapx}`
@@ -966,8 +966,8 @@ export default {
       let position = name.split("--");
       this.form.mato = position[0].trim();
       this.form.tento = position[1].trim();
-    //   this.data_dieuchuyen.mato = position[0].trim();
-    //   this.data_dieuchuyen.tento = position[1].trim();
+      //   this.data_dieuchuyen.mato = position[0].trim();
+      //   this.data_dieuchuyen.tento = position[1].trim();
       const dataMacn = await this.$axios.$get(
         `/api/congnhan/showmacninto?mato=${this.form.mato}`
       );
@@ -1065,14 +1065,38 @@ export default {
       //   // console.log(dataMacn);
       //   // const arrMacn = dataMacn.map(item => item.macn);
       //   this.dataMacn = dataMacn;
-      this.form = {...item}
+      // this.form = { ...item };
+
+      this.form._id = item._id
+      this.form.macn = item.macn;
+      this.form.tencn = item.tencn
+      this.form.mapx = item.mapx
+      this.form.tenpx = item.tenpx
+      this.form.sdt = item.sdt
+      this.form.diachi = item.diachi
+      this.form.cccd = item.cccd
+      this.form.mato = item.mato
+      this.form.tento = item.tento
+      this.form.chucvu = item.chucvu
+      this.form.luongcb = item.luongcb
+      this.form.nguoilienhe = item.nguoilienhe
+      this.form.sotknh = item.sotknh
+      this.form.tennh = item.tennh
+      this.form.trangthai = 1
+      this.data_dieuchuyen.macn = this.form.macn;
+      this.data_dieuchuyen.tencn = this.form.tencn;
+      this.data_dieuchuyen.mapx = this.form.mapx;
+      this.data_dieuchuyen.tenpx = this.form.tenpx;
+      this.data_dieuchuyen.mato = this.form.mato;
+      this.data_dieuchuyen.tento = this.form.tento;
+      this.form.macn = "";
     },
 
     async onDieuchuyen() {
       //   console.log(this.data_dieuchuyen);
       //   console.log(this.dataMacn);
       const arrMacn = this.dataMacn.map((item) => item.macn);
-      //   console.log(arrMacn);
+      // console.log(this.form);
       if (arrMacn.includes(this.form.macn)) {
         // console.log(`${this.data_dieuchuyen.macn} đã tồn tại trong mảng.`);
         const Toast = Swal.mixin({
@@ -1093,9 +1117,20 @@ export default {
       } else {
         // cập nhật việc điều chuyển công nhân sang tổ khác.
         // và chuyển trạng thái công nhân thành 0
-        console.log(this.form);
-        // this.$axios.$post("/api/congnhan/addcongnhan", this.form);
+        // console.log(this.form);
+        if (this.form.mato == "") {
+          this.form.ghichu = `Điều chuyển công nhân có mã: ${this.data_dieuchuyen.macn} từ phân xưởng ${this.data_dieuchuyen.mapx} sang phân xưởng ${this.form.mapx} vào ngày ${this.form.createdAt} bởi ${this.form.createdBy}`;
+        } else {
+          this.form.ghichu = `Điều chuyển công nhân có mã: ${this.data_dieuchuyen.macn} từ tổ ${this.data_dieuchuyen.mato} thuộc phân xưởng ${this.data_dieuchuyen.mapx} sang phân xưởng ${this.form.mapx} vào tổ ${this.form.mato} vào ngày ${this.form.createdAt} bởi ${this.form.createdBy}`;
+        }
+        await this.$axios.$post("/api/congnhan/addcongnhan", this.form);
 
+        // cập nhật trạng thái cho công nhân bị điều chuyển ở phân xưởng cũ
+        const data = {
+          trangthai: 0,
+          ghichu: this.form.ghichu
+        }
+        await this.$axios.$patch(`/api/congnhan/updatetrangthaicongnhan/${this.form._id}`, data);
 
         const Toast = Swal.mixin({
           toast: true,

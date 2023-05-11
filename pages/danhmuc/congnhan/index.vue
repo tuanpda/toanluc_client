@@ -9,7 +9,9 @@
               <span class="icon is-small is-left">
                 <i style="color: #00d1b2" class="fab fa-drupal"></i>
               </span>
-              <span style="color: #3850b7; font-size: 17px; font-weight: bold;">Danh mục Công nhân</span>
+              <span style="color: #3850b7; font-size: 17px; font-weight: bold"
+                >Danh mục Công nhân</span
+              >
             </div>
           </div>
         </div>
@@ -23,7 +25,10 @@
             <span>công nhân</span>
           </div>
           <div class="column" style="text-align: right">
-            <button @click="isActive = true" class="button is-success is-fullwidth is-small">
+            <button
+              @click="isActive = true"
+              class="button is-success is-fullwidth is-small"
+            >
               <span class="icon is-small">
                 <i class="fas fa-pen-fancy"></i>
               </span>
@@ -69,7 +74,7 @@
             </div>
           </div>
         </div>
-        <div style="margin-bottom: 3px;">
+        <div style="margin-bottom: 3px">
           <vue-excel-xlsx
             :data="congnhan"
             :columns="columns"
@@ -81,13 +86,15 @@
           </vue-excel-xlsx>
         </div>
         <div class="table_wrapper table-height">
-          <table class="
-                    table
-                    is-bordered is-striped is-narrow is-hoverable is-fullwidth
-                  ">
+          <table
+            class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
+          >
             <thead>
-              <tr style="background-color: #fffaeb;">
-                <td style="text-align: right; font-size: small; font-weight: bold;" colspan="9">
+              <tr style="background-color: #fffaeb">
+                <td
+                  style="text-align: right; font-size: small; font-weight: bold"
+                  colspan="9"
+                >
                   <a @click="getDmcn">
                     <span class="icon is-small is-left">
                       <i style="color: #f96854" class="fab fa-audible"></i>
@@ -96,29 +103,31 @@
                   </a>
                 </td>
               </tr>
-              <tr style="background-color: #fffaeb;">
-                <th style="text-align: center; font-size: small;">STT</th>
-                <th style="text-align: center; font-size: small;">Sửa</th>
-                <th style="text-align: center; font-size: small;">Xóa</th>
-                <th style="text-align: center; font-size: small;">
+              <tr style="background-color: #fffaeb">
+                <th style="text-align: center; font-size: small">STT</th>
+                <th style="text-align: center; font-size: small">Sửa</th>
+                <th style="text-align: center; font-size: small">Xóa</th>
+                <th style="text-align: center; font-size: small">
                   Mã công nhân
                 </th>
-                <th style="text-align: center; font-size: small;">
+                <th style="text-align: center; font-size: small">
                   Tên công nhân
                 </th>
-                <th style="text-align: center; font-size: small;">Mã tổ</th>
-                <th style="text-align: center; font-size: small;">Tên tổ</th>
-                <th style="text-align: center; font-size: small;">
+                <th style="text-align: center; font-size: small">Mã tổ</th>
+                <th style="text-align: center; font-size: small">Tên tổ</th>
+                <th style="text-align: center; font-size: small">
                   Mã phân xưởng
                 </th>
-                <th style="text-align: center; font-size: small;">
+                <th style="text-align: center; font-size: small">
                   Tên phân xưởng
                 </th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(px, index) in congnhan" :key="index">
-                <td style="text-align: center; font-size: small;">{{ index + 1 }}</td>
+                <td style="text-align: center; font-size: small">
+                  {{ index + 1 }}
+                </td>
                 <td style="text-align: center; color: green">
                   <nuxt-link :to="`/danhmuc/congnhan/${px._id}/manage`">
                     <span class="icon is-small">
@@ -133,12 +142,12 @@
                     </span>
                   </a>
                 </td>
-                <td style="font-size: small;">{{ px.macn }}</td>
-                <td style="font-size: small;">{{ px.tencn }}</td>
-                <td style="; font-size: small;">{{ px.mato }}</td>
-                <td style="font-size: small;">{{ px.tento }}</td>
-                <td style="font-size: small;">{{ px.mapx }}</td>
-                <td style="font-size: small;">{{ px.tenpx }}</td>
+                <td style="font-size: small">{{ px.macn }}</td>
+                <td style="font-size: small">{{ px.tencn }}</td>
+                <td style="font-size: small">{{ px.mato }}</td>
+                <td style="font-size: small">{{ px.tento }}</td>
+                <td style="font-size: small">{{ px.mapx }}</td>
+                <td style="font-size: small">{{ px.tenpx }}</td>
               </tr>
             </tbody>
           </table>
@@ -149,19 +158,38 @@
           <div :class="{ 'is-active': isActive }" class="modal">
             <div class="modal-background"></div>
             <div class="modal-content modal-card">
-              <header style="background-color: #3e8ed0; border-top-left-radius: 8px; border-top-right-radius: 8px;">
+              <header
+                style="
+                  background-color: #3e8ed0;
+                  border-top-left-radius: 8px;
+                  border-top-right-radius: 8px;
+                "
+              >
                 <div class="columns">
                   <div class="column is-9">
-                    <p style="font-size: small; font-weight: bold; color: white; padding: 15px;">
+                    <p
+                      style="
+                        font-size: small;
+                        font-weight: bold;
+                        color: white;
+                        padding: 15px;
+                      "
+                    >
                       <span class="icon is-small is-left">
-                        <i style="color: #ffd863ff" class="fas fa-feather-alt"></i>
+                        <i
+                          style="color: #ffd863ff"
+                          class="fas fa-feather-alt"
+                        ></i>
                       </span>
                       Thêm Công nhân
                     </p>
                   </div>
-                  <div class="column" style="text-align:right;">
+                  <div class="column" style="text-align: right">
                     <a @click="isActive = false">
-                      <span style="color: red; padding: 20px;" class="icon is-small">
+                      <span
+                        style="color: red; padding: 20px"
+                        class="icon is-small"
+                      >
                         <i class="fas fa-power-off"></i>
                       </span>
                     </a>
@@ -170,12 +198,18 @@
               </header>
               <section class="modal-card-body">
                 <div class="table_wrapper">
-                  <table class="
-                    table
-                    is-bordered is-striped is-narrow is-hoverable is-fullwidth
-                  ">
-                    <tr style="background-color: #fffaeb;">
-                      <td colspan="2" style="text-align: right; font-size: small; font-weight: bold;">
+                  <table
+                    class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
+                  >
+                    <tr style="background-color: #fffaeb">
+                      <td
+                        colspan="2"
+                        style="
+                          text-align: right;
+                          font-size: small;
+                          font-weight: bold;
+                        "
+                      >
                         Nhập thông tin
                       </td>
                     </tr>
@@ -184,11 +218,20 @@
                         <div class="field">
                           <label class="label">Mã công nhân</label>
                           <div class="control">
-                            <input v-model.trim="form.macn" @blur="$v.form.macn.$touch()" class="input is-small"
-                              type="text" placeholder="Nhập mã công nhân" />
+                            <input
+                              v-model.trim="form.macn"
+                              @blur="$v.form.macn.$touch()"
+                              class="input is-small"
+                              type="text"
+                              placeholder="Nhập mã công nhân"
+                            />
                           </div>
                           <div v-if="$v.form.macn.$error" class="form-error">
-                            <span v-if="!$v.form.macn.required" class="help is-danger">Yêu cầu nhập mã công nhân</span>
+                            <span
+                              v-if="!$v.form.macn.required"
+                              class="help is-danger"
+                              >Yêu cầu nhập mã công nhân</span
+                            >
                           </div>
                         </div>
                       </td>
@@ -196,12 +239,20 @@
                         <div class="field">
                           <label class="label">Tên công nhân</label>
                           <div class="control">
-                            <input v-model.trim="form.tencn" @blur="$v.form.tencn.$touch()" class="input is-small"
-                              type="text" placeholder="Nhập tên công nhân" />
+                            <input
+                              v-model.trim="form.tencn"
+                              @blur="$v.form.tencn.$touch()"
+                              class="input is-small"
+                              type="text"
+                              placeholder="Nhập tên công nhân"
+                            />
                           </div>
                           <div v-if="$v.form.tencn.$error" class="form-error">
-                            <span v-if="!$v.form.tencn.required" class="help is-danger">Yêu cầu nhập tên công
-                              nhân</span>
+                            <span
+                              v-if="!$v.form.tencn.required"
+                              class="help is-danger"
+                              >Yêu cầu nhập tên công nhân</span
+                            >
                           </div>
                         </div>
                       </td>
@@ -212,7 +263,10 @@
                           <div class="select is-small is-fullwidth">
                             <select @change="showmapx($event)">
                               <option selected>-- Chọn phân xưởng --</option>
-                              <option v-for="item in phanxuong" :value="item.mapx">
+                              <option
+                                v-for="item in phanxuong"
+                                :value="item.mapx"
+                              >
                                 {{ item.mapx }} -- {{ item.tenpx }}
                               </option>
                             </select>
@@ -243,11 +297,20 @@
                         <div class="field">
                           <label class="label">Số điện thoại</label>
                           <div class="control">
-                            <input v-model.trim="form.sdt" @blur="$v.form.sdt.$touch()" class="input is-small"
-                              type="text" placeholder="Nhập số điện thoại" />
+                            <input
+                              v-model.trim="form.sdt"
+                              @blur="$v.form.sdt.$touch()"
+                              class="input is-small"
+                              type="text"
+                              placeholder="Nhập số điện thoại"
+                            />
                           </div>
                           <div v-if="$v.form.sdt.$error" class="form-error">
-                            <span v-if="!$v.form.sdt.required" class="help is-danger">Yêu cầu nhập số điện thoại</span>
+                            <span
+                              v-if="!$v.form.sdt.required"
+                              class="help is-danger"
+                              >Yêu cầu nhập số điện thoại</span
+                            >
                           </div>
                         </div>
                       </td>
@@ -255,11 +318,20 @@
                         <div class="field">
                           <label class="label">Địa chỉ</label>
                           <div class="control">
-                            <input v-model.trim="form.diachi" @blur="$v.form.diachi.$touch()" class="input is-small"
-                              type="text" placeholder="Nhập địa chỉ" />
+                            <input
+                              v-model.trim="form.diachi"
+                              @blur="$v.form.diachi.$touch()"
+                              class="input is-small"
+                              type="text"
+                              placeholder="Nhập địa chỉ"
+                            />
                           </div>
                           <div v-if="$v.form.diachi.$error" class="form-error">
-                            <span v-if="!$v.form.diachi.required" class="help is-danger">Yêu cầu nhập địa chỉ</span>
+                            <span
+                              v-if="!$v.form.diachi.required"
+                              class="help is-danger"
+                              >Yêu cầu nhập địa chỉ</span
+                            >
                           </div>
                         </div>
                       </td>
@@ -269,12 +341,20 @@
                         <div class="field">
                           <label class="label">Căn cước công dân</label>
                           <div class="control">
-                            <input v-model.trim="form.cccd" @blur="$v.form.cccd.$touch()" class="input is-small"
-                              type="text" placeholder="Nhập căn cước công nhân" />
+                            <input
+                              v-model.trim="form.cccd"
+                              @blur="$v.form.cccd.$touch()"
+                              class="input is-small"
+                              type="text"
+                              placeholder="Nhập căn cước công nhân"
+                            />
                           </div>
                           <div v-if="$v.form.cccd.$error" class="form-error">
-                            <span v-if="!$v.form.cccd.required" class="help is-danger">Yêu cầu nhập căn cước công
-                              dân</span>
+                            <span
+                              v-if="!$v.form.cccd.required"
+                              class="help is-danger"
+                              >Yêu cầu nhập căn cước công dân</span
+                            >
                           </div>
                         </div>
                       </td>
@@ -282,8 +362,12 @@
                         <div class="field">
                           <label class="label">Chức vụ</label>
                           <div class="control">
-                            <input v-model.trim="form.chucvu" class="input is-small" type="text"
-                              placeholder="Nhập chức vụ" />
+                            <input
+                              v-model.trim="form.chucvu"
+                              class="input is-small"
+                              type="text"
+                              placeholder="Nhập chức vụ"
+                            />
                           </div>
                         </div>
                       </td>
@@ -293,7 +377,12 @@
                         <div class="field">
                           <label class="label">Lương cơ bản</label>
                           <div class="control">
-                            <input v-model.trim="form.luongcb" class="input is-small" type="text" v-mask="mask" />
+                            <input
+                              v-model.trim="form.luongcb"
+                              class="input is-small"
+                              type="text"
+                              v-mask="mask"
+                            />
                           </div>
                         </div>
                       </td>
@@ -301,12 +390,23 @@
                         <div class="field">
                           <label class="label">Người liên hệ khẩn cấp</label>
                           <div class="control">
-                            <input v-model.trim="form.nguoilienhe" @blur="$v.form.nguoilienhe.$touch()"
-                              class="input is-small" type="text" placeholder="Nhập thông tin người liên hệ khi cần" />
+                            <input
+                              v-model.trim="form.nguoilienhe"
+                              @blur="$v.form.nguoilienhe.$touch()"
+                              class="input is-small"
+                              type="text"
+                              placeholder="Nhập thông tin người liên hệ khi cần"
+                            />
                           </div>
-                          <div v-if="$v.form.nguoilienhe.$error" class="form-error">
-                            <span v-if="!$v.form.nguoilienhe.required" class="help is-danger">Yêu cầu nhập người liên hệ
-                              khi cần gấp</span>
+                          <div
+                            v-if="$v.form.nguoilienhe.$error"
+                            class="form-error"
+                          >
+                            <span
+                              v-if="!$v.form.nguoilienhe.required"
+                              class="help is-danger"
+                              >Yêu cầu nhập người liên hệ khi cần gấp</span
+                            >
                           </div>
                         </div>
                       </td>
@@ -316,8 +416,12 @@
                         <div class="field">
                           <label class="label">Số tài khoản</label>
                           <div class="control">
-                            <input v-model.trim="form.sotknh" class="input is-small" type="text"
-                              placeholder="Nhập thông tin số tài khoản (nếu có)" />
+                            <input
+                              v-model.trim="form.sotknh"
+                              class="input is-small"
+                              type="text"
+                              placeholder="Nhập thông tin số tài khoản (nếu có)"
+                            />
                           </div>
                         </div>
                       </td>
@@ -325,8 +429,12 @@
                         <div class="field">
                           <label class="label">Tên ngân hàng</label>
                           <div class="control">
-                            <input v-model.trim="form.tennh" class="input is-small" type="text"
-                              placeholder="Nhập tên ngân hàng" />
+                            <input
+                              v-model.trim="form.tennh"
+                              class="input is-small"
+                              type="text"
+                              placeholder="Nhập tên ngân hàng"
+                            />
                           </div>
                         </div>
                       </td>
@@ -334,17 +442,27 @@
                     <tr>
                       <td colspan="2">
                         <div class="field">
-                          <div style="margin-bottom: 10px;">
+                          <div style="margin-bottom: 10px">
                             <label class="checkbox">
-                              <input type="checkbox" v-model.trim="checkGhichu" />
-                              <span style="font-weight: bold;">Ghi chú </span>
+                              <input
+                                type="checkbox"
+                                v-model.trim="checkGhichu"
+                              />
+                              <span style="font-weight: bold">Ghi chú </span>
                             </label>
                           </div>
                         </div>
-                        <div v-if="checkGhichu == true" class="field" style="margin-top: 10px;">
+                        <div
+                          v-if="checkGhichu == true"
+                          class="field"
+                          style="margin-top: 10px"
+                        >
                           <div class="control">
-                            <textarea v-model="form.ghichu" class="textarea is-small"
-                              placeholder="Ghi chú thêm ..."></textarea>
+                            <textarea
+                              v-model="form.ghichu"
+                              class="textarea is-small"
+                              placeholder="Ghi chú thêm ..."
+                            ></textarea>
                           </div>
                         </div>
                       </td>
@@ -352,15 +470,21 @@
                   </table>
                 </div>
 
-                <div class="columns">
+                <div class="columns" style="margin-top: 10px;">
                   <div class="column">
-                    <button :disabled="$v.form.$invalid" @click.prevent="onAddCongnhan"
-                      class="button is-success is-fullwidth is-small">
+                    <button
+                      :disabled="$v.form.$invalid"
+                      @click.prevent="onAddCongnhan"
+                      class="button is-success is-fullwidth is-small"
+                    >
                       Ghi nhận
                     </button>
                   </div>
                   <div class="column">
-                    <button @click="isActive = false" class="button is-danger is-light is-fullwidth is-small">
+                    <button
+                      @click="isActive = false"
+                      class="button is-danger is-light is-fullwidth is-small"
+                    >
                       Hủy bỏ
                     </button>
                   </div>
@@ -404,24 +528,27 @@ export default {
       tonhom: [],
       tonhomid: [],
       mask: currencyMask,
+      ischoosePx: false,
+      ischooseTo: false,
       form: {
-        macn: null,
-        tencn: null,
-        mapx: null,
-        tenpx: null,
-        sdt: null,
-        diachi: null,
-        cccd: null,
-        mato: null,
-        tento: null,
-        chucvu: null,
-        chucnang: null,
-        luongcb: null,
-        nguoilienhe: null,
-        sotknh: null,
-        tennh: null,
-        ghichu: null,
-        createdAt: null,
+        macn: "",
+        tencn: "",
+        mapx: "",
+        tenpx: "",
+        sdt: "",
+        diachi: "",
+        cccd: "",
+        mato: "",
+        tento: "",
+        chucvu: "",
+        chucnang: "",
+        luongcb: "",
+        nguoilienhe: "",
+        sotknh: "",
+        tennh: "",
+        trangthai: 1,
+        ghichu: "",
+        createdAt: "",
         createdBy: this.$auth.$state.user.username,
         // updatedAt: new Date().toISOString().substr(0, 10),
       },
@@ -640,6 +767,11 @@ export default {
       this.tonhom = await this.$axios.$get(
         `/api/phongban/alltoinxuong?mapx=${this.form.mapx}`
       );
+      this.ischoosePx = true;
+      if (this.tonhom.length <= 0) {
+        this.form.mato = "";
+        this.form.tento = "";
+      }
     },
 
     async showmato(e) {
@@ -649,6 +781,7 @@ export default {
       let position = name.split("--");
       this.form.mato = position[0].trim();
       this.form.tento = position[1].trim();
+      this.ischooseTo = true;
     },
 
     async getWithPX(e) {
@@ -676,47 +809,28 @@ export default {
       );
     },
 
-    onAddCongnhan() {
-      Swal.fire({
-        title: "Chắc chắn thêm mới công nhân này?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Chắc chắn thêm mới",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          try {
-            this.$v.form.$touch();
-            // console.log(this.$auth.$state.user.username);
-
-            this.$axios.$post("/api/congnhan/addcongnhan", this.form);
-
-            this.getDmcn()
-            this.isActive = false
-
+    async onAddCongnhan() {
+      const result = await Swal.fire({
+        title: `Bạn có muốn thêm mới công nhân: ${this.form.tencn}?`,
+        showDenyButton: true,
+        confirmButtonText: "Có, Thêm mới",
+        denyButtonText: `Hủy`,
+      });
+      if (result.isConfirmed) {
+        try {
+          this.$v.form.$touch();
+          // console.log(this.$auth.$state.user.username);
+          // tìm mã công nhân trong bảng công nhân
+          const allmacn = await this.$axios.get("/api/congnhan/showallmacn");
+          const dscn = allmacn.data;
+          const arrayMacn = dscn.map((item) => item.macn);
+          // console.log(arrayMacn);
+          if (arrayMacn.includes(this.form.macn)) {
             const Toast = Swal.mixin({
               toast: true,
               position: "top-end",
               showConfirmButton: false,
-              timer: 3000,
-              timerProgressBar: true,
-              didOpen: (toast) => {
-                toast.addEventListener("mouseenter", Swal.stopTimer);
-                toast.addEventListener("mouseleave", Swal.resumeTimer);
-              },
-            });
-            Toast.fire({
-              icon: "success",
-              title: "Thêm mới công nhân thành công",
-            });
-          } catch (error) {
-            console.log(error);
-            const Toast = Swal.mixin({
-              toast: true,
-              position: "top-end",
-              showConfirmButton: false,
-              timer: 3000,
+              timer: 2000,
               timerProgressBar: true,
               didOpen: (toast) => {
                 toast.addEventListener("mouseenter", Swal.stopTimer);
@@ -725,11 +839,86 @@ export default {
             });
             Toast.fire({
               icon: "error",
-              title: "Có lỗi xảy ra !!!",
+              title: `Mã công nhân: ${this.form.macn} đã tồn tại trong dữ liệu, nhập vào mã mới`,
             });
+          } else {
+            // console.log(this.form);
+            if (this.form.mapx === "") {
+              const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 2000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.addEventListener("mouseenter", Swal.stopTimer);
+                  toast.addEventListener("mouseleave", Swal.resumeTimer);
+                },
+              });
+              Toast.fire({
+                icon: "error",
+                title: `Hãy lựa chọn phân xưởng`,
+              });
+            } else {
+              const tonhom = await this.$axios.$get(
+                `/api/phongban/alltoinxuong?mapx=${this.form.mapx}`
+              );
+              if (tonhom.length > 0 && this.form.mato === "") {
+                const Toast = Swal.mixin({
+                  toast: true,
+                  position: "top-end",
+                  showConfirmButton: false,
+                  timer: 2000,
+                  timerProgressBar: true,
+                  didOpen: (toast) => {
+                    toast.addEventListener("mouseenter", Swal.stopTimer);
+                    toast.addEventListener("mouseleave", Swal.resumeTimer);
+                  },
+                });
+                Toast.fire({
+                  icon: "error",
+                  title: `Phân xưởng ${this.form.mapx} có tổ, hãy lựa chọn tổ cho công nhân`,
+                });
+              } else {
+                this.$axios.$post("/api/congnhan/addcongnhan", this.form);
+                this.getDmcn();
+                this.isActive = false;
+                const Toast = Swal.mixin({
+                  toast: true,
+                  position: "top-end",
+                  showConfirmButton: false,
+                  timer: 3000,
+                  timerProgressBar: true,
+                  didOpen: (toast) => {
+                    toast.addEventListener("mouseenter", Swal.stopTimer);
+                    toast.addEventListener("mouseleave", Swal.resumeTimer);
+                  },
+                });
+                Toast.fire({
+                  icon: "success",
+                  title: "Thêm mới công nhân thành công",
+                });
+              }
+            }
           }
+        } catch (error) {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
+          Toast.fire({
+            icon: "error",
+            title: `Có lỗi xảy ra`,
+          });
         }
-      });
+      }
     },
 
     onDelete(cn) {
@@ -739,12 +928,12 @@ export default {
         buttons: true,
         dangerMode: true,
       }).then((willDelete) => {
-        this.$axios.$delete(`/api/congnhan/${cn._id}`)
-          .then(response => {
-            const index = this.congnhan.findIndex(p => p._id === cn._id) // find the post index 
-            if (~index) // if the post exists in array
-              this.congnhan.splice(index, 1) //delete the post
-          });
+        this.$axios.$delete(`/api/congnhan/${cn._id}`).then((response) => {
+          const index = this.congnhan.findIndex((p) => p._id === cn._id); // find the post index
+          if (~index)
+            // if the post exists in array
+            this.congnhan.splice(index, 1); //delete the post
+        });
         const Toast = Swal.mixin({
           toast: true,
           position: "top-end",
@@ -761,8 +950,6 @@ export default {
           title: "Xóa thành công",
         });
       });
-
-
     },
   },
 };
