@@ -216,6 +216,121 @@
               <td></td>
             </tr>
           </table>
+          <table
+            v-if="showNgaychamcong.length > 0"
+            class="table is-responsive is-bordered is-narrow is-fullwidth"
+          >
+            <tr style="background-color: floralwhite">
+              <td
+                style="font-size: small; font-weight: bold; text-align: center"
+              >
+                STT
+              </td>
+              <td
+                style="font-size: small; font-weight: bold; text-align: center"
+              >
+                Mã CN
+              </td>
+              <td
+                style="font-size: small; font-weight: bold; text-align: center"
+              >
+                Tên CN
+              </td>
+              <td
+                style="font-size: small; font-weight: bold; text-align: center"
+              >
+                Mã PX
+              </td>
+              <td
+                style="font-size: small; font-weight: bold; text-align: center"
+              >
+                Tên PX
+              </td>
+              <td
+                style="font-size: small; font-weight: bold; text-align: center"
+              >
+                Mã chấm công
+              </td>
+              <td
+                style="font-size: small; font-weight: bold; text-align: center"
+              >
+                Chấm công
+              </td>
+              <td
+                style="font-size: small; font-weight: bold; text-align: center"
+              >
+                Ngày chấm công
+              </td>
+              <td
+                style="font-size: small; font-weight: bold; text-align: center"
+              >
+                Tuần
+              </td>
+              <td
+                style="font-size: small; font-weight: bold; text-align: center"
+              >
+                Ngày tạo
+              </td>
+              <td
+                style="font-size: small; font-weight: bold; text-align: center"
+              >
+                User tạo
+              </td>
+            </tr>
+            <tr v-for="(item, index) in showNgaychamcong" :key="index">
+              <td
+                style="font-size: small; text-align: center"
+              >
+                {{ index + 1 }}
+              </td>
+              <td
+                style="font-size: small; text-align: center"
+              >
+                {{ item.macn }}
+              </td>
+              <td style="font-size: small;">
+                {{ item.tencn }}
+              </td>
+              <td
+                style="font-size: small; text-align: center"
+              >
+                {{ item.mapx }}
+              </td>
+              <td style="font-size: small;">
+                {{ item.tenpx }}
+              </td>
+              <td
+                style="font-size: small; text-align: center"
+              >
+                <input type="text" class="input is-small" v-model="item.machamcong">
+              </td>
+              <td
+                style="font-size: small; text-align: center"
+              >
+              <input type="text" class="input is-small" v-model="item.chamcong">
+              </td>
+              <td
+                style="font-size: small; text-align: center"
+              >
+                {{ item.ngaychamcong | formatDate }}
+              </td>
+              <td
+                style="font-size: small; text-align: center"
+              >
+                {{ item.tuanchamcong }}
+              </td>
+              <td
+                style="font-size: small; text-align: center"
+              >
+                {{ item.createdAt | formatDate }}
+              </td>
+              <td
+                style="font-size: small; text-align: center"
+              >
+                {{ item.createdBy }}
+              </td>
+            </tr>
+          </table>
         </div>
       </div>
     </div>
@@ -240,6 +355,7 @@ export default {
       isSelectsEnabled: false,
       isSelectsEnabled_VP: false,
       isSelectsEnabled_Chamcong: false,
+      showNgaychamcong: [],
       form: {
         mapx: "",
         tenpx: "",
@@ -404,11 +520,11 @@ export default {
       this.items = [];
       if (this.tonhomid.length <= 0) {
         // kiểm tra xem có dữ liệu ngày chấm công trong csdl chưa
-        const getNgaychamcong = await this.$axios.$get(
+        this.showNgaychamcong = await this.$axios.$get(
           `/api/congnhan/showngaychamcongandmapx?mapx=${this.form.mapx}&ngaychamcong=${this.ngaychamcong}`
         );
         // console.log(getNgaychamcong);
-        if (getNgaychamcong.length > 0) {
+        if (this.showNgaychamcong.length > 0) {
           const Toast = Swal.mixin({
             toast: true,
             position: "top-end",
