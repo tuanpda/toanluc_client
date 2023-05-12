@@ -2202,11 +2202,11 @@ export default {
         soluong: data.soluong,
         nhomluong: data.nhomluong,
         soluonglsx: data.soluonglsx,
-        soluongkhsx: data.soluongkhsx,
+        soluongkhsx: "",
         ngaybd: data.ngaybd,
         ngaykt: data.ngaykt,
-        tongdat: data.tongdat,
-        tonghong: data.tonghong,
+        tongdat: "",
+        tonghong: "",
         ghichu: data.ghichu,
         createdAt: null,
         createdBy: "",
@@ -2248,7 +2248,7 @@ export default {
         soluong: dataAdd.soluongkhpx,
         nhomluong: dataAdd.nhomluong,
         soluonglsx: "",
-        soluongkhsx: 0,
+        soluongkhsx: "",
         ngaybd: dataAdd.ngaybdexc,
         ngaykt: dataAdd.ngayktexc,
         tongdat: "",
@@ -2367,14 +2367,15 @@ export default {
                 this.soluonghanmuckhpx = slvuot;
                 this.items[i].createdAt = this.form.createdAt;
                 this.items[i].createdBy = this.form.createdBy;
-                let newItem = await this.$axios.$post(
-                  "/api/ketoan/addphieulosx",
-                  this.items[i]
-                );
-                this.items[i]._id = newItem._id;
-                this.lokehoachpx = await this.$axios.$get(
-                  `/api/lokehoach/getallkehoachphanxuongwithout0`
-                );
+                console.log(this.items);
+                // let newItem = await this.$axios.$post(
+                //   "/api/ketoan/addphieulosx",
+                //   this.items[i]
+                // );
+                // this.items[i]._id = newItem._id;
+                // this.lokehoachpx = await this.$axios.$get(
+                //   `/api/lokehoach/getallkehoachphanxuongwithout0`
+                // );
               }
             }
             const Toast = Swal.mixin({
@@ -2393,14 +2394,14 @@ export default {
               title: `Tạo phiếu lô sản xuất thành công. số lượng còn lại: ${slvuot}`,
             });
 
-            this.dataChildren.push(...this.items);
-            // console.log(this.dataChildren);
-            let turn = 1;
-            let length = this.items.length;
-            while (turn <= length) {
-              this.deleteRow(this.items.length - turn);
-              turn += 1;
-            }
+            // this.dataChildren.push(...this.items);
+            // // console.log(this.dataChildren);
+            // let turn = 1;
+            // let length = this.items.length;
+            // while (turn <= length) {
+            //   this.deleteRow(this.items.length - turn);
+            //   turn += 1;
+            // }
 
             // this.dataChildren = await this.$axios.$get(
             //   `/api/lokehoach/getalllsxinkhpx?_id_khpx=${datalkh._id}`
