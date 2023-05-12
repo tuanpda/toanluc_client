@@ -592,16 +592,17 @@ export default {
     async getWithTo(e) {
       var name = e.target.options[e.target.options.selectedIndex].text;
       let position = name.split("--");
-      this.mato = position[0];
-      this.tento = position[1];
+      this.form.mato = position[0];
+      this.form.tento = position[1];
       this.cong_nhan = await this.$axios.$get(
-        `/api/congnhan/allcongnhanto?mato=${this.mato}`
+        `/api/congnhan/allcongnhanto?mato=${this.form.mato}`
       );
       // console.log(this.cong_nhan);
-      const getNgaychamcong = await this.$axios.$get(
-        `/api/congnhan/showngaychamcongandmapx?mapx=${this.form.mapx}&ngaychamcong=${this.ngaychamcong}`
+      // kiểm tra xem có dữ liệu ngày chấm công trong csdl chưa
+      this.showNgaychamcong = await this.$axios.$get(
+        `/api/congnhan/showngaychamcongandmato?mato=${this.form.mato}&ngaychamcong=${this.ngaychamcong}`
       );
-      if (getNgaychamcong.length > 0) {
+      if (this.showNgaychamcong.length > 0) {
         const Toast = Swal.mixin({
           toast: true,
           position: "top-end",
@@ -787,9 +788,12 @@ export default {
         try {
           const data = {
             machamcong: item.machamcong,
-            chamcong: item.chamcong
-          }
-          await this.$axios.$patch(`/api/congnhan/updatechamcong/${item._id}`, data);
+            chamcong: item.chamcong,
+          };
+          await this.$axios.$patch(
+            `/api/congnhan/updatechamcong/${item._id}`,
+            data
+          );
           const Toast = Swal.mixin({
             toast: true,
             position: "top-end",
