@@ -189,6 +189,16 @@
                 STT
               </td>
               <td
+                style="
+                  font-size: small;
+                  text-align: center;
+                  font-weight: 600;
+                  width: 3%;
+                "
+              >
+                ID
+              </td>
+              <td
                 @click="sortTable('malonhamay')"
                 style="
                   font-size: small;
@@ -306,7 +316,7 @@
                   width: 7%;
                 "
               >
-                Cập nhật nhanh
+                SL nhanh
               </td>
               <td
                 style="
@@ -373,6 +383,16 @@
                 "
               >
                 {{ index + 1 }}
+              </td>
+              <td
+                style="
+                  font-size: small;
+                  text-align: center;
+                  color: red;
+                  font-weight: 800;
+                "
+              >
+                {{ item._id }}
               </td>
               <td style="font-size: small">{{ item.malonhamay }}</td>
               <td

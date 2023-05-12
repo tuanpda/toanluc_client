@@ -625,11 +625,7 @@
                     </tr>
                     <tr v-if="form.macn != null">
                       <td style="font-size: small">
-                        <input
-                          type="text"
-                          class="input is-small is-danger"
-                          v-model="form.macn"
-                        />
+                        {{ form.macn }}
                       </td>
                       <td style="font-size: small; vertical-align: middle">
                         {{ form.tencn }}
@@ -697,23 +693,23 @@ export default {
       mask: currencyMask,
       dataMacn: [],
       form: {
-        macn: null,
-        tencn: null,
-        mapx: null,
-        tenpx: null,
-        sdt: null,
-        diachi: null,
-        cccd: null,
-        mato: null,
-        tento: null,
-        chucvu: null,
-        luongcb: null,
-        nguoilienhe: null,
-        sotknh: null,
-        tennh: null,
-        ghichu: null,
+        macn: "",
+        tencn: "",
+        mapx: "",
+        tenpx: "",
+        sdt: "",
+        diachi: "",
+        cccd: "",
+        mato: "",
+        tento: "",
+        chucvu: "",
+        luongcb: "",
+        nguoilienhe: "",
+        sotknh: "",
+        tennh: "",
+        ghichu: "",
         trangthai: 1,
-        createdAt: null,
+        createdAt: "",
         createdBy: this.$auth.$state.user.username,
         // updatedAt: new Date().toISOString().substr(0, 10),
       },
@@ -726,8 +722,8 @@ export default {
       },
 
       data_dieuchuyen: {
-        macn: null,
-        tencn: null,
+        macn: "",
+        tencn: "",
         mapx: "",
         tenpx: "",
         mato: "",
@@ -933,6 +929,7 @@ export default {
 
     async showmapx(e) {
       // console.log(this.mapx)
+      this.tonhom = [];
       this.dataMacn = [];
       //   this.data_dieuchuyen.mapx = "";
       //   this.data_dieuchuyen.tenpx = "";
@@ -1067,37 +1064,36 @@ export default {
       //   this.dataMacn = dataMacn;
       // this.form = { ...item };
 
-      this.form._id = item._id
+      this.form._id = item._id;
       this.form.macn = item.macn;
-      this.form.tencn = item.tencn
-      this.form.mapx = item.mapx
-      this.form.tenpx = item.tenpx
-      this.form.sdt = item.sdt
-      this.form.diachi = item.diachi
-      this.form.cccd = item.cccd
-      this.form.mato = item.mato
-      this.form.tento = item.tento
-      this.form.chucvu = item.chucvu
-      this.form.luongcb = item.luongcb
-      this.form.nguoilienhe = item.nguoilienhe
-      this.form.sotknh = item.sotknh
-      this.form.tennh = item.tennh
-      this.form.trangthai = 1
+      this.form.tencn = item.tencn;
+      // this.form.mapx = item.mapx
+      // this.form.tenpx = item.tenpx
+      this.form.sdt = item.sdt;
+      this.form.diachi = item.diachi;
+      this.form.cccd = item.cccd;
+      // this.form.mato = item.mato
+      // this.form.tento = item.tento
+      this.form.chucvu = item.chucvu;
+      this.form.luongcb = item.luongcb;
+      this.form.nguoilienhe = item.nguoilienhe;
+      this.form.sotknh = item.sotknh;
+      this.form.tennh = item.tennh;
+      this.form.trangthai = 1;
       this.data_dieuchuyen.macn = this.form.macn;
       this.data_dieuchuyen.tencn = this.form.tencn;
       this.data_dieuchuyen.mapx = this.form.mapx;
       this.data_dieuchuyen.tenpx = this.form.tenpx;
       this.data_dieuchuyen.mato = this.form.mato;
       this.data_dieuchuyen.tento = this.form.tento;
-      this.form.macn = "";
     },
 
     async onDieuchuyen() {
       //   console.log(this.data_dieuchuyen);
-      //   console.log(this.dataMacn);
+      // console.log(this.dataMacn);
       const arrMacn = this.dataMacn.map((item) => item.macn);
       // console.log(this.form);
-      if (arrMacn.includes(this.form.macn)) {
+      if (this.form.mapx == "") {
         // console.log(`${this.data_dieuchuyen.macn} đã tồn tại trong mảng.`);
         const Toast = Swal.mixin({
           toast: true,
@@ -1112,41 +1108,64 @@ export default {
         });
         Toast.fire({
           icon: "error",
-          title: `Mã công nhân: ${this.form.macn} đã tồn tại trong xưởng/tổ rồi.`,
+          title: `Yêu cầu chọn phân xưởng`,
         });
       } else {
-        // cập nhật việc điều chuyển công nhân sang tổ khác.
-        // và chuyển trạng thái công nhân thành 0
-        // console.log(this.form);
-        if (this.form.mato == "") {
-          this.form.ghichu = `Điều chuyển công nhân có mã: ${this.data_dieuchuyen.macn} từ phân xưởng ${this.data_dieuchuyen.mapx} sang phân xưởng ${this.form.mapx} vào ngày ${this.form.createdAt} bởi ${this.form.createdBy}`;
+        if (this.tonhom.length > 0 && this.form.mato == "") {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
+          Toast.fire({
+            icon: "error",
+            title: `Phân xưởng ${this.form.mapx} có tổ, yêu cầu chọn tổ`,
+          });
         } else {
-          this.form.ghichu = `Điều chuyển công nhân có mã: ${this.data_dieuchuyen.macn} từ tổ ${this.data_dieuchuyen.mato} thuộc phân xưởng ${this.data_dieuchuyen.mapx} sang phân xưởng ${this.form.mapx} vào tổ ${this.form.mato} vào ngày ${this.form.createdAt} bởi ${this.form.createdBy}`;
+          const result = await Swal.fire({
+            title: `Bạn có muốn điều chuyển công nhân: ${this.form.tencn}?`,
+            showDenyButton: true,
+            confirmButtonText: "Có, Điều chuyển",
+            denyButtonText: `Hủy`,
+          });
+          if (result.isConfirmed) {
+            // cập nhật việc điều chuyển công nhân sang tổ khác.
+            // và chuyển trạng thái công nhân thành 0
+            if (this.form.mato == "") {
+              this.form.ghichu = `Điều chuyển công nhân có mã: ${this.data_dieuchuyen.macn} từ phân xưởng ${this.data_dieuchuyen.mapx} sang phân xưởng ${this.form.mapx} vào ngày ${this.form.createdAt} bởi ${this.form.createdBy}`;
+            } else {
+              this.form.ghichu = `Điều chuyển công nhân có mã: ${this.data_dieuchuyen.macn} từ tổ ${this.data_dieuchuyen.mato} thuộc phân xưởng ${this.data_dieuchuyen.mapx} sang phân xưởng ${this.form.mapx} vào tổ ${this.form.mato} vào ngày ${this.form.createdAt} bởi ${this.form.createdBy}`;
+            }
+            await this.$axios.$post("/api/congnhan/addcongnhan", this.form);
+            // cập nhật trạng thái cho công nhân bị điều chuyển ở phân xưởng cũ
+            const data = {
+              trangthai: 0,
+              ghichu: this.form.ghichu
+            }
+            await this.$axios.$patch(`/api/congnhan/updatetrangthaicongnhan/${this.form._id}`, data);
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+              },
+            });
+            Toast.fire({
+              icon: "success",
+              title: "Điều chuyển công nhân thành công",
+            });
+          }
         }
-        await this.$axios.$post("/api/congnhan/addcongnhan", this.form);
-
-        // cập nhật trạng thái cho công nhân bị điều chuyển ở phân xưởng cũ
-        const data = {
-          trangthai: 0,
-          ghichu: this.form.ghichu
-        }
-        await this.$axios.$patch(`/api/congnhan/updatetrangthaicongnhan/${this.form._id}`, data);
-
-        const Toast = Swal.mixin({
-          toast: true,
-          position: "top-end",
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.addEventListener("mouseenter", Swal.stopTimer);
-            toast.addEventListener("mouseleave", Swal.resumeTimer);
-          },
-        });
-        Toast.fire({
-          icon: "success",
-          title: "Thêm mới công nhân thành công",
-        });
       }
     },
 

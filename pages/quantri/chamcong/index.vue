@@ -88,7 +88,10 @@
               <td></td>
             </tr>
           </table>
-          <table class="table is-responsive is-bordered is-narrow is-fullwidth">
+          <table
+            v-if="showNgaychamcong.length <= 0"
+            class="table is-responsive is-bordered is-narrow is-fullwidth"
+          >
             <tr style="background-color: antiquewhite">
               <td
                 style="
@@ -276,58 +279,59 @@
               >
                 User tạo
               </td>
+              <td
+                style="font-size: small; font-weight: bold; text-align: center"
+              >
+                Cập nhật
+              </td>
             </tr>
             <tr v-for="(item, index) in showNgaychamcong" :key="index">
-              <td
-                style="font-size: small; text-align: center"
-              >
+              <td style="font-size: small; text-align: center">
                 {{ index + 1 }}
               </td>
-              <td
-                style="font-size: small; text-align: center"
-              >
+              <td style="font-size: small; text-align: center">
                 {{ item.macn }}
               </td>
-              <td style="font-size: small;">
+              <td style="font-size: small">
                 {{ item.tencn }}
               </td>
-              <td
-                style="font-size: small; text-align: center"
-              >
+              <td style="font-size: small; text-align: center">
                 {{ item.mapx }}
               </td>
-              <td style="font-size: small;">
+              <td style="font-size: small">
                 {{ item.tenpx }}
               </td>
-              <td
-                style="font-size: small; text-align: center"
-              >
-                <input type="text" class="input is-small" v-model="item.machamcong">
+              <td style="font-size: small; text-align: center">
+                <input
+                  type="text"
+                  class="input is-small"
+                  v-model="item.machamcong"
+                />
               </td>
-              <td
-                style="font-size: small; text-align: center"
-              >
-              <input type="text" class="input is-small" v-model="item.chamcong">
+              <td style="font-size: small; text-align: center">
+                <input
+                  type="text"
+                  class="input is-small"
+                  v-model="item.chamcong"
+                />
               </td>
-              <td
-                style="font-size: small; text-align: center"
-              >
+              <td style="font-size: small; text-align: center">
                 {{ item.ngaychamcong | formatDate }}
               </td>
-              <td
-                style="font-size: small; text-align: center"
-              >
+              <td style="font-size: small; text-align: center">
                 {{ item.tuanchamcong }}
               </td>
-              <td
-                style="font-size: small; text-align: center"
-              >
+              <td style="font-size: small; text-align: center">
                 {{ item.createdAt | formatDate }}
               </td>
-              <td
-                style="font-size: small; text-align: center"
-              >
+              <td style="font-size: small; text-align: center">
                 {{ item.createdBy }}
+              </td>
+              <td style="text-align: center">
+                <a @click="capnhatcc(item)"
+                  ><span>
+                    <i style="color: red" class="fa fa-check-circle"></i> </span
+                ></a>
               </td>
             </tr>
           </table>
@@ -751,6 +755,56 @@ export default {
               this.selected = [];
             }
           }
+        } catch (error) {
+          console.log(error);
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
+          Toast.fire({
+            icon: "error",
+            title: "Có lỗi xảy ra !!!",
+          });
+        }
+      }
+    },
+
+    async capnhatcc(item) {
+      const result = await Swal.fire({
+        title: `Cập nhật chấm công cho công nhân ${item.macn}?`,
+        showDenyButton: true,
+        confirmButtonText: "Có, Cập nhật",
+        denyButtonText: `Hủy cập nhật`,
+      });
+      if (result.isConfirmed) {
+        try {
+          const data = {
+            machamcong: item.machamcong,
+            chamcong: item.chamcong
+          }
+          await this.$axios.$patch(`/api/congnhan/updatechamcong/${item._id}`, data);
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
+          Toast.fire({
+            icon: "success",
+            title: "Đã cập nhật",
+          });
         } catch (error) {
           console.log(error);
           const Toast = Swal.mixin({
