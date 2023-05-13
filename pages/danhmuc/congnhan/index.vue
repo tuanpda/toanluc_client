@@ -93,7 +93,7 @@
               <tr style="background-color: #fffaeb">
                 <td
                   style="text-align: right; font-size: small; font-weight: bold"
-                  colspan="9"
+                  colspan="10"
                 >
                   <a @click="getDmcn">
                     <span class="icon is-small is-left">
@@ -106,7 +106,7 @@
               <tr style="background-color: #fffaeb">
                 <th style="text-align: center; font-size: small">STT</th>
                 <th style="text-align: center; font-size: small">Sửa</th>
-                <th style="text-align: center; font-size: small">Xóa</th>
+                <!-- <th style="text-align: center; font-size: small">Xóa</th> -->
                 <th style="text-align: center; font-size: small">
                   Mã công nhân
                 </th>
@@ -121,6 +121,7 @@
                 <th style="text-align: center; font-size: small">
                   Tên phân xưởng
                 </th>
+                <th style="text-align: center; font-size: small">Trạng thái</th>
               </tr>
             </thead>
             <tbody>
@@ -135,19 +136,31 @@
                     </span>
                   </nuxt-link>
                 </td>
-                <td style="text-align: center">
+                <!-- <td style="text-align: center">
                   <a @click="onDelete(px)">
                     <span style="color: red" class="icon is-small">
                       <i class="fas fa-times"></i>
                     </span>
                   </a>
-                </td>
+                </td> -->
                 <td style="font-size: small">{{ px.macn }}</td>
                 <td style="font-size: small">{{ px.tencn }}</td>
                 <td style="font-size: small">{{ px.mato }}</td>
                 <td style="font-size: small">{{ px.tento }}</td>
                 <td style="font-size: small">{{ px.mapx }}</td>
                 <td style="font-size: small">{{ px.tenpx }}</td>
+                <td style="font-size: small; text-align: center">
+                  <template v-if="(px.trangthai == 1)">
+                    <span style="color: green; font-weight: 900"
+                      >Đang làm</span
+                    >
+                  </template>
+                  <template v-else>
+                    <span style="color: #f96854; font-weight: 900"
+                      >Đã nghỉ</span
+                    >
+                  </template>
+                </td>
               </tr>
             </tbody>
           </table>
@@ -470,7 +483,7 @@
                   </table>
                 </div>
 
-                <div class="columns" style="margin-top: 10px;">
+                <div class="columns" style="margin-top: 10px">
                   <div class="column">
                     <button
                       :disabled="$v.form.$invalid"
@@ -744,7 +757,7 @@ export default {
     },
 
     async getDmcn() {
-      this.congnhan = await this.$axios.$get(`/api/congnhan/allcongnhan`);
+      this.congnhan = await this.$axios.$get(`/api/congnhan/allcongnhan2trangthai`);
       if (this.congnhan.length <= 0) {
         this.$toasted.show("Danh mục công nhân rỗng", {
           duration: 3000,
@@ -791,7 +804,7 @@ export default {
       let position = name.split("--");
       let p1 = position[0].trim();
       this.congnhan = await this.$axios.$get(
-        `/api/congnhan/allcongnhanpx?mapx=${p1}`
+        `/api/congnhan/allcongnhanpx2trangthai?mapx=${p1}`
       );
       this.tonhomid = await this.$axios.$get(
         `/api/phongban/alltoinxuong?mapx=${p1}`
@@ -805,7 +818,7 @@ export default {
       let position = name.split("--");
       let p1 = position[0].trim();
       this.congnhan = await this.$axios.$get(
-        `/api/congnhan/allcongnhanto?mato=${p1}`
+        `/api/congnhan/allcongnhanto2trangthai?mato=${p1}`
       );
     },
 

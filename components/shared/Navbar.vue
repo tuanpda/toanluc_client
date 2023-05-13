@@ -1,19 +1,37 @@
 <template>
   <div>
     <!-- START NAV -->
-    <nav class="navbar is-transparent is-light" role="navigation" aria-label="main navigation">
+    <nav
+      class="navbar is-transparent is-light"
+      role="navigation"
+      aria-label="main navigation"
+    >
       <div class="container">
         <div class="navbar-brand">
           <a class="navbar-item" href="/">
-            <img style="opacity: 0.5" src="@/assets/image/logo_toanluc.png" width="118" height="32" />
+            <img
+              style="opacity: 0.5"
+              src="@/assets/image/logo_toanluc.png"
+              width="118"
+              height="32"
+            />
           </a>
-          <a role="button" class="navbar-burger" aria-label="menu" aria-expanded="false">
+          <a
+            role="button"
+            class="navbar-burger"
+            aria-label="menu"
+            aria-expanded="false"
+          >
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
             <span aria-hidden="true"></span>
           </a>
         </div>
-        <div :class="{ 'is-active': isActive }" id="navbarBasicExample" class="navbar-menu">
+        <div
+          :class="{ 'is-active': isActive }"
+          id="navbarBasicExample"
+          class="navbar-menu"
+        >
           <div id="navbarBasicExample" class="navbar-menu">
             <div class="navbar-start">
               <div class="navbar-item has-dropdown is-hoverable">
@@ -24,8 +42,12 @@
                   </span>
                   &ensp; Danh mục
                 </a>
-                <div ref="navbarDropDown-1" class="navbar-dropdown is-boxed " @click="closeNavbar(1)">
-                  <nav-link to="/danhmuc/phongban/" class="navbar-item" >
+                <div
+                  ref="navbarDropDown-1"
+                  class="navbar-dropdown is-boxed"
+                  @click="closeNavbar(1)"
+                >
+                  <nav-link to="/danhmuc/phongban/" class="navbar-item">
                     <span style="color: #3850b7" class="icon is-small is-left">
                       <i class="fas fa-fax"></i>
                     </span>
@@ -62,11 +84,33 @@
                     </span>
                     &ensp; Gán số thứ tự công nhân
                   </nav-link>
-                  <nav-link to="/danhmuc/congnhan/dieuchuyen" class="navbar-item">
+                  <hr class="navbar-divider" />
+                  <nav-link
+                    to="/danhmuc/congnhan/dieuchuyen"
+                    class="navbar-item"
+                  >
                     <span style="color: #3850b7" class="icon is-small is-left">
                       <i class="fas fa-compress-alt"></i>
                     </span>
                     &ensp; Điều chuyển công nhân
+                  </nav-link>
+                  <nav-link
+                    to="/danhmuc/congnhan/dscongnhannghiviec"
+                    class="navbar-item"
+                  >
+                    <span style="color: #3850b7" class="icon is-small is-left">
+                      <i class="fas fa-address-book"></i>
+                    </span>
+                    &ensp; Công nhân đã nghỉ việc
+                  </nav-link>
+                  <nav-link
+                    to="/danhmuc/congnhan/lognhansu"
+                    class="navbar-item"
+                  >
+                    <span style="color: #3850b7" class="icon is-small is-left">
+                      <i class="fas fa-atlas"></i>
+                    </span>
+                    &ensp; Log Nhân sự
                   </nav-link>
                   <hr class="navbar-divider" />
                   <!-- <nav-link to="" class="navbar-item">
@@ -103,16 +147,26 @@
                   </span>
                   &ensp; Quản lý Lô phiếu
                 </a>
-                <div ref="navbarDropDown-2" class="navbar-dropdown is-boxed " @click="closeNavbar(2)">
-                  <nav-link to="/ketoan/phieulo/importsolieu" class="navbar-item">
+                <div
+                  ref="navbarDropDown-2"
+                  class="navbar-dropdown is-boxed"
+                  @click="closeNavbar(2)"
+                >
+                  <nav-link
+                    to="/ketoan/phieulo/importsolieu"
+                    class="navbar-item"
+                  >
                     <span style="color: #f14668" class="icon is-small is-left">
                       <i class="far fa-arrow-alt-circle-down"></i>
                     </span>
                     &ensp; Import số liệu
                   </nav-link>
-                  <nav-link to="/ketoan/phieulo/lapkehoachnam" class="navbar-item">
+                  <nav-link
+                    to="/ketoan/phieulo/lapkehoachnam"
+                    class="navbar-item"
+                  >
                     <span style="color: #f14668" class="icon is-small is-left">
-                      <i class="	fas fa-box"></i>
+                      <i class="fas fa-box"></i>
                     </span>
                     &ensp; Lập Kế hoạch năm
                   </nav-link>
@@ -122,7 +176,10 @@
                     </span>
                     &ensp; Lập lô nhà máy
                   </nav-link>
-                  <nav-link to="/ketoan/phieulo/dangkylokhphanxuong" class="navbar-item">
+                  <nav-link
+                    to="/ketoan/phieulo/dangkylokhphanxuong"
+                    class="navbar-item"
+                  >
                     <span style="color: #f14668" class="icon is-small is-left">
                       <i class="far fa-calendar-alt"></i>
                     </span>
@@ -134,7 +191,10 @@
                     </span>
                     &ensp; Lập kế hoạch Lô phân xưởng (Tạm thời chưa sử dụng)
                   </nav-link> -->
-                  <nav-link to="/ketoan/phieulo/chonlokhpxdesanxuat" class="navbar-item">
+                  <nav-link
+                    to="/ketoan/phieulo/chonlokhpxdesanxuat"
+                    class="navbar-item"
+                  >
                     <span style="color: #f14668" class="icon is-small is-left">
                       <i class="far fa-copy"></i>
                     </span>
@@ -146,7 +206,10 @@
                     </span>
                     &ensp; Tạo Lô sản xuất
                   </nav-link>
-                  <nav-link to="/ketoan/phieulo/danhsachlosx" class="navbar-item">
+                  <nav-link
+                    to="/ketoan/phieulo/danhsachlosx"
+                    class="navbar-item"
+                  >
                     <span style="color: #f14668" class="icon is-small is-left">
                       <i class="fab fa-codepen"></i>
                     </span>
@@ -168,14 +231,24 @@
                   </span>
                   &ensp; Lương
                 </a>
-                <div ref="navbarDropDown-3" class="navbar-dropdown is-boxed " @click="closeNavbar(3)">
-                  <nav-link to="/ketoan/phieulo/vaoluongcongdoan" class="navbar-item">
+                <div
+                  ref="navbarDropDown-3"
+                  class="navbar-dropdown is-boxed"
+                  @click="closeNavbar(3)"
+                >
+                  <nav-link
+                    to="/ketoan/phieulo/vaoluongcongdoan"
+                    class="navbar-item"
+                  >
                     <span style="color: #9b6dff" class="icon is-small is-left">
                       <i class="fas fa-clipboard-list"></i>
                     </span>
                     &ensp; Vào lương
                   </nav-link>
-                  <nav-link to="/ketoan/phieulo/kiemvachotluong" class="navbar-item">
+                  <nav-link
+                    to="/ketoan/phieulo/kiemvachotluong"
+                    class="navbar-item"
+                  >
                     <span style="color: #9b6dff" class="icon is-small is-left">
                       <i class="fab fa-hornbill"></i>
                     </span>
@@ -183,8 +256,15 @@
                   </nav-link>
                   <div class="nested navbar-item dropdown">
                     <div class="dropdown-trigger">
-                      <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
-                        <span style="color: #9b6dff" class="icon is-small is-left">
+                      <button
+                        class="button"
+                        aria-haspopup="true"
+                        aria-controls="dropdown-menu"
+                      >
+                        <span
+                          style="color: #9b6dff"
+                          class="icon is-small is-left"
+                        >
                           <i class="fas fa-calculator"></i>
                         </span>
                         &ensp; Quản lý tạm ứng
@@ -193,24 +273,40 @@
                     <div class="dropdown-menu" id="dropdown-menu" role="menu">
                       <div class="dropdown-content">
                         <nav-link to="/ketoan/tamung/" class="navbar-item">
-                          <span style="color: #9b6dff" class="icon is-small is-left">
+                          <span
+                            style="color: #9b6dff"
+                            class="icon is-small is-left"
+                          >
                             <i class="fas fa-closed-captioning"></i>
                           </span>
                           &ensp; Nhân viên Văn phòng
                         </nav-link>
-                        <nav-link to="/ketoan/tamung/congnhan" class="navbar-item">
-                          <span style="color: #9b6dff" class="icon is-small is-left">
+                        <nav-link
+                          to="/ketoan/tamung/congnhan"
+                          class="navbar-item"
+                        >
+                          <span
+                            style="color: #9b6dff"
+                            class="icon is-small is-left"
+                          >
                             <i class="far fa-closed-captioning"></i>
                           </span>
                           &ensp; Công nhân xưởng
                         </nav-link>
                       </div>
-                    </div>                  
+                    </div>
                   </div>
                   <div class="nested navbar-item dropdown">
                     <div class="dropdown-trigger">
-                      <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
-                        <span style="color: #9b6dff" class="icon is-small is-left">
+                      <button
+                        class="button"
+                        aria-haspopup="true"
+                        aria-controls="dropdown-menu"
+                      >
+                        <span
+                          style="color: #9b6dff"
+                          class="icon is-small is-left"
+                        >
                           <i class="fab fa-amazon-pay"></i>
                         </span>
                         &ensp; Chi trả lương hàng tháng
@@ -219,13 +315,22 @@
                     <div class="dropdown-menu" id="dropdown-menu" role="menu">
                       <div class="dropdown-content">
                         <nav-link to="/ketoan/tinhluong/" class="navbar-item">
-                          <span style="color: #9b6dff" class="icon is-small is-left">
+                          <span
+                            style="color: #9b6dff"
+                            class="icon is-small is-left"
+                          >
                             <i class="fab fa-btc"></i>
                           </span>
                           &ensp; Văn phòng
                         </nav-link>
-                        <nav-link to="/ketoan/tinhluong/luongcongdoan" class="navbar-item">
-                          <span style="color: #9b6dff" class="icon is-small is-left">
+                        <nav-link
+                          to="/ketoan/tinhluong/luongcongdoan"
+                          class="navbar-item"
+                        >
+                          <span
+                            style="color: #9b6dff"
+                            class="icon is-small is-left"
+                          >
                             <i class="fas fa-money-bill"></i>
                           </span>
                           &ensp; Phân xưởng
@@ -249,7 +354,11 @@
                   </span>
                   &ensp; Báo cáo
                 </a>
-                <div ref="navbarDropDown-4" class="navbar-dropdown is-boxed " @click="closeNavbar(4)">
+                <div
+                  ref="navbarDropDown-4"
+                  class="navbar-dropdown is-boxed"
+                  @click="closeNavbar(4)"
+                >
                   <!-- <nav-link to="/report/nhansu" class="navbar-item">
                     <span style="color: #48c78e" class="icon is-small is-left">
                       <i class="fas fa-address-card"></i>
@@ -278,11 +387,22 @@
                   </span>
                   &ensp; Hệ thống
                 </a>
-                <div ref="navbarDropDown-5" class="navbar-dropdown is-boxed " @click="closeNavbar(5)">
+                <div
+                  ref="navbarDropDown-5"
+                  class="navbar-dropdown is-boxed"
+                  @click="closeNavbar(5)"
+                >
                   <div class="nested navbar-item dropdown">
                     <div class="dropdown-trigger">
-                      <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
-                        <span style="color: #6e4dc3" class="icon is-small is-left">
+                      <button
+                        class="button"
+                        aria-haspopup="true"
+                        aria-controls="dropdown-menu"
+                      >
+                        <span
+                          style="color: #6e4dc3"
+                          class="icon is-small is-left"
+                        >
                           <i class="fas fa-clipboard-list"></i>
                         </span>
                         &ensp; Phiên bản lương
@@ -290,14 +410,26 @@
                     </div>
                     <div class="dropdown-menu" id="dropdown-menu" role="menu">
                       <div class="dropdown-content">
-                        <nav-link to="/quantri/phienbanluong/" class="navbar-item">
-                          <span style="color: #6e4dc3" class="icon is-small is-left">
+                        <nav-link
+                          to="/quantri/phienbanluong/"
+                          class="navbar-item"
+                        >
+                          <span
+                            style="color: #6e4dc3"
+                            class="icon is-small is-left"
+                          >
                             <i class="fas fa-clipboard-check"></i>
                           </span>
                           &ensp; Tạo phiên bản lương
                         </nav-link>
-                        <nav-link to="/quantri/phienbanluong/dsphienbanluong" class="navbar-item">
-                          <span style="color: #6e4dc3" class="icon is-small is-left">
+                        <nav-link
+                          to="/quantri/phienbanluong/dsphienbanluong"
+                          class="navbar-item"
+                        >
+                          <span
+                            style="color: #6e4dc3"
+                            class="icon is-small is-left"
+                          >
                             <i class="fas fa-clipboard"></i>
                           </span>
                           &ensp; Danh sách phiên bản
@@ -307,8 +439,15 @@
                   </div>
                   <div class="nested navbar-item dropdown">
                     <div class="dropdown-trigger">
-                      <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
-                        <span style="color: #6e4dc3" class="icon is-small is-left">
+                      <button
+                        class="button"
+                        aria-haspopup="true"
+                        aria-controls="dropdown-menu"
+                      >
+                        <span
+                          style="color: #6e4dc3"
+                          class="icon is-small is-left"
+                        >
                           <i class="fas fa-fingerprint"></i>
                         </span>
                         &ensp; Chấm công
@@ -317,31 +456,58 @@
                     <div class="dropdown-menu" id="dropdown-menu" role="menu">
                       <div class="dropdown-content">
                         <nav-link to="/quantri/chamcong/" class="navbar-item">
-                          <span style="color: #6e4dc3" class="icon is-small is-left">
+                          <span
+                            style="color: #6e4dc3"
+                            class="icon is-small is-left"
+                          >
                             <i class="fas fa-id-card-alt"></i>
                           </span>
                           &ensp; Chấm công hằng ngày
                         </nav-link>
-                        <nav-link to="/quantri/chamcong/baocaoquanso" class="navbar-item">
-                          <span style="color: #6e4dc3" class="icon is-small is-left">
+                        <nav-link
+                          to="/quantri/chamcong/baocaoquanso"
+                          class="navbar-item"
+                        >
+                          <span
+                            style="color: #6e4dc3"
+                            class="icon is-small is-left"
+                          >
                             <i class="fab fa-elementor"></i>
                           </span>
                           &ensp; Quân số hàng ngày
                         </nav-link>
-                        <nav-link to="/quantri/chamcong/solieutonghop" class="navbar-item">
-                          <span style="color: #6e4dc3" class="icon is-small is-left">
+                        <nav-link
+                          to="/quantri/chamcong/solieutonghop"
+                          class="navbar-item"
+                        >
+                          <span
+                            style="color: #6e4dc3"
+                            class="icon is-small is-left"
+                          >
                             <i class="far fa-calendar-alt"></i>
                           </span>
                           &ensp; Số liệu tổng hợp
                         </nav-link>
-                        <nav-link to="/quantri/chamcong/chamcongthang" class="navbar-item">
-                          <span style="color: #6e4dc3" class="icon is-small is-left">
+                        <nav-link
+                          to="/quantri/chamcong/chamcongthang"
+                          class="navbar-item"
+                        >
+                          <span
+                            style="color: #6e4dc3"
+                            class="icon is-small is-left"
+                          >
                             <i class="fas fa-clipboard-check"></i>
                           </span>
                           &ensp; Chi tiết chấm công
                         </nav-link>
-                        <nav-link to="/quantri/chamcong/xemlaibaocaohangngay" class="navbar-item">
-                          <span style="color: #6e4dc3" class="icon is-small is-left">
+                        <nav-link
+                          to="/quantri/chamcong/xemlaibaocaohangngay"
+                          class="navbar-item"
+                        >
+                          <span
+                            style="color: #6e4dc3"
+                            class="icon is-small is-left"
+                          >
                             <i class="far fa-calendar"></i>
                           </span>
                           &ensp; Xem lại quân số hằng ngày
@@ -351,8 +517,15 @@
                   </div>
                   <div class="nested navbar-item dropdown">
                     <div class="dropdown-trigger">
-                      <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
-                        <span style="color: #6e4dc3" class="icon is-small is-left">
+                      <button
+                        class="button"
+                        aria-haspopup="true"
+                        aria-controls="dropdown-menu"
+                      >
+                        <span
+                          style="color: #6e4dc3"
+                          class="icon is-small is-left"
+                        >
                           <i class="fas fa-candy-cane"></i>
                         </span>
                         &ensp; Hồ sơ vi phạm
@@ -360,14 +533,26 @@
                     </div>
                     <div class="dropdown-menu" id="dropdown-menu" role="menu">
                       <div class="dropdown-content">
-                        <nav-link to="/quantri/vipham/nhapvipham" class="navbar-item">
-                          <span style="color: #6e4dc3" class="icon is-small is-left">
+                        <nav-link
+                          to="/quantri/vipham/nhapvipham"
+                          class="navbar-item"
+                        >
+                          <span
+                            style="color: #6e4dc3"
+                            class="icon is-small is-left"
+                          >
                             <i class="fas fa-fire-alt"></i>
                           </span>
                           &ensp; Nhập vi phạm
                         </nav-link>
-                        <nav-link to="/quantri/vipham/hosovipham" class="navbar-item">
-                          <span style="color: #6e4dc3" class="icon is-small is-left">
+                        <nav-link
+                          to="/quantri/vipham/hosovipham"
+                          class="navbar-item"
+                        >
+                          <span
+                            style="color: #6e4dc3"
+                            class="icon is-small is-left"
+                          >
                             <i class="fa fa-book"></i>
                           </span>
                           &ensp; Hồ sơ vi phạm
@@ -399,14 +584,33 @@
             <div class="navbar-end">
               <div class="navbar-item has-dropdown is-hoverable">
                 <template v-if="$auth.user">
-                  <a class="navbar-link"><img :src="$auth.user.avatar" alt="" width="40" height="40"
-                      style="border-radius: 50%" />
-                    &ensp; hi, {{ name }} !</a>
+                  <a class="navbar-link"
+                    ><img
+                      :src="$auth.user.avatar"
+                      alt=""
+                      width="40"
+                      height="40"
+                      style="border-radius: 50%"
+                    />
+                    &ensp; hi, {{ name }} !</a
+                  >
                 </template>
                 <template v-else>
-                  <a class="navbar-link"><img alt="" width="40" height="40" style="border-radius: 50%" />
-                    &ensp; Mời đăng nhập !</a></template>
-                    <div ref="navbarDropDown-6" class="navbar-dropdown is-boxed " @click="closeNavbar(6)">
+                  <a class="navbar-link"
+                    ><img
+                      alt=""
+                      width="40"
+                      height="40"
+                      style="border-radius: 50%"
+                    />
+                    &ensp; Mời đăng nhập !</a
+                  ></template
+                >
+                <div
+                  ref="navbarDropDown-6"
+                  class="navbar-dropdown is-boxed"
+                  @click="closeNavbar(6)"
+                >
                   <nav-link to="#" class="navbar-item">
                     <span class="icon is-small is-left" style="color: #3e8ed0">
                       <i class="fab fa-github-alt"></i>
@@ -471,13 +675,19 @@ export default {
     }
     // console.log(this.$auth.$state.loggedIn)
     // console.log(this.$auth.$state.user.success)
-    if (this.$auth.$state.loggedIn == true && this.$auth.$state.user.success == false) {
+    if (
+      this.$auth.$state.loggedIn == true &&
+      this.$auth.$state.user.success == false
+    ) {
       // alert('hết phiên')
-      this.$router.push('/notAuthenticated')
-      this.$auth.$state.loggedIn = false
-    } else if (this.$auth.$state.loggedIn == false && this.$auth.$state.user == false) {
-      this.$router.push('/notAuthenticated')
-      this.$auth.$state.loggedIn = false
+      this.$router.push("/notAuthenticated");
+      this.$auth.$state.loggedIn = false;
+    } else if (
+      this.$auth.$state.loggedIn == false &&
+      this.$auth.$state.user == false
+    ) {
+      this.$router.push("/notAuthenticated");
+      this.$auth.$state.loggedIn = false;
     }
   },
   methods: {
@@ -485,13 +695,12 @@ export default {
     logout() {
       // console.log('logout')
       // console.log(this.$auth.$state.loggedIn)
-      this.$auth.$state.loggedIn = false
+      this.$auth.$state.loggedIn = false;
     },
-    closeNavbar(num){
-
-      this.$refs[`navbarDropDown-${num}`].style.display = 'none';
+    closeNavbar(num) {
+      this.$refs[`navbarDropDown-${num}`].style.display = "none";
       setTimeout(() => {
-        this.$refs[`navbarDropDown-${num}`].style.display = 'block';
+        this.$refs[`navbarDropDown-${num}`].style.display = "block";
       }, 300);
     },
 
@@ -648,7 +857,7 @@ export default {
 }
 
 .nested.dropdown {
-  &:hover>.dropdown-menu {
+  &:hover > .dropdown-menu {
     display: block;
   }
 

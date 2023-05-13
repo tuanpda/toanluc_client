@@ -542,7 +542,11 @@
                   </td>
                   <td
                     v-else-if="item.status == 2"
-                    style="font-size: small; text-align: center; vertical-align: middle;"
+                    style="
+                      font-size: small;
+                      text-align: center;
+                      vertical-align: middle;
+                    "
                   >
                     <span
                       style="
@@ -555,7 +559,14 @@
                       >SX</span
                     >
                   </td>
-                  <td v-else style="font-size: small; text-align: center; vertical-align: middle;">
+                  <td
+                    v-else
+                    style="
+                      font-size: small;
+                      text-align: center;
+                      vertical-align: middle;
+                    "
+                  >
                     <span
                       style="
                         color: white;
@@ -1369,6 +1380,8 @@ export default {
     // 3: Các hàm chức năng
     // Hàm bấm vào lô kế hoạch phân xưởng sẽ expand ra dữ liệu lô sản xuất
     async watchDetail(value, data) {
+      this.dataChildren = [];
+      this.arrRowWatchDetail = [];
       this.arrExpand.map((e, index) => {
         if (value == index) {
           this.arrExpand[index] = !this.arrExpand[index];
@@ -1377,6 +1390,7 @@ export default {
         }
       });
       this.dataLokehoachpx = data;
+      // console.log(data._id);
       const indexValue = this.arrRowWatchDetail.findIndex(
         (el) => el?.key === value
       );
@@ -1384,41 +1398,40 @@ export default {
       //   this.arrRowWatchDetail.splice(indexValue, 1);
       //   return;
       // }
-      // console.log(data);
+      console.log(data);
       // hiển thị trạng thái đang tải dữ liệu
       this.dataChildren = await this.$axios.$get(
         `/api/lokehoach/getalllsxinkhpx?_id_khpx=${data._id}`
       );
+      console.log(this.dataChildren);
+      // const grWorkTemp = await this.$axios.$get(
+      //   `/api/phongban/alltoinxuong?mapx=${data.mapx}`
+      // );
 
-      const grWorkTemp = await this.$axios.$get(
-        `/api/phongban/alltoinxuong?mapx=${data.mapx}`
-      );
+      // const grWork =
+      //   grWorkTemp.length > 0
+      //     ? grWorkTemp.map((el) => ({
+      //         label: `${el.mato} - ${el.tento}`,
+      //         value: el.mato,
+      //         dataCur: el,
+      //       }))
+      //     : [];
 
-      const grWork =
-        grWorkTemp.length > 0
-          ? grWorkTemp.map((el) => ({
-              label: `${el.mato} - ${el.tento}`,
-              value: el.mato,
-              dataCur: el,
-            }))
-          : [];
-
-      // console.log(data.tenspkhpx)
-      const malosx = `${data.maspkhpx.trim()}-${data.makhpx.trim()}-0`;
-      // console.log(malosx)
+      // // console.log(data.tenspkhpx)
+      // const malosx = `${data.maspkhpx.trim()}-${data.makhpx.trim()}-0`;
+      // // console.log(malosx)
 
       this.arrRowWatchDetail.push({
         key: value,
         dataParent: data,
         dataChildren: this.dataChildren,
-        grWork: grWork,
-        input: {
-          inputMaTo: "",
-          inputMaLo: malosx,
-          inputSoLuong: 0,
-          inputDateOpen: "",
-          inputDateEnd: "",
-        },
+        // input: {
+        //   inputMaTo: "",
+        //   inputMaLo: malosx,
+        //   inputSoLuong: 0,
+        //   inputDateOpen: "",
+        //   inputDateEnd: "",
+        // },
       });
       // console.log('stop')
     },

@@ -105,8 +105,8 @@
               </tr>
               <tr style="background-color: #fffaeb">
                 <th style="text-align: center; font-size: small">STT</th>
-                <th style="text-align: center; font-size: small">Sửa</th>
-                <th style="text-align: center; font-size: small">Xóa</th>
+                <!-- <th style="text-align: center; font-size: small">Sửa</th>
+                <th style="text-align: center; font-size: small">Xóa</th> -->
                 <th style="text-align: center; font-size: small">
                   Mã công nhân
                 </th>
@@ -131,7 +131,7 @@
                 <td style="text-align: center; font-size: small">
                   {{ index + 1 }}
                 </td>
-                <td style="text-align: center; color: green">
+                <!-- <td style="text-align: center; color: green">
                   <nuxt-link :to="`/danhmuc/congnhan/${px._id}/manage`">
                     <span class="icon is-small">
                       <i class="far fa-check-circle"></i>
@@ -144,7 +144,7 @@
                       <i class="fas fa-times"></i>
                     </span>
                   </a>
-                </td>
+                </td> -->
                 <td style="font-size: small">{{ px.macn }}</td>
                 <td style="font-size: small">{{ px.tencn }}</td>
                 <td style="font-size: small">{{ px.mato }}</td>
@@ -1082,10 +1082,10 @@ export default {
       this.form.trangthai = 1;
       this.data_dieuchuyen.macn = this.form.macn;
       this.data_dieuchuyen.tencn = this.form.tencn;
-      this.data_dieuchuyen.mapx = this.form.mapx;
-      this.data_dieuchuyen.tenpx = this.form.tenpx;
-      this.data_dieuchuyen.mato = this.form.mato;
-      this.data_dieuchuyen.tento = this.form.tento;
+      this.data_dieuchuyen.mapx = item.mapx;
+      this.data_dieuchuyen.tenpx = item.tenpx;
+      this.data_dieuchuyen.mato = item.mato;
+      this.data_dieuchuyen.tento = item.tento;
     },
 
     async onDieuchuyen() {
@@ -1135,20 +1135,49 @@ export default {
             denyButtonText: `Hủy`,
           });
           if (result.isConfirmed) {
-            // cập nhật việc điều chuyển công nhân sang tổ khác.
-            // và chuyển trạng thái công nhân thành 0
+            // điều chuyển gồm các bước sau:
+            // b1: ghi dữ liệu người được chọn điều chuyển sang tổ mới
+            // b2: ghi dữ liệu người được chọn sang 1 bảng khác gọi là bảng dữ liệu điều chuyển
+            // b2: xóa dữ liệu người được chọn ở tổ cũ
+            // b3: ghi lại lịch sử ở bảng log
+            let log = "";
             if (this.form.mato == "") {
               this.form.ghichu = `Điều chuyển công nhân có mã: ${this.data_dieuchuyen.macn} từ phân xưởng ${this.data_dieuchuyen.mapx} sang phân xưởng ${this.form.mapx} vào ngày ${this.form.createdAt} bởi ${this.form.createdBy}`;
+              log = `Điều chuyển công nhân: ${this.form.tencn}, Mã: ${this.form.macn} từ phân xưởng ${this.data_dieuchuyen.mapx} sang phân xưởng ${this.form.mapx}`;
             } else {
               this.form.ghichu = `Điều chuyển công nhân có mã: ${this.data_dieuchuyen.macn} từ tổ ${this.data_dieuchuyen.mato} thuộc phân xưởng ${this.data_dieuchuyen.mapx} sang phân xưởng ${this.form.mapx} vào tổ ${this.form.mato} vào ngày ${this.form.createdAt} bởi ${this.form.createdBy}`;
+              log = `Điều chuyển công nhân: ${this.form.tencn}, Mã: ${this.form.macn} từ tổ ${this.data_dieuchuyen.mato} thuộc phân xưởng ${this.data_dieuchuyen.mapx} sang phân xưởng ${this.form.mapx} vào tổ ${this.form.mato}`;
             }
+            // b1: ghi dữ liệu ở tổ mới
             await this.$axios.$post("/api/congnhan/addcongnhan", this.form);
-            // cập nhật trạng thái cho công nhân bị điều chuyển ở phân xưởng cũ
-            const data = {
-              trangthai: 0,
-              ghichu: this.form.ghichu
-            }
-            await this.$axios.$patch(`/api/congnhan/updatetrangthaicongnhan/${this.form._id}`, data);
+
+            // b2: ghi dữ liệu vào bảng điều chuyển
+            this.form.mapx = this.data_dieuchuyen.mapx
+            this.form.tenpx = this.data_dieuchuyen.tenpx
+            this.form.mato = this.data_dieuchuyen.mato
+            this.form.tento = this.data_dieuchuyen.tento
+            await this.$axios.$post(
+              "/api/congnhan/addcongnhandieuchuyen",
+              this.form
+            );
+            // b3: xóa dữ liệu bảng cũ
+            await this.$axios.$delete(`/api/congnhan/${this.form._id}`);
+            // ghi lại log điều chuyển
+            // const data = {
+            //   trangthai: 0,
+            //   ghichu: this.form.ghichu,
+            // };
+            // await this.$axios.$patch(
+            //   `/api/congnhan/updatetrangthaicongnhan/${this.form._id}`,
+            //   data
+            // );
+            const dataLog = {
+              logname: log,
+              createdAt: this.form.createdAt,
+              createdBy: this.form.createdBy,
+            };
+            await this.$axios.$post(`/api/congnhan/addlognhansu`, dataLog);
+
             const Toast = Swal.mixin({
               toast: true,
               position: "top-end",
@@ -1164,6 +1193,8 @@ export default {
               icon: "success",
               title: "Điều chuyển công nhân thành công",
             });
+
+            this.getDmcn();
           }
         }
       }

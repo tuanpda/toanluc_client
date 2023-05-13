@@ -21,17 +21,16 @@
 
         <div class="table_wrapper table-height">
           <table
-            class="
-                    table
-                    is-bordered is-striped is-narrow is-hoverable is-fullwidth
-                  "
+            class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
           >
             <thead>
-              <tr style="background-color: #fffaeb;">
+              <tr style="background-color: #fffaeb">
                 <td
-                  style="text-align: right; font-size: small; font-weight: bold;"
+                  style="text-align: right; font-size: small; font-weight: bold"
                   colspan="9"
-                >Cập nhật thông tin</td>
+                >
+                  Cập nhật thông tin
+                </td>
               </tr>
               <tr>
                 <td>
@@ -73,6 +72,27 @@
                       >
                     </div>
                   </div>
+                </td>
+              </tr>
+              <tr>
+                <td colspan="2">
+                  <template v-if="form.trangthai == true">
+                    <span
+                      style="font-weight: bold; font-size: small; color: green"
+                      >Đang làm</span
+                    >
+                  </template>
+                  <template v-else>
+                    <span
+                      style="font-weight: bold; font-size: small; color: red"
+                      >Đã nghỉ</span
+                    >
+                  </template>
+                  &nbsp;
+                  <label class="switch" style="vertical-align: middle">
+                    <input v-model="form.trangthai" type="checkbox" />
+                    <span class="slider"></span>
+                  </label>
                 </td>
               </tr>
               <tr>
@@ -217,16 +237,16 @@
               </tr>
               <tr>
                 <td colspan="2">
-                  <div style="margin-bottom: 10px;">
+                  <div style="margin-bottom: 10px">
                     <label class="checkbox">
                       <input type="checkbox" v-model="checkGhichu" />
-                      <span style="font-weight: bold;">Ghi chú </span>
+                      <span style="font-weight: bold">Ghi chú </span>
                     </label>
                   </div>
                   <div
                     v-if="checkGhichu == true"
                     class="field"
-                    style="margin-top: 10px;"
+                    style="margin-top: 10px"
                   >
                     <div class="control">
                       <textarea
@@ -310,6 +330,7 @@ export default {
         tennh: null,
         ghichu: null,
         updatedAt: null,
+        trangthai: null,
       },
       hisform: {
         tenthaotac: null,
@@ -366,6 +387,7 @@ export default {
     this.form.sotknh = this.congnhan.sotknh;
     this.form.tennh = this.congnhan.tennh;
     this.form.ghichu = this.congnhan.ghichu;
+    this.form.trangthai = this.congnhan.trangthai;
   },
 
   mounted() {
@@ -392,7 +414,6 @@ export default {
       this.hisform.createdAt = date + " " + time;
     },
 
-
     async getPhanxuong() {
       this.phanxuong = await this.$axios.$get(`/api/phongban/allphanxuong`);
     },
@@ -414,9 +435,14 @@ export default {
               {}
             );
             // save log
-            this.hisform.tenthaotac = `Cập nhật công nhân, tên: ${this.form.tencn}`;
-            this.hisform.ghichu = `Cập nhật công nhân`;
-            this.$axios.$post(`/api/logsystem/record-action`, this.hisform);
+            const log = `Cập nhật thông tin cho công nhân: ${this.form.tencn}, Mã: ${this.form.macn}, Trạng thái: ${this.form.trangthai}`
+            const dataLog = {
+              logname: log,
+              createdAt: this.form.updatedAt,
+              createdBy: this.hisform.createdBy,
+            }
+            this.$axios.$post(`/api/congnhan/addlognhansu`, dataLog);
+
             const Toast = Swal.mixin({
               toast: true,
               position: "top-end",
@@ -488,5 +514,58 @@ export default {
   font-weight: bold;
   font-size: 14px;
   color: #f14668;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 15px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #f14668;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 7px;
+  width: 7px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: green;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
 }
 </style>
