@@ -1161,7 +1161,8 @@ export default {
     },
     arrExpand() {
       let arr = [];
-      for (let i = this.startIndex; i < this.endIndex; i++) {
+      let itemsPerPage = parseInt(this.endIndex - this.startIndex);
+      for (let i = 0; i < itemsPerPage; i++) {
         arr[i] = false;
       }
       return arr;
