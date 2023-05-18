@@ -1381,6 +1381,7 @@ export default {
     // 3: Các hàm chức năng
     // Hàm bấm vào lô kế hoạch phân xưởng sẽ expand ra dữ liệu lô sản xuất
     async watchDetail(value, data) {
+      // console.log(data);
       this.dataChildren = [];
       this.arrRowWatchDetail = [];
       this.arrExpand.map((e, index) => {
@@ -1399,12 +1400,10 @@ export default {
       //   this.arrRowWatchDetail.splice(indexValue, 1);
       //   return;
       // }
-      console.log(data);
       // hiển thị trạng thái đang tải dữ liệu
       this.dataChildren = await this.$axios.$get(
         `/api/lokehoach/getalllsxinkhpx?_id_khpx=${data._id}`
       );
-      console.log(this.dataChildren);
       // const grWorkTemp = await this.$axios.$get(
       //   `/api/phongban/alltoinxuong?mapx=${data.mapx}`
       // );
@@ -1475,8 +1474,8 @@ export default {
           malosx: dataTemp.input.inputMaLo,
           mapx: res.mapx,
           tenpx: res.tenpx,
-          mato: grWotkTemp.value,
-          tento: grWotkTemp.label,
+          mato: res.value,
+          tento: res.label,
           masp: res.maspkhpx,
           tensp: res.tenspkhpx,
           soluong: res.soluongkhpx,
@@ -2255,8 +2254,8 @@ export default {
           dataAdd.maspkhpx.trim() + "-" + dataAdd.makhpx.trim() + "-" + "01",
         mapx: dataAdd.mapx,
         tenpx: dataAdd.tenpx,
-        mato: "",
-        tento: "",
+        mato: dataAdd.mato,
+        tento: dataAdd.tento,
         masp: dataAdd.maspkhpx,
         tensp: dataAdd.tenspkhpx,
         soluong: dataAdd.soluongkhpx,

@@ -146,9 +146,9 @@
                 <vue-excel-xlsx
                   :data="lokehoachsx"
                   :columns="columns"
-                  :file-name="'losanxuat'"
+                  :file-name="filename_exel"
                   :file-type="'xlsx'"
-                  :sheet-name="'Lô sản xuất'"
+                  :sheet-name="filename_exel"
                 >
                   Download Excel
                 </vue-excel-xlsx>
@@ -535,7 +535,11 @@
               <template>
                 <td
                   v-if="item.status == 1"
-                  style="font-size: small; text-align: center; vertical-align: middle;"
+                  style="
+                    font-size: small;
+                    text-align: center;
+                    vertical-align: middle;
+                  "
                 >
                   <span
                     style="
@@ -550,7 +554,11 @@
                 </td>
                 <td
                   v-else-if="item.status == 2"
-                  style="font-size: small; text-align: center; vertical-align: middle;"
+                  style="
+                    font-size: small;
+                    text-align: center;
+                    vertical-align: middle;
+                  "
                 >
                   <span
                     style="
@@ -565,7 +573,11 @@
                 </td>
                 <td
                   v-else-if="item.status == 3"
-                  style="font-size: small; text-align: center; vertical-align: middle;"
+                  style="
+                    font-size: small;
+                    text-align: center;
+                    vertical-align: middle;
+                  "
                 >
                   <span
                     style="
@@ -578,7 +590,14 @@
                     >HT</span
                   >
                 </td>
-                <td v-else style="font-size: small; text-align: center; vertical-align: middle;"></td>
+                <td
+                  v-else
+                  style="
+                    font-size: small;
+                    text-align: center;
+                    vertical-align: middle;
+                  "
+                ></td>
               </template>
 
               <td style="font-size: small">
@@ -712,11 +731,16 @@ export default {
         ["3", 2000000, 900000],
       ],
 
+      filename_exel: "",
       // xuất execl
       columns: [
         {
+          label: "Kế hoạch năm",
+          field: "kehoachnam",
+        },
+        {
           label: "Mã lô nhà máy",
-          field: "makh",
+          field: "malonhamay",
           dataFormat: this.trimData,
         },
         {
@@ -765,7 +789,10 @@ export default {
           field: "soluonglsx",
           dataFormat: this.trimData,
         },
-
+        {
+          label: "SL cập nhật nhanh",
+          field: "soluongkhsx",
+        },
         {
           label: "Ngày bắt đầu",
           field: "ngaybd",
@@ -775,6 +802,28 @@ export default {
           label: "Ngày kết thúc",
           field: "ngaykt",
           dataFormat: this.prefixformatDate,
+        },
+        {
+          label: "Ngày bắt đầu thực tế",
+          field: "ngaybatdautt",
+          dataFormat: this.prefixformatDate,
+        },
+        {
+          label: "Ngày hoàn thành thực tế",
+          field: "ngayhoanthanhtt",
+          dataFormat: this.prefixformatDate,
+        },
+        {
+          label: "Tổng đạt",
+          field: "tongdat",
+        },
+        {
+          label: "Tổng hỏng",
+          field: "tonghong",
+        },
+        {
+          label: "Nhóm lương",
+          field: "nhomluong",
         },
         {
           label: "Đã tính lương",
@@ -793,6 +842,7 @@ export default {
     this.showAllPx();
     this.maspinlsx();
     this.nhomspinlsx();
+    this.currentDateTime();
   },
 
   computed: {
@@ -908,6 +958,22 @@ export default {
   },
 
   methods: {
+    currentDateTime() {
+      const current = new Date();
+      const date =
+        current.getFullYear() +
+        "-" +
+        (current.getMonth() + 1) +
+        "-" +
+        current.getDate();
+      const time =
+        current.getHours() +
+        ":" +
+        current.getMinutes() +
+        ":" +
+        current.getSeconds();
+      this.filename_exel = date;
+    },
     // --------------------------------------------------------------------------------------
     // 1: Các hàm hỗ trợ tính toán; lọc ...
     // suggest input mã sản phẩm
@@ -1043,15 +1109,28 @@ export default {
       });
     },
     exportExcel() {
-      const selectedColumns = this.selected_print.map((item) => ({
-        masp: item.masp.trim(),
-        soluonglsx: item.soluonglsx.trim(),
-      }));
+      const filename_phanxuong = this.selected_print[0].mapx;
+      const selectedColumns = this.selected_print.map((item) => {
+        const formattedDate = new Date(item.ngaybd).toLocaleDateString("en-GB");
+        return {
+          masp: item.masp.trim(),
+          soluonglsx: item.soluonglsx.trim(),
+          malosx: item.malosx,
+          makhpx: item.makhpx,
+          malonhamay: item.malonhamay,
+          _id: item._id,
+          ngaybd: formattedDate,
+        };
+      });
       const columnNames = [
+        { header: "Số phiếu", key: "_id" },
         { header: "Sản phẩm", key: "masp" },
-        { header: "Số lượng", key: "soluonglsx" },
-        { header: "Ca 1 / Số lượng CN", key: "" },
-        { header: "Ca 2 / Số lượng CN", key: "" },
+        { header: "Lô nhà máy", key: "malonhamay" },
+        { header: "Lô kế hoạch PX", key: "makhpx" },
+        { header: "Lô sản xuất", key: "malosx" },
+        { header: "Số lượng KH", key: "soluonglsx" },
+        { header: "Ngày", key: "ngaybd" },
+        { header: "Số lượng hoàn thành", key: "" },
         { header: "Báo cáo hoàn thành", key: "" },
         { header: "Ghi chú", key: "" },
       ];
@@ -1063,13 +1142,18 @@ export default {
         return row;
       });
 
+      const filenameyc = filename_phanxuong + "_" + this.filename_exel;
       const worksheet = XLSX.utils.json_to_sheet(data);
-      const workbook = { Sheets: { data: worksheet }, SheetNames: ["data"] };
+      // const workbook = { Sheets: { data: worksheet }, SheetNames: ["data"] };
+      const workbook = {
+        Sheets: { [filenameyc]: worksheet },
+        SheetNames: [filenameyc],
+      };
       const excelBuffer = XLSX.write(workbook, {
         bookType: "xlsx",
         type: "array",
       });
-      const fileName = "data.xlsx";
+      const fileName = `${filenameyc}`;
       const blob = new Blob([excelBuffer], {
         type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
       });

@@ -406,16 +406,12 @@
               <td style="font-size: small">
                 {{ item.masp }}
               </td>
-              <!-- <td style="font-size: small; background-color: #effaf5;">{{ item.tensp }}</td> -->
               <td style="font-size: small; text-align: center">
                 {{ item.nhomluong }}
               </td>
               <td style="font-size: small; text-align: center">
                 {{ item.ngaybd | formatDate }}
               </td>
-              <!-- <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
-                                item.ngaykt | formatDate
-                            }}</td> -->
               <td style="font-size: small; text-align: center">
                 {{ item.soluonglsx }}
               </td>
@@ -470,7 +466,13 @@
                 </td>
                 <td v-else style="font-size: small; text-align: center"></td>
               </template>
-              <td style="font-size: small; text-align: center; vertical-align: middle;">
+              <td
+                style="
+                  font-size: small;
+                  text-align: center;
+                  vertical-align: middle;
+                "
+              >
                 <span v-if="item.status_tinhluong == false">
                   <i style="color: #ffd863" class="fa fa-circle"></i>
                 </span>
@@ -792,18 +794,16 @@
                   </a>
                 </td>
               </tr>
-              <tr style="background-color: #f4f2f8;">
-                <td
-                  colspan="6"
-                  style="
-                    font-size: small;
-                    font-weight: 700;
-                  "
-                >
+              <tr style="background-color: #f4f2f8">
+                <td colspan="6" style="font-size: small; font-weight: 700">
                   Tổng đạt / Tổng hỏng
                 </td>
-                <td style="text-align: right; font-size: small">{{ getinfoplsx.tongdat }}</td>
-                <td style="text-align: right; font-size: small">{{ getinfoplsx.tonghong }}</td>
+                <td style="text-align: right; font-size: small">
+                  {{ getinfoplsx.tongdat }}
+                </td>
+                <td style="text-align: right; font-size: small">
+                  {{ getinfoplsx.tonghong }}
+                </td>
                 <td colspan="2"></td>
               </tr>
               <tr>
@@ -1043,8 +1043,12 @@
                 <div class="columns">
                   <div class="column is-10">
                     <template v-if="form.tento">
-                      <span>Tổ được chỉ định: </span>
-                      <span>{{ form.tento }} </span>
+                      <span style="font-size: small; font-weight: 700"
+                        >Tổ được chỉ định:
+                      </span>
+                      <span style="font-size: small; font-weight: bold; color: red;"
+                        >{{ form.tento }}
+                      </span>
                     </template>
                   </div>
                   <!-- <div class="column is-2" style="text-align: right">
@@ -2462,6 +2466,31 @@ export default {
   },
 
   methods: {
+    // cập nhật mato và tento do lỗi đăng ký losx k copy mato tento từ lokhoachphanxuong xuống
+    async hh() {
+      const response = await this.$axios.get("/api/lokehoach/laydanhsachmlnm");
+      // console.log(response.data);
+      // dữ liệu malonhamay có trong lô sản xuất
+      const dataMalnm = response.data;
+      const arrLnm = dataMalnm.map((item) => item.malonhamay);
+      for (let i = 0; i < arrLnm.length; i++) {
+        // console.log(arrLnm[i]);
+        const rr = await this.$axios.get(
+          `/api/lokehoach/laydsmatotento?malonhamay=${arrLnm[i]}`
+        );
+        // console.log(rr.data);
+        const dt = {
+          mato: rr.data[0].mato,
+          tento: rr.data[0].tento,
+        };
+        // console.log(dt);
+        const rrr = await this.$axios.patch(
+          `/api/lokehoach/updatemato/${arrLnm[i]}`,
+          dt
+        );
+        console.log(rrr);
+      }
+    },
     // --------------------------------------------------------------------------------------
     // 1: Các hàm hỗ trợ tính toán; lọc ...
     // hàm lấy ngày giờ hiện tại
@@ -3275,7 +3304,7 @@ export default {
       // this.form.tensp = infoPhieulo.tensp;
       // this.form.mato = infoPhieulo.mato;
       // this.form.tento = infoPhieulo.tento;
-      this.form = {...infoPhieulo}
+      this.form = { ...infoPhieulo };
 
       // lấy mã nhóm lương dựa vào mã sp và mã phân xưởng
       if (
@@ -3347,14 +3376,19 @@ export default {
     },
     // Hàm cập nhật nhanh khi gõ số lượng hoàn thành vào sẽ đổi trạng thái Lô sản xuất
     async updateStatus(data) {
+      // yêu cầu là khi sửa số lượng cập nhật nhanh thì nếu > 0 thì update mỗi soluongkhsx
+      // còn nếu <=0 thì soluongkhsx = 0 và ngayhoanthanhtt == null và status == 2
       try {
-        if (parseFloat(data.soluongkhsx) > 0) {
-          data.status = 3;
-        } else {
+        if (parseFloat(data.soluongkhsx) <= 0) {
+          // data.status = 3;
+          // yêu cầu từ anh tiến là vẫn để sản xuất nên sửa lại
+          data.ngayhoanthanhtt = null;
           data.status = 2;
-          data.ngayhoanthanhtt = null
         }
-        this.$axios.$patch(`/api/lokehoach/losanxuat/status/${data._id}`, data);
+        this.$axios.$patch(
+          `/api/lokehoach/losanxuat/soluongcnnandststus/${data._id}`,
+          data
+        );
 
         const Toast = Swal.mixin({
           toast: true,
@@ -3393,11 +3427,19 @@ export default {
 
     // cập nhật ngày hoàn thành thực tế
     async updateNgayhoanttt(value, item) {
+      // yêu cầu là nếu cập nhật ngày hoàn thành tt thì thay đổi status=3
+      // và nếu muốn ngày này bằng null thì thay đổi số lượng cập nhật nhanh thành 0
       try {
         // console.log(value);
-        const data = { ngayhoanthanhtt: value };
+        // cập nhật ngày hoàn thành thực tế
+        const data = { ngayhoanthanhtt: value, status: 3 };
+        // const response = await this.$axios.$patch(
+        //   `/api/lokehoach/losanxuat/updatengayhttt/${item._id}`,
+        //   data
+        // );
+        // anh tiến yêu cầu khi cập nhật ngày hoàn thành thực tế thì chuyển lô thành trạng thái HT 2284
         const response = await this.$axios.$patch(
-          `/api/lokehoach/losanxuat/updatengayhttt/${item._id}`,
+          `/api/lokehoach/losanxuat/statusandngayhttt/${item._id}`,
           data
         );
         // console.log(response);
@@ -4527,19 +4569,19 @@ export default {
               );
               this.calculateTotals();
             }
-            
+
             const tonghongff = 0;
-              const dataUpdateth = { tonghong: tonghongff };
-              await this.$axios.$patch(
-                `/api/ketoan/updateonlytonghong?_id=${cd._id_losx}`,
-                dataUpdateth
-              );
-              const dataUpdate = { tongdat: tongdat };
-              await this.$axios.$patch(
-                `/api/ketoan/updateonlytongdat?_id=${cd._id_losx}`,
-                dataUpdate
-              );
-              this.calculateTotals();
+            const dataUpdateth = { tonghong: tonghongff };
+            await this.$axios.$patch(
+              `/api/ketoan/updateonlytonghong?_id=${cd._id_losx}`,
+              dataUpdateth
+            );
+            const dataUpdate = { tongdat: tongdat };
+            await this.$axios.$patch(
+              `/api/ketoan/updateonlytongdat?_id=${cd._id_losx}`,
+              dataUpdate
+            );
+            this.calculateTotals();
             this.tempData = [];
             // if (this.filterOptions == 1) {
             //   this.filterData1(1);
@@ -4623,7 +4665,7 @@ export default {
                   this.allluongcongnhat.splice(index, 1); //delete the post
               });
 
-              // this.getinfoplsx
+            // this.getinfoplsx
           }
         } else {
           swal("Bạn đã hủy xóa");
