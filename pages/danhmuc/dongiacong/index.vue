@@ -9,7 +9,9 @@
               <span class="icon is-small is-left">
                 <i style="color: #00d1b2" class="fab fa-slack-hash"></i>
               </span>
-              <span style="color: #3850b7; font-size: 17px; font-weight: bold;">Danh mục đơn giá công</span>
+              <span style="color: #3850b7; font-size: 17px; font-weight: bold"
+                >Danh mục đơn giá công</span
+              >
             </div>
           </div>
         </div>
@@ -53,17 +55,34 @@
             </nuxt-link>
           </div>
         </div>
-        <div style="margin-bottom: 3px;">
-          <vue-excel-xlsx
-            :data="dongiacong"
-            :columns="columns"
-            :file-name="'Danh_muc_don_gia_cong'"
-            :file-type="'xlsx'"
-            :sheet-name="'Danh mục đơn giá công'"
-          >
-            Download Excel
-          </vue-excel-xlsx>
+        <div style="margin-bottom: 3px">
+          <table>
+            <tr>
+              <td style="width: 20%">
+                <div class="select is-small">
+                  <select @change="showDmnc($event)">
+                    <option selected>-- Xem theo phân xưởng --</option>
+                    <option v-for="item in phanxuong" :value="item.mapx">
+                      {{ item.mapx }} -- {{ item.tenpx }}
+                    </option>
+                  </select>
+                </div>
+              </td>
+              <td>
+                <vue-excel-xlsx
+                  :data="dongiacong"
+                  :columns="columns"
+                  :file-name="'Danh_muc_don_gia_cong'"
+                  :file-type="'xlsx'"
+                  :sheet-name="'Danh mục đơn giá công'"
+                >
+                  Download Excel
+                </vue-excel-xlsx>
+              </td>
+            </tr>
+          </table>
         </div>
+
         <div class="table_wrapper table-height">
           <table
             class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
@@ -555,6 +574,29 @@ export default {
     async getDongiacong() {
       this.dongiacong = await this.$axios.$get(
         `/api/nguyencong/getalldongiacong`
+      );
+      if (this.dongiacong.length <= 0) {
+        this.$toasted.show("Danh mục đơn giá công rỗng", {
+          duration: 3000,
+          theme: "bubble",
+        });
+      }
+    },
+
+    async showDmnc(e) {
+      var name = e.target.options[e.target.options.selectedIndex].text;
+      // console.log(name)
+      let position = name.split("--");
+      let p1 = position[0].trim();
+      let mapx;
+      if (p1 == "AL_PXD" || p1 == "DV_PXD") {
+        mapx = "pxd";
+      } else {
+        mapx = p1;
+      }
+
+      this.dongiacong = await this.$axios.$get(
+        `/api/nguyencong/getalldongiacongwithpx?PX=${mapx}`
       );
       if (this.dongiacong.length <= 0) {
         this.$toasted.show("Danh mục đơn giá công rỗng", {

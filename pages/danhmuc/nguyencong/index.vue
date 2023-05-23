@@ -9,7 +9,9 @@
               <span class="icon is-small is-left">
                 <i style="color: #00d1b2" class="fas fa-anchor"></i>
               </span>
-              <span style="color: #3850b7; font-size: 17px; font-weight: bold;">Danh mục sản phẩm</span>
+              <span style="color: #3850b7; font-size: 17px; font-weight: bold"
+                >Danh mục sản phẩm</span
+              >
             </div>
           </div>
         </div>
@@ -53,7 +55,8 @@
             </nuxt-link>
           </div>
         </div>
-        <div style="margin-bottom: 3px;">
+
+        <div style="margin-bottom: 3px">
           <vue-excel-xlsx
             :data="nguyencong"
             :columns="columns"
@@ -64,84 +67,92 @@
             Download Excel
           </vue-excel-xlsx>
         </div>
-        <div class="table_wrapper table-height">
-          <div>
-            <table
-              class="table is-responsive is-bordered is-narrow is-fullwidth"
-            >
-              <tr style="background-color: #feecf0">
-                <!-- <td style="font-size: small; width: 20%">
-                  <div class="control has-icons-left">
-                    <div class="select is-small is-fullwidth">
-                      <select>
-                        <option selected>-- Chọn phân xưởng --</option>
-                        <option v-for="item in phanxuong" :value="item.mapx">
-                          {{ item.mapx }} - {{ item.tenpx }}
-                        </option>
-                      </select>
-                    </div>
-                    <span class="icon is-small is-left">
-                      <i style="color: #48c78e" class="fas fa-kaaba"></i>
-                    </span>
+
+        <div>
+          <table class="table is-responsive is-bordered is-narrow is-fullwidth">
+            <tr style="background-color: #feecf0">
+              <td style="font-size: small; width: 20%">
+                <div class="select-wrapper" style="width: 100%">
+                  <div class="select-header" @click="isOpen = !isOpen">
+                    {{
+                      selectedOptions.length > 0
+                        ? selectedOptions.join(", ")
+                        : "Chọn Phân xưởng"
+                    }}
+                    <span class="arrow" :class="{ open: isOpen }"></span>
                   </div>
-                </td> -->
-                <td style="width: 12.65%">
-                  <div class="autocomplete">
-                    <input
-                      class="input is-small is-danger"
-                      type="text"
-                      v-model="search_nhomsp"
-                      @input="onInput"
-                      placeholder="Nhóm sản phẩm"
-                    />
-                    <div class="autocomplete-items" v-if="suggestions.length">
-                      <div
-                        class="autocomplete-item"
-                        v-for="suggestion in suggestions"
-                        @click="selectSuggestion(suggestion)"
-                      >
-                        {{ suggestion }}
-                      </div>
-                    </div>
+                  <div class="select-options" :class="{ open: isOpen }">
+                    <label v-for="option in phanxuong">
+                      <input
+                        type="checkbox"
+                        :value="option.mapx"
+                        v-model="selectedOptions"
+                      />
+                      {{ option.mapx }} &nbsp;
+                    </label>
                   </div>
-                </td>
-                <td style="width: 12.65%">
-                  <div class="autocomplete">
-                    <input
-                      class="input is-small is-danger"
-                      type="text"
-                      v-model="search_masp"
-                      @input="onInput_masp"
-                      placeholder="Mã sản phẩm"
-                    />
+                </div>
+              </td>
+              <td style="width: 12.65%">
+                <div class="autocomplete">
+                  <input
+                    class="input is-small is-danger"
+                    type="text"
+                    v-model="search_nhomsp"
+                    @input="onInput"
+                    placeholder="Nhóm sản phẩm"
+                  />
+                  <div class="autocomplete-items" v-if="suggestions.length">
                     <div
-                      class="autocomplete-items"
-                      v-if="suggestions_masp.length"
+                      class="autocomplete-item"
+                      v-for="suggestion in suggestions"
+                      @click="selectSuggestion(suggestion)"
                     >
-                      <div
-                        class="autocomplete-item"
-                        v-for="suggestion in suggestions_masp"
-                        @click="selectSuggestion_masp(suggestion)"
-                      >
-                        {{ suggestion }}
-                      </div>
+                      {{ suggestion }}
                     </div>
                   </div>
-                </td>
-                <td style="width: 7.7%">
-                  <button
-                    @click="searhData"
-                    class="button is-small is-fullwidth is-success"
+                </div>
+              </td>
+              <td style="width: 12.65%">
+                <div class="autocomplete">
+                  <input
+                    class="input is-small is-danger"
+                    type="text"
+                    v-model="search_masp"
+                    @input="onInput_masp"
+                    placeholder="Mã sản phẩm"
+                  />
+                  <div
+                    class="autocomplete-items"
+                    v-if="suggestions_masp.length"
                   >
-                    Lọc
-                  </button>
-                </td>
-                <td style="width: 7.7%">
-                  <button @click="getNguyencong" class="button is-small is-danger is-fullwidth">
-                    Refresh
-                  </button>
-                </td>
-                <!-- <td style="width: 10.15%; text-align: center">
+                    <div
+                      class="autocomplete-item"
+                      v-for="suggestion in suggestions_masp"
+                      @click="selectSuggestion_masp(suggestion)"
+                    >
+                      {{ suggestion }}
+                    </div>
+                  </div>
+                </div>
+              </td>
+              <td style="width: 7.7%">
+                <button
+                  @click="searhData"
+                  class="button is-small is-fullwidth is-success"
+                >
+                  Lọc
+                </button>
+              </td>
+              <td style="width: 7.7%">
+                <button
+                  @click="getNguyencong"
+                  class="button is-small is-danger is-fullwidth"
+                >
+                  Refresh
+                </button>
+              </td>
+              <!-- <td style="width: 10.15%; text-align: center">
                   <vue-excel-xlsx
                     :data="lokehoachsx"
                     :columns="columns"
@@ -152,23 +163,24 @@
                     Download Excel
                   </vue-excel-xlsx>
                 </td> -->
-                <td style="font-size: small; width: 5.5%; font-weight: 600">
-                  Số dòng
-                </td>
-                <td style="font-size: small; width: 7.6%">
-                  <input
-                    class="input is-danger is-small"
-                    type="number"
-                    id="itemsPerPage"
-                    v-model.number="itemsPerPage"
-                    min="1"
-                    max="10"
-                  />
-                </td>
-                <td></td>
-              </tr>
-            </table>
-          </div>
+              <td style="font-size: small; width: 5.5%; font-weight: 600">
+                Số dòng
+              </td>
+              <td style="font-size: small; width: 7.6%">
+                <input
+                  class="input is-danger is-small"
+                  type="number"
+                  id="itemsPerPage"
+                  v-model.number="itemsPerPage"
+                  min="1"
+                  max="10"
+                />
+              </td>
+              <td></td>
+            </tr>
+          </table>
+        </div>
+        <div class="table_wrapper">
           <table
             class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
           >
@@ -250,45 +262,47 @@
               </tr>
             </tbody>
           </table>
-          <div class="pagination">
-            <button
-              class="button is-small is-success"
-              @click="changePage(1)"
-              :disabled="currentPage === 1"
-            >
-              Đầu tiên
-            </button>
-            <button
-              class="button is-small is-info"
-              @click="changePage(currentPage - 1)"
-              :disabled="currentPage === 1"
-            >
-              Trước
-            </button>
-            <button
-              class="button is-small"
-              v-for="page in pages"
-              @click="changePage(page)"
-              :class="{ active: page === currentPage }"
-            >
-              {{ page }}
-            </button>
-            <button
-              class="button is-small is-info"
-              @click="changePage(currentPage + 1)"
-              :disabled="currentPage === pageCount"
-            >
-              Sau
-            </button>
-            <button
-              class="button is-small is-success"
-              @click="changePage(pageCount)"
-              :disabled="currentPage === pageCount"
-            >
-              Cuối
-            </button>
-          </div>
         </div>
+
+        <div class="pagination">
+          <button
+            class="button is-small is-success"
+            @click="changePage(1)"
+            :disabled="currentPage === 1"
+          >
+            Đầu tiên
+          </button>
+          <button
+            class="button is-small is-info"
+            @click="changePage(currentPage - 1)"
+            :disabled="currentPage === 1"
+          >
+            Trước
+          </button>
+          <button
+            class="button is-small"
+            v-for="page in pages"
+            @click="changePage(page)"
+            :class="{ active: page === currentPage }"
+          >
+            {{ page }}
+          </button>
+          <button
+            class="button is-small is-info"
+            @click="changePage(currentPage + 1)"
+            :disabled="currentPage === pageCount"
+          >
+            Sau
+          </button>
+          <button
+            class="button is-small is-success"
+            @click="changePage(pageCount)"
+            :disabled="currentPage === pageCount"
+          >
+            Cuối
+          </button>
+        </div>
+
         <!-- Modal update-->
         <div class="">
           <!-- Toggle class  -->
@@ -833,18 +847,156 @@ export default {
     },
 
     async searhData() {
-      // console.log(this.suggestions);
+      const mapxList = this.selectedOptions;
+      // console.log(this.selectedOptions);
+      const newmaxpList = mapxList.map((item) => {
+        if (
+          item.includes("AL_PXD") ||
+          item.includes("DV_PXD") ||
+          item.includes("PXD")
+        ) {
+          return "PXD";
+        } else {
+          return item;
+        }
+      });
+
+      // console.log(newmaxpList);
+
+      const mavt = this.search_masp;
+      const nhomsp = this.search_nhomsp;
+
+      // loc ca 3 tieu chi
+      if (
+        this.selectedOptions.length > 0 &&
+        this.search_masp != "" &&
+        this.search_nhomsp != ""
+      ) {
+        this.nguyencong = await this.$axios.$get(
+          `/api/nguyencong/filterfulldmnc`,
+          {
+            params: {
+              mapx: newmaxpList,
+              mavt: mavt,
+              nhomsp: nhomsp,
+            },
+          }
+        );
+        // console.log(this.nguyencong);
+      }
+      // Loc ma px & nhom sp
+      else if (
+        this.selectedOptions.length > 0 &&
+        this.search_masp == "" &&
+        this.search_nhomsp != ""
+      ) {
+        this.nguyencong = await this.$axios.$get(
+          `/api/nguyencong/filterfulldmncmapxandnhomsp`,
+          {
+            params: {
+              mapx: newmaxpList,
+              nhomsp: nhomsp,
+            },
+          }
+        );
+        // console.log(this.nguyencong);
+      }
+      // Loc ma px & ma sp
+      else if (
+        this.selectedOptions.length > 0 &&
+        this.search_masp != "" &&
+        this.search_nhomsp == ""
+      ) {
+        this.nguyencong = await this.$axios.$get(
+          `/api/nguyencong/filterfulldmncmapxandmasp`,
+          {
+            params: {
+              mapx: newmaxpList,
+              mavt: mavt,
+            },
+          }
+        );
+        // console.log(this.nguyencong);
+      }
+      // Loc nhom sp & ma sp
+      else if (
+        !this.selectedOptions.length &&
+        this.search_masp != "" &&
+        this.search_nhomsp != ""
+      ) {
+        this.nguyencong = await this.$axios.$get(
+          `/api/nguyencong/filterfulldmncnhomspmasp`,
+          {
+            params: {
+              nhomsp: nhomsp,
+              mavt: mavt,
+            },
+          }
+        );
+        // console.log(this.nguyencong);
+      }
+
+      // chi mapx
+      else if (
+        this.selectedOptions.length > 0 &&
+        this.search_masp == "" &&
+        this.search_nhomsp == ""
+      ) {
+        this.nguyencong = await this.$axios.$get(
+          `/api/nguyencong/filteronlymapx`,
+          {
+            params: {
+              mapx: newmaxpList,
+            },
+          }
+        );
+        // console.log(this.nguyencong);
+      }
+
+      // chi nhomsp
+      else if (
+        !this.selectedOptions.length &&
+        this.search_masp == "" &&
+        this.search_nhomsp != ""
+      ) {
+        this.nguyencong = await this.$axios.$get(
+          `/api/nguyencong/filteronlynhomsp`,
+          {
+            params: {
+              nhomsp: nhomsp,
+            },
+          }
+        );
+        // console.log(this.nguyencong);
+      }
+
+      // chi masp
+      else if (
+        !this.selectedOptions.length &&
+        this.search_masp != "" &&
+        this.search_nhomsp == ""
+      ) {
+        this.nguyencong = await this.$axios.$get(
+          `/api/nguyencong/filteronlymasp`,
+          {
+            params: {
+              mavt: mavt,
+            },
+          }
+        );
+        // console.log(this.nguyencong);
+      }
 
       // console.log(this.nguyencong);
-      if (this.search_nhomsp != "" && this.search_masp == "") {
-        this.nguyencong = await this.$axios.$get(
-          `/api/lokehoach/searchnhomspinnc?nhomsp=${this.search_nhomsp}`
-        );
-      } else if (this.search_nhomsp == "" && this.search_masp != "") {
-        this.nguyencong = await this.$axios.$get(
-          `/api/lokehoach/searchMaspinnc?mavt=${this.search_masp}`
-        );
-      }
+      // if (this.search_nhomsp != "" && this.search_masp == "") {
+      //   this.nguyencong = await this.$axios.$get(
+      //     `/api/lokehoach/searchnhomspinnc?nhomsp=${this.search_nhomsp}`
+      //   );
+      // } else if (this.search_nhomsp == "" && this.search_masp != "") {
+      //   this.nguyencong = await this.$axios.$get(
+      //     `/api/lokehoach/searchMaspinnc?mavt=${this.search_masp}`
+      //   );
+      // }
     },
 
     async getPhanxuong() {
@@ -866,8 +1018,8 @@ export default {
     },
 
     async getNguyencong() {
-      this.search_masp = ''
-      this.search_nhomsp = ''
+      this.search_masp = "";
+      this.search_nhomsp = "";
       this.nguyencong = await this.$axios.$get(
         `/api/nguyencong/getallnguyencong`
       );
@@ -924,6 +1076,7 @@ export default {
         });
 
         this.isActive = false;
+        this.searhData()
       } catch (error) {
         console.log(error);
         const Toast = Swal.mixin({
@@ -1102,5 +1255,61 @@ th {
 
 .autocomplete-item:hover {
   background-color: #fffaeb;
+}
+
+.select-wrapper {
+  position: relative;
+  width: 200px;
+}
+
+.select-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px;
+  background-color: #f2f2f2;
+  border: 1px solid #ddd;
+  cursor: pointer;
+  height: 29px;
+  text-align: center;
+  color: #cb4b10;
+  font-weight: 700;
+}
+
+.arrow {
+  border-style: solid;
+  border-width: 0.15em 0.15em 0 0;
+  content: "";
+  display: inline-block;
+  height: 0.45em;
+  left: 0.25em;
+  position: relative;
+  top: 0.25em;
+  transform: rotate(-45deg);
+  vertical-align: top;
+  width: 0.45em;
+}
+
+.arrow.open {
+  transform: rotate(135deg);
+}
+
+.select-options {
+  display: none;
+  position: absolute;
+  top: 100%;
+  left: 0;
+  right: 0;
+  background-color: #fff;
+  border: 1px solid #ddd;
+  z-index: 1;
+  padding-top: 5px;
+  padding-left: 5px;
+  padding-bottom: 5px;
+  text-align: left;
+}
+
+.select-options.open {
+  display: block;
 }
 </style>
