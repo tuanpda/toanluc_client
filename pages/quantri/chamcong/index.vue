@@ -89,7 +89,7 @@
             </tr>
           </table>
           <table
-            v-if="showNgaychamcong.length <= 0"
+            v-if="items.length > 0"
             class="table is-responsive is-bordered is-narrow is-fullwidth"
           >
             <tr style="background-color: antiquewhite">
@@ -542,8 +542,43 @@ export default {
           });
           Toast.fire({
             icon: "error",
-            title: `Phân xưởng ${this.form.tenpx} đã được chấm công vào ngày ${this.ngaychamcong} rồi!!!`,
+            title: `Phân xưởng ${this.form.tenpx} đã có ${this.showNgaychamcong.length} công nhân chấm công vào ngày ${this.ngaychamcong}`,
           });
+          this.isSelectsEnabled_Chamcong = true;
+          let result = [];
+          for (let i = 0; i < this.cong_nhan.length; i++) {
+            let found = false;
+            for (let j = 0; j < this.showNgaychamcong.length; j++) {
+              if (this.cong_nhan[i].macn === this.showNgaychamcong[j].macn) {
+                found = true;
+                break;
+              }
+            }
+            if (!found) {
+              result.push(this.cong_nhan[i]);
+            }
+          }
+
+          // console.log(result);
+          for (let i = 0; i < result.length; i++) {
+            this.items.push({
+              macn: result[i].macn,
+              tencn: result[i].tencn,
+              mapx: result[i].mapx,
+              tenpx: result[i].tenpx,
+              mato: "",
+              tento: "",
+              sttchon: result[i].sttchon,
+              machamcong: "",
+              chamcong: "",
+              diengiai: "",
+              ghichu: "",
+              ngaychamcong: this.ngaychamcong,
+              tuanchamcong: this.weekNumber,
+              createdAt: this.form.createdAt,
+              createdBy: this.$auth.$state.user.username,
+            });
+          }
         } else {
           this.isSelectsEnabled_Chamcong = true;
           for (let i = 0; i < this.cong_nhan.length; i++) {
@@ -616,8 +651,43 @@ export default {
         });
         Toast.fire({
           icon: "error",
-          title: `Tổ ${this.form.tento} đã được chấm công vào ngày ${this.ngaychamcong} rồi!!!`,
+          title: `Tổ ${this.form.tento} đã có ${this.showNgaychamcong.length} công nhân chấm công vào ngày ${this.ngaychamcong}`,
         });
+        this.isSelectsEnabled_Chamcong = true;
+        let result = [];
+        for (let i = 0; i < this.cong_nhan.length; i++) {
+          let found = false;
+          for (let j = 0; j < this.showNgaychamcong.length; j++) {
+            if (this.cong_nhan[i].macn === this.showNgaychamcong[j].macn) {
+              found = true;
+              break;
+            }
+          }
+          if (!found) {
+            result.push(this.cong_nhan[i]);
+          }
+        }
+
+        // console.log(result);
+        for (let i = 0; i < result.length; i++) {
+          this.items.push({
+            macn: result[i].macn,
+            tencn: result[i].tencn,
+            mapx: result[i].mapx,
+            tenpx: result[i].tenpx,
+            mato: "",
+            tento: "",
+            sttchon: result[i].sttchon,
+            machamcong: "",
+            chamcong: "",
+            diengiai: "",
+            ghichu: "",
+            ngaychamcong: this.ngaychamcong,
+            tuanchamcong: this.weekNumber,
+            createdAt: this.form.createdAt,
+            createdBy: this.$auth.$state.user.username,
+          });
+        }
       } else {
         this.isSelectsEnabled_Chamcong = true;
         this.items = [];
@@ -695,47 +765,95 @@ export default {
             });
             Toast.fire({
               icon: "error",
-              title: "Chưa chọn tất cả công nhân để xác nhận việc chấm công",
+              title: "Chưa chọn công nhân nào để xác nhận việc chấm công",
             });
             return;
           } else {
-            let isAllSelected = true;
+            // let isAllSelected = true;
+            // for (let i = 0; i < this.selected.length; i++) {
+            //   if (this.selected[i].value.machamcong === "") {
+            //     isAllSelected = false;
+            //     break;
+            //   }
+            // }
+            // if (!isAllSelected) {
+            //   const Toast = Swal.mixin({
+            //     toast: true,
+            //     position: "top-end",
+            //     showConfirmButton: false,
+            //     timer: 3000,
+            //     timerProgressBar: true,
+            //     didOpen: (toast) => {
+            //       toast.addEventListener("mouseenter", Swal.stopTimer);
+            //       toast.addEventListener("mouseleave", Swal.resumeTimer);
+            //     },
+            //   });
+            //   Toast.fire({
+            //     icon: "error",
+            //     title: "Xem lại việc chấm công cho từng người, còn thiếu!",
+            //   });
+            //   return;
+            // } else {
+            //   // console.log(this.ngaychamcong);
+            //   // kiểm tra xem có dữ liệu ngày chấm công trong csdl chưa
+            //   const getNgaychamcong = await this.$axios.$get(
+            //     `/api/congnhan/getngaychamcongonsv`
+            //   );
+            //   // console.log(getNgaychamcong);
+            //   // gọi api ghi dữ liệu chấm công vào db
+            //   for (let i = 0; i < this.selected.length; i++) {
+            //     const data = this.selected[i].value;
+            //     await this.$axios.$post(`/api/congnhan/addchamcong`, data);
+            //   }
+
+            //   const Toast = Swal.mixin({
+            //     toast: true,
+            //     position: "top-end",
+            //     showConfirmButton: false,
+            //     timer: 3000,
+            //     timerProgressBar: true,
+            //     didOpen: (toast) => {
+            //       toast.addEventListener("mouseenter", Swal.stopTimer);
+            //       toast.addEventListener("mouseleave", Swal.resumeTimer);
+            //     },
+            //   });
+            //   Toast.fire({
+            //     icon: "success",
+            //     title: "Đã chấm công",
+            //   });
+
+            //   this.isSelectsEnabled = false;
+            //   this.selected = [];
+            // }
+            // console.log(this.selected);
+            let error = false;
             for (let i = 0; i < this.selected.length; i++) {
               if (this.selected[i].value.machamcong === "") {
-                isAllSelected = false;
+                error = true;
+                const Toast = Swal.mixin({
+                  toast: true,
+                  position: "top-end",
+                  showConfirmButton: false,
+                  timer: 3000,
+                  timerProgressBar: true,
+                  didOpen: (toast) => {
+                    toast.addEventListener("mouseenter", Swal.stopTimer);
+                    toast.addEventListener("mouseleave", Swal.resumeTimer);
+                  },
+                });
+                Toast.fire({
+                  icon: "error",
+                  title: "Xem lại thiếu loại chấm công của những người được chọn",
+                });
                 break;
               }
             }
-            if (!isAllSelected) {
-              const Toast = Swal.mixin({
-                toast: true,
-                position: "top-end",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                  toast.addEventListener("mouseenter", Swal.stopTimer);
-                  toast.addEventListener("mouseleave", Swal.resumeTimer);
-                },
-              });
-              Toast.fire({
-                icon: "error",
-                title: "Xem lại việc chấm công cho từng người, còn thiếu!",
-              });
-              return;
-            } else {
-              // console.log(this.ngaychamcong);
-              // kiểm tra xem có dữ liệu ngày chấm công trong csdl chưa
-              const getNgaychamcong = await this.$axios.$get(
-                `/api/congnhan/getngaychamcongonsv`
-              );
-              // console.log(getNgaychamcong);
-              // gọi api ghi dữ liệu chấm công vào db
+            if (!error) {
+              // console.log("OK");
               for (let i = 0; i < this.selected.length; i++) {
                 const data = this.selected[i].value;
                 await this.$axios.$post(`/api/congnhan/addchamcong`, data);
               }
-
               const Toast = Swal.mixin({
                 toast: true,
                 position: "top-end",
