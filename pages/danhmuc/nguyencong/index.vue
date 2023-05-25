@@ -847,6 +847,9 @@ export default {
     },
 
     async searhData() {
+      this.isOpen = false;
+      this.isOpenst = false;
+      
       const mapxList = this.selectedOptions;
       // console.log(this.selectedOptions);
       const newmaxpList = mapxList.map((item) => {
