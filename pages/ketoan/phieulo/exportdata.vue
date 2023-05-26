@@ -481,7 +481,7 @@ export default {
           this.to !== ""
         ) {
           this.data = await this.$axios.$get(
-            `/api/report/execldatawithtimeandto?mapx=${this.mato}&tungay=${this.from}&denngay=${this.to}`
+            `/api/report/execldatawithtimeandto?mato=${this.mato}&tungay=${this.from}&denngay=${this.to}`
           );
           if (this.data.length <= 0) {
             const Toast = Swal.mixin({

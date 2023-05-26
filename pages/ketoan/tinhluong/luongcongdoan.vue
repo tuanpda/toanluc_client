@@ -790,7 +790,7 @@ export default {
     onChange_Thang(e) {
       var id = e.target.value;
       var name = e.target.options[e.target.options.selectedIndex].text;
-      console.log('id ', id);
+      // console.log('id ', id);
       // console.log('name ',name );
       this.thang = id;
       // console.log(this.nam)
