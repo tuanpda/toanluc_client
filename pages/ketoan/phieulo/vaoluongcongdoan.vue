@@ -2814,7 +2814,7 @@ export default {
       }
       this.dmcongnhat = await this.$axios.$get(`/api/ketoan/alldmcongnhat`);
       this.iscongnhat = 1;
-      // console.log(this.items_cn);
+
       this.items_cn.push({
         _id_losx: this.getinfoplsx._id,
         kehoachnam: this.getinfoplsx.kehoachnam,
@@ -2838,7 +2838,6 @@ export default {
         nhomto_cnt: [],
         nhomto: [],
       });
-
       for (let i = 0; i < this.items_cn.length; i++) {
         // console.log(this.cong_nhan)
         for (let k = 0; k < this.cong_nhan.length; k++) {
@@ -2855,6 +2854,8 @@ export default {
           // console.log(this.items[i].nhomto_cnt)
         }
       }
+
+      console.log(this.items_cn);
     },
     // search phiếu
     async searchPhieu() {
@@ -3219,11 +3220,11 @@ export default {
           this.items_cn[i].tencongnhat =
             this.dmcongnhat[this.selectedIndex].tencn;
           this.items_cn[i].dongia = this.dmcongnhat[this.selectedIndex].dongia;
-          this.items_cn[i].malosx = this.form.malosx;
-          this.items_cn[i].malonhamay = this.form.malonhamay;
-          this.items_cn[i].makhpx = this.form.makhpx;
-          this.items_cn[i].tensp = this.form.tensp;
-          this.items_cn[i].mapx = this.form.mapx;
+          this.items_cn[i].malosx = this.getinfoplsx.malosx;
+          this.items_cn[i].malonhamay = this.getinfoplsx.malonhamay;
+          this.items_cn[i].makhpx = this.getinfoplsx.makhpx;
+          this.items_cn[i].tensp = this.getinfoplsx.tensp;
+          this.items_cn[i].mapx = this.getinfoplsx.mapx;
           this.items_cn[i]._id_losx = this.getinfoplsx._id;
         }
       }

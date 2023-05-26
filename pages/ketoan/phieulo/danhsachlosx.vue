@@ -49,7 +49,29 @@
                   </div>
                 </div>
               </td>
-              <td style="width: 12.65%">
+              <td style="font-size: small; width: 15.15%">
+                <div class="select-wrapper">
+                  <div class="select-header" @click="isOpen = !isOpen">
+                    {{
+                      selectedOptions.length > 0
+                        ? selectedOptions.join(", ")
+                        : "Chọn Phân xưởng"
+                    }}
+                    <span class="arrow" :class="{ open: isOpen }"></span>
+                  </div>
+                  <div class="select-options" :class="{ open: isOpen }">
+                    <label v-for="option in phanxuong">
+                      <input
+                        type="checkbox"
+                        :value="option.mapx"
+                        v-model="selectedOptions"
+                      />
+                      {{ option.mapx }} &nbsp;
+                    </label>
+                  </div>
+                </div>
+              </td>
+              <td style="width: 10%">
                 <div class="autocomplete">
                   <input
                     class="input is-small is-success"
@@ -72,7 +94,7 @@
                   </div>
                 </div>
               </td>
-              <td style="width: 12.65%">
+              <td style="width: 10%">
                 <div class="autocomplete">
                   <input
                     class="input is-small is-danger"
@@ -92,7 +114,7 @@
                   </div>
                 </div>
               </td>
-              <td style="font-size: small; width: 15.27%">
+              <td style="font-size: small; width: 10%">
                 <div class="select-wrapper">
                   <div class="select-header" @click="isOpenst = !isOpenst">
                     {{
@@ -114,7 +136,7 @@
                   </div>
                 </div>
               </td>
-              <td style="width: 7.7%">
+              <td style="width: 5%">
                 <button
                   @click="filterData"
                   class="button is-small is-fullwidth is-success"
@@ -122,7 +144,7 @@
                   Lọc
                 </button>
               </td>
-              <td style="width: 7.7%">
+              <td style="width: 5%">
                 <button
                   @click="showAllLokhsx"
                   class="button is-small is-danger is-fullwidth"
@@ -134,7 +156,7 @@
                                 <button @click="printphieu" class="button is-small is-info is-fullwidth">In phiếu
                                     lô</button>
                             </td> -->
-              <td style="width: 7.7%">
+              <td style="width: 7%">
                 <button
                   @click="exportExcel"
                   class="button is-small is-info is-fullwidth"
