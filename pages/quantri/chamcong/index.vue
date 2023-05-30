@@ -872,6 +872,7 @@ export default {
 
               this.isSelectsEnabled = false;
               this.selected = [];
+              this.items = []
             }
           }
         } catch (error) {

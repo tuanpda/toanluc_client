@@ -49,24 +49,24 @@
                   </div>
                 </div>
               </td>
-              <td style="font-size: small; width: 15.15%">
-                <div class="select-wrapper">
-                  <div class="select-header" @click="isOpen = !isOpen">
+              <td style="font-size: small; width: 17%">
+                <div class="select-wrapper-to">
+                  <div class="select-header" @click="isOpento = !isOpento">
                     {{
-                      selectedOptions.length > 0
-                        ? selectedOptions.join(", ")
-                        : "Chọn Phân xưởng"
+                      selectedOptions_to.length > 0
+                        ? selectedOptions_to.join(", ")
+                        : "Chọn Tổ"
                     }}
-                    <span class="arrow" :class="{ open: isOpen }"></span>
+                    <span class="arrow" :class="{ open: isOpento }"></span>
                   </div>
-                  <div class="select-options" :class="{ open: isOpen }">
-                    <label v-for="option in phanxuong">
+                  <div class="select-options" :class="{ open: isOpento }">
+                    <label v-for="option in tonhom">
                       <input
                         type="checkbox"
-                        :value="option.mapx"
-                        v-model="selectedOptions"
+                        :value="option.mato"
+                        v-model="selectedOptions_to"
                       />
-                      {{ option.mapx }} &nbsp;
+                      {{ option.mato }} &nbsp;
                     </label>
                   </div>
                 </div>
@@ -115,7 +115,7 @@
                 </div>
               </td>
               <td style="font-size: small; width: 10%">
-                <div class="select-wrapper">
+                <div class="select-wrapper-status">
                   <div class="select-header" @click="isOpenst = !isOpenst">
                     {{
                       Options_status.length > 0
@@ -711,6 +711,7 @@ export default {
       // dữ liệu
       lokehoachsx: [],
       phanxuong: [],
+      tonhom: [],
 
       // các biến tìm kiếm
       search_maxuong: "",
@@ -729,8 +730,10 @@ export default {
 
       // check nhiều phân xưởng
       selectedOptions: [],
+      selectedOptions_to: [],
       Options_status: [],
       isOpen: false,
+      isOpento: false,
       isOpenst: false,
       statusArr: [
         { masta: 1, tensta: "DK" },
@@ -862,6 +865,7 @@ export default {
   mounted() {
     this.showAllLokhsx();
     this.showAllPx();
+    this.showAllTo();
     this.maspinlsx();
     this.nhomspinlsx();
     this.currentDateTime();
@@ -1204,6 +1208,10 @@ export default {
     async showAllPx() {
       this.phanxuong = await this.$axios.$get(`/api/phongban/allphanxuong`);
     },
+    // lấy danh sách tổ nhóm
+    async showAllTo() {
+      this.tonhom = await this.$axios.$get(`/api/phongban/allto`);
+    },
     // lấy mã sản phẩm trong lô sản xuất
     async maspinlsx() {
       this.maspinlosanxuat = await this.$axios.$get(
@@ -1225,14 +1233,39 @@ export default {
       // console.log(this.selected)
       this.isOpen = false;
       this.isOpenst = false;
+      this.isOpento = false;
 
       const mapxList = this.selectedOptions;
       const masp = this.multiSearch_masp;
       const nhomsp = this.multiSearch_nhomsp;
       const status = this.Options_status;
+      const matoList = this.selectedOptions_to;
+      
+      // thêm lọc theo mã tổ
+      if (
+        this.selectedOptions.length > 0 &&
+        this.selectedOptions_to.length > 0 &&
+        this.Options_status.length > 0 &&
+        this.multiSearch_masp != "" &&
+        this.multiSearch_nhomsp != ""
+      ) {
+        this.lokehoachsx = await this.$axios.$get(
+          `/api/lokehoach/filterfulldklosanxuatthemto`,
+          {
+            params: {
+              mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
+              masp: masp,
+              status: status,
+              nhomsp: nhomsp,
+              mato: matoList
+            },
+          }
+        );
+        // console.log(this.lokehoachsx)
+      }
 
       // chọn lọc full
-      if (
+      else if (
         this.selectedOptions.length > 0 &&
         this.Options_status.length > 0 &&
         this.multiSearch_masp != "" &&
@@ -1251,6 +1284,73 @@ export default {
         );
         // console.log(this.lokehoachsx)
       }
+
+      // ma xuong ma to nhom ssp
+      else if (
+        this.selectedOptions.length > 0 &&
+        this.selectedOptions_to.length > 0 &&
+        !this.Options_status.length &&
+        this.multiSearch_masp == "" &&
+        this.multiSearch_nhomsp != ""
+      ) {
+        this.lokehoachsx = await this.$axios.$get(
+          `/api/lokehoach/filtermatomaxuongnhomspdklosanxuatthemto`,
+          {
+            params: {
+              mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
+              // masp: masp,
+              // status: status,
+              nhomsp: nhomsp,
+              mato: matoList
+            },
+          }
+        );
+        // console.log(this.lokehoachsx)
+      }
+
+      // ma xuong ma to ma sp
+      else if (
+        this.selectedOptions.length > 0 &&
+        this.selectedOptions_to.length > 0 &&
+        !this.Options_status.length &&
+        this.multiSearch_masp != "" &&
+        this.multiSearch_nhomsp == ""
+      ) {
+        this.lokehoachsx = await this.$axios.$get(
+          `/api/lokehoach/filtermatomaxuongmaspdklosanxuatthemto`,
+          {
+            params: {
+              mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
+              masp: masp,
+              // status: status,
+              // nhomsp: nhomsp,
+              mato: matoList
+            },
+          }
+        );
+        // console.log(this.lokehoachsx)
+      }
+
+      // chỉ mã tổ & mã xưởng
+      else if (
+        this.selectedOptions.length > 0 &&
+        this.selectedOptions_to.length > 0 &&
+        !this.Options_status.length &&
+        this.multiSearch_masp == "" &&
+        this.multiSearch_nhomsp == ""
+      ) {
+        this.lokehoachsx = await this.$axios.$get(
+          `/api/lokehoach/filtermatomaxuongdklosanxuatthemto`,
+          {
+            params: {
+              mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
+              mato: matoList
+            },
+          }
+        );
+        // console.log(this.lokehoachsx)
+      }
+
       // chỉ có mã px
       else if (
         this.selectedOptions.length > 0 &&
@@ -2123,6 +2223,16 @@ tr:hover {
 .select-wrapper {
   position: relative;
   width: 200px;
+}
+
+.select-wrapper-status {
+  position: relative;
+  width: 150px;
+}
+
+.select-wrapper-to {
+  position: relative;
+  width: 250px;
 }
 
 .select-header {

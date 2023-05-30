@@ -1046,7 +1046,8 @@
                       <span style="font-size: small; font-weight: 700"
                         >Tổ được chỉ định:
                       </span>
-                      <span style="font-size: small; font-weight: bold; color: red;"
+                      <span
+                        style="font-size: small; font-weight: bold; color: red"
                         >{{ form.tento }}
                       </span>
                     </template>
@@ -4673,6 +4674,32 @@ export default {
         }
       });
     },
+
+    // async cc() {
+    //   // lấy danh sách _id_losx có trong công nhật
+    //   const arrId = await this.$axios.get(`api/report/getidlsx`);
+    //   // console.log(arrId.data);
+    //   for (let i = 0; i < arrId.data.length; i++) {
+    //     // console.log(arrId.data[i]);
+    //     const id = arrId.data[i]
+    //     const idlsx = id._id_losx
+    //     // console.log(idlsx);
+    //     // tìm malonhamay
+    //     const malonhamay = await this.$axios.get(`api/report/getmalonhamay?_id=${idlsx}`);
+    //     // update
+    //     const response = await this.$axios.patch(`api/report/updatemalonhamaycongnhat/${idlsx}`, malonhamay.data[0])
+    //     console.log(response.data.success);
+    //   }
+
+    //   // tìm mã lô nhà máy
+    //   // const _id=3186
+    //   // const malonhamay = await this.$axios.get(`api/report/getmalonhamay?_id=${_id}`);
+    //   // console.log(malonhamay.data[0]);
+
+    //   // // cập nhật
+    //   // const response = await this.$axios.patch(`api/report/updatemalonhamaycongnhat/3186`, malonhamay.data[0])
+    //   // console.log(response);
+    // },
   },
 };
 </script>
