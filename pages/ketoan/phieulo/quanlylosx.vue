@@ -1494,17 +1494,17 @@ export default {
           field: "makh",
         },
         {
-          label: "Mã sản phẩm",
-          field: "masp",
+          label: "Mã thành phẩm",
+          field: "mathanhpham",
           /* dataFormat: this.priceFormat */
         },
         {
-          label: "Tên sản phẩm",
-          field: "tensp",
+          label: "Tên thành phẩm",
+          field: "tenthanhpham",
         },
         {
           label: "Nhóm sản phẩm",
-          field: "nhomsp",
+          field: "nhomthanhpham",
         },
         {
           label: "Số lượng",
