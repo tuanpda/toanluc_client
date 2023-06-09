@@ -93,17 +93,43 @@
         class="table is-responsive is-bordered is-narrow is-fullwidth"
       >
         <tr style="background-color: honeydew">
-          <th style="text-align: center; font-size: small; font-weight: bold; width: 3%;">
+          <th
+            style="
+              text-align: center;
+              font-size: small;
+              font-weight: bold;
+              width: 3%;
+            "
+          >
             STT
           </th>
-          <th style="text-align: center; font-size: small; font-weight: bold; width: 7%;">
+          <th
+            style="
+              text-align: center;
+              font-size: small;
+              font-weight: bold;
+              width: 7%;
+            "
+          >
             Mã công nhân
           </th>
-          <th style="text-align: center; font-size: small; font-weight: bold; width: 10%;">
+          <th
+            style="
+              text-align: center;
+              font-size: small;
+              font-weight: bold;
+              width: 10%;
+            "
+          >
             Tên công nhân
           </th>
           <th
-            style="text-align: center; font-size: small; font-weight: bold; width: 5%"
+            style="
+              text-align: center;
+              font-size: small;
+              font-weight: bold;
+              width: 5%;
+            "
             v-for="date in dates"
           >
             {{ date }}
@@ -112,7 +138,7 @@
         </tr>
         <tr v-for="(cc, index) in dataChamcong" :key="index">
           <td style="text-align: center; font-size: small">{{ index + 1 }}</td>
-          <td style="font-size: small; text-align: center;">{{ cc.macn }}</td>
+          <td style="font-size: small; text-align: center">{{ cc.macn }}</td>
           <td style="font-size: small">{{ cc.tencn }}</td>
           <td
             style="font-size: small; text-align: center"
@@ -152,62 +178,7 @@ export default {
           label: "Tên công nhân",
           field: "tencn",
         },
-        {
-          label: "Mã phân xưởng",
-          field: "mapx",
-        },
-        {
-          label: "Tên phân xưởng",
-          field: "tenpx",
-        },
-
-        {
-          label: "Mã tổ",
-          field: "mato",
-        },
-        {
-          label: "Tên tổ",
-          field: "tento",
-        },
-        {
-          label: "STT CN",
-          field: "sttchon",
-        },
-        {
-          label: "Mã chấm công",
-          field: "machamcong",
-        },
-        {
-          label: "Chấm công",
-          field: "chamcong",
-        },
-        {
-          label: "Diễn giải",
-          field: "diengiai",
-        },
-
-        {
-          label: "Ghi chú",
-          field: "diachi",
-        },
-        {
-          label: "Ngày chấm công",
-          field: "ngaychamcong",
-          dataFormat: this.prefixformatDate,
-        },
-        {
-          label: "Tuần chấm công",
-          field: "tuanchamcong",
-        },
-        {
-          label: "Lập bởi user",
-          field: "createdBy",
-        },
-        {
-          label: "Lập ngày",
-          field: "createdAt",
-          dataFormat: this.prefixformatDate,
-        },
+        
       ],
     };
   },
@@ -248,7 +219,7 @@ export default {
         `/api/congnhan/baocaothangtheopx?mapx=${this.mapx}&startDate=${this.startDate}&endDate=${this.endDate}`
       );
       //   this.dataChamcong.
-      //   console.log(response);
+      console.log(response);
       this.dataChamcong = response.data;
     },
     createDays() {
@@ -302,7 +273,7 @@ export default {
         const response = await this.$axios.get(
           `/api/congnhan/baocaochamcongthangphanxuong?mapx=${mapx}&startDate=${this.startDate}&endDate=${this.endDate}`
         );
-        // console.log(response.data);
+        console.log(response.data);
         this.dataChamcong = response.data;
 
         // const firstDayOfMonth = new Date(
@@ -345,7 +316,7 @@ export default {
         // //   this.dataChamcong.
         // //   console.log(response);
         // this.dataChamcong = response.data;
-      } 
+      }
       // else {
       //   const date = new Date(this.khoangtime);
       //   this.namcc = date.getFullYear(); // Lấy năm
@@ -359,13 +330,13 @@ export default {
       const tento = position[1];
       this.phanxuongcc = "";
       this.tocc = tento;
-      
+
       const response = await this.$axios.get(
-          `/api/congnhan/baocaochamcongthangto?mato=${mato}&startDate=${this.startDate}&endDate=${this.endDate}`
-        );
-        // console.log(response.data);
-        this.dataChamcong = response.data;
-      
+        `/api/congnhan/baocaochamcongthangto?mato=${mato}&startDate=${this.startDate}&endDate=${this.endDate}`
+      );
+      // console.log(response.data);
+      this.dataChamcong = response.data;
+
       // //   console.log(this.khoangtime);
       // const date = new Date(this.khoangtime);
       // //   console.log(date);

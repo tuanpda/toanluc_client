@@ -1,225 +1,359 @@
 <template>
-  <div class="columns is-mobile">
-    <div class="column is-10 is-offset-1">
-      <br />
-      <div class="box">
-        <div class="columns">
-          <div class="column">
-            <div class="control">
-              <span class="icon is-small is-left">
-                <i class="	fas fa-calculator"></i>
-              </span>
-              Lập danh sách lương
-            </div>
-          </div>
-        </div>
-        <!-- Mức đóng, thời gian công lương -->
-        <div class="columns" style="border: 1px solid green;">
-          <div class="column">
-            <span style="color: #f14668" class="icon is-small is-left">
-              <i class="fas fa-feather-alt"></i>
+  <div class="column" style="margin-left: 10px; margin-right: 10px">
+    <br />
+    <div class="box">
+      <div class="columns">
+        <div class="column">
+          <div class="control">
+            <span class="icon is-small is-left">
+              <i class="fas fa-calculator"></i>
             </span>
-            <span style="font-weight:bold;">Thời gian lập</span>
-            <table style="margin-top: 8px;"
-              class="table table is-bordered table is-narrow table is-hoverable table is-fullwidth">
-              <tr>
-                <td style="font-size: small;">Tháng lập bảng lương</td>
-                <td style="text-align: right; font-size: small;">
-                  <div class="select is-small is-fullwidth">
-                    <select id="" @change="onChange_Thang($event)">
-                      <option selected>-- Chọn tháng --</option>
-                      <option value="01">Tháng 1</option>
-                      <option value="02">Tháng 2</option>
-                      <option value="03">Tháng 3</option>
-                      <option value="04">Tháng 4</option>
-                      <option value="05">Tháng 5</option>
-                      <option value="06">Tháng 6</option>
-                      <option value="07">Tháng 7</option>
-                      <option value="08">Tháng 8</option>
-                      <option value="09">Tháng 9</option>
-                      <option value="10">Tháng 10</option>
-                      <option value="11">Tháng 11</option>
-                      <option value="12">Tháng 12</option>
-                    </select>
-                  </div>
-                </td>
-                <td>
-                  <div class="select is-small is-fullwidth">
-                    <select id="" @change="onChange_Nam($event)">
-                      <option selected>-- Chọn năm --</option>
-                      <option value="2022">Tháng 2022</option>
-                      <option value="2023">Tháng 2023</option>
-                      <option value="2024">Tháng 2024</option>
-                      <option value="2025">Tháng 2025</option>
-                      <option value="2026">Tháng 2026</option>
-                      <option value="2027">Tháng 2027</option>
-                      <option value="2028">Tháng 2028</option>
-                      <option value="2029">Tháng 2029</option>
-                      <option value="2030">Tháng 2030</option>
-                      <option value="2031">Tháng 2031</option>
-                      <option value="2032">Tháng 2032</option>
-                      <option value="2033">Tháng 2033</option>
-                    </select>
-                  </div>
-                </td>
-              </tr>
-            </table>
-          </div>
-          <div class="column">
-            <div style="text-align: right">
-              <button @click="onReport" style="text-align:right;" class="button is-small is-success">
-                Lập bảng lương
-              </button>
-            </div>
+            Lập danh sách lương
           </div>
         </div>
-        <div class="columns" style="margin-top:1px;">
-          <div class="table_wrapper table-height">
-            <table class="
-              table
-              is-bordered is-striped is-narrow is-hoverable is-fullwidth
-            ">
-              <tr>
-                <td rowspan="2" style="text-align: center; font-weight: bold; font-size: small;">
-                  Chọn <br />
-                  <input type="checkbox" v-model="selectAll" />
-                </td>
-                <td rowspan="2" style="text-align: center; font-weight: bold; font-size: small;">
-                  STT
-                </td>
-                <td rowspan="2" style="text-align: center; font-weight: bold; font-size: small;">
-                  Họ tên
-                </td>
-                <td rowspan="2" style="text-align: center; font-weight: bold; font-size: small;">
-                  Phòng
-                </td>
-                <td rowspan="2" style="text-align: center; font-weight: bold; font-size: small;">
-                  Lương
-                </td>
-                <td colspan="5" style="text-align: center; font-weight: bold; font-size: small;">
-                  Các khoản khấu trừ
-                </td>
-                <td rowspan="2" style="text-align: center; font-weight: bold; font-size: small;">
-                  Trừ tạm ứng
-                </td>
-                <td rowspan="2" style="text-align: center; font-weight: bold; font-size: small; width: 10%">
-                  Thưởng thêm
-                </td>
-                <td rowspan="2" style="text-align: center; font-weight: bold; font-size: small;">
-                  Lương nhận
-                </td>
-              </tr>
-              <tr>
-                <td style="text-align: center; font-weight: bold; font-size: small;">BHXH</td>
-                <td style="text-align: center; font-weight: bold; font-size: small;">BHYT</td>
-                <td style="text-align: center; font-weight: bold; font-size: small;">BHTN</td>
-                <td style="text-align: center; font-weight: bold; font-size: small;">KPCĐ</td>
-                <td style="text-align: center; font-weight: bold; font-size: small;">Tổng KT</td>
-              </tr>
-              <tr v-for="(nv, index) in dsnhanvien" :key="index">
-                <td style="text-align: center">
-                  <input v-model="selected" :value="nv" type="checkbox" />
-                </td>
-                <td style="text-align: center; font-size: small;">{{ index + 1 }}</td>
-                <td style="font-size: small;">{{ nv.tennv }}</td>
-                <td style="font-size: small;">
-                  {{ nv.tenphong }}
-                </td>
-                <td style="text-align: center; font-size: small;">
-                  {{ nv.mucluong | formatNumber }}
-                </td>
-                <td style="text-align: center; font-size: small;">
-                  {{
-                  ((parseFloat(nv.mucluong) *
-  parseFloat(get_qtl.tl_dong_bhxh_cn)) /
-  100)
-  | formatNumber
-                  }}
-                </td>
-                <td style="text-align: center; font-size: small;">
-                  {{
-                  ((parseFloat(nv.mucluong) *
-  parseFloat(get_qtl.tl_dong_bhyt_cn)) /
-  100)
-  | formatNumber
-                  }}
-                </td>
-                <td style="text-align: center; font-size: small;">
-                  {{
-                  ((parseFloat(nv.mucluong) *
-  parseFloat(get_qtl.tl_dong_bhtn_cn)) /
-  100)
-  | formatNumber
-                  }}
-                </td>
-                <td style="text-align: center; font-size: small;">
-                  {{ get_qtl.tl_dong_cd_cn | formatNumber }}
-                </td>
-                <td style="text-align: center; font-size: small;">
-                  {{
-                  ((parseFloat(nv.mucluong) *
-  parseFloat(get_qtl.tl_dong_bhxh_cn)) /
-  100 +
-  (parseFloat(nv.mucluong) *
-    parseFloat(get_qtl.tl_dong_bhyt_cn)) /
-  100 +
-  (parseFloat(nv.mucluong) *
-    parseFloat(get_qtl.tl_dong_bhtn_cn)) /
-  100 +
-  parseFloat(get_qtl.tl_dong_cd_cn))
-  | formatNumber
-                  }}
-                </td>
-
-                <td style="text-align: center; font-size: small;">
-                  {{ nv.tong_ung | formatNumber }}
-                </td>
-
-                <td>
-                  <input v-model="nv.thuong" type="text" class="input is-small" />
-                </td>
-                <template v-if="nv.tong_ung">
-                  <td style="text-align: right; font-size: small;">
-                    {{
-                    (parseFloat(nv.mucluong) +
-  parseFloat(nv.thuong) -
-  ((parseFloat(nv.mucluong) *
-    parseFloat(get_qtl.tl_dong_bhxh_cn)) /
-    100 +
-    (parseFloat(nv.mucluong) *
-      parseFloat(get_qtl.tl_dong_bhyt_cn)) /
-    100 +
-    (parseFloat(nv.mucluong) *
-      parseFloat(get_qtl.tl_dong_bhtn_cn)) /
-    100 +
-    parseFloat(get_qtl.tl_dong_cd_cn) +
-    parseFloat(nv.tong_ung)))
-  | formatNumber
-                    }}
-                  </td>
-                </template>
-                <template v-else>
-                  <td style="text-align: right; font-size: small;">
-                    {{
-                    (parseFloat(nv.mucluong) +
-  parseFloat(nv.thuong) -
-  ((parseFloat(nv.mucluong) *
-    parseFloat(get_qtl.tl_dong_bhxh_cn)) /
-    100 +
-    (parseFloat(nv.mucluong) *
-      parseFloat(get_qtl.tl_dong_bhyt_cn)) /
-    100 +
-    (parseFloat(nv.mucluong) *
-      parseFloat(get_qtl.tl_dong_bhtn_cn)) /
-    100 +
-    parseFloat(get_qtl.tl_dong_cd_cn)))
-  | formatNumber
-                    }}
-                  </td>
-                </template>
-              </tr>
-            </table>
+      </div>
+      <!-- Mức đóng, thời gian công lương -->
+      <div class="columns">
+        <div class="column">
+          <span style="color: #f14668" class="icon is-small is-left">
+            <i class="fas fa-feather-alt"></i>
+          </span>
+          <span style="font-weight: bold">Thời gian lập</span>
+          <table
+            style="margin-top: 8px"
+            class="table table is-bordered table is-narrow table is-hoverable table is-fullwidth"
+          >
+            <tr>
+              <td style="font-size: small">Tháng lập bảng lương</td>
+              <td style="text-align: right; font-size: small">
+                <div class="select is-small is-fullwidth">
+                  <select id="" @change="onChange_Thang($event)">
+                    <option selected>-- Chọn tháng --</option>
+                    <option value="01">Tháng 1</option>
+                    <option value="02">Tháng 2</option>
+                    <option value="03">Tháng 3</option>
+                    <option value="04">Tháng 4</option>
+                    <option value="05">Tháng 5</option>
+                    <option value="06">Tháng 6</option>
+                    <option value="07">Tháng 7</option>
+                    <option value="08">Tháng 8</option>
+                    <option value="09">Tháng 9</option>
+                    <option value="10">Tháng 10</option>
+                    <option value="11">Tháng 11</option>
+                    <option value="12">Tháng 12</option>
+                  </select>
+                </div>
+              </td>
+              <td>
+                <div class="select is-small is-fullwidth">
+                  <select id="" @change="onChange_Nam($event)">
+                    <option selected>-- Chọn năm --</option>
+                    <option value="2022">Tháng 2022</option>
+                    <option value="2023">Tháng 2023</option>
+                    <option value="2024">Tháng 2024</option>
+                    <option value="2025">Tháng 2025</option>
+                    <option value="2026">Tháng 2026</option>
+                    <option value="2027">Tháng 2027</option>
+                    <option value="2028">Tháng 2028</option>
+                    <option value="2029">Tháng 2029</option>
+                    <option value="2030">Tháng 2030</option>
+                    <option value="2031">Tháng 2031</option>
+                    <option value="2032">Tháng 2032</option>
+                    <option value="2033">Tháng 2033</option>
+                  </select>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="column">
+          <div style="text-align: right">
+            <button
+              @click="onReport"
+              style="text-align: right"
+              class="button is-small is-success"
+            >
+              Lập bảng lương
+            </button>
           </div>
+        </div>
+      </div>
+
+      <div>
+        <div class="table_wrapper">
+          <table
+            class="table is-responsive is-bordered is-striped is-narrow is-hoverable is-fullwidth"
+          >
+            <tr style="background-color: aliceblue">
+              <td
+                rowspan="2"
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                Chọn <br />
+                <input type="checkbox" v-model="selectAll" />
+              </td>
+              <td
+                rowspan="2"
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                STT
+              </td>
+              <td
+                rowspan="2"
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                Họ tên
+              </td>
+              <td
+                rowspan="2"
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                Phòng
+              </td>
+              <td
+                rowspan="2"
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                Lương CB
+              </td>
+              <td
+                rowspan="2"
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                Ngày công
+              </td>
+              <td
+                rowspan="2"
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                Lương ngày <br />
+                công
+              </td>
+              <td
+                colspan="3"
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                Thưởng doanh thu
+              </td>
+              <td
+                rowspan="2"
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                Lương ngoài giờ
+                <br />
+                / Chủ nhật
+              </td>
+              <td
+                colspan="5"
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                Các khoản khấu trừ
+              </td>
+              <td
+                rowspan="2"
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                Trừ tạm ứng
+              </td>
+              <td
+                rowspan="2"
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                &nbsp; &nbsp; Hỗ trợ &nbsp; &nbsp;
+              </td>
+              <td
+                rowspan="2"
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                Lương nhận
+              </td>
+            </tr>
+            <tr style="background-color: aliceblue">
+              <td
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                &nbsp; &nbsp; Điều chỉnh &nbsp; &nbsp;
+              </td>
+              <td
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                &nbsp; &nbsp; Thưởng &nbsp; &nbsp;
+              </td>
+              <td
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                &nbsp; &nbsp; &nbsp; Phạt &nbsp; &nbsp; &nbsp;
+              </td>
+              <td
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                BHXH
+              </td>
+              <td
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                BHYT
+              </td>
+              <td
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                BHTN
+              </td>
+              <td
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                KPCĐ
+              </td>
+              <td
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                Tổng KT
+              </td>
+            </tr>
+            <tr v-for="(nv, index) in dsnhanvien" :key="index">
+              <td style="text-align: center">
+                <input v-model="selected" :value="nv" type="checkbox" />
+              </td>
+              <td style="text-align: center; font-size: small">
+                {{ index + 1 }}
+              </td>
+              <td style="font-size: small">{{ nv.tennv }}</td>
+              <td style="font-size: small">
+                {{ nv.tenphong }}
+              </td>
+              <td style="text-align: center; font-size: small">
+                {{ nv.mucluong | formatNumber }}
+              </td>
+              <td style="text-align: center; font-size: small">
+                {{ nv.sum_ngay_lam }}
+              </td>
+              <td style="text-align: center; font-size: small">
+                {{ nv.sum_ngay_lam }}
+              </td>
+              <td style="text-align: center; font-size: small">
+                <input
+                  v-model="nv.dt_dieuchinh"
+                  type="text"
+                  class="input is-small"
+                />
+              </td>
+              <td style="text-align: center; font-size: small">
+                <input
+                  v-model="nv.dt_thuong"
+                  type="text"
+                  class="input is-small"
+                />
+              </td>
+              <td style="text-align: center; font-size: small">
+                <input
+                  v-model="nv.dt_phat"
+                  type="text"
+                  class="input is-small"
+                />
+              </td>
+              <td style="text-align: center; font-size: small">
+                <input
+                  v-model="nv.luongngoaih"
+                  type="text"
+                  class="input is-small"
+                />
+              </td>
+              <td style="text-align: center; font-size: small">
+                {{
+                  ((parseFloat(nv.mucluong.replace(/,/g, "")) *
+                    parseFloat(get_qtl.tl_dong_bhxh_cn)) /
+                    100)
+                    | formatNumber
+                }}
+              </td>
+
+              <td style="text-align: center; font-size: small">
+                {{
+                  ((parseFloat(nv.mucluong.replace(/,/g, "")) *
+                    parseFloat(get_qtl.tl_dong_bhyt_cn)) /
+                    100)
+                    | formatNumber
+                }}
+              </td>
+              <td style="text-align: center; font-size: small">
+                {{
+                  ((parseFloat(nv.mucluong.replace(/,/g, "")) *
+                    parseFloat(get_qtl.tl_dong_bhtn_cn)) /
+                    100)
+                    | formatNumber
+                }}
+              </td>
+              <td style="text-align: center; font-size: small">
+                {{ get_qtl.tl_dong_cd_cn | formatNumber }}
+              </td>
+              <td style="text-align: center; font-size: small">
+                {{
+                  ((parseFloat(nv.mucluong.replace(/,/g, "")) *
+                    parseFloat(get_qtl.tl_dong_bhxh_cn)) /
+                    100 +
+                    (parseFloat(nv.mucluong.replace(/,/g, "")) *
+                      parseFloat(get_qtl.tl_dong_bhyt_cn)) /
+                      100 +
+                    (parseFloat(nv.mucluong.replace(/,/g, "")) *
+                      parseFloat(get_qtl.tl_dong_bhtn_cn)) /
+                      100 +
+                    parseFloat(get_qtl.tl_dong_cd_cn))
+                    | formatNumber
+                }}
+              </td>
+
+              <td style="text-align: center; font-size: small">
+                {{ nv.tong_ung | formatNumber }}
+              </td>
+
+              <td>
+                <input
+                  v-model="nv.thuong"
+                  type="number"
+                  class="input is-small"
+                />
+              </td>
+              <template v-if="nv.tong_ung">
+                <td style="text-align: right; font-size: small">
+                  {{
+                    (parseFloat(nv.mucluong.replace(/,/g, "")) +
+                      parseFloat(nv.thuong) -
+                      ((parseFloat(nv.mucluong.replace(/,/g, "")) *
+                        parseFloat(get_qtl.tl_dong_bhxh_cn)) /
+                        100 +
+                        (parseFloat(nv.mucluong.replace(/,/g, "")) *
+                          parseFloat(get_qtl.tl_dong_bhyt_cn)) /
+                          100 +
+                        (parseFloat(nv.mucluong.replace(/,/g, "")) *
+                          parseFloat(get_qtl.tl_dong_bhtn_cn)) /
+                          100 +
+                        parseFloat(get_qtl.tl_dong_cd_cn) +
+                        parseFloat(nv.tong_ung)))
+                      | formatNumber
+                  }}
+                </td>
+              </template>
+              <template v-else>
+                <td style="text-align: right; font-size: small">
+                  {{
+                    (parseFloat(nv.mucluong.replace(/,/g, "")) +
+                      parseFloat(nv.thuong) -
+                      ((parseFloat(nv.mucluong.replace(/,/g, "")) *
+                        parseFloat(get_qtl.tl_dong_bhxh_cn)) /
+                        100 +
+                        (parseFloat(nv.mucluong.replace(/,/g, "")) *
+                          parseFloat(get_qtl.tl_dong_bhyt_cn)) /
+                          100 +
+                        (parseFloat(nv.mucluong.replace(/,/g, "")) *
+                          parseFloat(get_qtl.tl_dong_bhtn_cn)) /
+                          100 +
+                        parseFloat(get_qtl.tl_dong_cd_cn)))
+                      | formatNumber
+                  }}
+                </td>
+              </template>
+            </tr>
+          </table>
         </div>
       </div>
     </div>
@@ -338,14 +472,14 @@ export default {
     onChange_Thang(e) {
       var id = e.target.value;
       var name = e.target.options[e.target.options.selectedIndex].text;
-      console.log('id ', id);
+      // console.log('id ', id);
       // console.log('name ',name );
       this.thangLapluong = id;
       // console.log(this.nam)
       // console.log(this.tennam)
     },
 
-    onChange_Nam(e) {
+    async onChange_Nam(e) {
       var id = e.target.value;
       // var name = e.target.options[e.target.options.selectedIndex].text;
       // console.log('id ',id );
@@ -353,6 +487,13 @@ export default {
       this.namLapluong = id;
       // console.log(this.nam)
       // console.log(this.tennam)
+      // console.log(this.thangLapluong);
+      // this.dsnhanvien = await this.$axios.$get(`/api/ketoan/loadluongchamcong`);
+
+      this.dsnhanvien = await this.$axios.$get(
+        `/api/ketoan/loadluongchamcong?month=${this.thangLapluong}&year=${this.namLapluong}`
+      );
+      // console.log(this.dsnhanvien);
     },
 
     // Lấy tháng ngày và đếm số ngày trong tháng hiện tại
@@ -392,8 +533,9 @@ export default {
       this.form.thue_tncn_gtcn = this.qtl[0].thue_tncn_gtcn;
       this.form.thue_tncn_gtnt = this.qtl[0].thue_tncn_gtnt;
     },
+
     async getDsnv() {
-      this.dsnhanvien = await this.$axios.$get(`/api/ketoan/nhanvienbangluong`);
+      // this.dsnhanvien = await this.$axios.$get(`/api/ketoan/nhanvienbangluong`);
     },
 
     onReport() {
@@ -418,10 +560,10 @@ export default {
                     100 +
                     (parseFloat(this.selected[i].mucluong) *
                       parseFloat(this.get_qtl.tl_dong_bhyt_cn)) /
-                    100 +
+                      100 +
                     (parseFloat(this.selected[i].mucluong) *
                       parseFloat(this.get_qtl.tl_dong_bhtn_cn)) /
-                    100 +
+                      100 +
                     parseFloat(this.get_qtl.tl_dong_cd_cn) +
                     parseFloat(this.selected[i].tong_ung));
               } else {
@@ -433,10 +575,10 @@ export default {
                     100 +
                     (parseFloat(this.selected[i].mucluong) *
                       parseFloat(this.get_qtl.tl_dong_bhyt_cn)) /
-                    100 +
+                      100 +
                     (parseFloat(this.selected[i].mucluong) *
                       parseFloat(this.get_qtl.tl_dong_bhtn_cn)) /
-                    100 +
+                      100 +
                     parseFloat(this.get_qtl.tl_dong_cd_cn));
               }
 
@@ -460,13 +602,13 @@ export default {
                 tongkt:
                   (parseFloat(this.selected[i].mucluong) *
                     parseFloat(this.get_qtl.tl_dong_bhxh_cn)) /
-                  100 +
+                    100 +
                   (parseFloat(this.selected[i].mucluong) *
                     parseFloat(this.get_qtl.tl_dong_bhyt_cn)) /
-                  100 +
+                    100 +
                   (parseFloat(this.selected[i].mucluong) *
                     parseFloat(this.get_qtl.tl_dong_bhtn_cn)) /
-                  100 +
+                    100 +
                   parseFloat(this.get_qtl.tl_dong_cd_cn),
                 trutamung: this.selected[i].tong_ung,
                 thuong: this.selected[i].thuong,
@@ -530,43 +672,5 @@ export default {
   display: block;
   overflow-x: auto;
   white-space: nowrap;
-}
-
-.table_wrapper {
-  position: sticky;
-  left: 0;
-  background-color: whitesmoke;
-}
-
-.table-height {
-  height: 750px;
-  display: block;
-  overflow: scroll;
-  width: 100%;
-  position: sticky;
-  top: 0;
-}
-
-th {
-  text-align: left;
-  background: #feecf0;
-  position: sticky;
-  top: 0px;
-}
-
-.modal-content,
-.modal-card {
-  width: 720px;
-}
-
-#preview {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#preview img {
-  max-width: 90px;
-  max-height: 90px;
 }
 </style>

@@ -2856,7 +2856,7 @@ export default {
         }
       }
 
-      console.log(this.items_cn);
+      // console.log(this.items_cn);
     },
     // search phiếu
     async searchPhieu() {
@@ -3073,9 +3073,9 @@ export default {
         for (let i = 0; i < this.items.length; i++) {
           if (i == index) {
             this.items[i].nhomto = [];
-            this.tonhomid = await this.$axios.$get(
-              `/api/phongban/alltoinxuong?mapx=${p1}`
-            );
+            // this.tonhomid = await this.$axios.$get(
+            //   `/api/phongban/alltoinxuong?mapx=${p1}`
+            // );
             for (let k = 0; k < this.tonhomid.length; k++) {
               let cn = {
                 maxuong: this.tonhomid[k].mapx,
@@ -3117,17 +3117,18 @@ export default {
       // console.log(name)
       let position = name.split("-");
       let p1 = position[0].trim();
-      // console.log(p1)
+      // console.log(p1);
       this.tonhomid = await this.$axios.$get(
         `/api/phongban/alltoinxuong?mapx=${p1}`
       );
+      // console.log(this.tonhomid);
       if (this.tonhomid.length > 0) {
         for (let i = 0; i < this.items_cn.length; i++) {
           if (i == index) {
             this.items_cn[i].nhomto = [];
-            this.tonhomid = await this.$axios.$get(
-              `/api/phongban/alltoinxuong?mapx=${p1}`
-            );
+            // this.tonhomid = await this.$axios.$get(
+            //   `/api/phongban/alltoinxuong?mapx=${p1}`
+            // );
             for (let k = 0; k < this.tonhomid.length; k++) {
               let cn = {
                 maxuong: this.tonhomid[k].mapx,
@@ -3147,6 +3148,7 @@ export default {
             this.cong_nhan = await this.$axios.$get(
               `/api/congnhan/allcongnhanpx?mapx=${p1}`
             );
+            console.log(this.cong_nhan);
             this.items_cn[i].nhomto_cnt = [];
             for (let k = 0; k < this.cong_nhan.length; k++) {
               let cn = {
@@ -3181,6 +3183,24 @@ export default {
       }
     },
 
+    getTencnCN(event, selectedIndex, index) {
+      this.selectedIndex = selectedIndex;
+      for (let i = 0; i < this.items_cn.length; i++) {
+        if (i == index) {
+          this.items_cn[i].malosx = this.malosx;
+          // this.items_cn[i].nguoithuchien =
+          //   this.cong_nhan_cn[this.selectedIndex].tencn;
+          this.items_cn[i].malosx = this.form.malosx;
+
+          this.items_cn[i].macongnhan =
+            this.items_cn[i].nhomto_cnt[this.selectedIndex].macn;
+          this.items_cn[i].nguoithuchien =
+            this.items_cn[i].nhomto_cnt[this.selectedIndex].tencn;
+        }
+      }
+      // console.log(this.items_cn);
+    },
+
     locOption(event) {
       var select = event.target;
       var options = select.options;
@@ -3195,24 +3215,6 @@ export default {
       event.preventDefault();
     },
 
-    getTencnCN(event, selectedIndex, index) {
-      // console.log(this.cong_nhan[this.selectedIndex])
-      this.selectedIndex = selectedIndex;
-      for (let i = 0; i < this.items_cn.length; i++) {
-        if (i == index) {
-          this.items_cn[i].malosx = this.malosx;
-          this.items_cn[i].nguoithuchien =
-            this.cong_nhan_cn[this.selectedIndex].tencn;
-          this.items_cn[i].malosx = this.form.malosx;
-
-          this.items_cn[i].macongnhan =
-            this.items_cn[i].nhomto_cnt[this.selectedIndex].macn;
-          this.items_cn[i].nguoithuchien =
-            this.items_cn[i].nhomto_cnt[this.selectedIndex].tencn;
-        }
-      }
-      // console.log(this.items_cn)
-    },
     // lấy công nhật
     async getCongnhat(event, selectedIndex, index) {
       this.selectedIndex = selectedIndex;

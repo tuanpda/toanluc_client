@@ -25,35 +25,67 @@
               <table
                 class="table is-responsive is-bordered is-narrow is-fullwidth"
               >
-                <tr style="background-color: #fffaeb;">
+                <tr style="background-color: #fffaeb">
                   <td
                     colspan="6"
-                    style="font-size: small; font-weight: bold; text-align: right;"
+                    style="
+                      font-size: small;
+                      font-weight: bold;
+                      text-align: right;
+                    "
                   >
                     Thông tin nhân viên
                   </td>
                 </tr>
                 <tr>
-                  <td style="font-weight: bold; width: 20%;">
+                  <td style="font-size: small; font-weight: bold; width: 20%">
                     Tên nhân viên
                   </td>
-                  <td style="text-align: center; font-weight: bold;">
+                  <td
+                    style="
+                      font-size: small;
+                      text-align: center;
+                      font-weight: bold;
+                    "
+                  >
                     Giới tính
                   </td>
                   <td
-                    style="text-align: center; font-weight: bold; width: 12%;"
+                    style="
+                      font-size: small;
+                      text-align: center;
+                      font-weight: bold;
+                      width: 12%;
+                    "
                   >
                     Số điện thoại
                   </td>
                   <td
-                    style="text-align: center; font-weight: bold; width: 12%;"
+                    style="
+                      font-size: small;
+                      text-align: center;
+                      font-weight: bold;
+                      width: 12%;
+                    "
                   >
                     CCCD
                   </td>
-                  <td style="text-align: center; font-weight: bold;">
+                  <td
+                    style="
+                      font-size: small;
+                      text-align: center;
+                      font-weight: bold;
+                    "
+                  >
                     Địa chỉ liên hệ
                   </td>
-                  <td style="text-align: center; font-weight: bold;">
+                  <td
+                    style="
+                      font-size: small;
+                      text-align: center;
+                      font-weight: bold;
+                    "
+                  >
                     Địa chỉ liên hệ khẩn cấp
                   </td>
                 </tr>
@@ -63,7 +95,7 @@
                       <input
                         v-model.trim="form.tennv"
                         @blur="$v.form.tennv.$touch()"
-                        class="input"
+                        class="input is-small"
                         type="text"
                         placeholder="Nhập vào tên nhân viên"
                       />
@@ -77,7 +109,7 @@
                     </div>
                   </td>
                   <td>
-                    <div style="text-align: center;" class="control">
+                    <div style="text-align: center" class="control">
                       <label class="radio">
                         <input
                           v-model="form.gioitinh"
@@ -103,7 +135,7 @@
                       <input
                         @blur="$v.form.sodienthoai.$touch()"
                         v-model.trim="form.sodienthoai"
-                        class="input"
+                        class="input is-small"
                         type="text"
                         placeholder="Nhập số điện thoại"
                       />
@@ -121,7 +153,7 @@
                       <input
                         @blur="$v.form.cccd.$touch()"
                         v-model.trim="form.cccd"
-                        class="input"
+                        class="input is-small"
                         type="text"
                         placeholder="Nhập căn cước công dân"
                       />
@@ -136,7 +168,7 @@
                     <div class="control">
                       <input
                         v-model="form.diachilh"
-                        class="input"
+                        class="input is-small"
                         type="text"
                         placeholder="Nhập địa chỉ liên hệ"
                       />
@@ -146,7 +178,7 @@
                     <div class="control">
                       <input
                         v-model="form.lhkhancap"
-                        class="input"
+                        class="input is-small"
                         type="text"
                         placeholder="Nhập địa chỉ liên hệ khẩn cấp"
                       />
@@ -158,14 +190,22 @@
               <table
                 class="table is-responsive is-bordered is-narrow is-fullwidth"
               >
-                <tr style="background-color: #fffaeb;">
+                <tr style="background-color: #fffaeb">
                   <td
-                    style="font-size: small; font-weight: bold; text-align: center;"
+                    style="
+                      font-size: small;
+                      font-weight: bold;
+                      text-align: center;
+                    "
                   >
                     Thông tin đã lưu
                   </td>
                   <td
-                    style="font-size: small; font-weight: bold; text-align: center;"
+                    style="
+                      font-size: small;
+                      font-weight: bold;
+                      text-align: center;
+                    "
                   >
                     Hiệu chỉnh thông tin
                   </td>
@@ -174,7 +214,7 @@
                   <td>Phòng ban: {{ nhanvien.tenphong }}</td>
                   <td>
                     <div class="control has-icons-left">
-                      <div class="select is-fullwidth">
+                      <div class="select is-fullwidth is-small">
                         <select @change="showmapx($event)">
                           <option selected>-- Chọn phòng ban --</option>
                           <option
@@ -194,7 +234,11 @@
                 <tr>
                   <td>Ngày sinh: {{ nhanvien.ngaysinh | formatDate }}</td>
                   <td>
-                    <input v-model="form.ngaysinh" class="input" type="date" />
+                    <input
+                      v-model="form.ngaysinh"
+                      class="input is-small"
+                      type="date"
+                    />
                   </td>
                 </tr>
                 <tr>
@@ -202,7 +246,7 @@
                   <td>
                     <input
                       v-model="form.mucluong"
-                      class="input"
+                      class="input is-small"
                       type="text"
                       placeholder="Nhập mức lương"
                     />
@@ -213,7 +257,7 @@
                   <td>
                     <input
                       v-model="form.sotknh"
-                      class="input"
+                      class="input is-small"
                       type="text"
                       placeholder="Nhập số tài khoản ngân hàng"
                     />
@@ -224,7 +268,7 @@
                   <td>
                     <input
                       v-model="form.tennh"
-                      class="input"
+                      class="input is-small"
                       type="text"
                       placeholder="Nhập tên ngân hàng"
                     />
@@ -342,6 +386,7 @@ export default {
       form: {
         tennv: null,
         mapb: null,
+        tennh: null,
         tenphong: null,
         sodienthoai: null,
         cccd: null,
@@ -413,7 +458,7 @@ export default {
 
   mounted() {
     this.currentDateTime();
-    this.getphongban()
+    this.getphongban();
   },
 
   methods: {
