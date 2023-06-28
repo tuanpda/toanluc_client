@@ -1,6 +1,6 @@
 <template>
   <div class="columns">
-    <div class="column container">
+    <div class="column" style="margin-left: 20px; margin-right: 20px">
       <br />
       <div class="box">
         <div class="columns">
