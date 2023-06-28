@@ -4,7 +4,7 @@
       <br />
       <div class="box" style="margin-left: 5px; margin-right: 5px">
         <div class="columns">
-          <div class="column is-8">
+          <div class="column is-2">
             <div class="control">
               <span class="icon is-small is-left">
                 <i style="color: #ff55acee" class="fab fa-hornbill"></i>
@@ -12,6 +12,21 @@
               <span style="color: #3850b7; font-size: 17px; font-weight: bold"
                 >Kiểm và chốt lương</span
               >
+            </div>
+          </div>
+          <div class="column is-6">
+            <div v-show="isshow == true">
+              <div style="text-align: center">
+                <span style="font-size: small; font-weight: bold; color: red"
+                  >{{ showcount }} / {{ showsuccess }}</span
+                >
+              </div>
+              <div>
+                <progress
+                  id="progress-bar"
+                  class="progress is-success"
+                ></progress>
+              </div>
             </div>
           </div>
           <div class="column" style="text-align: right">
@@ -126,6 +141,26 @@
                   type="date"
                   class="input is-small"
                 />
+              </td>
+              <td
+                style="
+                  font-size: small;
+                  width: 5.5%;
+                  font-weight: 600;
+                  vertical-align: middle;
+                "
+              >
+                <div class="columns">
+                  <div class="column">Chốt?</div>
+                  <div class="column">
+                    <div class="select is-small">
+                      <select v-model="search_chot">
+                        <option value="0">Chưa chốt</option>
+                        <option value="1">Đã chốt</option>
+                      </select>
+                    </div>
+                  </div>
+                </div>
               </td>
               <td style="width: 7%">
                 <button
@@ -434,7 +469,11 @@
               <template>
                 <td
                   v-if="item.status == 1"
-                  style="font-size: small; text-align: center; vertical-align: middle;"
+                  style="
+                    font-size: small;
+                    text-align: center;
+                    vertical-align: middle;
+                  "
                 >
                   <span
                     style="
@@ -449,7 +488,11 @@
                 </td>
                 <td
                   v-else-if="item.status == 2"
-                  style="font-size: small; text-align: center; vertical-align: middle;"
+                  style="
+                    font-size: small;
+                    text-align: center;
+                    vertical-align: middle;
+                  "
                 >
                   <span
                     style="
@@ -464,7 +507,11 @@
                 </td>
                 <td
                   v-else-if="item.status == 3"
-                  style="font-size: small; text-align: center; vertical-align: middle;"
+                  style="
+                    font-size: small;
+                    text-align: center;
+                    vertical-align: middle;
+                  "
                 >
                   <span
                     style="
@@ -479,7 +526,13 @@
                 </td>
                 <td v-else style="font-size: small; text-align: center"></td>
               </template>
-              <td style="font-size: small; text-align: center; vertical-align: middle;">
+              <td
+                style="
+                  font-size: small;
+                  text-align: center;
+                  vertical-align: middle;
+                "
+              >
                 <span v-if="item.status_tinhluong == false">
                   <i style="color: #ffd863" class="fa fa-circle"></i>
                 </span>
@@ -2006,6 +2059,9 @@ export default {
       tempData: [], // dữ liệu sau khi lọc
       filterOptions: 0,
 
+      // search chốt
+      search_chot: "",
+
       // input suggest
       suggestions: [],
       suggestions_nhomsp: [],
@@ -2033,6 +2089,11 @@ export default {
       groups: {},
       totals: {},
       showConponent: true,
+
+      // đếm
+      showcount: 0,
+      showsuccess: 0,
+      isshow: false,
 
       ngayhoanthanh: "",
       items: [
@@ -3442,6 +3503,14 @@ export default {
       // với status = 0 và ngày chốt
 
       // console.log(this.selected.length);
+      const lengtData = this.selected.length;
+      // console.log(this.showcount);
+      this.showsuccess = lengtData;
+      this.isshow = true;
+      const progressBar = document.getElementById("progress-bar");
+      console.log(progressBar);
+      progressBar.value = this.showcount;
+      progressBar.max = this.showsuccess;
 
       if (this.selected.length < 1) {
         const Toast = Swal.mixin({
@@ -3481,52 +3550,28 @@ export default {
               };
               // cập nhật status và stopday_losx cho từng lô sản xuất ứng với từng lô sản xuất theo kế hoạch trong xưởng đó
               // status đổi thành số 3 là hoàn thành
-              this.$axios.$patch(
+              const res1 = await this.$axios.$patch(
                 `/api/ketoan/capnhatstatuslosx/${this.selected[i]._id}`,
                 data_losanxuat
               );
-
+              // console.log(res1.success);
               // cập nhật status và stopday_losx cho từng lương công đoạn có trong mỗi lô sản xuất ứng với kế hoạch tại xưởng
-              this.$axios.$patch(
+              const res2 = await this.$axios.$patch(
                 `/api/ketoan/capnhatstatuslcd/${this.selected[i]._id}`,
                 data
               );
-
-              this.$axios.$patch(
+              // console.log(res2.success);
+              const res3 = await this.$axios.$patch(
                 `/api/ketoan/capnhatstatusluongcnhat/${this.selected[i]._id}`,
                 data
               );
-
-              this.$axios.$patch(
-                `/api/ketoan/capnhatstatusluongcnhat/${this.selected[i]._id}`,
-                data
-              );
-
-              // cập nhật status và stopday_losx cho từng lương công nhật có trong mỗi lô sản xuất ứng với kế hoạch tại xưởng
-              // kiểm tra có công nhật trong lô hay không?
-              // var check_congnhat = [];
-              // this.$axios
-              //   .$get(
-              //     `/api/ketoan/checkcongnhat?_id_losx=${this.selected[i]._id}`
-              //   )
-              //   .then((resp) => {
-              //     // console.log(resp);
-              //     check_congnhat = resp;
-              //     console.log(check_congnhat);
-              //   })
-              //   .catch((err) => {
-              //     // Handle Error Here
-              //     console.error(err);
-              //   });
-              // if (check_congnhat.length > 0) {
-              //   console.log('patch');
-              //   this.$axios.$patch(
-              //     `/api/ketoan/capnhatstatusluongcnhat/${this.selected[i]._id}`,
-              //     data
-              //   );
-              // }
+              // console.log(res3.success);
+              if (res1.success == true && res2.success == true) {
+                this.showcount++;
+                progressBar.value = this.showcount;
+              }
+              // console.log(this.showcount);
             }
-
             const Toast = Swal.mixin({
               toast: true,
               position: "top-end",
@@ -3542,8 +3587,10 @@ export default {
               icon: "success",
               title: "Đã chốt thành công",
             });
-
             this.getSolieuLSX_ALl_cht();
+            this.showcount = 0;
+            this.showsuccess = 0;
+            this.isshow = false;
           } catch (error) {
             console.log(error);
             const Toast = Swal.mixin({
@@ -3626,52 +3673,117 @@ export default {
 
       this.getSolieuLSX_ALl_cht();
     },
+
     // Hủy chốt toàn bộ phiếu
     async huychotallPhieulo() {
+      // đoạn này cần làm thêm 1 bước chặn là tháng nào đã có lương chốt trong
+      // bảng lương tháng là cấm không được hủy chốt phiếu nữa
+      // muốn hủy chốt phải có tài khoản admin vào hủy lương tháng và chốt lại
       // console.log(this.selected)
-      for (let i = 0; i < this.selected.length; i++) {
-        let data = {
-          stopday_losx: "",
-          status: 0,
-        };
-        let data_losx = {
-          status: 3,
-          stopday_losx: "",
-          status_tinhluong: 0,
-        };
-        // cập nhật status và stopday_losx cho từng lô sản xuất ứng với _id
-        this.$axios.$patch(
-          `/api/ketoan/capnhatstatuslosx/${this.selected[i]._id}`,
-          data_losx
-        );
-        // cập nhật status và stopday_losx cho từng lương công đoạn có trong mỗi lô sản xuất ứng với kế hoạch tại xưởng
-        this.$axios.$patch(
-          `/api/ketoan/capnhatstatuslcd/${this.selected[i]._id}`,
-          data
-        );
-        this.$axios.$patch(
-          `/api/ketoan/capnhatstatusluongcnhat/${this.selected[i]._id}`,
-          data
-        );
+      const lengtData = this.selected.length;
+      // console.log(this.showcount);
+      this.showsuccess = lengtData;
+      this.isshow = true;
+      const progressBar = document.getElementById("progress-bar");
+      progressBar.value = this.showcount;
+      progressBar.max = this.showsuccess;
+
+      if (this.selected.length < 1) {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+        Toast.fire({
+          icon: "success",
+          title: "Không có phiếu nào được tích chọn",
+        });
+        return;
+      } else {
+        const result = await Swal.fire({
+          title: `Bạn chắc chắn hủy chốt toàn bộ phiếu lương đã chọn?`,
+          showDenyButton: true,
+          confirmButtonText: "Có, Chốt tất cả",
+          denyButtonText: `Hủy chốt`,
+        });
+        if (result.isConfirmed) {
+          try {
+            for (let i = 0; i < this.selected.length; i++) {
+              let data = {
+                stopday_losx: "",
+                status: 0,
+              };
+              let data_losx = {
+                status: 3,
+                stopday_losx: "",
+                status_tinhluong: 0,
+              };
+              // cập nhật status và stopday_losx cho từng lô sản xuất ứng với _id
+              const res1 = await this.$axios.$patch(
+                `/api/ketoan/capnhatstatuslosx/${this.selected[i]._id}`,
+                data_losx
+              );
+              // cập nhật status và stopday_losx cho từng lương công đoạn có trong mỗi lô sản xuất ứng với kế hoạch tại xưởng
+              const res2 = await this.$axios.$patch(
+                `/api/ketoan/capnhatstatuslcd/${this.selected[i]._id}`,
+                data
+              );
+              const res3 = await this.$axios.$patch(
+                `/api/ketoan/capnhatstatusluongcnhat/${this.selected[i]._id}`,
+                data
+              );
+
+              if (res1.success == true && res2.success == true) {
+                this.showcount++;
+                progressBar.value = this.showcount;
+              }
+            }
+
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+              },
+            });
+            Toast.fire({
+              icon: "success",
+              title: "Đã hủy chốt toàn bộ phiếu đã chọn",
+            });
+
+            this.getSolieuLSX_ALl_cht();
+            this.showcount = 0;
+            this.showsuccess = 0;
+            this.isshow = false;
+          } catch (error) {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+              },
+            });
+            Toast.fire({
+              icon: "error",
+              title: "Có lỗi xảy ra !!!",
+            });
+          }
+        }
       }
-
-      const Toast = Swal.mixin({
-        toast: true,
-        position: "top-end",
-        showConfirmButton: false,
-        timer: 3000,
-        timerProgressBar: true,
-        didOpen: (toast) => {
-          toast.addEventListener("mouseenter", Swal.stopTimer);
-          toast.addEventListener("mouseleave", Swal.resumeTimer);
-        },
-      });
-      Toast.fire({
-        icon: "success",
-        title: "Đã hủy chốt toàn bộ phiếu đã chọn",
-      });
-
-      this.getSolieuLSX_ALl_cht();
     },
 
     // Hàm lọc dữ liệu
@@ -3690,9 +3802,31 @@ export default {
       const status = this.Options_status;
       const dateFrom = this.search_ngayhttt;
       const dateTo = this.search_ngayhtttend;
+      const search_chotphieu = this.search_chot;
+      // console.log(search_chotphieu);
 
       // console.log(this.search_ngayhttt, this.search_ngayhtttend);
       if (
+        this.selectedOptions.length > 0 &&
+        this.search_ngayhttt != "" &&
+        this.search_ngayhtttend != "" &&
+        this.search_chot != ""
+      ) {
+        this.tempData = [];
+        this.tempData = await this.$axios.$get(
+          `/api/lokehoach/locphanxuonggiaidoanhoanthanhlochuachot`,
+          {
+            params: {
+              mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
+              dateFrom: dateFrom,
+              dateTo: dateTo,
+              status_tinhluong: search_chotphieu,
+            },
+          }
+        );
+        // console.log(this.tempData);
+        this.sllosx = this.tempData;
+      } else if (
         this.selectedOptions.length > 0 &&
         this.search_ngayhttt != "" &&
         this.search_ngayhtttend != ""
@@ -3709,6 +3843,24 @@ export default {
           }
         );
         // console.log(this.tempData);
+        this.sllosx = this.tempData;
+      } else if (
+        !this.selectedOptions.length &&
+        this.search_ngayhttt != "" &&
+        this.search_ngayhtttend != "" &&
+        this.search_chot != ""
+      ) {
+        this.tempData = [];
+        this.tempData = await this.$axios.$get(
+          `/api/lokehoach/locgiaidoanhoanthanhlochuachot`,
+          {
+            params: {
+              dateFrom: dateFrom,
+              dateTo: dateTo,
+              status_tinhluong: search_chotphieu,
+            },
+          }
+        );
         this.sllosx = this.tempData;
       } else if (
         !this.selectedOptions.length &&

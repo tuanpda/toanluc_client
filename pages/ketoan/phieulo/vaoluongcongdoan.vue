@@ -1600,7 +1600,7 @@
                         </td>
                         <td>
                           <input
-                            type="text"
+                            type="number"
                             v-model="item.sodat"
                             class="input is-small"
                             @keydown.arrow-down="moveToNextRow(index, $event)"
@@ -1614,7 +1614,7 @@
                         </td>
                         <td>
                           <input
-                            type="text"
+                            type="number"
                             v-model="item.sohong"
                             class="input is-small"
                             @keydown.arrow-down="moveToNextRow(index, $event)"
@@ -1657,7 +1657,7 @@
                         >
                           <input
                             v-model.trim="tongdatinlo"
-                            type="text"
+                            type="number"
                             class="input is-small"
                           />
                         </td>

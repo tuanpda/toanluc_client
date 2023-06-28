@@ -84,6 +84,18 @@
                     </span>
                     &ensp; Gán số thứ tự công nhân
                   </nav-link>
+                  <nav-link to="/danhmuc/capbacluong/" class="navbar-item">
+                    <span style="color: #3850b7" class="icon is-small is-left">
+                      <i class="fas fa-atom"></i>
+                    </span>
+                    &ensp; Cấp bậc lương
+                  </nav-link>
+                  <nav-link to="/danhmuc/chucvu/" class="navbar-item">
+                    <span style="color: #3850b7" class="icon is-small is-left">
+                      <i class="fas fa-award"></i>
+                    </span>
+                    &ensp; Chức vụ
+                  </nav-link>
                   <hr class="navbar-divider" />
                   <nav-link
                     to="/danhmuc/congnhan/dieuchuyen"
@@ -221,6 +233,16 @@
                     </span>
                     &ensp; Vào lương công đoạn sản xuất
                   </nav-link> -->
+                  <hr class="navbar-divider" />
+                  <nav-link
+                    to="/ketoan/phieulo/vaoluongcongdoan"
+                    class="navbar-item"
+                  >
+                    <span style="color: #f14668" class="icon is-small is-left">
+                      <i class="fas fa-clipboard-list"></i>
+                    </span>
+                    &ensp; Vào lương
+                  </nav-link>
                 </div>
               </div>
               <!-- Tài chính -->
@@ -236,15 +258,6 @@
                   class="navbar-dropdown is-boxed"
                   @click="closeNavbar(3)"
                 >
-                  <nav-link
-                    to="/ketoan/phieulo/vaoluongcongdoan"
-                    class="navbar-item"
-                  >
-                    <span style="color: #9b6dff" class="icon is-small is-left">
-                      <i class="fas fa-clipboard-list"></i>
-                    </span>
-                    &ensp; Vào lương
-                  </nav-link>
                   <nav-link
                     to="/ketoan/phieulo/kiemvachotluong"
                     class="navbar-item"
@@ -343,6 +356,31 @@
                       <i class="far fa-file-excel"></i>
                     </span>
                     &ensp; Xuất dữ liệu
+                  </nav-link>
+                  <hr class="navbar-divider" />
+                  <nav-link
+                    to="/ketoan/tiencongluong/luongcoban"
+                    class="navbar-item"
+                  >
+                    <span style="color: #9b6dff" class="icon is-small is-left">
+                      <i class="far fa-credit-card"></i>
+                    </span>
+                    &ensp; Lương cơ bản / Lương ngày
+                  </nav-link>
+                  <nav-link
+                    to="/ketoan/tiencongluong/luongmemcongnhan"
+                    class="navbar-item"
+                  >
+                    <span style="color: #9b6dff" class="icon is-small is-left">
+                      <i class="fas fa-cash-register"></i>
+                    </span>
+                    &ensp; Lương mềm công nhân / Lương ngày
+                  </nav-link>
+                  <nav-link to="/quantri/chamcong/antrua" class="navbar-item">
+                    <span style="color: #9b6dff" class="icon is-small is-left">
+                      <i class="fas fa-cocktail"></i>
+                    </span>
+                    &ensp; Ăn Ca
                   </nav-link>
                 </div>
               </div>

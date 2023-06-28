@@ -7,9 +7,11 @@
           <div class="column">
             <div class="control">
               <span class="icon is-small is-left">
-                <i class="fab fa-black-tie"></i>
+                <i style="color: #00d1b2" class="fas fa-award"></i>
               </span>
-              Danh mục chức vụ
+              <span style="color: #3850b7; font-size: 17px; font-weight: bold"
+                >Danh mục Chức vụ</span
+              >
             </div>
           </div>
         </div>
@@ -40,24 +42,24 @@
         </div>
         <div class="table_wrapper table-height">
           <table
-            class="
-                table
-                is-bordered is-striped is-narrow is-hoverable is-fullwidth
-              "
+            class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
           >
             <thead>
               <tr>
-                <th style="text-align: center">STT</th>
-                <th style="text-align: center">Sửa</th>
-                <th style="text-align: center">Xóa</th>
-                <th style="text-align: center">Mã chức vụ</th>
-                <th style="text-align: center">Tên chức vụ</th>
+                <th style="text-align: center; width: 5%">STT</th>
+                <th style="text-align: center; width: 10%">Mã chức vụ</th>
+                <th style="text-align: center; width: 20%">Tên chức vụ</th>
                 <th style="text-align: center">Ghi chú</th>
+                <th style="text-align: center; width: 7%">Sửa</th>
+                <th style="text-align: center; width: 7%">Xóa</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(chucvu, index) in chucvu" :key="index">
                 <td style="text-align: center">{{ index + 1 }}</td>
+                <td style="text-align: center">{{ chucvu.macv }}</td>
+                <td>{{ chucvu.chucvu }}</td>
+                <td>{{ chucvu.ghichu }}</td>
                 <td style="text-align: center; color: green">
                   <nuxt-link :to="`/danhmuc/chucvu/${chucvu._id}/manage`">
                     <span class="icon is-small">
@@ -72,9 +74,6 @@
                     </span>
                   </a>
                 </td>
-                <td style="text-align: center">{{ chucvu.macv }}</td>
-                <td>{{ chucvu.chucvu }}</td>
-                <td>{{ chucvu.ghichu }}</td>
               </tr>
             </tbody>
           </table>

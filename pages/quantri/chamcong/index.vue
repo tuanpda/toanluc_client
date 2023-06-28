@@ -80,6 +80,19 @@
                   </select>
                 </div>
               </td>
+              <td style="width: 5%">
+                <div class="select is-small">
+                  <select
+                    @change="changeAnca($event)"
+                    :disabled="!isSelectsEnabled_Chamcong"
+                  >
+                    <option selected>-- Ăn ca --</option>
+                    <option v-for="item in tienanca" :value="item.anca">
+                      {{ item.anca }} -- {{ item.tienan }}
+                    </option>
+                  </select>
+                </div>
+              </td>
               <td style="width: 7%">
                 <button @click="onChamcong()" class="button is-small is-info">
                   Chấm công
@@ -158,6 +171,16 @@
                   font-size: small;
                   font-weight: bold;
                   text-align: center;
+                  width: 7%;
+                "
+              >
+                Ăn ca
+              </td>
+              <td
+                style="
+                  font-size: small;
+                  font-weight: bold;
+                  text-align: center;
                   width: 20%;
                 "
               >
@@ -211,6 +234,14 @@
                 />
               </td>
               <td style="font-size: small; text-align: center">
+                <input
+                  type="text"
+                  v-model="cn.anca"
+                  class="input is-small is-info"
+                  disabled
+                />
+              </td>
+              <td style="font-size: small; text-align: center">
                 <input type="text" class="input is-small" />
               </td>
               <td style="font-size: small; text-align: center">
@@ -244,15 +275,20 @@
               >
                 Mã PX
               </td>
-              <td
+              <!-- <td
                 style="font-size: small; font-weight: bold; text-align: center"
               >
                 Tên PX
-              </td>
+              </td> -->
               <td
                 style="font-size: small; font-weight: bold; text-align: center"
               >
                 Mã chấm công
+              </td>
+              <td
+                style="font-size: small; font-weight: bold; text-align: center"
+              >
+                Chấm lại
               </td>
               <td
                 style="font-size: small; font-weight: bold; text-align: center"
@@ -279,11 +315,11 @@
               >
                 User tạo
               </td>
-              <td
+              <!-- <td
                 style="font-size: small; font-weight: bold; text-align: center"
               >
                 Cập nhật
-              </td>
+              </td> -->
             </tr>
             <tr v-for="(item, index) in showNgaychamcong" :key="index">
               <td style="font-size: small; text-align: center">
@@ -298,22 +334,39 @@
               <td style="font-size: small; text-align: center">
                 {{ item.mapx }}
               </td>
-              <td style="font-size: small">
+              <!-- <td style="font-size: small">
                 {{ item.tenpx }}
-              </td>
+              </td> -->
               <td style="font-size: small; text-align: center">
-                <input
+                <!-- <input
                   type="text"
                   class="input is-small"
                   v-model="item.machamcong"
-                />
+                /> -->
+                {{ item.machamcong }}
               </td>
               <td style="font-size: small; text-align: center">
-                <input
+                <div class="select is-small">
+                  <select
+                    @change="chamconglai($event, item)"
+                    v-model="item.machamcong"
+                  >
+                    <option
+                      v-for="item in chamcongList"
+                      :value="item.machamcong"
+                    >
+                      {{ item.machamcong }} -- {{ item.chamcong }}
+                    </option>
+                  </select>
+                </div>
+              </td>
+              <td style="font-size: small; text-align: center">
+                <!-- <input
                   type="text"
                   class="input is-small"
                   v-model="item.chamcong"
-                />
+                /> -->
+                {{ item.chamcong }}
               </td>
               <td style="font-size: small; text-align: center">
                 {{ item.ngaychamcong | formatDate }}
@@ -327,12 +380,12 @@
               <td style="font-size: small; text-align: center">
                 {{ item.createdBy }}
               </td>
-              <td style="text-align: center">
+              <!-- <td style="text-align: center">
                 <a @click="capnhatcc(item)"
                   ><span>
                     <i style="color: red" class="fa fa-check-circle"></i> </span
                 ></a>
-              </td>
+              </td> -->
             </tr>
           </table>
         </div>
@@ -348,6 +401,7 @@ export default {
   middleware: "auth",
   data() {
     return {
+      tienanca: [],
       phanxuong: [],
       cong_nhan: [],
       tonhomid: [],
@@ -388,6 +442,9 @@ export default {
           sttchon: "",
           machamcong: "",
           chamcong: "",
+          anca: "",
+          tienan: "",
+          thanhtien: "",
           listChamcong: [{ machamcong: "", chamcong: "" }],
           diengiai: "",
           ghichu: "",
@@ -401,6 +458,7 @@ export default {
   },
 
   mounted() {
+    this.getAnca();
     this.get_phanxuong();
     this.currentDateTime();
     this.deleteRow(0);
@@ -454,6 +512,10 @@ export default {
     // get all phân xưởng
     async get_phanxuong() {
       this.phanxuong = await this.$axios.$get(`/api/phongban/allphanxuong`);
+    },
+    // ăn ca
+    async getAnca() {
+      this.tienanca = await this.$axios.$get(`/api/ketoan/getallanca`);
     },
 
     getWeek(date) {
@@ -571,6 +633,9 @@ export default {
               sttchon: result[i].sttchon,
               machamcong: "",
               chamcong: "",
+              anca: "",
+              tienan: "",
+              thanhtien: "",
               diengiai: "",
               ghichu: "",
               ngaychamcong: this.ngaychamcong,
@@ -592,6 +657,9 @@ export default {
               sttchon: this.cong_nhan[i].sttchon,
               machamcong: "",
               chamcong: "",
+              anca: "",
+              tienan: "",
+              thanhtien: "",
               diengiai: "",
               ghichu: "",
               ngaychamcong: this.ngaychamcong,
@@ -621,7 +689,77 @@ export default {
       }
 
       // console.log(this.items);
+      // this.selected = [];
+    },
+
+    async changeAnca(e) {
+      // console.log(e.target.options[e.target.options.selectedIndex].text);
+      var name = e.target.options[e.target.options.selectedIndex].text;
+      let position = name.split("--");
+      const loaianca = position[0];
+      const tienanca = position[1];
+      // console.log(loaianca, tienanca);
+      // console.log(this.selected.length);
+      for (let i = 0; i < this.selected.length; i++) {
+        const index = this.selected[i].index;
+        // console.log(index);
+        this.items[index].anca = loaianca;
+        this.items[index].tienan = tienanca;
+      }
+
+      // console.log(this.items);
       this.selected = [];
+    },
+
+    async chamconglai(e, item) {
+      var name = e.target.options[e.target.options.selectedIndex].text;
+      let position = name.split("--");
+      const machamcong = position[0];
+      const chamcong = position[1];
+      // console.log(machamcong, chamcong);
+
+      try {
+        const data = {
+          machamcong: machamcong,
+          chamcong: chamcong,
+        };
+        await this.$axios.$patch(
+          `/api/congnhan/updatechamcong/${item._id}`,
+          data
+        );
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+        Toast.fire({
+          icon: "success",
+          title: "Đã cập nhật",
+        });
+      } catch (error) {
+        console.log(error);
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+        Toast.fire({
+          icon: "error",
+          title: "Có lỗi xảy ra !!!",
+        });
+      }
     },
 
     async getWithTo(e) {
@@ -843,7 +981,8 @@ export default {
                 });
                 Toast.fire({
                   icon: "error",
-                  title: "Xem lại thiếu loại chấm công của những người được chọn",
+                  title:
+                    "Xem lại thiếu loại chấm công của những người được chọn",
                 });
                 break;
               }
@@ -872,7 +1011,7 @@ export default {
 
               this.isSelectsEnabled = false;
               this.selected = [];
-              this.items = []
+              this.items = [];
             }
           }
         } catch (error) {

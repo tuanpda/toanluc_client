@@ -114,7 +114,7 @@
                 rowspan="2"
                 style="text-align: center; font-weight: bold; font-size: small"
               >
-                Lương CB
+                Lương trách nhiệm
               </td>
               <td
                 rowspan="2"
@@ -130,10 +130,16 @@
                 công
               </td>
               <td
-                colspan="3"
+                colspan="2"
                 style="text-align: center; font-weight: bold; font-size: small"
               >
                 Thưởng doanh thu
+              </td>
+              <td
+                rowspan="2"
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                &nbsp; &nbsp; Phạt &nbsp; &nbsp;
               </td>
               <td
                 rowspan="2"
@@ -144,23 +150,35 @@
                 / Chủ nhật
               </td>
               <td
-                colspan="5"
-                style="text-align: center; font-weight: bold; font-size: small"
-              >
-                Các khoản khấu trừ
-              </td>
-              <td
-                rowspan="2"
-                style="text-align: center; font-weight: bold; font-size: small"
-              >
-                Trừ tạm ứng
-              </td>
-              <td
                 rowspan="2"
                 style="text-align: center; font-weight: bold; font-size: small"
               >
                 &nbsp; &nbsp; Hỗ trợ &nbsp; &nbsp;
               </td>
+              <td
+                rowspan="2"
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                Tổng lương
+              </td>
+              <td
+                rowspan="2"
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                Lương CB
+              </td>
+              <td
+                colspan="3"
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                Các khoản khấu trừ
+              </td>
+              <!-- <td
+                rowspan="2"
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                Trừ tạm ứng
+              </td> -->
               <td
                 rowspan="2"
                 style="text-align: center; font-weight: bold; font-size: small"
@@ -179,25 +197,11 @@
               >
                 &nbsp; &nbsp; Thưởng &nbsp; &nbsp;
               </td>
-              <td
-                style="text-align: center; font-weight: bold; font-size: small"
-              >
-                &nbsp; &nbsp; &nbsp; Phạt &nbsp; &nbsp; &nbsp;
-              </td>
+
               <td
                 style="text-align: center; font-weight: bold; font-size: small"
               >
                 BHXH
-              </td>
-              <td
-                style="text-align: center; font-weight: bold; font-size: small"
-              >
-                BHYT
-              </td>
-              <td
-                style="text-align: center; font-weight: bold; font-size: small"
-              >
-                BHTN
               </td>
               <td
                 style="text-align: center; font-weight: bold; font-size: small"
@@ -222,13 +226,16 @@
                 {{ nv.tenphong }}
               </td>
               <td style="text-align: center; font-size: small">
-                {{ nv.mucluong | formatNumber }}
+                {{ nv.luongtrachnhiem | formatNumber }}
               </td>
               <td style="text-align: center; font-size: small">
                 {{ nv.sum_ngay_lam }}
               </td>
               <td style="text-align: center; font-size: small">
-                {{ nv.sum_ngay_lam }}
+                {{
+                  (parseFloat(nv.luongngay) * parseInt(nv.sum_ngay_lam))
+                    | formatNumber
+                }}
               </td>
               <td style="text-align: center; font-size: small">
                 <input
@@ -258,54 +265,6 @@
                   class="input is-small"
                 />
               </td>
-              <td style="text-align: center; font-size: small">
-                {{
-                  ((parseFloat(nv.mucluong.replace(/,/g, "")) *
-                    parseFloat(get_qtl.tl_dong_bhxh_cn)) /
-                    100)
-                    | formatNumber
-                }}
-              </td>
-
-              <td style="text-align: center; font-size: small">
-                {{
-                  ((parseFloat(nv.mucluong.replace(/,/g, "")) *
-                    parseFloat(get_qtl.tl_dong_bhyt_cn)) /
-                    100)
-                    | formatNumber
-                }}
-              </td>
-              <td style="text-align: center; font-size: small">
-                {{
-                  ((parseFloat(nv.mucluong.replace(/,/g, "")) *
-                    parseFloat(get_qtl.tl_dong_bhtn_cn)) /
-                    100)
-                    | formatNumber
-                }}
-              </td>
-              <td style="text-align: center; font-size: small">
-                {{ get_qtl.tl_dong_cd_cn | formatNumber }}
-              </td>
-              <td style="text-align: center; font-size: small">
-                {{
-                  ((parseFloat(nv.mucluong.replace(/,/g, "")) *
-                    parseFloat(get_qtl.tl_dong_bhxh_cn)) /
-                    100 +
-                    (parseFloat(nv.mucluong.replace(/,/g, "")) *
-                      parseFloat(get_qtl.tl_dong_bhyt_cn)) /
-                      100 +
-                    (parseFloat(nv.mucluong.replace(/,/g, "")) *
-                      parseFloat(get_qtl.tl_dong_bhtn_cn)) /
-                      100 +
-                    parseFloat(get_qtl.tl_dong_cd_cn))
-                    | formatNumber
-                }}
-              </td>
-
-              <td style="text-align: center; font-size: small">
-                {{ nv.tong_ung | formatNumber }}
-              </td>
-
               <td>
                 <input
                   v-model="nv.thuong"
@@ -313,7 +272,45 @@
                   class="input is-small"
                 />
               </td>
-              <template v-if="nv.tong_ung">
+              <td
+                style="
+                  text-align: center;
+                  font-size: small;
+                  font-weight: bold;
+                  color: #f14668;
+                "
+              >
+                {{
+                  (parseFloat(nv.luongngay) * parseInt(nv.sum_ngay_lam) +
+                    parseFloat(nv.dt_dieuchinh) +
+                    parseFloat(nv.dt_thuong) +
+                    parseFloat(nv.thuong) +
+                    parseFloat(nv.luongngoaih))
+                    | formatNumber
+                }}
+              </td>
+              <td style="text-align: center; font-size: small">
+                {{ nv.mucluong | formatNumber }}
+              </td>
+              <td style="text-align: center; font-size: small">
+                {{ nv.bhxh | formatNumber }}
+              </td>
+
+              <td style="text-align: center; font-size: small">
+                {{ get_qtl.tl_dong_cd_cn | formatNumber }}
+              </td>
+              <td style="text-align: center; font-size: small">
+                {{
+                  (parseFloat(nv.bhxh) + parseFloat(get_qtl.tl_dong_cd_cn))
+                    | formatNumber
+                }}
+              </td>
+
+              <!-- <td style="text-align: center; font-size: small">
+                {{ nv.tong_ung | formatNumber }}
+              </td> -->
+
+              <!-- <template v-if="nv.tong_ung">
                 <td style="text-align: right; font-size: small">
                   {{
                     (parseFloat(nv.mucluong.replace(/,/g, "")) +
@@ -332,12 +329,22 @@
                       | formatNumber
                   }}
                 </td>
-              </template>
-              <template v-else>
-                <td style="text-align: right; font-size: small">
+              </template> -->
+              <template>
+                <td
+                  style="
+                    text-align: right;
+                    font-size: small;
+                    font-weight: bold;
+                    color: #f14668;
+                  "
+                >
                   {{
-                    (parseFloat(nv.mucluong.replace(/,/g, "")) +
-                      parseFloat(nv.thuong) -
+                    (parseFloat(nv.luongngay) * parseInt(nv.sum_ngay_lam) +
+                      parseFloat(nv.dt_dieuchinh) +
+                      parseFloat(nv.dt_thuong) +
+                      parseFloat(nv.thuong) +
+                      parseFloat(nv.luongngoaih) -
                       ((parseFloat(nv.mucluong.replace(/,/g, "")) *
                         parseFloat(get_qtl.tl_dong_bhxh_cn)) /
                         100 +
@@ -672,5 +679,32 @@ export default {
   display: block;
   overflow-x: auto;
   white-space: nowrap;
+}
+
+.table_wrapper td:first-child {
+  position: sticky;
+  left: 0;
+  background-color: #fff;
+}
+.table_wrapper td:first-child,
+.table_wrapper th:first-child {
+  position: sticky;
+  left: 0;
+  z-index: 1;
+  background-color: #eff1fa;
+}
+.table_wrapper td:nth-child(2),
+.table_wrapper th:nth-child(2) {
+  position: sticky;
+  left: 43px;
+  z-index: 1;
+  background-color: #eff1fa;
+}
+.table_wrapper td:nth-child(3),
+.table_wrapper th:nth-child(3) {
+  position: sticky;
+  left: 43px;
+  z-index: 1;
+  background-color: #eff1fa;
 }
 </style>
