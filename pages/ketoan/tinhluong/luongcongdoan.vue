@@ -588,16 +588,6 @@
                 </td>
               </tr>
             </table>
-            <span
-              style="
-                color: red;
-                font-size: small;
-                margin-left: 5px;
-                margin-right: 5px;
-              "
-              >* Sau khi nhập tỷ lệ tính lương quản lý thì bấm vào nút Lấy số
-              liệu lương ở bên trên để tính lương QLSP</span
-            >
           </div>
         </div>
         <!-- Modal 1 -->
