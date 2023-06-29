@@ -454,6 +454,8 @@ export default {
           this.from !== "" &&
           this.to !== ""
         ) {
+          console.log(this.from);
+          console.log(this.to);
           this.data = await this.$axios.$get(
             `/api/report/execldatawithtimeandxuong?mapx=${this.maxuong}&tungay=${this.from}&denngay=${this.to}`
           );

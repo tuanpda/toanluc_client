@@ -633,14 +633,53 @@
               </header>
               <section class="modal-card-body">
                 <div class="columns">
-                  <!-- <div class="table_wrapper">
-                    <table class="table is-responsive is-bordered is-narrow is-fullwidth">
-                      <tr v-for="(pl, index) in phieulo" :key="index + 'z'">
-                        <td>{{( index + 1 )}}</td>
-                        <td>{{}}</td>
+                  <div class="column">
+                    <table
+                      class="table is-responsive is-bordered is-narrow is-fullwidth"
+                    >
+                      <tr>
+                        <td style="width: 20%">
+                          <vue-excel-xlsx
+                            :data="dataAllCongdoan"
+                            :columns="columns"
+                            :file-name="
+                              'Lương công đoạn ' +
+                              maxuong +
+                              ' ' +
+                              thang +
+                              '_' +
+                              nam
+                            "
+                            :file-type="'xlsx'"
+                            :sheet-name="'Lương công đoạn'"
+                          >
+                            Download Lương công đoạn
+                          </vue-excel-xlsx>
+                        </td>
+                        <td style="width: 20%">
+                          <vue-excel-xlsx
+                            :data="dataAllCongnhat"
+                            :columns="columns_cn"
+                            :file-name="
+                              'Lương công nhật ' +
+                              maxuong +
+                              ' ' +
+                              thang +
+                              '_' +
+                              nam
+                            "
+                            :file-type="'xlsx'"
+                            :sheet-name="'Lương công nhật'"
+                          >
+                            Download Lương công nhật
+                          </vue-excel-xlsx>
+                        </td>
+                        <td></td>
                       </tr>
                     </table>
-                  </div> -->
+                  </div>
+                </div>
+                <div class="columns">
                   <div class="column is-4">
                     <div class="table_wrapper table-height">
                       <table
@@ -1023,7 +1062,8 @@
                 </div>
               </header>
               <section class="modal-card-body">
-                <div class="table_wrapper table-height">
+                <div class="table_wrapper">
+                  <!-- công đoạn -->
                   <table
                     class="table is-responsive is-bordered is-narrow is-fullwidth"
                   >
@@ -1032,7 +1072,7 @@
                         colspan="9"
                         style="font-size: small; font-weight: bold"
                       >
-                        Chi tiết lương công đoạn của công nhân
+                        Chi tiết lương công đoạn
                       </td>
                     </tr>
                     <tr>
@@ -1138,7 +1178,7 @@
                       <td style="font-size: small; text-align: center">
                         {{ dtl.sohong }}
                       </td>
-                      <td style="font-size: small; text-align: center">
+                      <td style="font-size: small; text-align: right">
                         {{
                           ((parseFloat(dtl.sohong) + parseFloat(dtl.sodat)) *
                             parseFloat(dtl.dongia))
@@ -1148,6 +1188,151 @@
                       <td style="font-size: small; text-align: center">
                         {{ dtl.stopday_losx | formatDate }}
                       </td>
+                    </tr>
+                    <tr>
+                      <td colspan="7"></td>
+                      <td
+                        style="
+                          font-size: small;
+                          text-align: right;
+                          font-weight: bold;
+                          color: red;
+                        "
+                      >
+                        {{ tongThanhtienLCD | formatNumber }}
+                      </td>
+                      <td></td>
+                    </tr>
+                  </table>
+                  <!-- công nhật -->
+                  <table
+                    class="table is-responsive is-bordered is-narrow is-fullwidth"
+                  >
+                    <tr style="background-color: #fffaeb">
+                      <td
+                        colspan="8"
+                        style="font-size: small; font-weight: bold"
+                      >
+                        Chi tiết lương công nhật
+                      </td>
+                    </tr>
+                    <tr>
+                      <td
+                        style="
+                          font-size: small;
+                          text-align: center;
+                          font-weight: bold;
+                        "
+                      >
+                        STT
+                      </td>
+                      <td
+                        style="
+                          font-size: small;
+                          text-align: center;
+                          font-weight: bold;
+                        "
+                      >
+                        Mã lô sản xuất
+                      </td>
+                      <td
+                        style="
+                          font-size: small;
+                          text-align: center;
+                          font-weight: bold;
+                        "
+                      >
+                        Tên công nhân
+                      </td>
+                      <td
+                        style="
+                          font-size: small;
+                          text-align: center;
+                          font-weight: bold;
+                        "
+                      >
+                        Công nhật
+                      </td>
+                      <td
+                        style="
+                          font-size: small;
+                          text-align: center;
+                          font-weight: bold;
+                        "
+                      >
+                        Đơn giá
+                      </td>
+                      <td
+                        style="
+                          font-size: small;
+                          text-align: center;
+                          font-weight: bold;
+                        "
+                      >
+                        Số giờ công
+                      </td>
+                      <td
+                        style="
+                          font-size: small;
+                          text-align: center;
+                          font-weight: bold;
+                        "
+                      >
+                        Thành tiền
+                      </td>
+                      <td
+                        style="
+                          font-size: small;
+                          text-align: center;
+                          font-weight: bold;
+                        "
+                      >
+                        Ngày kết thúc lô sản xuất
+                      </td>
+                    </tr>
+                    <tr
+                      v-for="(dtl, index) in detailcongnhat"
+                      :key="index + 'd'"
+                    >
+                      <td
+                        style="font-size: small; text-align: center; width: 5%"
+                      >
+                        {{ index + 1 }}
+                      </td>
+                      <td style="font-size: small">{{ dtl.malosx }}</td>
+                      <td style="font-size: small">{{ dtl.nguoithuchien }}</td>
+                      <td style="font-size: small">
+                        {{ dtl.tencongnhat }}
+                      </td>
+                      <td style="font-size: small; text-align: center">
+                        {{ dtl.dongia | formatNumber }}
+                      </td>
+                      <td style="font-size: small; text-align: center">
+                        {{ dtl.sogiocong }}
+                      </td>
+                      <td style="font-size: small; text-align: right">
+                        {{
+                          (parseFloat(dtl.sogiocong) * parseFloat(dtl.dongia))
+                            | formatNumber
+                        }}
+                      </td>
+                      <td style="font-size: small; text-align: center">
+                        {{ dtl.stopday_losx | formatDate }}
+                      </td>
+                    </tr>
+                    <tr>
+                      <td colspan="6"></td>
+                      <td
+                        style="
+                          font-size: small;
+                          text-align: right;
+                          font-weight: bold;
+                          color: red;
+                        "
+                      >
+                        {{ tongThanhtienLCnhat | formatNumber }}
+                      </td>
+                      <td></td>
                     </tr>
                   </table>
                 </div>
@@ -1180,6 +1365,9 @@ export default {
       luongcongdoan: [],
       congnhat: [],
       detailcn: [],
+      detailcongnhat: [],
+      dataAllCongdoan: [],
+      dataAllCongnhat: [],
       nam: "",
       thang: "",
       maxuong: "",
@@ -1237,6 +1425,201 @@ export default {
       tylequanly3: 0,
       tylequanly4: 0,
       tylequanly5: 0,
+      columns: [
+        {
+          label: "Id Lô sản xuất",
+          field: "_id_losx",
+          // dataFormat: this.trimData
+        },
+        {
+          label: "Kế hoạch năm",
+          field: "kehoachnam",
+          /* dataFormat: this.priceFormat */
+          // dataFormat: this.trimData
+        },
+        {
+          label: "Mã kế hoạch PX",
+          field: "makhpx",
+          /* dataFormat: this.priceFormat */
+          // dataFormat: this.trimData
+        },
+        {
+          label: "Mã lô sản xuất",
+          field: "malosx",
+        },
+        {
+          label: "Mã phân xưởng",
+          field: "mapx",
+          // dataFormat: this.prefixformatDate
+        },
+        {
+          label: "Mã tổ",
+          field: "mato",
+        },
+        {
+          label: "Mã sản phẩm",
+          field: "masp",
+          // dataFormat: this.prefixformatDate
+        },
+        {
+          label: "Tên sản phẩm",
+          field: "tensp",
+          // dataFormat: this.prefixformatDate
+        },
+        {
+          label: "Nguyên công",
+          field: "nguyencong",
+          // dataFormat: this.trimData
+        },
+
+        {
+          label: "Đơn giá",
+          field: "dongia",
+          // dataFormat: this.trimData
+        },
+        {
+          label: "Máy",
+          field: "may",
+          // dataFormat: this.trimData
+        },
+        {
+          label: "Phân xưởng của công nhân",
+          field: "phanxuong_cn",
+          // dataFormat: this.trimData
+        },
+        {
+          label: "Tổ của công nhân",
+          field: "to_cn",
+          // dataFormat: this.prefixformatDate
+        },
+        {
+          label: "Mã Công nhân",
+          field: "congnhan",
+          // dataFormat: this.prefixformatDate
+        },
+        {
+          label: "Tên công nhan",
+          field: "tencn",
+        },
+        {
+          label: "Số đạt",
+          field: "sodat",
+          // dataFormat: this.prefixformatDate
+        },
+        {
+          label: "Số hỏng",
+          field: "sohong",
+          // dataFormat: this.prefixformatDate
+        },
+        {
+          label: "Ngày thực hiện",
+          field: "ngaythuchien",
+          dataFormat: this.prefixformatDate,
+        },
+      ],
+      columns_cn: [
+        {
+          label: "Id Lô sản xuất",
+          field: "_id_losx",
+          // dataFormat: this.trimData
+        },
+        {
+          label: "Kế hoạch năm",
+          field: "kehoachnam",
+          /* dataFormat: this.priceFormat */
+          // dataFormat: this.trimData
+        },
+        {
+          label: "Mã lô nhà máy",
+          field: "malonhamay",
+          /* dataFormat: this.priceFormat */
+          // dataFormat: this.trimData
+        },
+        {
+          label: "Mã kế hoạch PX",
+          field: "makhpx",
+          /* dataFormat: this.priceFormat */
+          // dataFormat: this.trimData
+        },
+        {
+          label: "Mã lô sản xuất",
+          field: "malosx",
+        },
+        {
+          label: "Mã phân xưởng",
+          field: "mapx",
+          // dataFormat: this.prefixformatDate
+        },
+        // {
+        //   label: "Mã tổ",
+        //   field: "mato",
+        // },
+        {
+          label: "Mã sản phẩm",
+          field: "masp",
+          // dataFormat: this.prefixformatDate
+        },
+        {
+          label: "Tên sản phẩm",
+          field: "tensp",
+          // dataFormat: this.prefixformatDate
+        },
+        {
+          label: "Mã công",
+          field: "macongnhat",
+          // dataFormat: this.trimData
+        },
+
+        {
+          label: "Tên công",
+          field: "tencongnhat",
+          // dataFormat: this.trimData
+        },
+        {
+          label: "Mã công nhân",
+          field: "macongnhan",
+          // dataFormat: this.trimData
+        },
+        {
+          label: "Người thực hiện",
+          field: "nguoithuchien",
+          // dataFormat: this.trimData
+        },
+        {
+          label: "Số giờ công",
+          field: "sogiocong",
+          // dataFormat: this.prefixformatDate
+        },
+        {
+          label: "Đơn giá",
+          field: "dongia",
+          // dataFormat: this.prefixformatDate
+        },
+        {
+          label: "Phân xưởng công nhân",
+          field: "phanxuong_cn",
+        },
+        {
+          label: "Tổ công nhân",
+          field: "to_cn",
+          // dataFormat: this.prefixformatDate
+        },
+        {
+          label: "Ngày thực hiện",
+          field: "ngaythuchien",
+          dataFormat: this.prefixformatDate,
+        },
+        {
+          label: "Ngày hoàn thành",
+          field: "ngayhoanthanh",
+          dataFormat: this.prefixformatDate,
+        },
+        {
+          label: "Ghi chú",
+          field: "ghichu",
+          // dataFormat: this.prefixformatDate
+        },
+      ],
     };
   },
 
@@ -1275,6 +1658,25 @@ export default {
       const tong = this.tongLuongQuanLy * this.tylequanly1;
       return tong.toFixed(2);
     },
+
+    // tổng thành tiền lương công đoạn
+    tongThanhtienLCD() {
+      return this.detailcn.reduce(
+        (total, item) =>
+          total +
+          (parseFloat(item.sohong) + parseFloat(item.sodat)) *
+            parseFloat(item.dongia),
+        0
+      );
+    },
+    // tổng thành tiền công nhật
+    tongThanhtienLCnhat() {
+      return this.detailcongnhat.reduce(
+        (total, item) =>
+          total + parseFloat(item.sogiocong) * parseFloat(item.dongia),
+        0
+      );
+    },
   },
 
   mounted() {
@@ -1286,6 +1688,21 @@ export default {
   },
 
   methods: {
+    // format date
+    prefixformatDate(value) {
+      if (!value) {
+        return "";
+      }
+      value = new Date(value);
+      return (
+        value.getFullYear() +
+        "-" +
+        ("0" + (value.getMonth() + 1)).slice(-2) +
+        "-" +
+        ("0" + value.getDate()).slice(-2)
+      );
+    },
+
     currentDateTime() {
       const current = new Date();
       const date =
@@ -1381,6 +1798,12 @@ export default {
       this.isActive = true;
       this.phieulo = await this.$axios.$get(
         `/api/ketoan/getallphieulsxtinhluongcd?nam=${this.nam}&thang=${this.thang}&mapx=${this.maxuong}`
+      );
+      this.dataAllCongdoan = await this.$axios.$get(
+        `/api/ketoan/detailallluongcongdoaninmonth?nam=${this.nam}&thang=${this.thang}&mapx=${this.maxuong}`
+      );
+      this.dataAllCongnhat = await this.$axios.$get(
+        `/api/ketoan/detailallluongcongnhatinmonth?nam=${this.nam}&thang=${this.thang}&mapx=${this.maxuong}`
       );
     },
 
@@ -1574,6 +1997,10 @@ export default {
         `/api/ketoan/detailluongcongdoancn?congnhan=${macn}&nam=${this.nam}&thang=${this.thang}&mapx=${this.maxuong}`
       );
       // console.log(this.detailcn)
+      this.detailcongnhat = await this.$axios.$get(
+        `/api/ketoan/detailluongcongnhatcn?macongnhan=${macn}&nam=${this.nam}&thang=${this.thang}&mapx=${this.maxuong}`
+      );
+      // console.log(this.detailcongnhat);
     },
 
     onAddLuongthang() {
