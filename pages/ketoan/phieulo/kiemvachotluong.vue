@@ -3878,6 +3878,22 @@ export default {
           }
         );
         this.sllosx = this.tempData;
+      } else if (
+        !this.selectedOptions.length &&
+        this.search_ngayhttt == "" &&
+        this.search_ngayhtttend == "" &&
+        this.search_chot != ""
+      ) {
+        this.tempData = [];
+        this.tempData = await this.$axios.$get(
+          `/api/lokehoach/loconlydachotlsx`,
+          {
+            params: {
+              status_tinhluong: search_chotphieu,
+            },
+          }
+        );
+        this.sllosx = this.tempData;
       }
       // chọn lọc full 1
       // if (
