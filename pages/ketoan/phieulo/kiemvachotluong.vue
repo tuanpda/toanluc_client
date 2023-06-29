@@ -212,7 +212,17 @@
                   >Có {{ sllosx.length }} phiếu</span
                 >
               </td>
-              <td></td>
+              <td style="width: 10.15%; text-align: center">
+                <vue-excel-xlsx
+                  :data="sllosx"
+                  :columns="columns_losx"
+                  :file-name="filename_exel"
+                  :file-type="'xlsx'"
+                  :sheet-name="filename_exel"
+                >
+                  Download Excel
+                </vue-excel-xlsx>
+              </td>
             </tr>
           </table>
         </div>
@@ -2375,6 +2385,107 @@ export default {
           label: "Ghi chú",
           field: "ghichu",
           // dataFormat: this.prefixformatDate
+        },
+      ],
+      columns_losx: [
+        {
+          label: "Kế hoạch năm",
+          field: "kehoachnam",
+        },
+        {
+          label: "Mã lô nhà máy",
+          field: "malonhamay",
+          dataFormat: this.trimData,
+        },
+        {
+          label: "Mã kế hoạch phân xưởng",
+          field: "makhpx",
+          dataFormat: this.trimData,
+        },
+        {
+          label: "Mã lô sản xuất",
+          field: "malosx",
+          dataFormat: this.trimData,
+        },
+        {
+          label: "Mã phân xưởng",
+          field: "mapx",
+          dataFormat: this.trimData,
+          /* dataFormat: this.priceFormat */
+        },
+        {
+          label: "Tên phân xưởng",
+          field: "tenpx",
+          dataFormat: this.trimData,
+        },
+        {
+          label: "Mã tổ",
+          field: "mato",
+          dataFormat: this.trimData,
+        },
+        {
+          label: "Tên tổ",
+          field: "tento",
+          dataFormat: this.trimData,
+        },
+        {
+          label: "Mã sản phẩm",
+          field: "masp",
+          dataFormat: this.trimData,
+        },
+        {
+          label: "Tên sản phẩm",
+          field: "tensp",
+          dataFormat: this.trimData,
+        },
+        {
+          label: "Số lượng",
+          field: "soluonglsx",
+          dataFormat: this.trimData,
+        },
+        {
+          label: "SL cập nhật nhanh",
+          field: "soluongkhsx",
+        },
+        {
+          label: "Ngày bắt đầu",
+          field: "ngaybd",
+          dataFormat: this.prefixformatDate,
+        },
+        {
+          label: "Ngày kết thúc",
+          field: "ngaykt",
+          dataFormat: this.prefixformatDate,
+        },
+        {
+          label: "Ngày bắt đầu thực tế",
+          field: "ngaybatdautt",
+          dataFormat: this.prefixformatDate,
+        },
+        {
+          label: "Ngày hoàn thành thực tế",
+          field: "ngayhoanthanhtt",
+          dataFormat: this.prefixformatDate,
+        },
+        {
+          label: "Tổng đạt",
+          field: "tongdat",
+        },
+        {
+          label: "Tổng hỏng",
+          field: "tonghong",
+        },
+        {
+          label: "Nhóm lương",
+          field: "nhomluong",
+        },
+        {
+          label: "Đã tính lương",
+          field: "datinhluong",
+        },
+        {
+          label: "Trạng thái",
+          field: "status",
         },
       ],
     };
