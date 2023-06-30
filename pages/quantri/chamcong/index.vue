@@ -388,7 +388,7 @@
                 </div>
               </td>
               <td style="font-size: small; text-align: center">
-                <input type="text" class="input is-small" v-model="item.anca" />
+                {{ item.anca }}
               </td>
               <td style="font-size: small; text-align: center">
                 {{ item.ngaychamcong | formatDate }}
