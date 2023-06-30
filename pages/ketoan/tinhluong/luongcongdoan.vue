@@ -383,7 +383,11 @@
                 </td>
                 <td
                   @click="onSumcongnhandetail(dsl.macn)"
-                  style="text-align: center; font-size: small"
+                  style="
+                    text-align: center;
+                    font-size: small;
+                    background-color: aliceblue;
+                  "
                 >
                   {{ dsl.macn }}
                 </td>

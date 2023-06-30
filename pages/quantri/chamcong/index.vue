@@ -298,6 +298,16 @@
               <td
                 style="font-size: small; font-weight: bold; text-align: center"
               >
+                Chấm lại ăn ca
+              </td>
+              <td
+                style="font-size: small; font-weight: bold; text-align: center"
+              >
+                Ăn ca
+              </td>
+              <td
+                style="font-size: small; font-weight: bold; text-align: center"
+              >
                 Ngày chấm công
               </td>
               <td
@@ -349,7 +359,7 @@
                 <div class="select is-small">
                   <select
                     @change="chamconglai($event, item)"
-                    v-model="item.machamcong"
+                    v-model="item.chamcong"
                   >
                     <option
                       v-for="item in chamcongList"
@@ -367,6 +377,18 @@
                   v-model="item.chamcong"
                 /> -->
                 {{ item.chamcong }}
+              </td>
+              <td style="font-size: small; text-align: center">
+                <div class="select is-small">
+                  <select @change="chamlaianca($event, item)">
+                    <option v-for="item in tienanca" :value="item.anca">
+                      {{ item.anca }} -- {{ item.tienan }}
+                    </option>
+                  </select>
+                </div>
+              </td>
+              <td style="font-size: small; text-align: center">
+                <input type="text" class="input is-small" v-model="item.anca" />
               </td>
               <td style="font-size: small; text-align: center">
                 {{ item.ngaychamcong | formatDate }}
@@ -589,7 +611,7 @@ export default {
         this.showNgaychamcong = await this.$axios.$get(
           `/api/congnhan/showngaychamcongandmapx?mapx=${this.form.mapx}&ngaychamcong=${this.ngaychamcong}`
         );
-        // console.log(getNgaychamcong);
+        console.log(this.showNgaychamcong);
         if (this.showNgaychamcong.length > 0) {
           const Toast = Swal.mixin({
             toast: true,
@@ -714,8 +736,8 @@ export default {
     async chamconglai(e, item) {
       var name = e.target.options[e.target.options.selectedIndex].text;
       let position = name.split("--");
-      const machamcong = position[0];
-      const chamcong = position[1];
+      const machamcong = position[0].trim();
+      const chamcong = position[1].trim();
       // console.log(machamcong, chamcong);
 
       try {
@@ -727,6 +749,53 @@ export default {
           `/api/congnhan/updatechamcong/${item._id}`,
           data
         );
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+        Toast.fire({
+          icon: "success",
+          title: "Đã cập nhật",
+        });
+      } catch (error) {
+        console.log(error);
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+        Toast.fire({
+          icon: "error",
+          title: "Có lỗi xảy ra !!!",
+        });
+      }
+    },
+
+    async chamlaianca(e, item) {
+      var name = e.target.options[e.target.options.selectedIndex].text;
+      let position = name.split("--");
+      const anca = position[0].trim();
+      const tienan = position[1].trim();
+      // console.log(anca, tienan);
+      try {
+        const data = {
+          anca: anca,
+          tienan: tienan,
+        };
+        await this.$axios.$patch(`/api/congnhan/updateanca/${item._id}`, data);
         const Toast = Swal.mixin({
           toast: true,
           position: "top-end",

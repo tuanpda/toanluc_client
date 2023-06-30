@@ -150,10 +150,8 @@
                 <td style="font-size: small">{{ px.mapx }}</td>
                 <td style="font-size: small">{{ px.tenpx }}</td>
                 <td style="font-size: small; text-align: center">
-                  <template v-if="(px.trangthai == 1)">
-                    <span style="color: green; font-weight: 900"
-                      >Đang làm</span
-                    >
+                  <template v-if="px.trangthai == 1">
+                    <span style="color: green; font-weight: 900">Đang làm</span>
                   </template>
                   <template v-else>
                     <span style="color: #f96854; font-weight: 900"
@@ -555,12 +553,19 @@ export default {
         tento: "",
         chucvu: "",
         chucnang: "",
-        luongcb: "",
+        luongcb: 0,
         nguoilienhe: "",
         sotknh: "",
         tennh: "",
         trangthai: 1,
         ghichu: "",
+        luongmem: 0,
+        anluongqlsp: 0,
+        luongqlsp: 0,
+        tyleqlsp: 0,
+        ngayhotro: 0,
+        tienhotro: 0,
+        antrua: 0,
         createdAt: "",
         createdBy: this.$auth.$state.user.username,
         // updatedAt: new Date().toISOString().substr(0, 10),
@@ -757,7 +762,9 @@ export default {
     },
 
     async getDmcn() {
-      this.congnhan = await this.$axios.$get(`/api/congnhan/allcongnhan2trangthai`);
+      this.congnhan = await this.$axios.$get(
+        `/api/congnhan/allcongnhan2trangthai`
+      );
       if (this.congnhan.length <= 0) {
         this.$toasted.show("Danh mục công nhân rỗng", {
           duration: 3000,
