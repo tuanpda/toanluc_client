@@ -415,7 +415,14 @@
                   {{ dsl.songaylam }}
                 </td>
                 <!-- tổng tiền ăn ca -->
-                <td style="text-align: center; font-size: small">
+                <td
+                  @click="detailAnca(dsl)"
+                  style="
+                    text-align: center;
+                    font-size: small;
+                    background-color: honeydew;
+                  "
+                >
                   {{ dsl.thanhtien | formatNumber }}
                 </td>
                 <!-- ngày hỗ trợ -->
@@ -1362,6 +1369,137 @@
             </div>
           </div>
         </div>
+
+        <!-- Modal 4 - detailAnca -->
+        <div class="">
+          <!-- Toggle class  -->
+          <div :class="{ 'is-active': isActive_anCa }" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-content modal-card-1">
+              <header
+                style="
+                  background-color: #3e8ed0;
+                  border-top-left-radius: 8px;
+                  border-top-right-radius: 8px;
+                "
+              >
+                <div class="columns">
+                  <div class="column is-9">
+                    <p
+                      style="
+                        font-size: small;
+                        font-weight: bold;
+                        color: white;
+                        padding: 15px;
+                      "
+                    >
+                      <span class="icon is-small is-left">
+                        <i style="color: #ffd863ff" class="fas fa-tags"></i>
+                      </span>
+                      Thông tin ăn ca
+                    </p>
+                  </div>
+                  <div class="column" style="text-align: right">
+                    <a @click="isActive_anCa = false">
+                      <span
+                        style="color: red; padding: 20px"
+                        class="icon is-small"
+                      >
+                        <i class="fas fa-power-off"></i>
+                      </span>
+                    </a>
+                  </div>
+                </div>
+              </header>
+              <section class="modal-card-body">
+                <table
+                  class="table is-responsive is-bordered is-narrow is-fullwidth"
+                >
+                  <tr style="background-color: #fffaeb">
+                    <td
+                      style="
+                        font-size: small;
+                        font-weight: bold;
+                        text-align: center;
+                        width: 5%;
+                      "
+                    >
+                      STT
+                    </td>
+                    <td
+                      style="
+                        font-size: small;
+                        font-weight: bold;
+                        text-align: center;
+                        width: 10%;
+                      "
+                    >
+                      Mã chấm công
+                    </td>
+                    <td
+                      style="
+                        font-size: small;
+                        font-weight: bold;
+                        text-align: center;
+                        width: 15%;
+                      "
+                    >
+                      chamcong
+                    </td>
+                    <td
+                      style="
+                        font-size: small;
+                        font-weight: bold;
+                        text-align: center;
+                        width: 10%;
+                      "
+                    >
+                      anca
+                    </td>
+                    <td
+                      style="
+                        font-size: small;
+                        font-weight: bold;
+                        text-align: center;
+                        width: 10%;
+                      "
+                    >
+                      tienan
+                    </td>
+                    <td></td>
+                  </tr>
+                  <tr v-for="(it, index) in dataDetailAnca">
+                    <td style="font-size: small; text-align: center">
+                      {{ index + 1 }}
+                    </td>
+                    <td style="font-size: small; text-align: center">
+                      {{ it.machamcong }}
+                    </td>
+                    <td style="font-size: small; text-align: center">
+                      {{ it.chamcong }}
+                    </td>
+                    <td style="font-size: small; text-align: center">
+                      {{ it.anca }}
+                    </td>
+                    <td style="font-size: small; text-align: right">
+                      {{ it.tienan | formatNumber }}
+                    </td>
+                    <td></td>
+                  </tr>
+                  <tr>
+                    <td colspan="4" style="font-size: small; font-weight: bold">
+                      Tổng
+                    </td>
+                    <td style="font-size: small; font-weight: bold; color: red">
+                      {{ tongAnca | formatNumber }}
+                    </td>
+                    <td></td>
+                  </tr>
+                </table>
+              </section>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1390,6 +1528,7 @@ export default {
       detailcongnhat: [],
       dataAllCongdoan: [],
       dataAllCongnhat: [],
+      dataDetailAnca: [],
       nam: "",
       thang: "",
       maxuong: "",
@@ -1421,6 +1560,7 @@ export default {
       isActive: false,
       isActive_listcd: false,
       isActive_load_luong: false,
+      isActive_anCa: false,
       phieulosx: {},
       form: {
         malonhamay: "",
@@ -1667,6 +1807,7 @@ export default {
     },
 
     tongLuongCongDoan() {
+      console.log(this.dscongnhan);
       const tong = this.dscongnhan.reduce(
         (accumulator, currentValue) => accumulator + currentValue.luongcd,
         0
@@ -1699,6 +1840,15 @@ export default {
           total + parseFloat(item.sogiocong) * parseFloat(item.dongia),
         0
       );
+    },
+
+    // tổng thành tiền ăn ca
+    tongAnca() {
+      let sum = 0;
+      for (let i = 0; i < this.dataDetailAnca.length; i++) {
+        sum += parseInt(this.dataDetailAnca[i].tienan);
+      }
+      return sum;
     },
   },
 
@@ -2022,6 +2172,13 @@ export default {
         `/api/ketoan/detailluongcongnhatcn?macongnhan=${macn}&nam=${this.nam}&thang=${this.thang}&mapx=${this.maxuong}`
       );
       // console.log(this.detailcongnhat);
+    },
+
+    async detailAnca(item) {
+      this.isActive_anCa = true;
+      this.dataDetailAnca = await this.$axios.$get(
+        `/api/ketoan/detailanca?congnhan=${item.macn}&nam=${this.nam}&thang=${this.thang}&mapx=${this.maxuong}`
+      );
     },
 
     onAddLuongthang() {

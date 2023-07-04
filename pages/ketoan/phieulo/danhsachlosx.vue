@@ -1240,7 +1240,7 @@ export default {
       const nhomsp = this.multiSearch_nhomsp;
       const status = this.Options_status;
       const matoList = this.selectedOptions_to;
-      
+
       // thêm lọc theo mã tổ
       if (
         this.selectedOptions.length > 0 &&
@@ -1257,7 +1257,7 @@ export default {
               masp: masp,
               status: status,
               nhomsp: nhomsp,
-              mato: matoList
+              mato: matoList,
             },
           }
         );
@@ -1301,7 +1301,7 @@ export default {
               // masp: masp,
               // status: status,
               nhomsp: nhomsp,
-              mato: matoList
+              mato: matoList,
             },
           }
         );
@@ -1324,7 +1324,7 @@ export default {
               masp: masp,
               // status: status,
               // nhomsp: nhomsp,
-              mato: matoList
+              mato: matoList,
             },
           }
         );
@@ -1344,7 +1344,7 @@ export default {
           {
             params: {
               mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
-              mato: matoList
+              mato: matoList,
             },
           }
         );
@@ -2156,7 +2156,7 @@ export default {
         });
         Toast.fire({
           icon: "success",
-          title: "Đã cập nhật lại trạng thái",
+          title: "Đã cập nhật",
         });
       } catch (error) {
         // console.log(error);

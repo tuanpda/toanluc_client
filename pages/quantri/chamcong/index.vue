@@ -624,7 +624,7 @@ export default {
         this.showNgaychamcong = await this.$axios.$get(
           `/api/congnhan/showngaychamcongandmapx?mapx=${this.form.mapx}&ngaychamcong=${this.ngaychamcong}`
         );
-        console.log(this.showNgaychamcong);
+        // console.log(this.showNgaychamcong);
         if (this.showNgaychamcong.length > 0) {
           const Toast = Swal.mixin({
             toast: true,
