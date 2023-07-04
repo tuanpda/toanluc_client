@@ -1,289 +1,343 @@
 <template>
-  <div class="columns is-mobile">
-    <div class="column is-10 is-offset-1">
-      <br />
-      <div class="box">
-        <div class="columns" style="border: 1px solid green">
-          <div class="column is-7">
-            <span style="color: #f14668" class="icon is-small is-left">
-              <i class="far fa-calendar-alt"></i>
-            </span>
-            <span style="font-weight: bold">Chọn kỳ lương tại phân xưởng</span>
-            <table
-              style="margin-top: 8px"
-              class="table table is-bordered table is-narrow table is-hoverable table is-fullwidth"
-            >
-              <tr>
-                <td style="font-size: small; width: 45%">
-                  Tháng lập bảng lương
-                </td>
-                <td>
-                  <input v-model="thang" type="text" class="input is-small" />
-                </td>
-              </tr>
-              <tr>
-                <td style="font-size: small">Năm lập</td>
-                <td>
-                  <input v-model="nam" type="text" class="input is-small" />
-                </td>
-              </tr>
-              <tr>
-                <td style="font-size: small">
-                  <div class="control has-icons-left">
-                    <div class="select is-small is-fullwidth">
-                      <select @change="getWithPX($event)">
-                        <option selected>-- Chọn phân xưởng --</option>
-                        <option v-for="item in phanxuong" :value="item.mapx">
-                          {{ item.mapx }} -- {{ item.tenpx }}
-                        </option>
-                      </select>
-                    </div>
-                    <span class="icon is-small is-left">
-                      <i style="color: #48c78e" class="fas fa-kaaba"></i>
-                    </span>
+  <div class="column" style="margin-left: 20px; margin-right: 20px">
+    <br />
+    <div class="box">
+      <div class="columns" style="border: 1px solid green">
+        <div class="column is-7">
+          <span style="color: #f14668" class="icon is-small is-left">
+            <i class="far fa-calendar-alt"></i>
+          </span>
+          <span style="font-weight: bold">Chọn kỳ lương tại phân xưởng</span>
+          <table
+            style="margin-top: 8px"
+            class="table table is-bordered table is-narrow table is-hoverable table is-fullwidth"
+          >
+            <tr>
+              <td style="font-size: small; width: 45%">Tháng lập bảng lương</td>
+              <td>
+                <input v-model="thang" type="text" class="input is-small" />
+              </td>
+            </tr>
+            <tr>
+              <td style="font-size: small">Năm lập</td>
+              <td>
+                <input v-model="nam" type="text" class="input is-small" />
+              </td>
+            </tr>
+            <tr>
+              <td style="font-size: small">
+                <div class="control has-icons-left">
+                  <div class="select is-small is-fullwidth">
+                    <select @change="getWithPX($event)">
+                      <option selected>-- Chọn phân xưởng --</option>
+                      <option v-for="item in phanxuong" :value="item.mapx">
+                        {{ item.mapx }} -- {{ item.tenpx }}
+                      </option>
+                    </select>
                   </div>
-                </td>
-                <td>
-                  <div class="control has-icons-left">
-                    <div class="select is-small is-fullwidth">
-                      <select @change="getWithTo($event)">
-                        <option selected>-- Chọn tổ --</option>
-                        <option v-for="item in tonhom" :value="item.mapx">
-                          {{ item.mato }} -- {{ item.tento }}
-                        </option>
-                      </select>
-                    </div>
-                    <span class="icon is-small is-left">
-                      <i style="color: #48c78e" class="fas fa-kaaba"></i>
-                    </span>
+                  <span class="icon is-small is-left">
+                    <i style="color: #48c78e" class="fas fa-kaaba"></i>
+                  </span>
+                </div>
+              </td>
+              <td>
+                <div class="control has-icons-left">
+                  <div class="select is-small is-fullwidth">
+                    <select @change="getWithTo($event)">
+                      <option selected>-- Chọn tổ --</option>
+                      <option v-for="item in tonhom" :value="item.mapx">
+                        {{ item.mato }} -- {{ item.tento }}
+                      </option>
+                    </select>
                   </div>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <button
-                    @click="[reportBangluong(), reportSum()]"
-                    class="button is-small is-success is-fullwidth"
-                  >
-                    <span class="icon is-small">
-                      <i class="fas fa-file-alt"></i>
-                    </span>
-                    <span>Xem bảng lương</span>
-                  </button>
-                </td>
-                <td>
-                  <button
-                    @click="pritnPdf"
-                    class="button is-small is-info is-fullwidth"
-                  >
-                    <span class="icon is-small">
-                      <i class="far fa-file-pdf"></i>
-                    </span>
-                    <span>In PDF</span>
-                  </button>
-                </td>
-              </tr>
-            </table>
-          </div>
+                  <span class="icon is-small is-left">
+                    <i style="color: #48c78e" class="fas fa-kaaba"></i>
+                  </span>
+                </div>
+              </td>
+            </tr>
+            <tr>
+              <td>
+                <button
+                  @click="[reportBangluong(), reportSum()]"
+                  class="button is-small is-success is-fullwidth"
+                >
+                  <span class="icon is-small">
+                    <i class="fas fa-file-alt"></i>
+                  </span>
+                  <span>Xem bảng lương</span>
+                </button>
+              </td>
+              <td>
+                <button
+                  @click="pritnPdf"
+                  class="button is-small is-info is-fullwidth"
+                >
+                  <span class="icon is-small">
+                    <i class="far fa-file-pdf"></i>
+                  </span>
+                  <span>In PDF</span>
+                </button>
+              </td>
+            </tr>
+          </table>
         </div>
-        <div v-if="report.length > 0" class="columns" style="margin-top: 1px">
-          <div class="table_wrapper table-height">
-            <table
-              class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
-            >
-              <tr>
-                <td
-                  rowspan="2"
-                  style="
-                    text-align: center;
-                    font-weight: bold;
-                    font-size: small;
-                  "
-                >
-                  STT
-                </td>
-                <td
-                  rowspan="2"
-                  style="
-                    text-align: center;
-                    font-weight: bold;
-                    font-size: small;
-                  "
-                >
-                  Họ tên
-                </td>
-                <td
-                  rowspan="2"
-                  style="
-                    text-align: center;
-                    font-weight: bold;
-                    font-size: small;
-                  "
-                >
-                  Lương công đoạn
-                </td>
-                <td
-                  rowspan="2"
-                  style="
-                    text-align: center;
-                    font-weight: bold;
-                    font-size: small;
-                  "
-                >
-                  Lương công nhật
-                </td>
-                <td
-                  colspan="5"
-                  style="
-                    text-align: center;
-                    font-weight: bold;
-                    font-size: small;
-                  "
-                >
-                  Các khoản khấu trừ
-                </td>
-                <td
-                  rowspan="2"
-                  style="
-                    text-align: center;
-                    font-weight: bold;
-                    font-size: small;
-                  "
-                >
-                  Lương nhận
-                </td>
-              </tr>
-              <tr>
-                <td
-                  style="
-                    text-align: center;
-                    font-weight: bold;
-                    font-size: small;
-                  "
-                >
-                  BHXH
-                </td>
-                <td
-                  style="
-                    text-align: center;
-                    font-weight: bold;
-                    font-size: small;
-                  "
-                >
-                  Ăn trưa
-                </td>
-                <td
-                  style="
-                    text-align: center;
-                    font-weight: bold;
-                    font-size: small;
-                  "
-                >
-                  Tạm ứng
-                </td>
-                <td
-                  style="
-                    text-align: center;
-                    font-weight: bold;
-                    font-size: small;
-                  "
-                >
-                  KPCĐ
-                </td>
-                <td
-                  style="
-                    text-align: center;
-                    font-weight: bold;
-                    font-size: small;
-                  "
-                >
-                  Tổng KT
-                </td>
-              </tr>
-              <tr v-for="(nv, index) in report" :key="index">
-                <td style="text-align: center; font-size: small">
-                  {{ index + 1 }}
-                </td>
-                <td style="font-size: small">{{ nv.hotennv }}</td>
-                <td style="text-align: right; font-size: small">
-                  {{ nv.luongcd | formatNumber }}
-                </td>
-                <td style="text-align: right; font-size: small">
-                  {{ nv.luongps | formatNumber }}
-                </td>
-                <td style="text-align: right; font-size: small">
-                  {{ nv.bhxh | formatNumber }}
-                </td>
-                <td style="text-align: right; font-size: small">
-                  {{ nv.antrua | formatNumber }}
-                </td>
-                <td style="text-align: right; font-size: small">
-                  {{ nv.tamung | formatNumber }}
-                </td>
-                <td style="text-align: right; font-size: small">
-                  {{ nv.congdoan | formatNumber }}
-                </td>
-                <td style="text-align: right; font-size: small">
-                  {{ nv.tongtru | formatNumber }}
-                </td>
-                <td style="text-align: right; font-size: small">
-                  {{ nv.tongnhan | formatNumber }}
-                </td>
-              </tr>
-              <tr>
-                <td
-                  style="
-                    text-align: center;
-                    font-weight: bold;
-                    font-size: small;
-                  "
-                >
-                  Tổng
-                </td>
-                <td></td>
-                <td
-                  style="text-align: right; font-weight: bold; font-size: small"
-                >
-                  {{ sumrp.sum_luongcd | formatNumber }}
-                </td>
-                <td
-                  style="text-align: right; font-weight: bold; font-size: small"
-                >
-                  {{ sumrp.sum_luongcn | formatNumber }}
-                </td>
-                <td
-                  style="text-align: right; font-weight: bold; font-size: small"
-                >
-                  {{ sumrp.sum_bhxh | formatNumber }}
-                </td>
-                <td
-                  style="text-align: right; font-weight: bold; font-size: small"
-                >
-                  {{ sumrp.sum_antrua | formatNumber }}
-                </td>
-                <td
-                  style="text-align: right; font-weight: bold; font-size: small"
-                >
-                  {{ sumrp.sum_tamung | formatNumber }}
-                </td>
-                <td
-                  style="text-align: right; font-weight: bold; font-size: small"
-                >
-                  {{ sumrp.sum_pkcd | formatNumber }}
-                </td>
-                <td
-                  style="text-align: right; font-weight: bold; font-size: small"
-                >
-                  {{ sumrp.sum_tongkt | formatNumber }}
-                </td>
-                <td
-                  style="text-align: right; font-weight: bold; font-size: small"
-                >
-                  {{ sumrp.sum_tongnhan | formatNumber }}
-                </td>
-              </tr>
-            </table>
-          </div>
+      </div>
+      <div v-if="report.length > 0" class="columns" style="margin-top: 1px">
+        <div class="table_wrapper table-height">
+          <table
+            class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
+          >
+            <tr>
+              <td
+                rowspan="2"
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                STT
+              </td>
+              <td
+                rowspan="2"
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                Họ tên
+              </td>
+              <td
+                rowspan="2"
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                Lương CB
+              </td>
+              <td
+                rowspan="2"
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                Lương mềm
+              </td>
+              <td
+                rowspan="2"
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                Ngày công
+              </td>
+              <td
+                rowspan="2"
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                Lương QLSP
+              </td>
+              <td
+                rowspan="2"
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                Lương công đoạn
+              </td>
+              <td
+                rowspan="2"
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                Lương công nhật
+              </td>
+              <td
+                rowspan="2"
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                Tổng lương
+              </td>
+              <td
+                colspan="2"
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                Hỗ trợ
+              </td>
+              <td
+                colspan="5"
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                Các khoản khấu trừ
+              </td>
+              <td
+                rowspan="2"
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                Lương nhận
+              </td>
+            </tr>
+            <tr>
+              <!-- rowspan hỗ trợ -->
+              <td
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                Ngày
+              </td>
+              <td
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                Thành tiền
+              </td>
+              <!-- rowspan các khoản khấu trừ -->
+              <td
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                BHXH
+              </td>
+              <td
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                Ăn trưa
+              </td>
+              <td
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                Tạm ứng
+              </td>
+              <td
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                KPCĐ
+              </td>
+              <td
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                Tổng KT
+              </td>
+            </tr>
+            <tr v-for="(nv, index) in report" :key="index">
+              <td style="text-align: center; font-size: small">
+                {{ index + 1 }}
+              </td>
+              <td style="font-size: small">{{ nv.hotennv }}</td>
+              <td style="text-align: right; font-size: small">
+                {{ nv.luongcb | formatNumber }}
+              </td>
+              <td style="text-align: right; font-size: small">
+                {{ nv.luongmem | formatNumber }}
+              </td>
+              <td
+                style="text-align: right; font-size: small; text-align: center"
+              >
+                {{ nv.songaycong }}
+              </td>
+              <td style="text-align: right; font-size: small">
+                {{ nv.luongqlsp | formatNumber }}
+              </td>
+              <td style="text-align: right; font-size: small">
+                {{ nv.luongcd | formatNumber }}
+              </td>
+              <td style="text-align: right; font-size: small">
+                {{ nv.luongps | formatNumber }}
+              </td>
+              <td style="text-align: right; font-size: small">
+                {{ nv.tongluong | formatNumber }}
+              </td>
+              <td style="text-align: right; font-size: small">
+                {{ nv.ngayhotro }}
+              </td>
+              <td style="text-align: right; font-size: small">
+                {{ nv.tienhotro | formatNumber }}
+              </td>
+              <td style="text-align: right; font-size: small">
+                {{ nv.bhxh | formatNumber }}
+              </td>
+              <td style="text-align: right; font-size: small">
+                {{ nv.antrua | formatNumber }}
+              </td>
+              <td style="text-align: right; font-size: small">
+                {{ nv.tamung | formatNumber }}
+              </td>
+              <td style="text-align: right; font-size: small">
+                {{ nv.congdoan | formatNumber }}
+              </td>
+              <td style="text-align: right; font-size: small">
+                {{ nv.tongtru | formatNumber }}
+              </td>
+              <td style="text-align: right; font-size: small">
+                {{ nv.tongnhan | formatNumber }}
+              </td>
+            </tr>
+            <tr>
+              <td
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                Tổng
+              </td>
+              <td></td>
+              <td
+                style="text-align: right; font-weight: bold; font-size: small"
+              >
+                {{ sumrp.sum_luongcb | formatNumber }}
+              </td>
+              <td
+                style="text-align: right; font-weight: bold; font-size: small"
+              >
+                {{ sumrp.sum_luongmem | formatNumber }}
+              </td>
+              <td
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                {{ sumrp.sum_ngaycong | formatNumber }}
+              </td>
+              <td
+                style="text-align: right; font-weight: bold; font-size: small"
+              >
+                {{ sumrp.sum_luongqlsp | formatNumber }}
+              </td>
+              <td
+                style="text-align: right; font-weight: bold; font-size: small"
+              >
+                {{ sumrp.sum_luongcd | formatNumber }}
+              </td>
+              <td
+                style="text-align: right; font-weight: bold; font-size: small"
+              >
+                {{ sumrp.sum_luongcn | formatNumber }}
+              </td>
+              <td
+                style="text-align: right; font-weight: bold; font-size: small"
+              >
+                {{ sumrp.sum_tongluong | formatNumber }}
+              </td>
+              <td
+                style="text-align: right; font-weight: bold; font-size: small"
+              >
+                {{ sumrp.sum_ngayhotro | formatNumber }}
+              </td>
+              <td
+                style="text-align: right; font-weight: bold; font-size: small"
+              >
+                {{ sumrp.sum_tienhotro | formatNumber }}
+              </td>
+              <td
+                style="text-align: right; font-weight: bold; font-size: small"
+              >
+                {{ sumrp.sum_bhxh | formatNumber }}
+              </td>
+              <td
+                style="text-align: right; font-weight: bold; font-size: small"
+              >
+                {{ sumrp.sum_antrua | formatNumber }}
+              </td>
+              <td
+                style="text-align: right; font-weight: bold; font-size: small"
+              >
+                {{ sumrp.sum_tamung | formatNumber }}
+              </td>
+              <td
+                style="text-align: right; font-weight: bold; font-size: small"
+              >
+                {{ sumrp.sum_kpcd | formatNumber }}
+              </td>
+              <td
+                style="text-align: right; font-weight: bold; font-size: small"
+              >
+                {{ sumrp.sum_tongkt | formatNumber }}
+              </td>
+              <td
+                style="text-align: right; font-weight: bold; font-size: small"
+              >
+                {{ sumrp.sum_tongnhan | formatNumber }}
+              </td>
+            </tr>
+          </table>
         </div>
       </div>
     </div>

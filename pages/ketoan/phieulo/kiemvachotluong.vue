@@ -3651,7 +3651,7 @@ export default {
           try {
             for (let i = 0; i < this.selected.length; i++) {
               let data = {
-                stopday_losx: this.selected[i].ngaykt,
+                stopday_losx: this.selected[i].ngayhoanthanhtt,
                 status: 1,
               };
               let data_losanxuat = {
@@ -3820,8 +3820,8 @@ export default {
         const result = await Swal.fire({
           title: `Bạn chắc chắn hủy chốt toàn bộ phiếu lương đã chọn?`,
           showDenyButton: true,
-          confirmButtonText: "Có, Chốt tất cả",
-          denyButtonText: `Hủy chốt`,
+          confirmButtonText: "Có, Hủy chốt tất cả",
+          denyButtonText: `Cancel`,
         });
         if (result.isConfirmed) {
           try {

@@ -298,13 +298,13 @@
               <td
                 style="font-size: small; font-weight: bold; text-align: center"
               >
-                Chấm lại ăn ca
+                Ăn ca
               </td>
-              <td
+              <!-- <td
                 style="font-size: small; font-weight: bold; text-align: center"
               >
                 Ăn ca
-              </td>
+              </td> -->
               <td
                 style="font-size: small; font-weight: bold; text-align: center"
               >
@@ -356,10 +356,10 @@
                 {{ item.machamcong }}
               </td>
               <td style="font-size: small; text-align: center">
-                <div class="select is-small">
+                <div class="select is-small is-fullwidth">
                   <select
+                    v-model="item.machamcong"
                     @change="chamconglai($event, item)"
-                    v-model="item.chamcong"
                   >
                     <option
                       v-for="item in chamcongList"
@@ -379,17 +379,20 @@
                 {{ item.chamcong }}
               </td>
               <td style="font-size: small; text-align: center">
-                <div class="select is-small">
-                  <select @change="chamlaianca($event, item)">
+                <div class="select is-small is-fullwidth">
+                  <select
+                    v-model="item.anca"
+                    @change="chamlaianca($event, item)"
+                  >
                     <option v-for="item in tienanca" :value="item.anca">
                       {{ item.anca }} -- {{ item.tienan }}
                     </option>
                   </select>
                 </div>
               </td>
-              <td style="font-size: small; text-align: center">
+              <!-- <td style="font-size: small; text-align: center">
                 {{ item.anca }}
-              </td>
+              </td> -->
               <td style="font-size: small; text-align: center">
                 {{ item.ngaychamcong | formatDate }}
               </td>
@@ -503,6 +506,16 @@ export default {
         }
       },
     },
+    // anca() {
+    //   return function (item) {
+    //     if (!item.ngayhoanthanhtt) return "";
+    //     const date = new Date(item.ngayhoanthanhtt);
+    //     const year = date.getFullYear();
+    //     const month = ("0" + (date.getMonth() + 1)).slice(-2);
+    //     const day = ("0" + date.getDate()).slice(-2);
+    //     return `${year}-${month}-${day}`;
+    //   };
+    // },
   },
 
   methods: {

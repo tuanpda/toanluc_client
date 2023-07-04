@@ -42,7 +42,7 @@
                         @blur="$v.form.macn.$touch()"
                         class="input is-small"
                         type="text"
-                        placeholder="Nhập mã công nhân"
+                        disabled
                       />
                     </div>
                     <div v-if="$v.form.macn.$error" class="form-error">
@@ -418,7 +418,40 @@ export default {
       this.phanxuong = await this.$axios.$get(`/api/phongban/allphanxuong`);
     },
 
-    onUpdate() {
+    async onUpdate_bk() {
+      const result = await Swal.fire({
+        title: `Cập nhật thông tin công nhân?`,
+        showDenyButton: true,
+        confirmButtonText: "Có, Cập nhật",
+        denyButtonText: `Hủy`,
+      });
+      if (result.isConfirmed) {
+        // tìm mã công nhân trong bảng công nhân
+        const allmacn = await this.$axios.get("/api/congnhan/showallmacn");
+        const dscn = allmacn.data;
+        // console.log(dscn);
+        const arrayMacn = dscn.map((item) => item.macn);
+        // console.log(arrayMacn);
+        if (arrayMacn.includes(this.form.macn)) {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
+          Toast.fire({
+            icon: "error",
+            title: `Mã công nhân: ${this.form.macn} đã tồn tại trong dữ liệu, nhập vào mã mới`,
+          });
+        }
+      }
+    },
+    async onUpdate() {
       Swal.fire({
         title: "Chắc chắn cập nhật thông tin?",
         icon: "warning",
@@ -435,12 +468,12 @@ export default {
               {}
             );
             // save log
-            const log = `Cập nhật thông tin cho công nhân: ${this.form.tencn}, Mã: ${this.form.macn}, Trạng thái: ${this.form.trangthai}`
+            const log = `Cập nhật thông tin cho công nhân: ${this.form.tencn}, Mã: ${this.form.macn}, Trạng thái: ${this.form.trangthai}`;
             const dataLog = {
               logname: log,
               createdAt: this.form.updatedAt,
               createdBy: this.hisform.createdBy,
-            }
+            };
             this.$axios.$post(`/api/congnhan/addlognhansu`, dataLog);
 
             const Toast = Swal.mixin({

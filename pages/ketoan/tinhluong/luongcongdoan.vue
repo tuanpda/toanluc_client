@@ -410,12 +410,15 @@
                 <td style="text-align: right; font-size: small">
                   {{ dsl.luongcn | formatNumber }}
                 </td>
+                <!-- số ngày làm -->
                 <td style="text-align: center; font-size: small">
                   {{ dsl.songaylam }}
                 </td>
+                <!-- tổng tiền ăn ca -->
                 <td style="text-align: center; font-size: small">
                   {{ dsl.thanhtien | formatNumber }}
                 </td>
+                <!-- ngày hỗ trợ -->
                 <td style="text-align: center; font-size: small">
                   <input
                     v-model.trim="dsl.ngayhotro"
@@ -423,6 +426,7 @@
                     class="input is-small"
                   />
                 </td>
+                <!-- tổng hỗ trợ -->
                 <td style="text-align: center; font-size: small">
                   {{
                     (parseFloat(dsl.ngayhotro) * parseFloat(dsl.luongmem))
@@ -1344,6 +1348,20 @@
             </div>
           </div>
         </div>
+
+        <!-- Modal 3 - loadluong -->
+        <div class="">
+          <!-- Toggle class  -->
+          <div :class="{ 'is-active': isActive_load_luong }" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-content modal-card-1">
+              <section class="modal-card-body">
+                <span>Đang tổng hợp số liệu</span>
+                <progress class="progress is-danger" max="100">30%</progress>
+              </section>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1402,6 +1420,7 @@ export default {
       createdBy: this.$auth.$state.user.username,
       isActive: false,
       isActive_listcd: false,
+      isActive_load_luong: false,
       phieulosx: {},
       form: {
         malonhamay: "",
@@ -1937,14 +1956,13 @@ export default {
           });
         } else {
           if (this.mato == "") {
-            this.dscongnhan = await this.$axios.$get(
+            this.isActive_load_luong = true;
+            const res = await this.$axios.$get(
               `/api/ketoan/getallluongcongdoanpx?nam=${this.nam}&thang=${this.thang}&mapx=${this.maxuong}`
             );
-            for (let i = 0; i < this.dscongnhan.length; i++) {
-              if (this.dscongnhan[i].anluongqlsp === true) {
-                this.dscongnhan[i].luongqlsp = this.luongQuanLy1;
-                break;
-              }
+            this.dscongnhan = res.data;
+            if (res.success == true) {
+              this.isActive_load_luong = false;
             }
             if (this.dscongnhan.length < 0) {
               const Toast = Swal.mixin({
@@ -1964,14 +1982,13 @@ export default {
               });
             }
           } else {
-            this.dscongnhan = await this.$axios.$get(
+            this.isActive_load_luong = true;
+            const res = await this.$axios.$get(
               `/api/ketoan/getallluongcongdoanto?nam=${this.nam}&thang=${this.thang}&mato=${this.mato}`
             );
-            for (let i = 0; i < this.dscongnhan.length; i++) {
-              if (this.dscongnhan[i].anluongqlsp === true) {
-                this.dscongnhan[i].luongqlsp = this.luongQuanLy1;
-                break;
-              }
+            this.dscongnhan = res.data;
+            if (res.success == true) {
+              this.isActive_load_luong = false;
             }
             if (this.dscongnhan.length < 0) {
               const Toast = Swal.mixin({
@@ -2041,7 +2058,7 @@ export default {
               this.isExits = this.arrkeythangnam.includes(
                 this.keyThangnam.trim()
               );
-              console.log(this.isExits);
+              // console.log(this.isExits);
               if (this.isExits == false) {
                 for (let i = 0; i < this.selected.length; i++) {
                   let data = {
@@ -2050,17 +2067,25 @@ export default {
                     mato: this.selected[i].mato,
                     manv: this.selected[i].macn,
                     hotennv: this.selected[i].tencongnhan,
-                    chucvu: this.selected[i].chucnang,
+                    chucvu: this.selected[i].chucvu,
                     luongcb: this.selected[i].luongcb,
+                    luongmem: this.selected[i].luongmem,
                     luongqlsp: this.selected[i].luongqlsp,
                     luongcd: this.selected[i].luongcd,
                     luongps: this.selected[i].luongcn,
                     tongluong:
-                      this.selected[i].luongcb +
+                      parseFloat(this.selected[i].luongqlsp) +
                       this.selected[i].luongcd +
                       this.selected[i].luongcn +
-                      parseFloat(this.selected[i].luongqlsp),
-                    antrua: this.selected[i].antrua * this.tienlunch,
+                      this.selected[i].thanhtien +
+                      parseFloat(this.selected[i].ngayhotro) *
+                        parseFloat(this.selected[i].luongmem),
+                    antrua: this.selected[i].thanhtien,
+                    songaycong: this.selected[i].songaylam,
+                    ngayhotro: this.selected[i].ngayhotro,
+                    tienhotro:
+                      parseFloat(this.selected[i].ngayhotro) *
+                      parseFloat(this.selected[i].luongmem),
                     bhxh: this.selected[i].bhxh,
                     congdoan: this.selected[i].cong_doan,
                     tamung: this.selected[i].tienung,
@@ -2068,16 +2093,18 @@ export default {
                       this.selected[i].cong_doan +
                       this.selected[i].bhxh +
                       this.selected[i].tienung +
-                      this.selected[i].antrua * this.tienlunch,
+                      this.selected[i].thanhtien,
                     tongnhan:
-                      this.selected[i].luongcb +
+                      parseFloat(this.selected[i].luongqlsp) +
                       this.selected[i].luongcd +
                       this.selected[i].luongcn +
-                      parseFloat(this.selected[i].luongqlsp) -
+                      this.selected[i].thanhtien +
+                      parseFloat(this.selected[i].ngayhotro) *
+                        parseFloat(this.selected[i].luongmem) -
                       (this.selected[i].cong_doan +
                         this.selected[i].bhxh +
                         this.selected[i].tienung +
-                        this.selected[i].antrua * this.tienlunch),
+                        this.selected[i].thanhtien),
                     createdAt: this.createdAt,
                     createdBy: this.createdBy,
                     thang: this.thang,
@@ -2086,7 +2113,10 @@ export default {
                     status: true,
                   };
                   // console.log(data);
-                  this.$axios.$post("/api/ketoan/themluongthang", data);
+                  const res = this.$axios.$post(
+                    "/api/ketoan/themluongthang",
+                    data
+                  );
 
                   const Toast = Swal.mixin({
                     toast: true,
@@ -2170,6 +2200,11 @@ export default {
 .modal-card {
   width: 920px;
   height: 560px;
+}
+
+.modal-card-1 {
+  width: 50px;
+  height: 10px;
 }
 
 .table-height {
