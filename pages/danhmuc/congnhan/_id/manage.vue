@@ -180,7 +180,6 @@
                         v-model="form.luongcb"
                         class="input is-small"
                         type="text"
-                        v-mask="mask"
                       />
                     </div>
                   </div>

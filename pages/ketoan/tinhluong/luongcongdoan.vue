@@ -442,7 +442,12 @@
                 </td>
                 <!-- tổng lương -->
                 <td
-                  style="text-align: right; font-size: small; font-weight: bold"
+                  style="
+                    text-align: right;
+                    font-size: small;
+                    font-weight: bold;
+                    color: red;
+                  "
                 >
                   {{
                     (parseFloat(dsl.luongqlsp) +
@@ -488,7 +493,12 @@
                 </td>
                 <!-- tổng nhận -->
                 <td
-                  style="text-align: right; font-size: small; font-weight: bold"
+                  style="
+                    text-align: right;
+                    font-size: small;
+                    font-weight: bold;
+                    color: red;
+                  "
                 >
                   {{
                     (parseFloat(dsl.luongqlsp) +
@@ -1431,6 +1441,36 @@
                         font-size: small;
                         font-weight: bold;
                         text-align: center;
+                        width: 15%;
+                      "
+                    >
+                      Công nhân
+                    </td>
+                    <td
+                      style="
+                        font-size: small;
+                        font-weight: bold;
+                        text-align: center;
+                        width: 15%;
+                      "
+                    >
+                      Ngày chấm công
+                    </td>
+                    <td
+                      style="
+                        font-size: small;
+                        font-weight: bold;
+                        text-align: center;
+                        width: 7%;
+                      "
+                    >
+                      Tuần
+                    </td>
+                    <td
+                      style="
+                        font-size: small;
+                        font-weight: bold;
+                        text-align: center;
                         width: 10%;
                       "
                     >
@@ -1473,6 +1513,15 @@
                       {{ index + 1 }}
                     </td>
                     <td style="font-size: small; text-align: center">
+                      {{ it.tencn }}
+                    </td>
+                    <td style="font-size: small; text-align: center">
+                      {{ it.ngaychamcong | formatDate }}
+                    </td>
+                    <td style="font-size: small; text-align: center">
+                      {{ it.tuanchamcong }}
+                    </td>
+                    <td style="font-size: small; text-align: center">
                       {{ it.machamcong }}
                     </td>
                     <td style="font-size: small; text-align: center">
@@ -1487,10 +1536,17 @@
                     <td></td>
                   </tr>
                   <tr>
-                    <td colspan="4" style="font-size: small; font-weight: bold">
+                    <td colspan="7" style="font-size: small; font-weight: bold">
                       Tổng
                     </td>
-                    <td style="font-size: small; font-weight: bold; color: red">
+                    <td
+                      style="
+                        font-size: small;
+                        font-weight: bold;
+                        color: red;
+                        text-align: right;
+                      "
+                    >
                       {{ tongAnca | formatNumber }}
                     </td>
                     <td></td>
@@ -1807,7 +1863,7 @@ export default {
     },
 
     tongLuongCongDoan() {
-      console.log(this.dscongnhan);
+      // console.log(this.dscongnhan);
       const tong = this.dscongnhan.reduce(
         (accumulator, currentValue) => accumulator + currentValue.luongcd,
         0
@@ -1846,7 +1902,10 @@ export default {
     tongAnca() {
       let sum = 0;
       for (let i = 0; i < this.dataDetailAnca.length; i++) {
-        sum += parseInt(this.dataDetailAnca[i].tienan);
+        if (this.dataDetailAnca[i].tienan != "") {
+          // console.log(parseInt(this.dataDetailAnca[i].tienan));
+          sum += parseInt(this.dataDetailAnca[i].tienan);
+        }
       }
       return sum;
     },
@@ -2136,6 +2195,7 @@ export default {
             const res = await this.$axios.$get(
               `/api/ketoan/getallluongcongdoanto?nam=${this.nam}&thang=${this.thang}&mato=${this.mato}`
             );
+            // console.log(res);
             this.dscongnhan = res.data;
             if (res.success == true) {
               this.isActive_load_luong = false;
@@ -2268,6 +2328,7 @@ export default {
                     nam: this.nam,
                     key_thangnam: this.keyThangnam,
                     status: true,
+                    stk: this.selected[i].stk,
                   };
                   // console.log(data);
                   const res = this.$axios.$post(

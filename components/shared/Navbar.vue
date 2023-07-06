@@ -280,7 +280,7 @@
                         >
                           <i class="fas fa-calculator"></i>
                         </span>
-                        &ensp; Quản lý tạm ứng
+                        &ensp; Quản lý Chi trả
                       </button>
                     </div>
                     <div class="dropdown-menu" id="dropdown-menu" role="menu">
@@ -292,7 +292,7 @@
                           >
                             <i class="fas fa-closed-captioning"></i>
                           </span>
-                          &ensp; Nhân viên Văn phòng
+                          &ensp; Văn phòng
                         </nav-link>
                         <nav-link
                           to="/ketoan/tamung/congnhan"

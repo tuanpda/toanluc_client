@@ -1108,6 +1108,17 @@ export default {
         icon: "success",
         title: `Cập nhật ngày HTTT của lô sx ${item._id}`,
       });
+      if (
+        !this.selectedOptions.length &&
+        this.multiSearch_masp == "" &&
+        this.multiSearch_nhomsp == "" &&
+        !this.Options_status.length &&
+        !this.selectedOptions_to.length
+      ) {
+        this.showAllLokhsx();
+      } else {
+        this.filterData();
+      }
     },
     async updateNgaykt(value, item) {
       const ngaybdktData = {
@@ -1133,6 +1144,17 @@ export default {
         icon: "success",
         title: `Cập nhật ngày HTTT của lô sx ${item._id}`,
       });
+      if (
+        !this.selectedOptions.length &&
+        this.multiSearch_masp == "" &&
+        this.multiSearch_nhomsp == "" &&
+        !this.Options_status.length &&
+        !this.selectedOptions_to.length
+      ) {
+        this.showAllLokhsx();
+      } else {
+        this.filterData();
+      }
     },
     exportExcel() {
       const filename_phanxuong = this.selected_print[0].mapx;
@@ -2158,6 +2180,18 @@ export default {
           icon: "success",
           title: "Đã cập nhật",
         });
+
+        if (
+          !this.selectedOptions.length &&
+          this.multiSearch_masp == "" &&
+          this.multiSearch_nhomsp == "" &&
+          !this.Options_status.length &&
+          !this.selectedOptions_to.length
+        ) {
+          this.showAllLokhsx();
+        } else {
+          this.filterData();
+        }
       } catch (error) {
         // console.log(error);
         const Toast = Swal.mixin({
