@@ -1099,7 +1099,7 @@
                   >
                     <tr style="background-color: #fffaeb">
                       <td
-                        colspan="9"
+                        colspan="11"
                         style="font-size: small; font-weight: bold"
                       >
                         Chi tiết lương công đoạn
@@ -1248,7 +1248,7 @@
                       </td>
                     </tr>
                     <tr>
-                      <td colspan="7"></td>
+                      <td colspan="9"></td>
                       <td
                         style="
                           font-size: small;
@@ -1268,7 +1268,7 @@
                   >
                     <tr style="background-color: #fffaeb">
                       <td
-                        colspan="8"
+                        colspan="10"
                         style="font-size: small; font-weight: bold"
                       >
                         Chi tiết lương công nhật
@@ -1283,6 +1283,24 @@
                         "
                       >
                         STT
+                      </td>
+                      <td
+                        style="
+                          font-size: small;
+                          font-weight: bold;
+                          text-align: center;
+                        "
+                      >
+                        Mã phiếu
+                      </td>
+                      <td
+                        style="
+                          font-size: small;
+                          font-weight: bold;
+                          text-align: center;
+                        "
+                      >
+                        Phân xưởng
                       </td>
                       <td
                         style="
@@ -1357,6 +1375,16 @@
                       >
                         {{ index + 1 }}
                       </td>
+                      <td
+                        style="font-size: small; text-align: center; width: 5%"
+                      >
+                        {{ dtl._id_losx }}
+                      </td>
+                      <td
+                        style="font-size: small; text-align: center; width: 5%"
+                      >
+                        {{ dtl.mapx }}
+                      </td>
                       <td style="font-size: small">{{ dtl.malosx }}</td>
                       <td style="font-size: small">{{ dtl.nguoithuchien }}</td>
                       <td style="font-size: small">
@@ -1379,7 +1407,7 @@
                       </td>
                     </tr>
                     <tr>
-                      <td colspan="6"></td>
+                      <td colspan="8"></td>
                       <td
                         style="
                           font-size: small;
