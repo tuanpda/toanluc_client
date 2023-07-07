@@ -353,6 +353,17 @@
               >
                 {{ nv.tongnhan | formatNumber }}
               </td>
+              <td style="text-align: center; font-size: small">
+                {{ nv.stk }}
+              </td>
+              <!-- gõ tiền chuyển khoản -->
+              <td style="text-align: center; font-size: small">
+                <input v-mask="mask" type="text" class="input is-small" />
+              </td>
+              <!-- gõ tiền mặt -->
+              <td style="text-align: center; font-size: small">
+                <input v-mask="mask" type="text" class="input is-small" />
+              </td>
               <td></td>
             </tr>
             <tr>
@@ -446,6 +457,13 @@
 </template>
 
 <script>
+import createNumberMask from "text-mask-addons/dist/createNumberMask";
+const currencyMask = createNumberMask({
+  prefix: "",
+  allowDecimal: true,
+  includeThousandsSeparator: true,
+  allowNegative: false,
+});
 import Swal from "sweetalert2";
 import jsPDF from "jspdf";
 import "jspdf-autotable";
@@ -467,6 +485,7 @@ export default {
       mato: "",
       tenxuong: "",
       tento: "",
+      mask: currencyMask,
     };
   },
 

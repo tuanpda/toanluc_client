@@ -1118,6 +1118,24 @@
                       <td
                         style="
                           font-size: small;
+                          font-weight: bold;
+                          text-align: center;
+                        "
+                      >
+                        Mã phiếu
+                      </td>
+                      <td
+                        style="
+                          font-size: small;
+                          font-weight: bold;
+                          text-align: center;
+                        "
+                      >
+                        Phân xưởng
+                      </td>
+                      <td
+                        style="
+                          font-size: small;
                           text-align: center;
                           font-weight: bold;
                         "
@@ -1193,6 +1211,16 @@
                         style="font-size: small; text-align: center; width: 5%"
                       >
                         {{ index + 1 }}
+                      </td>
+                      <td
+                        style="font-size: small; text-align: center; width: 5%"
+                      >
+                        {{ dtl._id_losx }}
+                      </td>
+                      <td
+                        style="font-size: small; text-align: center; width: 5%"
+                      >
+                        {{ dtl.mapx }}
                       </td>
                       <td style="font-size: small">{{ dtl.malosx }}</td>
                       <td style="font-size: small">{{ dtl.tencn }}</td>
