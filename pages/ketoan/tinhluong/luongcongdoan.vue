@@ -346,7 +346,7 @@
                     font-weight: bold;
                   "
                 >
-                  CĐ
+                  Công đoàn
                 </td>
                 <!-- <td
                   style="
@@ -478,7 +478,11 @@
                   {{ dsl.bhxh | formatNumber }}
                 </td>
                 <td style="text-align: right; font-size: small">
-                  {{ dsl.cong_doan | formatNumber }}
+                  <input
+                    type="number"
+                    class="input is-small"
+                    v-model="dsl.congdoan"
+                  />
                 </td>
                 <!-- <td style="text-align: right; font-size: small">
                   {{ dsl.tienung | formatNumber }}
@@ -488,7 +492,8 @@
                   style="text-align: right; font-size: small; font-weight: bold"
                 >
                   {{
-                    (dsl.bhxh + dsl.cong_doan + dsl.thanhtien) | formatNumber
+                    (dsl.bhxh + parseFloat(dsl.congdoan) + dsl.thanhtien)
+                      | formatNumber
                   }}
                 </td>
                 <!-- tổng nhận -->
@@ -506,7 +511,7 @@
                       dsl.luongcn +
                       dsl.thanhtien +
                       parseFloat(dsl.ngayhotro) * parseFloat(dsl.luongmem) -
-                      (dsl.bhxh + dsl.cong_doan + dsl.thanhtien))
+                      (dsl.bhxh + parseFloat(dsl.congdoan) + dsl.thanhtien))
                       | formatNumber
                   }}
                 </td>
