@@ -566,7 +566,7 @@ export default {
         ngayhotro: 0,
         tienhotro: 0,
         antrua: 0,
-        congdoan: 0,
+        congdoan: 50000,
         createdAt: "",
         createdBy: this.$auth.$state.user.username,
         // updatedAt: new Date().toISOString().substr(0, 10),

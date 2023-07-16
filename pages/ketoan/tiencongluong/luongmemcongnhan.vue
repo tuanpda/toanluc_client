@@ -164,14 +164,14 @@
                 </td>
                 <td style="font-size: small">
                   <input
-                    type="text"
+                    type="number"
                     class="input is-small"
                     v-model="px.luongmem"
                   />
                 </td>
                 <td style="font-size: small">
                   <input
-                    type="text"
+                    type="number"
                     class="input is-small"
                     v-model="px.luongcb"
                   />
@@ -346,7 +346,7 @@ export default {
     },
 
     async onUpdate(congnhan) {
-      // console.log(congnhan.luongmem);
+      console.log(congnhan.luongcb);
       // console.log(this.form.chucvu, this.form.machucvu);
       // console.log(congnhan.anluongqlsp);
       let data_update;

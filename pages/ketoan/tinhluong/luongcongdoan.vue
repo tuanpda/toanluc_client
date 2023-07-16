@@ -516,6 +516,149 @@
                   }}
                 </td>
               </tr>
+              <tr>
+                <td colspan="4"></td>
+                <td
+                  style="
+                    font-size: small;
+                    font-weight: bold;
+                    color: #00947e;
+                    text-align: right;
+                  "
+                >
+                  {{ subRow_qlsp | formatNumber }}
+                </td>
+                <td
+                  style="
+                    font-size: small;
+                    font-weight: bold;
+                    color: #00947e;
+                    text-align: right;
+                  "
+                >
+                  {{ subRow_luongcd | formatNumber }}
+                </td>
+                <td
+                  style="
+                    font-size: small;
+                    font-weight: bold;
+                    color: #00947e;
+                    text-align: right;
+                  "
+                >
+                  {{ subRow_luongcn | formatNumber }}
+                </td>
+                <td
+                  style="
+                    font-size: small;
+                    font-weight: bold;
+                    color: #00947e;
+                    text-align: center;
+                  "
+                >
+                  {{ subRow_songaylam | formatNumber }}
+                </td>
+                <td
+                  style="
+                    font-size: small;
+                    font-weight: bold;
+                    color: #00947e;
+                    text-align: center;
+                  "
+                >
+                  {{ subRow_thanhtienca | formatNumber }}
+                </td>
+                <td
+                  style="
+                    font-size: small;
+                    font-weight: bold;
+                    color: #00947e;
+                    text-align: center;
+                  "
+                >
+                  {{ subRow_ngayhotro | formatNumber }}
+                </td>
+                <td
+                  style="
+                    font-size: small;
+                    font-weight: bold;
+                    color: #00947e;
+                    text-align: center;
+                  "
+                >
+                  {{ subRow_tienhotro | formatNumber }}
+                </td>
+                <td
+                  style="
+                    font-size: small;
+                    font-weight: bold;
+                    color: #00947e;
+                    text-align: right;
+                  "
+                >
+                  {{ subRow_tongluong | formatNumber }}
+                </td>
+                <td
+                  style="
+                    font-size: small;
+                    font-weight: bold;
+                    color: #00947e;
+                    text-align: right;
+                  "
+                >
+                  {{ subRow_tongluongtb | formatNumber }}
+                </td>
+                <td
+                  style="
+                    font-size: small;
+                    font-weight: bold;
+                    color: #00947e;
+                    text-align: right;
+                  "
+                >
+                  {{ subRow_luongcb | formatNumber }}
+                </td>
+                <td
+                  style="
+                    font-size: small;
+                    font-weight: bold;
+                    color: #00947e;
+                    text-align: right;
+                  "
+                >
+                  {{ subRow_bhxh | formatNumber }}
+                </td>
+                <td
+                  style="
+                    font-size: small;
+                    font-weight: bold;
+                    color: #00947e;
+                    text-align: right;
+                  "
+                >
+                  {{ subRow_congdoan | formatNumber }}
+                </td>
+                <td
+                  style="
+                    font-size: small;
+                    font-weight: bold;
+                    color: #00947e;
+                    text-align: right;
+                  "
+                >
+                  {{ subRow_tongtru | formatNumber }}
+                </td>
+                <td
+                  style="
+                    font-size: small;
+                    font-weight: bold;
+                    color: #00947e;
+                    text-align: right;
+                  "
+                >
+                  {{ subRow_tongnhan | formatNumber }}
+                </td>
+              </tr>
             </table>
           </div>
         </div>
@@ -768,6 +911,36 @@
                             style="font-size: small; font-weight: bold"
                           >
                             Thông tin Lô sản xuất
+                          </td>
+                        </tr>
+                        <tr>
+                          <td style="font-size: small; text-align: center">
+                            Mã phiếu
+                          </td>
+                          <td style="font-size: small; text-align: center">
+                            Ngày tháng chốt
+                          </td>
+                        </tr>
+                        <tr>
+                          <td
+                            style="
+                              font-size: small;
+                              text-align: center;
+                              font-weight: bold;
+                              color: #00947e;
+                            "
+                          >
+                            {{ form._id }}
+                          </td>
+                          <td
+                            style="
+                              font-size: small;
+                              text-align: center;
+                              font-weight: bold;
+                              color: red;
+                            "
+                          >
+                            {{ form.stopday_losx | formatDate }}
                           </td>
                         </tr>
                         <tr>
@@ -1697,14 +1870,12 @@ export default {
         status: "",
         nhomluong: "",
         makhpx: "",
+        _id: "",
+        stopday_losx: "",
       },
       // tỷ lệ lương quản lý
       tyletongluongql: 0,
-      tylequanly1: 0,
-      tylequanly2: 0,
-      tylequanly3: 0,
-      tylequanly4: 0,
-      tylequanly5: 0,
+      // tylequanly1: 0,
       columns: [
         {
           label: "Id Lô sản xuất",
@@ -1935,10 +2106,10 @@ export default {
       const tong = this.tongLuongCongDoan * this.tyletongluongql;
       return tong.toFixed(2);
     },
-    luongQuanLy1() {
-      const tong = this.tongLuongQuanLy * this.tylequanly1;
-      return tong.toFixed(2);
-    },
+    // luongQuanLy1() {
+    //   const tong = this.tongLuongQuanLy * this.tylequanly1;
+    //   return tong.toFixed(2);
+    // },
 
     // tổng thành tiền lương công đoạn
     tongThanhtienLCD() {
@@ -1969,6 +2140,107 @@ export default {
         }
       }
       return sum;
+    },
+
+    // làm hàng tổng
+    // tổng lương qlsp
+    subRow_qlsp() {
+      return this.dscongnhan.reduce(
+        (total, item) => total + parseFloat(item.luongqlsp),
+        0
+      );
+    },
+    // tổng lương công đoạn
+    subRow_luongcd() {
+      return this.dscongnhan.reduce((total, item) => total + item.luongcd, 0);
+    },
+    // sum cong nhật
+    subRow_luongcn() {
+      return this.dscongnhan.reduce((total, item) => total + item.luongcn, 0);
+    },
+    // sum số ngày làm
+    subRow_songaylam() {
+      return this.dscongnhan.reduce((total, item) => total + item.songaylam, 0);
+    },
+    // sum thành tiền ca
+    subRow_thanhtienca() {
+      return this.dscongnhan.reduce((total, item) => total + item.thanhtien, 0);
+    },
+    // sum ngày hỗ trợ
+    subRow_ngayhotro() {
+      return this.dscongnhan.reduce(
+        (total, item) => total + parseFloat(item.ngayhotro),
+        0
+      );
+    },
+    // sum tiền hỗ trợ
+    subRow_tienhotro() {
+      return this.dscongnhan.reduce(
+        (total, item) =>
+          total + parseFloat(item.ngayhotro) * parseFloat(item.luongmem),
+        0
+      );
+    },
+    // sum tổng lương
+    subRow_tongluong() {
+      return this.dscongnhan.reduce(
+        (total, item) =>
+          total +
+          (parseFloat(item.luongqlsp) +
+            item.luongcd +
+            item.luongcn +
+            item.thanhtien +
+            parseFloat(item.ngayhotro) * parseFloat(item.luongmem)),
+        0
+      );
+    },
+    // sum tổng lương trung bình
+    subRow_tongluongtb() {
+      return this.dscongnhan.reduce(
+        (total, item) =>
+          total +
+          (parseFloat(item.luongqlsp) +
+            item.luongcd +
+            item.luongcn +
+            item.thanhtien +
+            parseFloat(item.ngayhotro) * parseFloat(item.luongmem)) /
+            item.songaylam,
+        0
+      );
+    },
+    // sum lương cb
+    subRow_luongcb() {
+      return this.dscongnhan.reduce((total, item) => total + item.luongcb, 0);
+    },
+    // sum bhxh
+    subRow_bhxh() {
+      return this.dscongnhan.reduce((total, item) => total + item.bhxh, 0);
+    },
+    // sum cđ
+    subRow_congdoan() {
+      return this.dscongnhan.reduce((total, item) => total + item.congdoan, 0);
+    },
+    // sum tổng trừ
+    subRow_tongtru() {
+      return this.dscongnhan.reduce(
+        (total, item) =>
+          total + (item.bhxh + parseFloat(item.congdoan) + item.thanhtien),
+        0
+      );
+    },
+    // sum tổng lương nhận
+    subRow_tongnhan() {
+      return this.dscongnhan.reduce(
+        (total, item) =>
+          total +
+          (parseFloat(item.luongqlsp) +
+            item.luongcd +
+            item.luongcn +
+            item.thanhtien +
+            parseFloat(item.ngayhotro) * parseFloat(item.luongmem) -
+            (item.bhxh + parseFloat(item.congdoan) + item.thanhtien)),
+        0
+      );
     },
   },
 
@@ -2126,12 +2398,16 @@ export default {
       // this.form.stopday_losx = phieulo.stopday_losx;
       this.form = { ...phieulo };
       // get info công đoạn
+      // bỏ cái này
+      // this.luongcongdoan = await this.$axios.$get(
+      //   `/api/ketoan/getphieulocongdoan?malosx=${this.form.malosx}&mapx=${this.form.mapx}`
+      // );
       this.luongcongdoan = await this.$axios.$get(
-        `/api/ketoan/getphieulocongdoan?malosx=${this.form.malosx}&mapx=${this.form.mapx}`
+        `/api/ketoan/getphieulocongdoan?_id_losx=${phieulo._id}`
       );
       // console.log(this.luongcongdoan)
       this.congnhat = await this.$axios.$get(
-        `/api/ketoan/getphieulocongnhat?malosx=${this.form.malosx}`
+        `/api/ketoan/getphieulocongnhat?_id_losx=${phieulo._id}`
       );
     },
 
@@ -2390,6 +2666,12 @@ export default {
                     key_thangnam: this.keyThangnam,
                     status: true,
                     stk: this.selected[i].stk,
+                    nhanl1: 0,
+                    nhanl2: 0,
+                    nhanl3: 0,
+                    nhanl4: 0,
+                    nhanl5: 0,
+                    nhanl6: 0,
                   };
                   // console.log(data);
                   const res = this.$axios.$post(

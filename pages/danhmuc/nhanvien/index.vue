@@ -547,7 +547,7 @@ export default {
         anhdd: "",
         ngaysinh: "",
         gioitinh: null,
-        mucluong: 0.0,
+        mucluong: 0,
         lhkhancap: "",
         diachilh: "",
         sotknh: "",
@@ -555,6 +555,13 @@ export default {
         diengiai: "",
         createdAt: null,
         thuong: 0,
+        dt_dieuchinh: 0,
+        dt_thuong: 0,
+        dt_phat: 0,
+        luongngoaih: 0,
+        luongngay: 0,
+        bacluong: 0,
+        luongtrachnhiem: 0,
         // updatedAt: new Date().toISOString().substr(0, 10),
       },
       hisform: {
@@ -794,54 +801,59 @@ export default {
       );
     },
 
-    onAddNhanvien() {
-      Swal.fire({
-        title: "Chắc chắn thêm mới nhân viên này?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Chắc chắn thêm mới",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          try {
-            this.$v.form.$touch();
-            if (this.exits.length > 0) {
-              Swal.fire(
-                `Nhân viên có căn cước công dân số: ${this.form.cccd} đã tồn tại trong hệ thống!`
-              );
-              return;
+    async onAddNhanvien() {
+      const result = await Swal.fire({
+        title: `Chắc chắn thêm nhân viên?`,
+        showDenyButton: true,
+        confirmButtonText: "Chắc chắn thêm",
+        denyButtonText: `Hủy`,
+      });
+      if (result.isConfirmed) {
+        try {
+          this.$v.form.$touch();
+          if (this.exits.length > 0) {
+            Swal.fire(
+              `Nhân viên có căn cước công dân số: ${this.form.cccd} đã tồn tại trong hệ thống!`
+            );
+            return;
+          } else {
+            // console.log(this.$auth.$state.user.username);
+            let data = new FormData();
+            data.append("manv", this.form.manv);
+            data.append("tennv", this.form.tennv);
+            data.append("mapb", this.form.mapb);
+            data.append("tenphong", this.form.tenphong);
+            data.append("sodienthoai", this.form.sodienthoai);
+            data.append("cccd", this.form.cccd);
+            if (this.selectedFile) {
+              data.append("anhdd", this.selectedFile, this.selectedFile.name);
             } else {
-              // console.log(this.$auth.$state.user.username);
-              let data = new FormData();
-              data.append("manv", this.form.manv);
-              data.append("tennv", this.form.tennv);
-              data.append("mapb", this.form.mapb);
-              data.append("tenphong", this.form.tenphong);
-              data.append("sodienthoai", this.form.sodienthoai);
-              data.append("cccd", this.form.cccd);
-              if (this.selectedFile) {
-                data.append("anhdd", this.selectedFile, this.selectedFile.name);
-              } else {
-                data.append("anhdd", this.form.anhdd);
-              }
-              data.append("ngaysinh", this.form.ngaysinh);
-              data.append("gioitinh", this.form.gioitinh);
-              data.append("mucluong", this.form.mucluong);
-              data.append("lhkhancap", this.form.lhkhancap);
-              data.append("diachilh", this.form.diachilh);
-              data.append("sotknh", this.form.sotknh);
-              data.append("tennh", this.form.tennh);
-              data.append("diengiai", this.form.diengiai);
-              data.append("createdAt", this.form.createdAt);
-              data.append("accadd", this.$auth.$state.user.username);
-              data.append("thuong", this.form.thuong);
+              data.append("anhdd", this.form.anhdd);
+            }
+            data.append("ngaysinh", this.form.ngaysinh);
+            data.append("gioitinh", this.form.gioitinh);
+            data.append("mucluong", this.form.mucluong.replace(/,/g, ""));
+            data.append("lhkhancap", this.form.lhkhancap);
+            data.append("diachilh", this.form.diachilh);
+            data.append("sotknh", this.form.sotknh);
+            data.append("tennh", this.form.tennh);
+            data.append("diengiai", this.form.diengiai);
+            data.append("createdAt", this.form.createdAt);
+            data.append("accadd", this.$auth.$state.user.username);
+            data.append("thuong", this.form.thuong);
+            data.append("dt_dieuchinh", this.form.dt_dieuchinh);
+            data.append("dt_thuong", this.form.dt_thuong);
+            data.append("dt_phat", this.form.dt_phat);
+            data.append("luongngoaih", this.form.luongngoaih);
+            data.append("luongngay", this.form.luongngay);
+            data.append("bacluong", this.form.bacluong);
+            data.append("luongtrachnhiem", this.form.luongtrachnhiem);
+            const res = await this.$axios.$post(
+              "/api/nhanvien/addnhanvien",
+              data
+            );
 
-              this.$axios.$post("/api/nhanvien/addnhanvien", data);
-
-              this.getDsnv();
-              this.isActive = false;
-
+            if (res.success == true) {
               const Toast = Swal.mixin({
                 toast: true,
                 position: "top-end",
@@ -857,27 +869,29 @@ export default {
                 icon: "success",
                 title: "Thêm nhân viên mới thành công",
               });
+              this.getDsnv();
+              this.isActive = false;
             }
-          } catch (error) {
-            console.log(error);
-            const Toast = Swal.mixin({
-              toast: true,
-              position: "top-end",
-              showConfirmButton: false,
-              timer: 3000,
-              timerProgressBar: true,
-              didOpen: (toast) => {
-                toast.addEventListener("mouseenter", Swal.stopTimer);
-                toast.addEventListener("mouseleave", Swal.resumeTimer);
-              },
-            });
-            Toast.fire({
-              icon: "error",
-              title: "Có lỗi xảy ra !!!",
-            });
           }
+        } catch (error) {
+          console.log(error);
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
+          Toast.fire({
+            icon: "error",
+            title: "Có lỗi xảy ra !!!",
+          });
         }
-      });
+      }
     },
 
     onDelete(nv) {

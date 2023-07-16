@@ -72,13 +72,13 @@
               </td>
               <td>
                 <button
-                  @click="pritnPdf"
+                  @click="onSaveChitra"
                   class="button is-small is-info is-fullwidth"
                 >
                   <span class="icon is-small">
                     <i class="far fa-file-pdf"></i>
                   </span>
-                  <span>In PDF</span>
+                  <span>Chi trả</span>
                 </button>
               </td>
             </tr>
@@ -97,7 +97,18 @@
                   text-align: center;
                   font-weight: bold;
                   font-size: small;
-                  width: 5%;
+                  width: 1%;
+                "
+              >
+                <input type="checkbox" v-model="selectAll" />
+              </td>
+              <td
+                rowspan="2"
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 3%;
                 "
               >
                 STT
@@ -108,7 +119,7 @@
                   text-align: center;
                   font-weight: bold;
                   font-size: small;
-                  width: 13%;
+                  width: 12%;
                 "
               >
                 Họ tên
@@ -163,7 +174,7 @@
                   font-weight: bold;
                   font-size: small;
                   background-color: antiquewhite;
-                  width: 10%;
+                  width: 7%;
                 "
               >
                 Tổng lương
@@ -181,7 +192,7 @@
                   font-weight: bold;
                   font-size: small;
                   background-color: azure;
-                  width: 10%;
+                  width: 7%;
                 "
               >
                 Tổng trừ
@@ -193,10 +204,46 @@
                   font-weight: bold;
                   font-size: small;
                   background-color: aliceblue;
-                  width: 10%;
+                  width: 7%;
                 "
               >
                 Lương nhận
+              </td>
+              <td
+                rowspan="2"
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  background-color: aliceblue;
+                  width: 7%;
+                "
+              >
+                Lần 1
+              </td>
+              <td
+                rowspan="2"
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  background-color: aliceblue;
+                  width: 7%;
+                "
+              >
+                Lần 2
+              </td>
+              <td
+                rowspan="2"
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  background-color: aliceblue;
+                  width: 7%;
+                "
+              >
+                Lần 3
               </td>
               <td
                 rowspan="2"
@@ -210,6 +257,7 @@
               >
                 Số tài khoản
               </td>
+
               <td
                 rowspan="2"
                 style="
@@ -217,7 +265,7 @@
                   font-weight: bold;
                   font-size: small;
                   background-color: aliceblue;
-                  width: 10%;
+                  width: 7%;
                 "
               >
                 Chuyển khoản
@@ -229,7 +277,7 @@
                   font-weight: bold;
                   font-size: small;
                   background-color: aliceblue;
-                  width: 10%;
+                  width: 7%;
                 "
               >
                 Tiền mặt
@@ -241,7 +289,7 @@
                   font-weight: bold;
                   font-size: small;
                   background-color: aliceblue;
-                  width: 10%;
+                  width: 7%;
                 "
               >
                 Còn lại
@@ -288,6 +336,9 @@
               </td> -->
             </tr>
             <tr v-for="(nv, index) in report" :key="index">
+              <td style="text-align: center">
+                <input v-model="selected" :value="nv" type="checkbox" />
+              </td>
               <td style="text-align: center; font-size: small">
                 {{ index + 1 }}
               </td>
@@ -354,15 +405,95 @@
                 {{ nv.tongnhan | formatNumber }}
               </td>
               <td style="text-align: center; font-size: small">
+                {{ nv.nhanl1 | formatNumber }}
+              </td>
+              <td style="text-align: center; font-size: small">
+                {{ nv.nhanl2 | formatNumber }}
+              </td>
+              <td style="text-align: center; font-size: small">
+                {{ nv.nhanl3 | formatNumber }}
+              </td>
+              <td style="text-align: center; font-size: small">
                 {{ nv.stk }}
               </td>
               <!-- gõ tiền chuyển khoản -->
-              <td style="text-align: center; font-size: small">
-                <input v-mask="mask" type="text" class="input is-small" />
-              </td>
+              <template
+                v-if="
+                  nv.tongnhan -
+                    (parseFloat(nv.nhanl1) +
+                      parseFloat(nv.nhanl2) +
+                      parseFloat(nv.nhanl3)) ==
+                  0
+                "
+              >
+                <td style="text-align: center; font-size: small">
+                  <input
+                    v-model="nv.chuyenkhoan"
+                    class="input is-small"
+                    type="text"
+                    v-mask="mask"
+                    disabled
+                  />
+                </td>
+              </template>
+              <template v-else>
+                <td style="text-align: center; font-size: small">
+                  <input
+                    v-model="nv.chuyenkhoan"
+                    class="input is-small"
+                    type="text"
+                    v-mask="mask"
+                  />
+                </td>
+              </template>
+
               <!-- gõ tiền mặt -->
-              <td style="text-align: center; font-size: small">
-                <input v-mask="mask" type="text" class="input is-small" />
+              <template
+                v-if="
+                  nv.tongnhan -
+                    (parseFloat(nv.nhanl1) +
+                      parseFloat(nv.nhanl2) +
+                      parseFloat(nv.nhanl3)) ==
+                  0
+                "
+              >
+                <td style="text-align: center; font-size: small">
+                  <input
+                    v-mask="mask"
+                    v-model="nv.tienmat"
+                    type="text"
+                    class="input is-small"
+                    disabled
+                  />
+                </td>
+              </template>
+              <template v-else>
+                <td style="text-align: center; font-size: small">
+                  <input
+                    v-mask="mask"
+                    v-model="nv.tienmat"
+                    type="text"
+                    class="input is-small"
+                  />
+                </td>
+              </template>
+
+              <!-- còn lại -->
+              <td
+                style="
+                  text-align: center;
+                  font-size: small;
+                  font-weight: bold;
+                  color: red;
+                "
+              >
+                {{
+                  (nv.tongnhan -
+                    (parseFloat(nv.nhanl1) +
+                      parseFloat(nv.nhanl2) +
+                      parseFloat(nv.nhanl3)))
+                    | formatNumber
+                }}
               </td>
               <td></td>
             </tr>
@@ -473,6 +604,7 @@ export default {
   middleware: "auth-admin",
   data() {
     return {
+      selected: [],
       phanxuong: [],
       tonhom: [],
       report: [],
@@ -486,10 +618,31 @@ export default {
       tenxuong: "",
       tento: "",
       mask: currencyMask,
+      form: {
+        chuyenkhoan: 0,
+        tienmat: 0,
+      },
     };
   },
 
   computed: {
+    selectAll: {
+      get: function () {
+        return this.report ? this.selected.length == this.report.length : false;
+      },
+      set: function (value) {
+        var selected = [];
+
+        if (value) {
+          this.report.forEach(function (nv) {
+            selected.push(nv);
+          });
+        }
+
+        this.selected = selected;
+      },
+    },
+
     isDisabled() {
       return this.isPdf == false;
     },
@@ -600,81 +753,61 @@ export default {
         current.getSeconds();
     },
 
-    pritnPdf() {
-      const columns = [
-        { title: "STT", dataKey: "stt" },
-        { title: "Họ tên", dataKey: "hotennv" },
-        { title: "Lương công đoạn", dataKey: "luongcd" },
-        { title: "Lương công nhật", dataKey: "luongps" },
-      ];
-
-      const rows = this.report;
-
-      const doc = new jsPDF({
-        orientation: "l",
-        format: "a4",
-      });
-
-      doc.addFont("OpenSans-Light-normal.ttf", "OpenSans-Light", "normal");
-      doc.setFont("OpenSans-Light");
-      doc.setFontSize(12);
-      doc.setFont("OpenSans-SemiBold");
-      doc.setFontSize(13);
-      doc.text("TOÀN LỰC JSC", 17, 19);
-      doc.addFont("OpenSans-Light-normal.ttf", "OpenSans-Light", "normal");
-      doc.setFont("OpenSans-Light");
-      doc.setFontSize(12);
-      doc.text("CỘNG HÒA XÃ HỘI CHỦ NGHĨA VIỆT NAM", 200, 13);
-      doc.text("Độc lập - Tự do - Hạnh phúc", 212, 19);
-
-      doc.addFont(
-        "OpenSans-SemiBold-normal.ttf",
-        "OpenSans-SemiBold",
-        "normal"
-      );
-      doc.setFont("OpenSans-SemiBold");
-      doc.setFontSize(14);
-      doc.text(
-        "BẢNG THANH TOÁN TIỀN LƯƠNG VÀ CÁC KHOẢN KHẤU TRỪ THEO LƯƠNG",
-        50,
-        32
-      );
-      doc.text(`Tháng: ${this.thang} Năm: ${this.nam}`, 120, 38);
-      doc.setFontSize(12);
-
-      doc.autoTable(columns, rows, {
-        startY: doc.lastAutoTable + 45, // Giúp cho trang 2 không bị lặp lại phần add text phía trên
-        styles: { font: "OpenSans-Light" | "Unicode" },
-        theme: "grid",
-        //margin: { top: 110 }, không dùng margin vì sẽ apply all page, như vậy không đúng
-        headerStyles: {
-          fillColor: [246, 248, 255],
-          textColor: 20,
-          fontStyle: "bold", // normal, bold, italic, bolditalic
-          lineColor: 200,
-          lineWidth: 0.1,
-          halign: "center", // left, center, right
-          valign: "top", // top, middle, bottom
-        },
-        drawHeaderCell: function (cell, data) {
-          if (cell.raw === "ID") {
-            //paint.Name header red
-            cell.styles.fontSize = 15;
-            cell.styles.textColor = [255, 0, 0];
+    async onSaveChitra() {
+      // console.log(this.selected);
+      for (let i = 0; i < this.selected.length; i++) {
+        // console.log(this.selected[i].chuyenkhoan.replace(/,/g, ""));
+        // console.log(this.selected[i].tienmat.replace(/,/g, ""));
+        if (this.selected[i].nhanl1 == 0) {
+          if (this.selected[i].tienmat == 0) {
+            this.selected[i].nhanl1 = this.selected[i].chuyenkhoan.replace(
+              /,/g,
+              ""
+            );
           } else {
-            cell.styles.textColor = 255;
-            cell.styles.fontSize = 10;
+            this.selected[i].nhanl1 = this.selected[i].tienmat.replace(
+              /,/g,
+              ""
+            );
           }
-        },
-        willDrawCell: (data) => {
-          if (data.column.dataKey === "soluong") {
-            data.cell.styles.halign = "center";
+          await this.$axios.patch(
+            `/api/ketoan/addchitraluongthang/${this.selected[i]._id}`,
+            this.selected[i]
+          );
+        } else if (this.selected[i].nhanl2 == 0) {
+          if (this.selected[i].tienmat == 0) {
+            this.selected[i].nhanl2 = this.selected[i].chuyenkhoan.replace(
+              /,/g,
+              ""
+            );
+          } else {
+            this.selected[i].nhanl2 = this.selected[i].tienmat.replace(
+              /,/g,
+              ""
+            );
           }
-        },
-      });
-
-      doc.output("dataurlnewwindow");
-      this.isPdf = false;
+          await this.$axios.patch(
+            `/api/ketoan/addchitraluongthang/${this.selected[i]._id}`,
+            this.selected[i]
+          );
+        } else if (this.selected[i].nhanl3 == 0) {
+          if (this.selected[i].tienmat == 0) {
+            this.selected[i].nhanl3 = this.selected[i].chuyenkhoan.replace(
+              /,/g,
+              ""
+            );
+          } else {
+            this.selected[i].nhanl3 = this.selected[i].tienmat.replace(
+              /,/g,
+              ""
+            );
+          }
+          await this.$axios.patch(
+            `/api/ketoan/addchitraluongthang/${this.selected[i]._id}`,
+            this.selected[i]
+          );
+        }
+      }
     },
   },
 };

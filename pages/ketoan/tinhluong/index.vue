@@ -206,7 +206,7 @@
               <td
                 style="text-align: center; font-weight: bold; font-size: small"
               >
-                KPCĐ
+                Công đoàn
               </td>
               <td
                 style="text-align: center; font-weight: bold; font-size: small"
@@ -285,7 +285,8 @@
                     parseFloat(nv.dt_dieuchinh) +
                     parseFloat(nv.dt_thuong) +
                     parseFloat(nv.thuong) +
-                    parseFloat(nv.luongngoaih))
+                    parseFloat(nv.luongngoaih) -
+                    parseFloat(nv.dt_phat))
                     | formatNumber
                 }}
               </td>
@@ -297,12 +298,15 @@
               </td>
 
               <td style="text-align: center; font-size: small">
-                {{ get_qtl.tl_dong_cd_cn | formatNumber }}
+                <input
+                  type="text"
+                  class="input is-small"
+                  v-model="nv.congdoan"
+                />
               </td>
               <td style="text-align: center; font-size: small">
                 {{
-                  (parseFloat(nv.bhxh) + parseFloat(get_qtl.tl_dong_cd_cn))
-                    | formatNumber
+                  (parseFloat(nv.bhxh) + parseFloat(nv.congdoan)) | formatNumber
                 }}
               </td>
 
