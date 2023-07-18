@@ -382,6 +382,15 @@
                     </span>
                     &ensp; Ăn Ca
                   </nav-link>
+                  <nav-link
+                    to="/quantri/chamcong/mucngoaigio"
+                    class="navbar-item"
+                  >
+                    <span style="color: #9b6dff" class="icon is-small is-left">
+                      <i class="fas fa-align-left"></i>
+                    </span>
+                    &ensp; Mức ngoài giờ
+                  </nav-link>
                 </div>
               </div>
               <!-- Báo cáo -->
@@ -501,6 +510,18 @@
                             <i class="fas fa-id-card-alt"></i>
                           </span>
                           &ensp; Chấm công hằng ngày
+                        </nav-link>
+                        <nav-link
+                          to="/quantri/chamcong/ngoaigio"
+                          class="navbar-item"
+                        >
+                          <span
+                            style="color: #6e4dc3"
+                            class="icon is-small is-left"
+                          >
+                            <i class="far fa-clock"></i>
+                          </span>
+                          &ensp; Chấm công ngoài giờ
                         </nav-link>
                         <nav-link
                           to="/quantri/chamcong/baocaoquanso"

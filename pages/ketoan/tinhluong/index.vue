@@ -258,12 +258,11 @@
                   class="input is-small"
                 />
               </td>
-              <td style="text-align: center; font-size: small">
-                <input
-                  v-model="nv.luongngoaih"
-                  type="text"
-                  class="input is-small"
-                />
+              <td
+                @click="detailChamngoaigio(nv)"
+                style="text-align: center; font-size: small"
+              >
+                {{ nv.thanhtienngoaigio | formatNumber }}
               </td>
               <td>
                 <input
@@ -285,7 +284,7 @@
                     parseFloat(nv.dt_dieuchinh) +
                     parseFloat(nv.dt_thuong) +
                     parseFloat(nv.thuong) +
-                    parseFloat(nv.luongngoaih) -
+                    parseFloat(nv.thanhtienngoaigio) -
                     parseFloat(nv.dt_phat))
                     | formatNumber
                 }}
@@ -348,7 +347,7 @@
                       parseFloat(nv.dt_dieuchinh) +
                       parseFloat(nv.dt_thuong) +
                       parseFloat(nv.thuong) +
-                      parseFloat(nv.luongngoaih) -
+                      parseFloat(nv.thanhtienngoaigio) -
                       ((parseFloat(nv.mucluong.replace(/,/g, "")) *
                         parseFloat(get_qtl.tl_dong_bhxh_cn)) /
                         100 +
@@ -365,6 +364,126 @@
               </template>
             </tr>
           </table>
+        </div>
+      </div>
+
+      <!-- Modal 3 - detail -->
+      <div class="">
+        <!-- Toggle class  -->
+        <div :class="{ 'is-active': isActive }" class="modal">
+          <div class="modal-background"></div>
+          <div class="modal-content modal-card-1">
+            <header
+              style="
+                background-color: #3e8ed0;
+                border-top-left-radius: 8px;
+                border-top-right-radius: 8px;
+              "
+            >
+              <div class="columns">
+                <div class="column is-9">
+                  <p
+                    style="
+                      font-size: small;
+                      font-weight: bold;
+                      color: white;
+                      padding: 15px;
+                    "
+                  >
+                    <span class="icon is-small is-left">
+                      <i style="color: #ffd863ff" class="fas fa-tags"></i>
+                    </span>
+                    Thông tin chấm công ngoài giờ
+                  </p>
+                </div>
+                <div class="column" style="text-align: right">
+                  <a @click="isActive = false">
+                    <span
+                      style="color: red; padding: 20px"
+                      class="icon is-small"
+                    >
+                      <i class="fas fa-power-off"></i>
+                    </span>
+                  </a>
+                </div>
+              </div>
+            </header>
+            <section class="modal-card-body">
+              <table
+                class="table is-responsive is-bordered is-narrow is-fullwidth"
+              >
+                <tr style="background-color: #fffaeb">
+                  <td
+                    style="
+                      font-size: small;
+                      font-weight: bold;
+                      text-align: center;
+                      width: 3%;
+                    "
+                  >
+                    STT
+                  </td>
+                  <td
+                    style="
+                      font-size: small;
+                      font-weight: bold;
+                      text-align: center;
+                      width: 15%;
+                    "
+                  >
+                    Tên nhân viên
+                  </td>
+                  <td
+                    style="
+                      font-size: small;
+                      font-weight: bold;
+                      text-align: center;
+                      width: 7%;
+                    "
+                  >
+                    Mức tiền
+                  </td>
+                  <td
+                    style="
+                      font-size: small;
+                      font-weight: bold;
+                      text-align: center;
+                      width: 7%;
+                    "
+                  >
+                    Số giờ
+                  </td>
+                  <td
+                    style="
+                      font-size: small;
+                      font-weight: bold;
+                      text-align: center;
+                      width: 7%;
+                    "
+                  >
+                    Ngày chấm
+                  </td>
+                </tr>
+                <tr v-for="(it, index) in dataDetailChamngoaigio">
+                  <td style="font-size: small; text-align: center">
+                    {{ index + 1 }}
+                  </td>
+                  <td style="font-size: small; text-align: center">
+                    {{ it.tennv }}
+                  </td>
+                  <td style="font-size: small; text-align: center">
+                    {{ it.muctien | formatNumber }}
+                  </td>
+                  <td style="font-size: small; text-align: center">
+                    {{ it.sogio }}
+                  </td>
+                  <td style="font-size: small; text-align: center">
+                    {{ it.ngaylam | formatDate }}
+                  </td>
+                </tr>
+              </table>
+            </section>
+          </div>
         </div>
       </div>
     </div>
@@ -384,6 +503,7 @@ export default {
   middleware: "auth",
   data() {
     return {
+      dataDetailChamngoaigio: [],
       dsnhanvien: [],
       qtl: [],
       get_qtl: {},
@@ -515,6 +635,13 @@ export default {
       this.getDayinmon = this.get_day_of_month(
         this.namLapluong,
         this.thangLapluong
+      );
+    },
+
+    async detailChamngoaigio(item) {
+      this.isActive = true;
+      this.dataDetailChamngoaigio = await this.$axios.$get(
+        `/api/ketoan/detailchamngoaigio?manv=${item.manv}&nam=${this.namLapluong}&thang=${this.thangLapluong}`
       );
     },
 
@@ -652,7 +779,6 @@ export default {
               icon: "success",
               title: "Lập bảng lương thành công",
             });
-            this.isActive = false;
           } catch (error) {
             console.log(error);
             const Toast = Swal.mixin({
