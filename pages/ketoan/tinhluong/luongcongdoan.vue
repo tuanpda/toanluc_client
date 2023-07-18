@@ -2,7 +2,7 @@
   <div class="columns">
     <div class="column">
       <br />
-      <div class="box" style="margin-right: 30px; margin-left: 30px">
+      <div class="box" style="margin-right: 10px; margin-left: 10px">
         <div class="columns">
           <div class="column is-4">
             <div class="control">
@@ -182,6 +182,26 @@
                 >
                   Tên công nhân
                 </td>
+                <td
+                  rowspan="2"
+                  style="
+                    text-align: center;
+                    font-size: small;
+                    font-weight: bold;
+                  "
+                >
+                  Ngày công
+                </td>
+                <td
+                  rowspan="2"
+                  style="
+                    text-align: center;
+                    font-size: small;
+                    font-weight: bold;
+                  "
+                >
+                  Lương TB
+                </td>
                 <!-- <td rowspan="2" style="text-align: center; font-size:small; font-weight: bold;">
                   CV
                 </td> -->
@@ -194,7 +214,7 @@
                     text-align: center;
                     font-size: small;
                     font-weight: bold;
-                    width: 12%;
+                    width: 7%;
                   "
                 >
                   Lương QLSP
@@ -208,7 +228,8 @@
                     width: 6%;
                   "
                 >
-                  Lương công đoạn
+                  Lương công <br />
+                  đoạn
                 </td>
                 <td
                   rowspan="2"
@@ -218,17 +239,8 @@
                     font-weight: bold;
                   "
                 >
-                  Lương phát sinh
-                </td>
-                <td
-                  colspan="2"
-                  style="
-                    text-align: center;
-                    font-size: small;
-                    font-weight: bold;
-                  "
-                >
-                  Ăn ca
+                  Lương phát <br />
+                  sinh
                 </td>
                 <td
                   colspan="2"
@@ -258,7 +270,7 @@
                     font-weight: bold;
                   "
                 >
-                  Lương TB
+                  Ăn ca
                 </td>
                 <td
                   rowspan="2"
@@ -271,7 +283,7 @@
                   Lương CB
                 </td>
                 <td
-                  colspan="3"
+                  colspan="4"
                   style="
                     text-align: center;
                     font-size: small;
@@ -292,7 +304,7 @@
                 </td>
               </tr>
               <tr style="background-color: #fffaeb">
-                <td
+                <!-- <td
                   style="
                     text-align: center;
                     font-size: small;
@@ -310,7 +322,7 @@
                   "
                 >
                   Thành tiền
-                </td>
+                </td> -->
                 <td
                   style="
                     text-align: center;
@@ -337,7 +349,7 @@
                     font-weight: bold;
                   "
                 >
-                  BHXH 10.5%
+                  BHXH
                 </td>
                 <td
                   style="
@@ -348,15 +360,15 @@
                 >
                   Công đoàn
                 </td>
-                <!-- <td
+                <td
                   style="
                     text-align: center;
                     font-size: small;
                     font-weight: bold;
                   "
                 >
-                  Tạm ứng
-                </td> -->
+                  &nbsp; Tiền Phạt &nbsp;
+                </td>
                 <td
                   style="
                     text-align: center;
@@ -392,6 +404,21 @@
                   {{ dsl.macn }}
                 </td>
                 <td style="font-size: small">{{ dsl.tencongnhan }}</td>
+                <td style="text-align: center; font-size: small">
+                  {{ dsl.songaylam }}
+                </td>
+                <td
+                  style="text-align: right; font-size: small; font-weight: bold"
+                >
+                  {{
+                    ((parseFloat(dsl.luongqlsp) +
+                      dsl.luongcd +
+                      dsl.luongcn +
+                      parseFloat(dsl.ngayhotro) * parseFloat(dsl.luongmem)) /
+                      dsl.songaylam)
+                      | formatNumber
+                  }}
+                </td>
                 <!-- <td style="font-size:small;">{{ dsl.chucnang }}</td> -->
                 <!-- <td style="text-align: right; font-size:small;">
                   {{ dsl.luongcb | formatNumber }}
@@ -411,20 +438,11 @@
                   {{ dsl.luongcn | formatNumber }}
                 </td>
                 <!-- số ngày làm -->
-                <td style="text-align: center; font-size: small">
+                <!-- <td style="text-align: center; font-size: small">
                   {{ dsl.songaylam }}
-                </td>
+                </td> -->
                 <!-- tổng tiền ăn ca -->
-                <td
-                  @click="detailAnca(dsl)"
-                  style="
-                    text-align: center;
-                    font-size: small;
-                    background-color: honeydew;
-                  "
-                >
-                  {{ dsl.thanhtien | formatNumber }}
-                </td>
+
                 <!-- ngày hỗ trợ -->
                 <td style="text-align: center; font-size: small">
                   <input
@@ -453,23 +471,20 @@
                     (parseFloat(dsl.luongqlsp) +
                       dsl.luongcd +
                       dsl.luongcn +
-                      dsl.thanhtien +
                       parseFloat(dsl.ngayhotro) * parseFloat(dsl.luongmem))
                       | formatNumber
                   }}
                 </td>
+                <!-- ăn ca -->
                 <td
-                  style="text-align: right; font-size: small; font-weight: bold"
+                  @click="detailAnca(dsl)"
+                  style="
+                    text-align: center;
+                    font-size: small;
+                    background-color: honeydew;
+                  "
                 >
-                  {{
-                    ((parseFloat(dsl.luongqlsp) +
-                      dsl.luongcd +
-                      dsl.luongcn +
-                      dsl.thanhtien +
-                      parseFloat(dsl.ngayhotro) * parseFloat(dsl.luongmem)) /
-                      dsl.songaylam)
-                      | formatNumber
-                  }}
+                  {{ dsl.thanhtien | formatNumber }}
                 </td>
                 <td style="text-align: right; font-size: small">
                   {{ dsl.luongcb | formatNumber }}
@@ -484,15 +499,22 @@
                     v-model="dsl.congdoan"
                   />
                 </td>
-                <!-- <td style="text-align: right; font-size: small">
-                  {{ dsl.tienung | formatNumber }}
-                </td> -->
+                <!-- cột này là cột phạt. nhưng dùng cột ăn trưa trong csdl -->
+                <td style="text-align: center; font-size: small">
+                  <input
+                    type="number"
+                    class="input is-small"
+                    v-model="dsl.antrua"
+                  />
+                </td>
                 <!-- tổng trừ -->
                 <td
                   style="text-align: right; font-size: small; font-weight: bold"
                 >
                   {{
-                    (dsl.bhxh + parseFloat(dsl.congdoan) + dsl.thanhtien)
+                    (dsl.bhxh +
+                      parseFloat(dsl.congdoan) +
+                      parseFloat(dsl.antrua))
                       | formatNumber
                   }}
                 </td>
@@ -511,7 +533,7 @@
                       dsl.luongcn +
                       dsl.thanhtien +
                       parseFloat(dsl.ngayhotro) * parseFloat(dsl.luongmem) -
-                      (dsl.bhxh + parseFloat(dsl.congdoan) + dsl.thanhtien))
+                      (dsl.bhxh + parseFloat(dsl.congdoan) + dsl.antrua))
                       | formatNumber
                   }}
                 </td>
@@ -2659,6 +2681,7 @@ export default {
                         this.selected[i].bhxh +
                         this.selected[i].tienung +
                         this.selected[i].thanhtien),
+                    tienphat: this.selected[i].antrua,
                     createdAt: this.createdAt,
                     createdBy: this.createdBy,
                     thang: this.thang,
