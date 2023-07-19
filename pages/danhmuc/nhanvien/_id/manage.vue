@@ -185,6 +185,31 @@
                     </div>
                   </td>
                 </tr>
+                <tr>
+                  <td colspan="6" style="font-size: small">
+                    <template v-if="form.trangthai == true">
+                      <span
+                        style="
+                          font-weight: bold;
+                          font-size: small;
+                          color: green;
+                        "
+                        >Đang làm</span
+                      >
+                    </template>
+                    <template v-else>
+                      <span
+                        style="font-weight: bold; font-size: small; color: red"
+                        >Đã nghỉ</span
+                      >
+                    </template>
+                    &nbsp;
+                    <label class="switch" style="vertical-align: middle">
+                      <input v-model="form.trangthai" type="checkbox" />
+                      <span class="slider"></span>
+                    </label>
+                  </td>
+                </tr>
               </table>
 
               <table
@@ -399,6 +424,7 @@ export default {
         trinhdo: null,
         diachilh: null,
         diengiai: null,
+        trangthai: null,
       },
       hisform: {
         tenthaotac: null,
@@ -454,6 +480,7 @@ export default {
     this.form.createdAt = this.nhanvien.createdAt;
     this.form.updatedAt = this.nhanvien.updatedAt;
     this.form.accadd = this.nhanvien.accadd;
+    this.form.trangthai = this.nhanvien.trangthai;
   },
 
   mounted() {
@@ -613,5 +640,58 @@ export default {
   font-weight: bold;
   font-size: 14px;
   color: #f14668;
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 15px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #f14668;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 7px;
+  width: 7px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: green;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
 }
 </style>
