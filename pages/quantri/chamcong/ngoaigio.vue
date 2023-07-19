@@ -23,6 +23,17 @@
             <span>row data</span>
           </div>
           <div class="column" style="text-align: right">
+            <a
+              href="/quantri/chamcong/importngoaig"
+              class="button is-danger is-fullwidth is-small"
+            >
+              <span class="icon is-small">
+                <i class="far fa-clock"></i>
+              </span>
+              <span>Import</span>
+            </a>
+          </div>
+          <div class="column" style="text-align: right">
             <button
               @click="isActive = true"
               class="button is-success is-fullwidth is-small"
@@ -142,7 +153,7 @@
                           class="fas fa-feather-alt"
                         ></i>
                       </span>
-                      Thêm Loại ăn ca
+                      Thêm ngoài giờ
                     </p>
                   </div>
                   <div class="column" style="text-align: right">

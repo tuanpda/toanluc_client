@@ -562,6 +562,7 @@ export default {
         luongngay: 0,
         bacluong: 0,
         luongtrachnhiem: 0,
+        congdoan: 50000,
         // updatedAt: new Date().toISOString().substr(0, 10),
       },
       hisform: {
@@ -848,6 +849,7 @@ export default {
             data.append("luongngay", this.form.luongngay);
             data.append("bacluong", this.form.bacluong);
             data.append("luongtrachnhiem", this.form.luongtrachnhiem);
+            data.append("congdoan", this.form.congdoan);
             const res = await this.$axios.$post(
               "/api/nhanvien/addnhanvien",
               data
