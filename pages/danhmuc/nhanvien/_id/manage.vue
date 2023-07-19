@@ -557,6 +557,7 @@ export default {
             data.append("sotknh", this.form.sotknh);
             data.append("tennh", this.form.tennh);
             data.append("diengiai", this.form.diengiai);
+            data.append("trangthai", this.form.trangthai);
             data.append("updatedAt", this.updated);
 
             this.$axios.$patch(
