@@ -533,13 +533,35 @@
                       dsl.luongcn +
                       dsl.thanhtien +
                       parseFloat(dsl.ngayhotro) * parseFloat(dsl.luongmem) -
-                      (dsl.bhxh + parseFloat(dsl.congdoan) + dsl.antrua))
+                      (dsl.bhxh +
+                        parseFloat(dsl.congdoan) +
+                        parseFloat(dsl.antrua)))
                       | formatNumber
                   }}
                 </td>
               </tr>
               <tr>
                 <td colspan="4"></td>
+                <td
+                  style="
+                    font-size: small;
+                    font-weight: bold;
+                    color: #00947e;
+                    text-align: center;
+                  "
+                >
+                  {{ subRow_songaylam | formatNumber }}
+                </td>
+                <td
+                  style="
+                    font-size: small;
+                    font-weight: bold;
+                    color: #00947e;
+                    text-align: right;
+                  "
+                >
+                  {{ subRow_tongluongtb | formatNumber }}
+                </td>
                 <td
                   style="
                     font-size: small;
@@ -578,26 +600,6 @@
                     text-align: center;
                   "
                 >
-                  {{ subRow_songaylam | formatNumber }}
-                </td>
-                <td
-                  style="
-                    font-size: small;
-                    font-weight: bold;
-                    color: #00947e;
-                    text-align: center;
-                  "
-                >
-                  {{ subRow_thanhtienca | formatNumber }}
-                </td>
-                <td
-                  style="
-                    font-size: small;
-                    font-weight: bold;
-                    color: #00947e;
-                    text-align: center;
-                  "
-                >
                   {{ subRow_ngayhotro | formatNumber }}
                 </td>
                 <td
@@ -625,10 +627,10 @@
                     font-size: small;
                     font-weight: bold;
                     color: #00947e;
-                    text-align: right;
+                    text-align: center;
                   "
                 >
-                  {{ subRow_tongluongtb | formatNumber }}
+                  {{ subRow_thanhtienca | formatNumber }}
                 </td>
                 <td
                   style="
@@ -659,6 +661,16 @@
                   "
                 >
                   {{ subRow_congdoan | formatNumber }}
+                </td>
+                <td
+                  style="
+                    font-size: small;
+                    font-weight: bold;
+                    color: #00947e;
+                    text-align: right;
+                  "
+                >
+                  {{ subRow_phat | formatNumber }}
                 </td>
                 <td
                   style="
@@ -2211,7 +2223,6 @@ export default {
           (parseFloat(item.luongqlsp) +
             item.luongcd +
             item.luongcn +
-            item.thanhtien +
             parseFloat(item.ngayhotro) * parseFloat(item.luongmem)),
         0
       );
@@ -2224,7 +2235,6 @@ export default {
           (parseFloat(item.luongqlsp) +
             item.luongcd +
             item.luongcn +
-            item.thanhtien +
             parseFloat(item.ngayhotro) * parseFloat(item.luongmem)) /
             item.songaylam,
         0
@@ -2238,6 +2248,13 @@ export default {
     subRow_bhxh() {
       return this.dscongnhan.reduce((total, item) => total + item.bhxh, 0);
     },
+    // sum phat
+    subRow_phat() {
+      return this.dscongnhan.reduce(
+        (total, item) => total + parseFloat(item.antrua),
+        0
+      );
+    },
     // sum cđ
     subRow_congdoan() {
       return this.dscongnhan.reduce((total, item) => total + item.congdoan, 0);
@@ -2246,7 +2263,8 @@ export default {
     subRow_tongtru() {
       return this.dscongnhan.reduce(
         (total, item) =>
-          total + (item.bhxh + parseFloat(item.congdoan) + item.thanhtien),
+          total +
+          (item.bhxh + parseFloat(item.congdoan) + parseFloat(item.antrua)),
         0
       );
     },
@@ -2258,9 +2276,9 @@ export default {
           (parseFloat(item.luongqlsp) +
             item.luongcd +
             item.luongcn +
-            item.thanhtien +
-            parseFloat(item.ngayhotro) * parseFloat(item.luongmem) -
-            (item.bhxh + parseFloat(item.congdoan) + item.thanhtien)),
+            parseFloat(item.ngayhotro) * parseFloat(item.luongmem) +
+            item.thanhtien -
+            (item.bhxh + parseFloat(item.congdoan) + parseFloat(item.antrua))),
         0
       );
     },
@@ -2653,7 +2671,6 @@ export default {
                       parseFloat(this.selected[i].luongqlsp) +
                       this.selected[i].luongcd +
                       this.selected[i].luongcn +
-                      this.selected[i].thanhtien +
                       parseFloat(this.selected[i].ngayhotro) *
                         parseFloat(this.selected[i].luongmem),
                     antrua: this.selected[i].thanhtien,
@@ -2668,19 +2685,17 @@ export default {
                     tongtru:
                       this.selected[i].cong_doan +
                       this.selected[i].bhxh +
-                      this.selected[i].tienung +
-                      this.selected[i].thanhtien,
+                      parseFloat(this.selected[i].antrua),
                     tongnhan:
                       parseFloat(this.selected[i].luongqlsp) +
                       this.selected[i].luongcd +
                       this.selected[i].luongcn +
-                      this.selected[i].thanhtien +
                       parseFloat(this.selected[i].ngayhotro) *
-                        parseFloat(this.selected[i].luongmem) -
+                        parseFloat(this.selected[i].luongmem) +
+                      parseFloat(this.selected[i].thanhtien) -
                       (this.selected[i].cong_doan +
                         this.selected[i].bhxh +
-                        this.selected[i].tienung +
-                        this.selected[i].thanhtien),
+                        parseFloat(this.selected[i].antrua)),
                     tienphat: this.selected[i].antrua,
                     createdAt: this.createdAt,
                     createdBy: this.createdBy,
