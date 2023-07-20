@@ -942,35 +942,54 @@ export default {
       }
     },
 
-    onDelete(cn) {
-      swal({
-        title: "Bạn muốn xóa công nhân này?",
-        text: "Sẽ không lấy lại được sau khi xóa!",
-        buttons: true,
-        dangerMode: true,
-      }).then((willDelete) => {
-        this.$axios.$delete(`/api/congnhan/${cn._id}`).then((response) => {
-          const index = this.congnhan.findIndex((p) => p._id === cn._id); // find the post index
-          if (~index)
-            // if the post exists in array
-            this.congnhan.splice(index, 1); //delete the post
-        });
-        const Toast = Swal.mixin({
-          toast: true,
-          position: "top-end",
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.addEventListener("mouseenter", Swal.stopTimer);
-            toast.addEventListener("mouseleave", Swal.resumeTimer);
-          },
-        });
-        Toast.fire({
-          icon: "success",
-          title: "Xóa thành công",
-        });
+    async onDelete() {
+      const result = await Swal.fire({
+        title: `Bạn chắc chắn xóa`,
+        showDenyButton: true,
+        confirmButtonText: "Chắc chắn",
+        denyButtonText: `Hủy`,
       });
+      if (result.isConfirmed) {
+        try {
+          this.$axios.$delete(`/api/congnhan/${cn._id}`).then((response) => {
+            const index = this.congnhan.findIndex((p) => p._id === cn._id); // find the post index
+            if (~index)
+              // if the post exists in array
+              this.congnhan.splice(index, 1); //delete the post
+          });
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
+          Toast.fire({
+            icon: "success",
+            title: "Xóa thành công",
+          });
+        } catch (error) {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
+          Toast.fire({
+            icon: "error",
+            title: `Có lỗi xảy ra`,
+          });
+        }
+      }
     },
   },
 };

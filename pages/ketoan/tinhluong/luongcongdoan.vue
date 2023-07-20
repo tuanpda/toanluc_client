@@ -111,9 +111,21 @@
                 <td style="font-size: small; font-weight: bold">
                   Công ty cổ phần Toàn Lực
                 </td>
+                <td style="width: 7%; text-align: center">
+                  <vue-excel-xlsx
+                    :data="dscongnhan_download"
+                    :columns="columns_luong"
+                    :file-name="'Lương thang'"
+                    :file-type="'xlsx'"
+                    :sheet-name="'Lương thang'"
+                  >
+                    Download
+                  </vue-excel-xlsx>
+                </td>
               </tr>
               <tr>
                 <td
+                  :colspan="2"
                   style="
                     text-align: center;
                     font-size: larger;
@@ -365,6 +377,7 @@
                     text-align: center;
                     font-size: small;
                     font-weight: bold;
+                    width: 8%;
                   "
                 >
                   &nbsp; Tiền Phạt &nbsp;
@@ -374,6 +387,7 @@
                     text-align: center;
                     font-size: small;
                     font-weight: bold;
+                    width: 8%;
                   "
                 >
                   Tổng trừ
@@ -1846,6 +1860,7 @@ export default {
       phanxuong: [],
       tonhomid: [],
       dscongnhan: [],
+      data_download: [],
       luongcongdoan: [],
       congnhat: [],
       detailcn: [],
@@ -2105,6 +2120,76 @@ export default {
           // dataFormat: this.prefixformatDate
         },
       ],
+      columns_luong: [
+        {
+          label: "Mã CN",
+          field: "macn",
+        },
+        {
+          label: "Tên CN",
+          field: "tencn",
+        },
+        {
+          label: "Ngày công",
+          field: "songaylam",
+        },
+        {
+          label: "Lương trung bình",
+          field: "luongtb",
+        },
+        {
+          label: "Lương QLSP",
+          field: "luongqlsp",
+        },
+        {
+          label: "Lương công đoạn",
+          field: "luongcd",
+        },
+        {
+          label: "Lương công nhật",
+          field: "luongcn",
+        },
+        {
+          label: "Số ngày hỗ trợ",
+          field: "ngayhotro",
+        },
+        {
+          label: "Thành tiền hỗ trợ",
+          field: "thanhtienhotro",
+        },
+        {
+          label: "Tổng lương",
+          field: "tongluong",
+        },
+        {
+          label: "Ăn ca",
+          field: "anca",
+        },
+        {
+          label: "Lương CB",
+          field: "luongcb",
+        },
+        {
+          label: "BHXH",
+          field: "bhxh",
+        },
+        {
+          label: "Công đoàn",
+          field: "congdoan",
+        },
+        {
+          label: "Tiền phạt",
+          field: "antrua",
+        },
+        {
+          label: "Tổng trừ",
+          field: "tongtru",
+        },
+        {
+          label: "Tổng nhận",
+          field: "tongnhan",
+        },
+      ],
     };
   },
 
@@ -2282,6 +2367,52 @@ export default {
         0
       );
     },
+
+    dscongnhan_download() {
+      return this.dscongnhan.map((row) => {
+        return {
+          macn: row.macn,
+          tencn: row.tencongnhan,
+          songaylam: row.songaylam,
+          luongtb: Math.round(
+            (parseFloat(row.luongqlsp) +
+              parseFloat(row.luongcd) +
+              parseFloat(row.luongcn) +
+              parseFloat(row.ngayhotro) * parseFloat(row.luongmem)) /
+              row.songaylam
+          ),
+          luongqlsp: Math.round(row.luongqlsp),
+          luongcd: row.luongcd,
+          luongcn: row.luongcn,
+          ngayhotro: row.ngayhotro,
+          thanhtienhotro: Math.round(
+            parseFloat(row.ngayhotro) * parseFloat(row.luongmem)
+          ),
+          tongluong: Math.round(
+            parseFloat(row.luongqlsp) +
+              row.luongcd +
+              row.luongcn +
+              parseFloat(row.ngayhotro) * parseFloat(row.luongmem)
+          ),
+          anca: row.thanhtien,
+          luongcb: row.luongcb,
+          bhxh: row.bhxh,
+          congdoan: row.congdoan,
+          antrua: row.antrua,
+          tongtru: Math.round(
+            row.bhxh + parseFloat(row.congdoan) + parseFloat(row.antrua)
+          ),
+          tongnhan: Math.round(
+            parseFloat(row.luongqlsp) +
+              row.luongcd +
+              row.luongcn +
+              row.thanhtien +
+              parseFloat(row.ngayhotro) * parseFloat(row.luongmem) -
+              (row.bhxh + parseFloat(row.congdoan) + parseFloat(row.antrua))
+          ),
+        };
+      });
+    },
   },
 
   mounted() {
@@ -2451,6 +2582,11 @@ export default {
       );
     },
 
+    // async caculateluong() {
+    //   this.data_download = this.dscongnhan;
+    //   console.log(this.data_download);
+    // },
+
     async onReport() {
       for (let i = 0; i < this.selected.length; i++) {
         let data = {
@@ -2547,6 +2683,7 @@ export default {
               `/api/ketoan/getallluongcongdoanpx?nam=${this.nam}&thang=${this.thang}&mapx=${this.maxuong}`
             );
             this.dscongnhan = res.data;
+            // gọi hàm tính toán lại dữ liệu lương
             if (res.success == true) {
               this.isActive_load_luong = false;
             }

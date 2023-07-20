@@ -106,9 +106,9 @@
                 </th>
                 <th style="text-align: center; font-size: small">Mã phòng</th>
                 <th style="text-align: center; font-size: small">Tên phòng</th>
-                <th style="text-align: center; font-size: small">
+                <!-- <th style="text-align: center; font-size: small">
                   Lương cơ bản
-                </th>
+                </th> -->
                 <th style="text-align: center; font-size: small">CCCD</th>
                 <th style="text-align: center; font-size: small">Ngày sinh</th>
                 <th style="text-align: center; font-size: small">Giới tính</th>
@@ -136,7 +136,7 @@
                 <td style="font-size: small">{{ nv.tennv }}</td>
                 <td style="font-size: small">{{ nv.mapb }}</td>
                 <td style="font-size: small">{{ nv.tenphong }}</td>
-                <td style="font-size: small">{{ nv.mucluong }}</td>
+                <!-- <td style="font-size: small">{{ nv.mucluong }}</td> -->
                 <td style="text-align: center; font-size: small">
                   {{ nv.cccd }}
                 </td>
@@ -203,7 +203,7 @@
                       <div class="control">
                         <input
                           v-model.trim="form.manv"
-                          @blur="$v.form.manv.$touch()"
+                          @blur="[$v.form.manv.$touch(), checkManv()]"
                           class="input is-danger is-small"
                           type="text"
                           placeholder="Nhập vào tên nhân viên"
@@ -783,6 +783,33 @@ export default {
       this.phongban = await this.$axios.$get(`/api/phongban/allphongban`);
     },
 
+    async checkManv() {
+      // alert(this.form.manv);
+      const dataNhanvien = await this.$axios.get("api/nhanvien/");
+      // console.log(dataNhanvien);
+      const data = dataNhanvien.data;
+      const arrayManv = data.map((item) => item.manv);
+      // console.log(arrayMacn);
+      if (arrayManv.includes(this.form.manv)) {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 5000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+        Toast.fire({
+          icon: "error",
+          title: `Mã nhân viên: ${this.form.manv} đã tồn tại trong dữ liệu, nhập vào mã mới`,
+        });
+        this.form.manv = "";
+      }
+    },
+
     async showmapx(e) {
       // console.log(this.mapx)
       var name = e.target.options[e.target.options.selectedIndex].text;
@@ -898,35 +925,56 @@ export default {
       }
     },
 
-    onDelete(nv) {
-      swal({
-        title: "Bạn muốn xóa nhân viên này?",
-        text: "Nhân viên này sẽ không lấy lại được sau khi xóa!",
-        buttons: true,
-        dangerMode: true,
-      }).then((willDelete) => {
-        this.$axios.$delete(`/api/nhanvien/${nv._id}`).then((response) => {
-          const index = this.dsnhanvien.findIndex((p) => p._id === nv._id); // find the post index
-          if (~index)
-            // if the post exists in array
-            this.dsnhanvien.splice(index, 1); //delete the post
-        });
-        const Toast = Swal.mixin({
-          toast: true,
-          position: "top-end",
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.addEventListener("mouseenter", Swal.stopTimer);
-            toast.addEventListener("mouseleave", Swal.resumeTimer);
-          },
-        });
-        Toast.fire({
-          icon: "success",
-          title: "Xóa thành công",
-        });
+    async onDelete(cn) {
+      const result = await Swal.fire({
+        title: `Bạn có xóa hẳn công nhân: ${cn.tencn}?`,
+        showDenyButton: true,
+        confirmButtonText: "Có, Xóa",
+        denyButtonText: `Hủy`,
       });
+      if (result.isConfirmed) {
+        try {
+          await this.$axios
+            .$delete(`/api/nhanvien/${nv._id}`)
+            .then((response) => {
+              const index = this.dsnhanvien.findIndex((p) => p._id === nv._id); // find the post index
+              if (~index)
+                // if the post exists in array
+                this.dsnhanvien.splice(index, 1); //delete the post
+            });
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
+          Toast.fire({
+            icon: "success",
+            title: "Xóa thành công",
+          });
+        } catch (error) {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
+          Toast.fire({
+            icon: "error",
+            title: `Có lỗi xảy ra`,
+          });
+        }
+      }
     },
   },
 };

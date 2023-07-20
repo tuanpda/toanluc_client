@@ -45,37 +45,25 @@
         <thead>
           <tr style="background-color: #fffaeb">
             <th style="text-align: center; font-size: small; width: 7%">
-              Mã Kế hoạch
-            </th>
-            <th style="text-align: center; font-size: small; width: 10%">
-              Mã Thành phẩm
-            </th>
-            <th style="text-align: center; font-size: small; width: 7%">
-              Tên Thành phẩm
-            </th>
-            <th style="text-align: center; font-size: small; width: 7%">
-              Nhóm Thành phẩm
-            </th>
-            <th style="text-align: center; font-size: small; width: 7%">
-              Số lượng
-            </th>
-            <th style="text-align: center; font-size: small; width: 7%">
-              Mùa vụ P1
-            </th>
-            <th style="text-align: center; font-size: small; width: 7%">
-              Mùa vụ P2
-            </th>
-            <th style="text-align: center; font-size: small; width: 7%">
-              Mùa vụ P3
-            </th>
-            <th style="text-align: center; font-size: small; width: 10%">
-              Thời gian bắt đầu
-            </th>
-            <th style="text-align: center; font-size: small; width: 10%">
-              Thời gian kết thúc
+              Mã phòng
             </th>
             <th style="text-align: center; font-size: small; width: 15%">
-              Tên khách hàng
+              Tên phòng
+            </th>
+            <th style="text-align: center; font-size: small; width: 10%">
+              Mã nhân viên
+            </th>
+            <th style="text-align: center; font-size: small; width: 12%">
+              Tên nhân viên
+            </th>
+            <th style="text-align: center; font-size: small; width: 7%">
+              Mức tiền
+            </th>
+            <th style="text-align: center; font-size: small; width: 7%">
+              Số giờ
+            </th>
+            <th style="text-align: center; font-size: small; width: 7%">
+              Ngày làm
             </th>
             <th style="text-align: center; font-size: small">Ghi chú</th>
           </tr>
@@ -83,74 +71,34 @@
         <tbody>
           <tr v-for="(excel, index) in dataPreview" :key="index">
             <td style="text-align: center; font-size: small">
-              <input class="input is-small" type="text" v-model="excel.makh" />
-            </td>
-            <td style="text-align: center; font-size: small">
-              <input
-                class="input is-small"
-                type="text"
-                v-model="excel.mathanhpham"
-              />
+              <input class="input is-small" type="text" v-model="excel.mapb" />
             </td>
             <td style="font-size: small">
-              <input
-                class="input is-small"
-                type="text"
-                v-model="excel.tenthanhpham"
-              />
+              <input class="input is-small" type="text" v-model="excel.tenpb" />
             </td>
             <td style="font-size: small">
-              <input
-                class="input is-small"
-                type="text"
-                v-model="excel.nhomthanhpham"
-              />
+              <input class="input is-small" type="text" v-model="excel.manv" />
+            </td>
+            <td style="text-align: right; font-size: small">
+              <input class="input is-small" type="text" v-model="excel.tennv" />
             </td>
             <td style="text-align: right; font-size: small">
               <input
                 class="input is-small"
                 type="text"
-                v-model="excel.soluong"
+                v-model="excel.muctien"
               />
             </td>
             <td style="text-align: right; font-size: small">
-              <input
-                class="input is-small"
-                type="text"
-                v-model="excel.soluongmuavup1"
-              />
-            </td>
-            <td style="text-align: right; font-size: small">
-              <input
-                class="input is-small"
-                type="text"
-                v-model="excel.soluongmuavup2"
-              />
-            </td>
-            <td style="text-align: right; font-size: small">
-              <input
-                class="input is-small"
-                type="text"
-                v-model="excel.soluongmuavup3"
-              />
+              <input class="input is-small" type="text" v-model="excel.sogio" />
             </td>
             <td style="background-color: #fffaeb">
               <input
                 class="input is-small"
-                type="date"
-                v-bind:value="excel.tgbatdau | inputDateFilter"
-                v-on:input="excel.tgbatdau = getDate($event.target.value)"
+                type="text"
+                v-model="excel.ngaylam"
               />
             </td>
-            <td style="background-color: #fffaeb">
-              <input
-                class="input is-small"
-                type="date"
-                v-bind:value="excel.tgketthuc | inputDateFilter"
-                v-on:input="excel.tgketthuc = getDate($event.target.value)"
-              />
-            </td>
-            <td style="font-size: small">{{ excel.khachhang }}</td>
             <td style="text-align: right; font-size: small">
               <input
                 class="input is-small"
@@ -241,7 +189,7 @@ export default {
         this.selectedFile.type ==
         "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"
       ) {
-        console.log(this.selectedFile);
+        // console.log(this.selectedFile);
         //console.log(this.selectedFile.type);
       } else {
         this.$toasted.show("Chỉ chấp nhận file excel xlsx, 2007 + ", {
@@ -277,7 +225,7 @@ export default {
         data.append("updatedAt", this.updatedAt);
         data.append("createdBy", this.createdBy);
         //console.log(this.selectedFile.name);
-        await this.$axios.$post("/api/lokehoach/importkehoachnam", data);
+        await this.$axios.$post("/api/ketoan/importchamcongngoaigio", data);
         Swal.fire("Import dữ liệu thành công", "", "success");
         this.checkData = false;
         // Reload lại page
