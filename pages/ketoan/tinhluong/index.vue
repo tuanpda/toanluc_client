@@ -84,7 +84,7 @@
           <table
             class="table is-responsive is-bordered is-striped is-narrow is-hoverable is-fullwidth"
           >
-            <tr style="background-color: aliceblue">
+            <tr style="">
               <td
                 rowspan="2"
                 style="text-align: center; font-weight: bold; font-size: small"
@@ -114,7 +114,8 @@
                 rowspan="2"
                 style="text-align: center; font-weight: bold; font-size: small"
               >
-                Lương trách nhiệm
+                Lương trách <br />
+                nhiệm
               </td>
               <td
                 rowspan="2"
@@ -186,7 +187,7 @@
                 Lương nhận
               </td>
             </tr>
-            <tr style="background-color: aliceblue">
+            <tr style="">
               <td
                 style="text-align: center; font-weight: bold; font-size: small"
               >
@@ -240,21 +241,21 @@
               <td style="text-align: center; font-size: small">
                 <input
                   v-model="nv.dt_dieuchinh"
-                  type="text"
+                  type="number"
                   class="input is-small"
                 />
               </td>
               <td style="text-align: center; font-size: small">
                 <input
                   v-model="nv.dt_thuong"
-                  type="text"
+                  type="number"
                   class="input is-small"
                 />
               </td>
               <td style="text-align: center; font-size: small">
                 <input
                   v-model="nv.dt_phat"
-                  type="text"
+                  type="number"
                   class="input is-small"
                 />
               </td>
@@ -280,12 +281,13 @@
                 "
               >
                 {{
-                  (parseFloat(nv.luongngay) * parseInt(nv.sum_ngay_lam) +
-                    parseFloat(nv.dt_dieuchinh) +
-                    parseFloat(nv.dt_thuong) +
-                    parseFloat(nv.thuong) +
-                    parseFloat(nv.thanhtienngoaigio) -
-                    parseFloat(nv.dt_phat))
+                  (parseFloat(nv.luongtrachnhiem) +
+                    (parseFloat(nv.luongngay) * parseInt(nv.sum_ngay_lam) +
+                      parseFloat(nv.dt_dieuchinh) +
+                      parseFloat(nv.dt_thuong) +
+                      parseFloat(nv.thuong) +
+                      parseFloat(nv.thanhtienngoaigio) -
+                      parseFloat(nv.dt_phat)))
                     | formatNumber
                 }}
               </td>
@@ -308,31 +310,6 @@
                   (parseFloat(nv.bhxh) + parseFloat(nv.congdoan)) | formatNumber
                 }}
               </td>
-
-              <!-- <td style="text-align: center; font-size: small">
-                {{ nv.tong_ung | formatNumber }}
-              </td> -->
-
-              <!-- <template v-if="nv.tong_ung">
-                <td style="text-align: right; font-size: small">
-                  {{
-                    (parseFloat(nv.mucluong.replace(/,/g, "")) +
-                      parseFloat(nv.thuong) -
-                      ((parseFloat(nv.mucluong.replace(/,/g, "")) *
-                        parseFloat(get_qtl.tl_dong_bhxh_cn)) /
-                        100 +
-                        (parseFloat(nv.mucluong.replace(/,/g, "")) *
-                          parseFloat(get_qtl.tl_dong_bhyt_cn)) /
-                          100 +
-                        (parseFloat(nv.mucluong.replace(/,/g, "")) *
-                          parseFloat(get_qtl.tl_dong_bhtn_cn)) /
-                          100 +
-                        parseFloat(get_qtl.tl_dong_cd_cn) +
-                        parseFloat(nv.tong_ung)))
-                      | formatNumber
-                  }}
-                </td>
-              </template> -->
               <template>
                 <td
                   style="
@@ -343,25 +320,152 @@
                   "
                 >
                   {{
-                    (parseFloat(nv.luongngay) * parseInt(nv.sum_ngay_lam) +
-                      parseFloat(nv.dt_dieuchinh) +
-                      parseFloat(nv.dt_thuong) +
-                      parseFloat(nv.thuong) +
-                      parseFloat(nv.thanhtienngoaigio) -
-                      ((parseFloat(nv.mucluong.replace(/,/g, "")) *
-                        parseFloat(get_qtl.tl_dong_bhxh_cn)) /
-                        100 +
-                        (parseFloat(nv.mucluong.replace(/,/g, "")) *
-                          parseFloat(get_qtl.tl_dong_bhyt_cn)) /
-                          100 +
-                        (parseFloat(nv.mucluong.replace(/,/g, "")) *
-                          parseFloat(get_qtl.tl_dong_bhtn_cn)) /
-                          100 +
-                        parseFloat(get_qtl.tl_dong_cd_cn)))
+                    (parseFloat(nv.luongtrachnhiem) +
+                      (parseFloat(nv.luongngay) * parseInt(nv.sum_ngay_lam) +
+                        parseFloat(nv.dt_dieuchinh) +
+                        parseFloat(nv.dt_thuong) +
+                        parseFloat(nv.thuong) +
+                        parseFloat(nv.thanhtienngoaigio) -
+                        parseFloat(nv.dt_phat)) -
+                      (parseFloat(nv.bhxh) + parseFloat(nv.congdoan)))
                       | formatNumber
                   }}
                 </td>
               </template>
+            </tr>
+            <tr>
+              <td colspan="4"></td>
+              <td
+                style="
+                  color: red;
+                  font-size: small;
+                  font-weight: bold;
+                  text-align: center;
+                "
+              >
+                {{ subRow_luongtrachnhiem | formatNumber }}
+              </td>
+              <td
+                style="
+                  color: red;
+                  font-size: small;
+                  font-weight: bold;
+                  text-align: center;
+                "
+              >
+                {{ subRow_ngaylam | formatNumber }}
+              </td>
+              <td
+                style="
+                  color: red;
+                  font-size: small;
+                  font-weight: bold;
+                  text-align: center;
+                "
+              >
+                {{ subRow_luongcongngay | formatNumber }}
+              </td>
+              <td
+                style="
+                  color: red;
+                  font-size: small;
+                  font-weight: bold;
+                  text-align: center;
+                "
+              >
+                {{ subRow_dt_dieuchinh | formatNumber }}
+              </td>
+              <td
+                style="
+                  color: red;
+                  font-size: small;
+                  font-weight: bold;
+                  text-align: center;
+                "
+              >
+                {{ subRow_dt_thuong | formatNumber }}
+              </td>
+              <td
+                style="
+                  color: red;
+                  font-size: small;
+                  font-weight: bold;
+                  text-align: center;
+                "
+              >
+                {{ subRow_phat | formatNumber }}
+              </td>
+              <td></td>
+              <td
+                style="
+                  color: red;
+                  font-size: small;
+                  font-weight: bold;
+                  text-align: center;
+                "
+              >
+                {{ subRow_thuong | formatNumber }}
+              </td>
+              <td
+                style="
+                  color: red;
+                  font-size: small;
+                  font-weight: bold;
+                  text-align: center;
+                "
+              >
+                {{ subRow_tongluong | formatNumber }}
+              </td>
+              <td
+                style="
+                  color: red;
+                  font-size: small;
+                  font-weight: bold;
+                  text-align: center;
+                "
+              >
+                {{ subRow_mucluong | formatNumber }}
+              </td>
+              <td
+                style="
+                  color: red;
+                  font-size: small;
+                  font-weight: bold;
+                  text-align: center;
+                "
+              >
+                {{ subRow_bhxh | formatNumber }}
+              </td>
+              <td
+                style="
+                  color: red;
+                  font-size: small;
+                  font-weight: bold;
+                  text-align: center;
+                "
+              >
+                {{ subRow_congdoan | formatNumber }}
+              </td>
+              <td
+                style="
+                  color: red;
+                  font-size: small;
+                  font-weight: bold;
+                  text-align: center;
+                "
+              >
+                {{ subRow_tongtru | formatNumber }}
+              </td>
+              <td
+                style="
+                  color: red;
+                  font-size: small;
+                  font-weight: bold;
+                  text-align: center;
+                "
+              >
+                {{ subRow_luongnhan | formatNumber }}
+              </td>
             </tr>
           </table>
         </div>
@@ -571,6 +675,117 @@ export default {
 
         this.selected = selected;
       },
+    },
+
+    // sum lương trách nhiệm
+    subRow_luongtrachnhiem() {
+      return this.dsnhanvien.reduce(
+        (total, item) => total + parseFloat(item.luongtrachnhiem),
+        0
+      );
+    },
+    // sum lương trách nhiệm
+    subRow_ngaylam() {
+      return this.dsnhanvien.reduce(
+        (total, item) => total + parseFloat(item.sum_ngay_lam),
+        0
+      );
+    },
+    // sum ngày công
+    subRow_luongcongngay() {
+      return this.dsnhanvien.reduce(
+        (total, item) =>
+          total + parseFloat(item.luongngay) * parseInt(item.sum_ngay_lam),
+        0
+      );
+    },
+    // sum doanh thu điều chỉnh
+    subRow_dt_dieuchinh() {
+      return this.dsnhanvien.reduce(
+        (total, item) => total + parseFloat(item.dt_dieuchinh),
+        0
+      );
+    },
+    // sum doanh thu thưởng
+    subRow_dt_thuong() {
+      return this.dsnhanvien.reduce(
+        (total, item) => total + parseFloat(item.dt_thuong),
+        0
+      );
+    },
+    // sum phat
+    subRow_phat() {
+      return this.dsnhanvien.reduce(
+        (total, item) => total + parseFloat(item.dt_phat),
+        0
+      );
+    },
+    // sum thưởng
+    subRow_thuong() {
+      return this.dsnhanvien.reduce(
+        (total, item) => total + parseFloat(item.thuong),
+        0
+      );
+    },
+    // sum tong luong nhan
+    subRow_tongluong() {
+      return this.dsnhanvien.reduce(
+        (total, item) =>
+          total +
+          (parseFloat(item.luongtrachnhiem) +
+            parseFloat(item.luongngay) * parseInt(item.sum_ngay_lam) +
+            parseFloat(item.dt_dieuchinh) +
+            parseFloat(item.dt_thuong) +
+            parseFloat(item.thuong) +
+            parseFloat(item.thanhtienngoaigio) -
+            parseFloat(item.dt_phat)),
+        0
+      );
+    },
+    // sum luong cb
+    subRow_mucluong() {
+      return this.dsnhanvien.reduce(
+        (total, item) => total + parseFloat(item.mucluong),
+        0
+      );
+    },
+    // sum bhxh
+    subRow_bhxh() {
+      return this.dsnhanvien.reduce(
+        (total, item) => total + parseFloat(item.bhxh),
+        0
+      );
+    },
+    // sum cong doan
+    subRow_congdoan() {
+      return this.dsnhanvien.reduce(
+        (total, item) => total + parseFloat(item.congdoan),
+        0
+      );
+    },
+    // sum tong tru
+    subRow_tongtru() {
+      return this.dsnhanvien.reduce(
+        (total, item) =>
+          total + (parseFloat(item.bhxh) + parseFloat(item.congdoan)),
+        0
+      );
+    },
+    // sum luong nhan
+    subRow_luongnhan() {
+      return this.dsnhanvien.reduce(
+        (total, item) =>
+          total +
+          (parseFloat(item.luongtrachnhiem) +
+            (parseFloat(item.luongngay) * parseInt(item.sum_ngay_lam) +
+              parseFloat(item.dt_dieuchinh) +
+              parseFloat(item.dt_thuong) +
+              parseFloat(item.thuong) +
+              parseFloat(item.thanhtienngoaigio) -
+              parseFloat(item.dt_phat)) -
+            (parseFloat(item.bhxh) + parseFloat(item.congdoan))),
+        0
+      );
     },
   },
 
@@ -821,20 +1036,20 @@ export default {
   position: sticky;
   left: 0;
   z-index: 1;
-  background-color: #eff1fa;
+  background-color: white;
 }
 .table_wrapper td:nth-child(2),
 .table_wrapper th:nth-child(2) {
   position: sticky;
   left: 43px;
   z-index: 1;
-  background-color: #eff1fa;
+  background-color: white;
 }
 .table_wrapper td:nth-child(3),
 .table_wrapper th:nth-child(3) {
   position: sticky;
   left: 43px;
   z-index: 1;
-  background-color: #eff1fa;
+  background-color: whitesmoke;
 }
 </style>

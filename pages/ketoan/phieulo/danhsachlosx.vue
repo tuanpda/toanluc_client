@@ -1156,6 +1156,7 @@ export default {
         this.filterData();
       }
     },
+    // xuất execl
     exportExcel() {
       const filename_phanxuong = this.selected_print[0].mapx;
       const selectedColumns = this.selected_print.map((item) => {
@@ -1168,16 +1169,20 @@ export default {
           malonhamay: item.malonhamay,
           _id: item._id,
           ngaybd: formattedDate,
+          nhomsp: item.nhomsp,
+          soluongkhsx: item.soluongkhsx,
         };
       });
       const columnNames = [
         { header: "Số phiếu", key: "_id" },
         { header: "Sản phẩm", key: "masp" },
+        { header: "Nhóm sản phẩm", key: "nhomsp" },
         { header: "Lô nhà máy", key: "malonhamay" },
         { header: "Lô kế hoạch PX", key: "makhpx" },
         { header: "Lô sản xuất", key: "malosx" },
         { header: "Số lượng KH", key: "soluonglsx" },
         { header: "Ngày", key: "ngaybd" },
+        { header: "SL nhanh", key: "soluongkhsx" },
         { header: "Số lượng hoàn thành", key: "" },
         { header: "Báo cáo hoàn thành", key: "" },
         { header: "Ghi chú", key: "" },
