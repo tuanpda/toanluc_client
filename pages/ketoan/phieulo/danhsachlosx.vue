@@ -27,7 +27,7 @@
         <div>
           <table class="table is-responsive is-bordered is-narrow is-fullwidth">
             <tr style="background-color: #feecf0">
-              <td style="font-size: small; width: 15.15%">
+              <td style="font-size: small; width: 13%">
                 <div class="select-wrapper">
                   <div class="select-header" @click="isOpen = !isOpen">
                     {{
@@ -49,7 +49,7 @@
                   </div>
                 </div>
               </td>
-              <td style="font-size: small; width: 17%">
+              <td style="font-size: small; width: 13%">
                 <div class="select-wrapper-to">
                   <div class="select-header" @click="isOpento = !isOpento">
                     {{
@@ -135,6 +135,13 @@
                     </label>
                   </div>
                 </div>
+              </td>
+              <td style="font-size: small; width: 7%">
+                <input
+                  type="date"
+                  v-model="searchNgaybd"
+                  class="input is-small"
+                />
               </td>
               <td style="width: 5%">
                 <button
@@ -732,6 +739,7 @@ export default {
       selectedOptions: [],
       selectedOptions_to: [],
       Options_status: [],
+      searchNgaybd: "",
       isOpen: false,
       isOpento: false,
       isOpenst: false,
@@ -1267,6 +1275,7 @@ export default {
       const nhomsp = this.multiSearch_nhomsp;
       const status = this.Options_status;
       const matoList = this.selectedOptions_to;
+      // const ngaybd
 
       // thêm lọc theo mã tổ
       if (
@@ -2261,17 +2270,17 @@ tr:hover {
 
 .select-wrapper {
   position: relative;
-  width: 200px;
+  width: 170px;
 }
 
 .select-wrapper-status {
   position: relative;
-  width: 150px;
+  width: 200px;
 }
 
 .select-wrapper-to {
   position: relative;
-  width: 250px;
+  width: 150px;
 }
 
 .select-header {
