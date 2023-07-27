@@ -2771,6 +2771,8 @@ export default {
           } else {
             // check key thang nam chốt lương trong CSDL
             // khai báo mảng chứa key
+            // console.log(this.selected[0].ngayhotro);
+            // console.log(parseFloat(this.selected[0].ngayhotro) * 354000);
             const arrkeythangnam = [];
             const listkeythangnam = await this.$axios.$get(
               `/api/ketoan/getkeythangnam`
@@ -2814,7 +2816,7 @@ export default {
                       parseFloat(this.selected[i].luongmem),
                   antrua: this.selected[i].thanhtien,
                   songaycong: this.selected[i].songaylam,
-                  ngayhotro: this.selected[i].ngayhotro,
+                  ngayhotro: parseFloat(this.selected[i].ngayhotro),
                   tienhotro:
                     parseFloat(this.selected[i].ngayhotro) *
                     parseFloat(this.selected[i].luongmem),

@@ -470,6 +470,7 @@ export default {
         this.report = await this.$axios.$get(
           `/api/report/reportluongthang_px?thang=${this.thang}&nam=${this.nam}&mapb=${this.maxuong}`
         );
+        console.log(this.report);
         if (this.report.length <= 0) {
           const Toast = Swal.mixin({
             toast: true,

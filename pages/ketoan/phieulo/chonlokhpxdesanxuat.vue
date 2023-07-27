@@ -524,7 +524,25 @@
                     >HT</span
                   >
                 </td>
-                <td v-else style="font-size: small; text-align: center"></td>
+                <td
+                  v-else-if="item.status == 0"
+                  style="
+                    font-size: small;
+                    text-align: center;
+                    vertical-align: middle;
+                  "
+                >
+                  <span
+                    style="
+                      color: white;
+                      font-weight: bold;
+                      background-color: gray;
+                      padding-left: 7px;
+                      padding-right: 7px;
+                    "
+                    >0</span
+                  >
+                </td>
               </template>
 
               <td style="font-size: small">
@@ -662,6 +680,7 @@ export default {
         { masta: 1, tensta: "DK" },
         { masta: 2, tensta: "SX" },
         { masta: 3, tensta: "HT" },
+        { masta: 0, tensta: "0" },
       ],
       multiSearch_masp: "",
       // lọc thay mã sp thành mã thành phẩm

@@ -1031,7 +1031,7 @@ export default {
           ngayhoanthanhtt: "",
           ttqt: "",
           nhomluong: "",
-          status: "",
+          status: 0,
           tongdat: 0,
           tonghong: 0,
           ghichu: "",
