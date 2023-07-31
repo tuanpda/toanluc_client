@@ -759,7 +759,21 @@
                       >HT</span
                     >
                   </td>
-                  <td v-else style="font-size: small; text-align: center"></td>
+                  <td
+                    v-else-if="item.status == 0"
+                    style="font-size: small; text-align: center"
+                  >
+                    <span
+                      style="
+                        color: white;
+                        font-weight: bold;
+                        background-color: gray;
+                        padding-left: 7px;
+                        padding-right: 7px;
+                      "
+                      >0</span
+                    >
+                  </td>
                 </template>
                 <td style="text-align: center; font-size: small">
                   <a @click="onUpdateKehoachpx(item)">
@@ -838,9 +852,6 @@
                     </div>
                   </td>
                   <td style="font-size: small">
-                    <!-- <model-list-select :list="item.sanpham" v-model="item.maspkhpx" option-value="masp"
-                                            :custom-text="codeAndNameAndDesc" placeholder="Chọn sản phẩm">
-                                        </model-list-select> -->
                     <div class="autocomplete">
                       <input
                         class="input is-small is-danger"
@@ -884,12 +895,6 @@
                       class="input is-small"
                     />
                   </td>
-                  <!-- <td><input class="input is-small" type="date"
-                                            v-bind:value="item.ngaybdkhpx | inputDateFilter"
-                                            v-on:input="item.ngaybdkhpx = getDate($event.target.value)"></td>
-                                    <td><input class="input is-small" type="date"
-                                            v-bind:value="item.ngayktkhpx | inputDateFilter"
-                                            v-on:input="item.ngayktkhpx = getDate($event.target.value)"></td> -->
                   <td style="font-size: small">
                     <input
                       @change="getTuanbd"

@@ -1,170 +1,56 @@
-<!-- <template>
-    <div class="container">
-      <table class="table is-bordered is-striped is-narrow is-hoverable">
-        <thead>
-          <tr>
-            <th>STT</th>
-            <th>Mã công nhân</th>
-            <th>Tên công nhân</th>
-            <th v-for="date in dates" :key="date">{{ date }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="(data, index) in datas" :key="data.macn">
-            <td>{{ index + 1 }}</td>
-            <td>{{ data.macn }}</td>
-            <td>{{ data.tencn }}</td>
-            <td v-for="date in dates" :key="date">{{ data[date] }}</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        datas: [
-          {
-            macn: "cn1",
-            tencn: "abc",
-            "2023-05-01": "2 ",
-            "2023-05-02": "K ",
-            "2023-05-03": "P",
-            "2023-05-04": "1 ",
-            "2023-05-05": "M ",
-          },
-          {
-            macn: "cn2",
-            tencn: "abcd",
-            "2023-05-01": "2 ",
-            "2023-05-02": "K ",
-            "2023-05-03": "P",
-            "2023-05-04": "1 ",
-            "2023-05-05": "M ",
-          },
-          {
-            macn: "cn3",
-            tencn: "abcádffds",
-            "2023-05-01": "2 ",
-            "2023-05-02": "K ",
-            "2023-05-03": "P",
-            "2023-05-04": "1 ",
-            "2023-05-05": "M ",
-          },
-        ],
-      };
+<template>
+  <div>
+    <table>
+      <thead>
+        <tr>
+          <th>Mã phòng</th>
+          <th>Mã tổ</th>
+          <th>Họ tên</th>
+          <th>Sắp xếp <input type="number" v-model="sortValue" /></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="(item, index) in sortedData" :key="index">
+          <td>{{ item.maphong }}</td>
+          <td>{{ item.mato }}</td>
+          <td>{{ item.hoten }}</td>
+          <td>{{ item.sort }}</td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+</template>
+
+<script>
+export default {
+  data() {
+    return {
+      tableData: [
+        { maphong: "abc", mato: "bh", hoten: "alex", sort: 0 },
+        { maphong: "hbh", mato: "hg", hoten: "tim", sort: 0 },
+        { maphong: "hjh", mato: "yu", hoten: "lee", sort: 0 },
+      ],
+      sortValue: 0,
+    };
+  },
+  computed: {
+    sortedData() {
+      return this.tableData.sort(
+        (a, b) => a[this.sortValue] - b[this.sortValue]
+      );
     },
-    computed: {
-      dates() {
-        return Object.keys(this.datas[0]).filter((key) => key !== "macn" && key !== "tencn").sort();
-      },
-    },
-  };
-  </script>
-  
-  <style>
-  .container {
-    margin-top: 1rem;
-  }
-  </style> -->
+  },
+};
+</script>
 
-
-
-  <template>
-    <div class="container">
-      <table class="table is-bordered is-striped is-narrow is-hoverable">
-        <thead>
-          <tr>
-            <th v-for="column in columns" :key="column.name">{{ column.title }}</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr v-for="row in rows" :key="row.stt">
-            <td>{{ row.stt }}</td>
-            <td>{{ row.macongnhan }}</td>
-            <td v-for="column in columns.slice(2)" :key="column.name">{{ row[column.name] }}</td>
-          </tr>
-        </tbody>
-      </table>
-      <button @click="show">show</button>
-    </div>
-  </template>
-  
-  <script>
-  export default {
-    data() {
-      return {
-        datas: [
-          {
-            macn: "cn1",
-            tencn: "abc",
-            "2023-05-01": "2 ",
-            "2023-05-02": "K ",
-            "2023-05-03": "P",
-            "2023-05-04": "1 ",
-            "2023-05-05": "M ",
-          },
-          {
-            macn: "cn2",
-            tencn: "abcd",
-            "2023-05-01": "2 ",
-            "2023-05-02": "K ",
-            "2023-05-03": "P",
-            "2023-05-04": "1 ",
-            "2023-05-05": "M ",
-          },
-          {
-            macn: "cn3",
-            tencn: "abcádffds",
-            "2023-05-01": "2 ",
-            "2023-05-02": "K ",
-            "2023-05-03": "P",
-            "2023-05-04": "1 ",
-            "2023-05-05": "M ",
-          },
-        ],
-      };
-    },
-
-    computed: {
-      columns() {
-        const dates = Object.keys(this.datas[0])
-          .filter((key) => key !== "macn" && key !== "tencn")
-          .sort();
-        return [
-          { name: "stt", title: "STT" },
-          { name: "macongnhan", title: "Mã công nhân" },
-          ...dates.map((date) => ({ name: date, title: date })),
-        ];
-      },
-      rows() {
-        return this.datas.map((data, index) => {
-          const row = {
-            stt: index + 1,
-            macongnhan: data.macn,
-          };
-          for (const key in data) {
-            if (key !== "macn" && key !== "tencn") {
-              row[key] = data[key];
-            }
-          }
-          return row;
-        });
-      },
-    },
-
-    methods:{
-      show(){
-        console.log(this.rows);
-      }
-    }
-  };
-  </script>
-  
-  <style scoped>
-  .container {
-    margin-top: 1rem;
-  }
-  </style>
+table { border-collapse: collapse; width: 100%; } th, td { text-align: left;
+padding: 8px; } th { background-color: #f2f2f2; position: relative; } th input {
+position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0;
+z-index: 1; cursor: pointer; } th input:focus + label { border: 1px solid
+#2196f3; } th label { position: relative; display: inline-block; padding: 8px
+16px; border: 1px solid transparent; cursor: pointer; z-index: 0; } th
+label:hover { border: 1px solid #ccc; } th label:after { content: ""; position:
+absolute; top: 50%; right: 8px; transform: translateY(-50%); border-style:
+solid; border-width: 0 4px 4px 0; border-color: #666; display: inline-block;
+padding: 4px; vertical-align: middle; z-index: 2; } th label.asc:after {
+border-color: #2196f3; }

@@ -51,6 +51,16 @@
                   text-align: center;
                   font-weight: bold;
                   font-size: small;
+                  width: 5%;
+                "
+              >
+                STT
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
                   width: 10%;
                 "
               >
@@ -173,11 +183,19 @@
               </td>
             </tr>
             <tr
-              v-for="(item, index) in chamcong"
+              v-for="(item, index) in sortedTableData"
               :key="index + 'hfsajdhfkdsafh'"
               :class="{ highlighted: item === highlightedRow }"
               @click="[highlightRow(item), detail(item)]"
             >
+              <td style="font-size: smaller">
+                <input
+                  type="number"
+                  v-model="item.sort"
+                  class="input is-small"
+                  @blur="sortTable"
+                />
+              </td>
               <td style="font-size: smaller">{{ item.mapx }}</td>
               <!-- <td style="font-size: smaller">{{ item.tenpx }}</td> -->
               <td style="font-size: smaller">{{ item.mato }}</td>
@@ -318,12 +336,21 @@ export default {
     };
   },
 
+  computed: {
+    sortedTableData() {
+      return [...this.chamcong];
+    },
+  },
+
   mounted() {
     this.getPhanxuong();
     this.currentDateTime();
   },
 
   methods: {
+    sortTable() {
+      this.chamcong.sort((a, b) => a.sort - b.sort);
+    },
     // hàm highlight để đánh dấu row nào được chọn
     highlightRow(row) {
       this.highlightedRow = row;

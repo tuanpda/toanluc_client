@@ -208,6 +208,16 @@
                 STT
               </td>
               <td
+                style="
+                  font-size: small;
+                  text-align: center;
+                  font-weight: 600;
+                  width: 3%;
+                "
+              >
+                Mã LKH
+              </td>
+              <td
                 @click="sortTable('malonhamay')"
                 style="
                   font-size: small;
@@ -420,6 +430,16 @@
                 >
                   {{ index + 1 }}
                 </td>
+                <td
+                  style="
+                    font-size: small;
+                    text-align: center;
+                    font-weight: bold;
+                    color: red;
+                  "
+                >
+                  {{ item._id }}
+                </td>
                 <td style="font-size: small">{{ item.malonhamay }}</td>
                 <td
                   style="
@@ -560,7 +580,7 @@
                     >
                   </td>
                   <td
-                    v-else
+                    v-if="item.status == 3"
                     style="
                       font-size: small;
                       text-align: center;
@@ -576,6 +596,25 @@
                         padding-right: 7px;
                       "
                       >HT</span
+                    >
+                  </td>
+                  <td
+                    v-else
+                    style="
+                      font-size: small;
+                      text-align: center;
+                      vertical-align: middle;
+                    "
+                  >
+                    <span
+                      style="
+                        color: white;
+                        font-weight: bold;
+                        background-color: gray;
+                        padding-left: 7px;
+                        padding-right: 7px;
+                      "
+                      >0</span
                     >
                   </td>
                 </template>
@@ -1062,6 +1101,7 @@ export default {
         { masta: 1, tensta: "DK" },
         { masta: 2, tensta: "SX" },
         { masta: 3, tensta: "HT" },
+        { masta: 0, tensta: "0" },
       ],
       multiSearch_masp: "",
       multiSearch_nhomsp: "",
@@ -2223,7 +2263,7 @@ export default {
         ghichu: data.ghichu,
         createdAt: null,
         createdBy: "",
-        status: 1,
+        status: 0,
         status_tinhluong: 0,
         datinhluong: 0,
         stopday_losx: "",
@@ -2269,7 +2309,7 @@ export default {
         ghichu: "",
         createdAt: this.form.createdAt,
         createdBy: this.form.createdBy,
-        status: 1,
+        status: 0,
         status_tinhluong: 0,
         datinhluong: 0,
         stopday_losx: "",

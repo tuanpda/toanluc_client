@@ -98,9 +98,9 @@
                 <th style="text-align: center; font-size: small; width: 4%">
                   Sửa
                 </th>
-                <!-- <th style="text-align: center; font-size: small; width: 4%">
+                <th style="text-align: center; font-size: small; width: 4%">
                   Xóa
-                </th> -->
+                </th>
                 <th style="text-align: center; font-size: small">
                   Tên nhân viên
                 </th>
@@ -112,6 +112,7 @@
                 <th style="text-align: center; font-size: small">CCCD</th>
                 <th style="text-align: center; font-size: small">Ngày sinh</th>
                 <th style="text-align: center; font-size: small">Giới tính</th>
+                <th style="text-align: center; font-size: small">Trạng thái</th>
               </tr>
             </thead>
             <tbody>
@@ -120,19 +121,19 @@
                   {{ index + 1 }}
                 </td>
                 <td style="text-align: center; color: green">
-                  <nuxt-link :to="`/danhmuc/nhanvien/${nv._id}/manage`">
-                    <span class="icon is-small">
+                  <a @click="working(nv)">
+                    <span style="color: green" class="icon is-small">
                       <i class="far fa-check-circle"></i>
                     </span>
-                  </nuxt-link>
+                  </a>
                 </td>
-                <!-- <td style="text-align: center">
+                <td style="text-align: center">
                   <a @click="onDelete(nv)">
                     <span style="color: red" class="icon is-small">
                       <i class="fas fa-times"></i>
                     </span>
                   </a>
-                </td> -->
+                </td>
                 <td style="font-size: small">{{ nv.tennv }}</td>
                 <td style="font-size: small">{{ nv.mapb }}</td>
                 <td style="font-size: small">{{ nv.tenphong }}</td>
@@ -146,335 +147,49 @@
                 <td style="text-align: center; font-size: small">
                   {{ nv.gioitinh }}
                 </td>
+                <td style="font-size: small; text-align: center">
+                  <template v-if="nv.trangthai == 1">
+                    <span style="color: green; font-weight: 900">Đang làm</span>
+                  </template>
+                  <template v-else>
+                    <span style="color: #f96854; font-weight: 900"
+                      >Đã nghỉ</span
+                    >
+                  </template>
+                </td>
               </tr>
             </tbody>
           </table>
         </div>
-
-        <!-- Modal Add nhân viên -->
         <div class="">
-          <!-- Toggle class  -->
           <div :class="{ 'is-active': isActive }" class="modal">
             <div class="modal-background"></div>
             <div class="modal-content modal-card">
-              <header
-                style="
-                  background-color: #3e8ed0;
-                  border-top-left-radius: 8px;
-                  border-top-right-radius: 8px;
-                "
-              >
-                <div class="columns">
-                  <div class="column is-9">
-                    <p
-                      style="
-                        font-size: small;
-                        font-weight: bold;
-                        color: white;
-                        padding: 15px;
-                      "
-                    >
-                      <span class="icon is-small is-left">
-                        <i
-                          style="color: #ffd863ff"
-                          class="fas fa-feather-alt"
-                        ></i>
-                      </span>
-                      Thêm Nhân viên
-                    </p>
-                  </div>
-                  <div class="column" style="text-align: right">
-                    <a @click="isActive = false">
-                      <span
-                        style="color: red; padding: 20px"
-                        class="icon is-small"
-                      >
-                        <i class="fas fa-power-off"></i>
-                      </span>
-                    </a>
-                  </div>
-                </div>
-              </header>
               <section class="modal-card-body">
-                <div class="columns">
-                  <div class="column">
-                    <div class="field">
-                      <label class="label">Mã nhân viên</label>
-                      <div class="control">
-                        <input
-                          v-model.trim="form.manv"
-                          @blur="[$v.form.manv.$touch(), checkManv()]"
-                          class="input is-danger is-small"
-                          type="text"
-                          placeholder="Nhập vào tên nhân viên"
-                        />
-                      </div>
-                      <div v-if="$v.form.manv.$error" class="form-error">
-                        <span
-                          v-if="!$v.form.manv.required"
-                          class="help is-danger"
-                          >Yêu cầu nhập mã nhân viên</span
-                        >
-                      </div>
-                    </div>
-                  </div>
-                  <div class="column">
-                    <div class="field">
-                      <label class="label">Phòng ban</label>
-                      <div class="control has-icons-left">
-                        <div class="select is-small is-fullwidth">
-                          <select @change="showmapx($event)">
-                            <option selected>-- Chọn phòng ban --</option>
-                            <option
-                              v-for="item in phongban"
-                              :value="item.maphong"
-                            >
-                              {{ item.maphong }} -- {{ item.tenphong }}
-                            </option>
-                          </select>
-                        </div>
-                        <span class="icon is-small is-left">
-                          <i style="color: #48c78e" class="fas fa-kaaba"></i>
-                        </span>
-                      </div>
-                    </div>
+                <div>
+                  <div class="notification">
+                    1. Chức năng này sẽ đưa nhân viên đã nghỉ việc trở lại làm
+                    việc
+                    <br />
+                    2. Bấm xác nhận thì nhân viên này sẽ trở lại làm việc.
                   </div>
                 </div>
-                <div class="columns">
-                  <div class="column">
-                    <div class="field">
-                      <label class="label">Tên nhân viên</label>
-                      <div class="control">
-                        <input
-                          v-model.trim="form.tennv"
-                          @blur="$v.form.tennv.$touch()"
-                          class="input is-danger is-small"
-                          type="text"
-                          placeholder="Nhập vào tên nhân viên"
-                        />
-                      </div>
-                      <div v-if="$v.form.tennv.$error" class="form-error">
-                        <span
-                          v-if="!$v.form.tennv.required"
-                          class="help is-danger"
-                          >Yêu cầu nhập tên nhân viên</span
-                        >
-                      </div>
-                    </div>
-                  </div>
+                <div style="padding-top: 10px">
+                  <textarea
+                    v-model="diengiai"
+                    class="textarea is-small"
+                    cols="30"
+                    rows="5"
+                    placeholder="Viết thêm ghi chú vào đây ..."
+                  ></textarea>
                 </div>
-                <div class="columns">
-                  <div class="column">
-                    <div class="field">
-                      <label class="label">Số điện thoại</label>
-                      <div class="control">
-                        <input
-                          @blur="$v.form.sodienthoai.$touch()"
-                          v-model.trim="form.sodienthoai"
-                          class="input is-small"
-                          type="text"
-                          placeholder="Nhập số điện thoại"
-                        />
-                      </div>
-                      <div v-if="$v.form.sodienthoai.$error" class="form-error">
-                        <span
-                          v-if="!$v.form.sodienthoai.required"
-                          class="help is-danger"
-                          >Yêu cầu nhập số điện thoại</span
-                        >
-                      </div>
-                    </div>
-                  </div>
-                  <div class="column">
-                    <div class="field">
-                      <label class="label">Căn cước công dân</label>
-                      <div class="control">
-                        <input
-                          @blur="$v.form.cccd.$touch()"
-                          @change="getNvccd"
-                          v-model.trim="form.cccd"
-                          class="input is-small"
-                          type="text"
-                          placeholder="Nhập căn cước công dân"
-                        />
-                      </div>
-                      <div v-if="$v.form.cccd.$error" class="form-error">
-                        <span
-                          v-if="!$v.form.cccd.required"
-                          class="help is-danger"
-                          >Yêu cầu nhập căn cước công dân</span
-                        >
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="columns">
-                  <div class="column">
-                    <div class="field">
-                      <label class="label">Ngày sinh</label>
-                      <div class="control">
-                        <input
-                          v-model="form.ngaysinh"
-                          class="input is-small"
-                          type="date"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div class="column">
-                    <div class="field">
-                      <label class="label">Giới tính</label>
-                      <div class="control">
-                        <label class="radio">
-                          <input
-                            v-model="form.gioitinh"
-                            value="Nam"
-                            type="radio"
-                            name="answer"
-                          />
-                          Nam
-                        </label>
-                        <label class="radio">
-                          <input
-                            v-model="form.gioitinh"
-                            value="Nữ"
-                            type="radio"
-                            name="answer"
-                          />
-                          Nữ
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div class="columns">
-                  <div class="column">
-                    <div class="field">
-                      <label class="label">Mức lương</label>
-                      <div class="control">
-                        <input
-                          v-model="form.mucluong"
-                          v-mask="mask"
-                          class="input is-small"
-                          type="text"
-                          placeholder="Nhập mức lương"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div class="column">
-                    <label class="label">Liên hệ khẩn cấp</label>
-                    <div class="control">
-                      <input
-                        v-model.trim="form.lhkhancap"
-                        class="input is-small"
-                        type="text"
-                        placeholder="Nhập địa chỉ liên hệ của nhân viên"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div class="columns">
-                  <div class="column">
-                    <div class="field">
-                      <label class="label">Số tài khoản ngân hàng</label>
-                      <div class="control">
-                        <input
-                          v-model.trim="form.sotknh"
-                          class="input is-small"
-                          type="text"
-                          placeholder="Nhập số tài khoản"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                  <div class="column">
-                    <label class="label">Tên ngân hàng</label>
-                    <div class="control">
-                      <input
-                        v-model.trim="form.tennh"
-                        class="input is-small"
-                        placeholder="Nhập tên ngân hàng"
-                      />
-                    </div>
-                  </div>
-                </div>
-                <div class="field">
-                  <label class="label">Địa chỉ liên hệ</label>
-                  <div class="control">
-                    <input
-                      v-model.trim="form.diachilh"
-                      class="input is-small"
-                      type="text"
-                      placeholder="Nhập địa chỉ liên hệ của nhân viên"
-                    />
-                  </div>
-                </div>
-                <div class="columns">
-                  <div class="column is-8">
-                    <div class="field">
-                      <label class="label">Chọn ảnh hồ sơ</label>
-                      <span
-                        style="color: red; font-size: 12px; margin-bottom: 5px"
-                        >Yêu cầu phải chọn ảnh hồ sơ</span
-                      >
-                      <div class="file is-info has-name is-small">
-                        <label class="file-label">
-                          <input
-                            @change="onFileChange"
-                            class="file-input"
-                            type="file"
-                            name="resume"
-                          />
-                          <span class="file-cta">
-                            <span class="file-icon">
-                              <i class="fas fa-upload"></i>
-                            </span>
-                            <span class="file-label"> Chọn ảnh </span>
-                          </span>
-                          <span class="file-name">
-                            {{ fileName }}
-                          </span>
-                        </label>
-                      </div>
-                    </div>
-                  </div>
-                  <div class="column">
-                    <div v-if="url" class="column">
-                      <div id="preview" class="box">
-                        <img :src="url" />
-                      </div>
-                    </div>
-                  </div>
-                </div>
-                <div style="margin-bottom: 10px">
-                  <label class="checkbox">
-                    <input type="checkbox" v-model="checkGhichu" />
-                    <span style="font-weight: bold">Ghi chú </span>
-                  </label>
-                </div>
-                <div
-                  v-if="checkGhichu == true"
-                  class="field"
-                  style="margin-top: 10px"
-                >
-                  <div class="control">
-                    <textarea
-                      v-model="form.diengiai"
-                      class="textarea is-small"
-                      placeholder="Ghi chú thêm ..."
-                    ></textarea>
-                  </div>
-                </div>
-
-                <div class="columns">
+                <div class="columns" style="margin-top: 10px">
                   <div class="column">
                     <button
-                      :disabled="$v.form.$invalid"
-                      @click.prevent="onAddNhanvien"
+                      @click.prevent="onDieuchuyenwork"
                       class="button is-success is-fullwidth is-small"
                     >
-                      Ghi nhận
+                      Xác nhận
                     </button>
                   </div>
                   <div class="column">
@@ -487,15 +202,6 @@
                   </div>
                 </div>
               </section>
-              <footer class="modal-card-foot">
-                <!-- close modal -->
-                <button
-                  @click="isActive = false"
-                  class="button is-outlined is-info is-small"
-                >
-                  Đóng
-                </button>
-              </footer>
             </div>
           </div>
         </div>
@@ -537,6 +243,10 @@ export default {
       phongban: [],
       exits: {},
       checkGhichu: false,
+      _idnhanvien: null,
+      diengiai: "",
+      tennv: "",
+      manv: "",
       form: {
         manv: "",
         tennv: "",
@@ -759,12 +469,85 @@ export default {
     },
 
     async getDsnv() {
-      this.dsnhanvien = await this.$axios.$get(`/api/nhanvien/`);
+      this.dsnhanvien = await this.$axios.$get(
+        `/api/nhanvien/allnhanviennghiviec`
+      );
       if (this.dsnhanvien.length <= 0) {
         this.$toasted.show("Không có danh sách nhân viên", {
           duration: 3000,
           theme: "bubble",
         });
+      }
+    },
+
+    async working(nv) {
+      this.isActive = true;
+      this._idnhanvien = nv._id;
+      this.tennv = nv.tennv;
+      this.manv = nv.manv;
+    },
+
+    async onDieuchuyenwork() {
+      const result = await Swal.fire({
+        title: `Bạn có chắc chắn chuyển nhân viên này trở lại làm việc không?`,
+        showDenyButton: true,
+        confirmButtonText: "Có, Xác nhận",
+        denyButtonText: `Hủy`,
+      });
+      if (result.isConfirmed) {
+        try {
+          const data = {
+            trangthai: 1,
+            diengiai: this.diengiai,
+          };
+          await this.$axios.$patch(
+            `/api/nhanvien/updatetrangthainhanvien/${this._idnhanvien}`,
+            data
+          );
+
+          // save log
+          const log = `Xác nhận cho nhân viên: ${this.tennv}, Mã: ${this.manv} đi làm lại`;
+          const dataLog = {
+            logname: log,
+            createdAt: this.hisform.createdAt,
+            createdBy: this.hisform.createdBy,
+          };
+
+          await this.$axios.$post(`/api/congnhan/addlognhansu`, dataLog);
+
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
+          Toast.fire({
+            icon: "success",
+            title: "Xác nhận đi làm lại thành công",
+          });
+          this.getDsnv();
+        } catch (error) {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
+          Toast.fire({
+            icon: "error",
+            title: `Có lỗi xảy ra`,
+          });
+        }
       }
     },
 
@@ -925,9 +708,9 @@ export default {
       }
     },
 
-    async onDelete(cn) {
+    async onDelete(nv) {
       const result = await Swal.fire({
-        title: `Bạn có xóa hẳn công nhân: ${cn.tencn}?`,
+        title: `Bạn có xóa hẳn nhân viên: ${nv.tennv}?`,
         showDenyButton: true,
         confirmButtonText: "Có, Xóa",
         denyButtonText: `Hủy`,

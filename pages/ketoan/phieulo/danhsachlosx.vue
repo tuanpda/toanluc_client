@@ -197,6 +197,25 @@
               </td>
               <!-- <td></td> -->
             </tr>
+            <tr style="background-color: #feecf0">
+              <td colspan="10"></td>
+              <td style="font-size: small; width: 8%; font-weight: 600">
+                <input
+                  v-model="search_maphieu_id"
+                  type="number"
+                  class="input is-small"
+                  placeholder="Mã phiếu"
+                />
+              </td>
+              <td style="width: 5%">
+                <button
+                  @click="searchPhieu()"
+                  class="button is-small is-info is-fullwidth"
+                >
+                  Tìm
+                </button>
+              </td>
+            </tr>
           </table>
         </div>
         <div class="table_wrapper">
@@ -747,6 +766,7 @@ export default {
         { masta: 1, tensta: "DK" },
         { masta: 2, tensta: "SX" },
         { masta: 3, tensta: "HT" },
+        { masta: 4, tensta: "0" },
       ],
       multiSearch_masp: "",
       multiSearch_nhomsp: "",
@@ -756,6 +776,8 @@ export default {
       suggestions_nhomsp: [],
       maspinlosanxuat: [],
       nhomspinlosanxuat: [],
+
+      search_maphieu_id: "",
 
       reportData: [
         // ['Tháng', 'Doanh thu', 'Lợi nhuận'],
@@ -970,7 +992,7 @@ export default {
     },
     lokehoachsx(newItems) {
       // Cập nhật lại bảng khi có thay đổi
-      console.log("Dữ liệu đã được cập nhật!");
+      // console.log("Dữ liệu đã được cập nhật!");
     },
   },
 
@@ -1179,6 +1201,7 @@ export default {
           ngaybd: formattedDate,
           nhomsp: item.nhomsp,
           soluongkhsx: item.soluongkhsx,
+          status: item.status,
         };
       });
       const columnNames = [
@@ -1189,6 +1212,7 @@ export default {
         { header: "Lô kế hoạch PX", key: "makhpx" },
         { header: "Lô sản xuất", key: "malosx" },
         { header: "Số lượng KH", key: "soluonglsx" },
+        { header: "Trạng thái", key: "status" },
         { header: "Ngày", key: "ngaybd" },
         { header: "SL nhanh", key: "soluongkhsx" },
         { header: "Số lượng hoàn thành", key: "" },
@@ -1632,6 +1656,14 @@ export default {
           }
         );
       }
+    },
+
+    // search phiếu
+    async searchPhieu() {
+      this.lokehoachsx = [];
+      this.lokehoachsx = await this.$axios.$get(
+        `/api/lokehoach/lokehoachsearchwithid?_id_khpx=${this.search_maphieu_id}`
+      );
     },
 
     // --------------------------------------------------------------------------------------

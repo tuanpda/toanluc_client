@@ -116,6 +116,15 @@
                     &ensp; Công nhân đã nghỉ việc
                   </nav-link>
                   <nav-link
+                    to="/danhmuc/nhanvien/nhanviendanghiviec"
+                    class="navbar-item"
+                  >
+                    <span style="color: #3850b7" class="icon is-small is-left">
+                      <i class="far fa-angry"></i>
+                    </span>
+                    &ensp; Nhân viên đã nghỉ việc
+                  </nav-link>
+                  <nav-link
                     to="/danhmuc/congnhan/lognhansu"
                     class="navbar-item"
                   >
