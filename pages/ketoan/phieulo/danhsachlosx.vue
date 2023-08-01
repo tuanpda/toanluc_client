@@ -645,7 +645,18 @@
                     text-align: center;
                     vertical-align: middle;
                   "
-                ></td>
+                >
+                  <span
+                    style="
+                      color: white;
+                      font-weight: bold;
+                      background-color: grey;
+                      padding-left: 7px;
+                      padding-right: 7px;
+                    "
+                    >0</span
+                  >
+                </td>
               </template>
 
               <td style="font-size: small">
@@ -766,7 +777,7 @@ export default {
         { masta: 1, tensta: "DK" },
         { masta: 2, tensta: "SX" },
         { masta: 3, tensta: "HT" },
-        { masta: 4, tensta: "0" },
+        { masta: 0, tensta: "0" },
       ],
       multiSearch_masp: "",
       multiSearch_nhomsp: "",

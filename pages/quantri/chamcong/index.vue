@@ -34,18 +34,35 @@
                 <i style="color: #48c78e" class="fas fa-kaaba"></i>
               </span>
               <div class="select is-small">
-                <select
+                <!-- <select
                   @change="vanphong($event)"
                   :disabled="!isSelectsEnabled_VP"
                 >
-                  <option selected>-- Văn phòng --</option>
+                  <option selected disabled>-- Văn phòng --</option>
                   <option value="vanphong">Nhân viên văn phòng</option>
-                </select>
+                </select> -->
+                <button
+                  :disabled="!isSelectsEnabled_VP"
+                  @click="vanphong"
+                  class="button is-small is-success"
+                >
+                  Văn phòng
+                </button>
               </div>
               <span class="icon is-small is-left">
                 <i style="color: #48c78e" class="fas fa-kaaba"></i>
               </span>
             </div>
+          </div>
+        </div>
+        <div v-show="isshow == true" style="margin-bottom: 10px">
+          <div style="text-align: center">
+            <span style="font-size: small; font-weight: bold; color: red"
+              >{{ showcount }} / {{ showsuccess }}</span
+            >
+          </div>
+          <div>
+            <progress id="progress-bar" class="progress is-success"></progress>
           </div>
         </div>
         <div class="table_wrapper table-height">
@@ -288,11 +305,6 @@
               <td
                 style="font-size: small; font-weight: bold; text-align: center"
               >
-                Chấm lại
-              </td>
-              <td
-                style="font-size: small; font-weight: bold; text-align: center"
-              >
                 Chấm công
               </td>
               <td
@@ -357,10 +369,11 @@
               </td>
               <td style="font-size: small; text-align: center">
                 <div class="select is-small is-fullwidth">
-                  <select
-                    v-model="item.machamcong"
-                    @change="chamconglai($event, item)"
-                  >
+                  <select @change="chamconglai($event, item)">
+                    <option selected>
+                      {{ item.machamcong }} -- {{ item.chamcong }}
+                    </option>
+                    <option disabled>----------</option>
                     <option
                       v-for="item in chamcongList"
                       :value="item.machamcong"
@@ -371,21 +384,18 @@
                 </div>
               </td>
               <td style="font-size: small; text-align: center">
-                <!-- <input
-                  type="text"
-                  class="input is-small"
-                  v-model="item.chamcong"
-                /> -->
-                {{ item.chamcong }}
-              </td>
-              <td style="font-size: small; text-align: center">
                 <div class="select is-small is-fullwidth">
-                  <select
-                    v-model="item.anca"
-                    @change="chamlaianca($event, item)"
-                  >
-                    <option v-for="item in tienanca" :value="item.anca">
+                  <select @change="chamlaianca($event, item)">
+                    <option selected>
                       {{ item.anca }} -- {{ item.tienan }}
+                    </option>
+                    <option disabled>----------</option>
+                    <option
+                      v-for="(selectdata, index) in tienanca"
+                      :value="selectdata.anca"
+                      :key="index + 'afjl'"
+                    >
+                      {{ selectdata.anca }} -- {{ selectdata.tienan }}
                     </option>
                   </select>
                 </div>
@@ -415,6 +425,110 @@
           </table>
         </div>
       </div>
+      <!-- Modal 3 - chamcong -->
+      <div class="">
+        <!-- Toggle class  -->
+        <div :class="{ 'is-active': isActive }" class="modal">
+          <div class="modal-background"></div>
+          <div class="modal-content modal-card-1">
+            <section class="modal-card-body">
+              <div class="columns">
+                <div class="column">
+                  <span
+                    style="font-size: small; font-weight: bold; color: #48c78e"
+                    >Tiến trình chấm công</span
+                  >
+                </div>
+                <div class="column" style="text-align: right">
+                  <a @click="isActive = false">
+                    <span style="color: red" class="icon is-small">
+                      <i class="fas fa-times"></i>
+                    </span>
+                  </a>
+                </div>
+              </div>
+              <table
+                class="table is-responsive is-bordered is-narrow is-fullwidth"
+              >
+                <tr style="background-color: antiquewhite">
+                  <td
+                    style="
+                      font-size: small;
+                      font-weight: bold;
+                      text-align: center;
+                      width: 3%;
+                    "
+                  >
+                    STT
+                  </td>
+                  <td
+                    style="
+                      font-size: small;
+                      font-weight: bold;
+                      text-align: center;
+                    "
+                  >
+                    Mã CN / NV
+                  </td>
+                  <td
+                    style="
+                      font-size: small;
+                      font-weight: bold;
+                      text-align: center;
+                    "
+                  >
+                    Họ tên
+                  </td>
+                  <td
+                    style="
+                      font-size: small;
+                      font-weight: bold;
+                      text-align: center;
+                    "
+                  >
+                    Trạng thái ghi dữ liệu chấm công
+                  </td>
+                </tr>
+                <tr v-for="(item, index) in detail_chamcong_action">
+                  <td style="font-size: small; text-align: center">
+                    {{ index + 1 }}
+                  </td>
+                  <td style="font-size: small; text-align: center">
+                    {{ item.macn }}
+                  </td>
+                  <td style="font-size: small">
+                    {{ item.tencn }}
+                  </td>
+                  <template>
+                    <td
+                      v-if="item.status == true"
+                      style="
+                        font-size: small;
+                        text-align: center;
+                        color: green;
+                        font-weight: bold;
+                      "
+                    >
+                      Đã ghi dữ liệu chấm công thành công
+                    </td>
+                    <td
+                      v-else
+                      style="
+                        font-size: small;
+                        text-align: center;
+                        color: red;
+                        font-weight: bold;
+                      "
+                    >
+                      Ghi dữ liệu chưa thành công. Xem lại chấm công
+                    </td>
+                  </template>
+                </tr>
+              </table>
+            </section>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -439,6 +553,18 @@ export default {
       isSelectsEnabled_VP: false,
       isSelectsEnabled_Chamcong: false,
       showNgaychamcong: [],
+
+      // đếm
+      showcount: 0,
+      showsuccess: 0,
+      isshow: false,
+      isActive: false,
+      detail_chamcong_action: {
+        macn: "",
+        tencn: "",
+        status: "",
+      },
+
       form: {
         mapx: "",
         tenpx: "",
@@ -935,29 +1061,94 @@ export default {
       // console.log(this.items);
     },
 
-    async vanphong() {
-      this.isSelectsEnabled = false;
-      this.nhanvien = await this.$axios.$get(`/api/nhanvien/`);
-      // console.log(this.nhanvien);
+    async vanphong(e) {
+      // kiểm tra xem có dữ liệu ngày chấm công trong csdl chưa
+      this.form.mapx = "HCVP";
+      // this.form.tenpx = position[1].trim();
+      // console.log(this.ngaychamcong);
+      this.showNgaychamcong = await this.$axios.$get(
+        `/api/congnhan/showngaychamcongandmapx?mapx=${this.form.mapx}&ngaychamcong=${this.ngaychamcong}`
+      );
+      this.nhanvien = await this.$axios.$get(`/api/nhanvien/statusnhanvien1`);
       this.items = [];
-      for (let i = 0; i < this.nhanvien.length; i++) {
-        this.items.push({
-          macn: this.nhanvien[i].manv,
-          tencn: this.nhanvien[i].tennv,
-          mapx: "HCVP",
-          tenpx: "Hành chính",
-          mato: "",
-          tento: "",
-          sttchon: "",
-          machamcong: "",
-          chamcong: "",
-          diengiai: "",
-          ghichu: "",
-          ngaychamcong: this.ngaychamcong,
-          tuanchamcong: this.weekNumber,
-          createdAt: this.form.createdAt,
-          createdBy: this.$auth.$state.user.username,
+      // console.log(this.showNgaychamcong);
+      if (this.showNgaychamcong.length > 0) {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
         });
+        Toast.fire({
+          icon: "error",
+          title: `Phân xưởng ${this.form.tenpx} đã có ${this.showNgaychamcong.length} công nhân chấm công vào ngày ${this.ngaychamcong}`,
+        });
+        this.isSelectsEnabled_Chamcong = true;
+        let result = [];
+        for (let i = 0; i < this.nhanvien.length; i++) {
+          let found = false;
+          for (let j = 0; j < this.showNgaychamcong.length; j++) {
+            if (this.nhanvien[i].manv === this.showNgaychamcong[j].macn) {
+              found = true;
+              break;
+            }
+          }
+          if (!found) {
+            result.push(this.nhanvien[i]);
+          }
+        }
+        if (result.length > 0) {
+          for (let i = 0; i < result.length; i++) {
+            this.items.push({
+              macn: this.nhanvien[i].manv,
+              tencn: this.nhanvien[i].tennv,
+              mapx: "HCVP",
+              tenpx: "Hành chính",
+              mato: "",
+              tento: "",
+              sttchon: "",
+              machamcong: "",
+              chamcong: "",
+              diengiai: "",
+              ghichu: "",
+              ngaychamcong: this.ngaychamcong,
+              tuanchamcong: this.weekNumber,
+              createdAt: this.form.createdAt,
+              createdBy: this.$auth.$state.user.username,
+            });
+          }
+        } else {
+          this.items = [];
+        }
+      } else {
+        this.isSelectsEnabled_Chamcong = true;
+        this.nhanvien = await this.$axios.$get(`/api/nhanvien/`);
+        // console.log(this.nhanvien);
+        this.items = [];
+        for (let i = 0; i < this.nhanvien.length; i++) {
+          this.items.push({
+            macn: this.nhanvien[i].manv,
+            tencn: this.nhanvien[i].tennv,
+            mapx: "HCVP",
+            tenpx: "Hành chính",
+            mato: "",
+            tento: "",
+            sttchon: "",
+            machamcong: "",
+            chamcong: "",
+            diengiai: "",
+            ghichu: "",
+            ngaychamcong: this.ngaychamcong,
+            tuanchamcong: this.weekNumber,
+            createdAt: this.form.createdAt,
+            createdBy: this.$auth.$state.user.username,
+          });
+        }
       }
     },
 
@@ -1071,10 +1262,34 @@ export default {
             }
             if (!error) {
               // console.log("OK");
+              this.detail_chamcong_action = [];
+              this.showsuccess = this.selected.length;
+              this.isshow = true;
+              const progressBar = document.getElementById("progress-bar");
+              console.log(progressBar);
+              progressBar.value = this.showcount;
+              progressBar.max = this.showsuccess;
+
               for (let i = 0; i < this.selected.length; i++) {
                 const data = this.selected[i].value;
-                await this.$axios.$post(`/api/congnhan/addchamcong`, data);
+                let res = await this.$axios.$post(
+                  `/api/congnhan/addchamcong`,
+                  data
+                );
+                this.showcount++;
+                progressBar.value = this.showcount;
+                // console.log(data.macn + "-" + data.tencn + "-" + res.success);
+                // bắt đầu ghi lại dữ liệu post vào db
+                // Tạo đối tượng mới từ dữ liệu và res.success
+                const newDetailChamcongAction = {
+                  macn: data.macn,
+                  tencn: data.tencn,
+                  status: res.success,
+                };
+                // Push đối tượng mới vào mảng detail_chamcong_action
+                this.detail_chamcong_action.push(newDetailChamcongAction);
               }
+              this.isActive = true;
               const Toast = Swal.mixin({
                 toast: true,
                 position: "top-end",
@@ -1094,6 +1309,9 @@ export default {
               this.isSelectsEnabled = false;
               this.selected = [];
               this.items = [];
+              this.showcount = 0;
+              this.showsuccess = 0;
+              this.isshow = false;
             }
           }
         } catch (error) {

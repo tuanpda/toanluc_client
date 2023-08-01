@@ -49,30 +49,6 @@
                   </div>
                 </div>
               </td>
-              <!-- <td style="width: 13.45%;">
-                                <div class="autocomplete">
-                                    <input class="input is-small is-info" type="text" v-model="multiSearch_nhomsp"
-                                        @input="onInput_nhomsp" placeholder="Chọn nhóm sản phẩm">
-                                    <div class="autocomplete-items" v-if="suggestions_nhomsp.length">
-                                        <div class="autocomplete-item" v-for="suggestion_nhomsp in suggestions_nhomsp"
-                                            @click="selectSuggestion_nhomsp(suggestion_nhomsp)">
-                                            {{ suggestion_nhomsp }}
-                                        </div>
-                                    </div>
-                                </div>
-                            </td>
-                            <td style="width: 15.1%;">
-                                <div class="autocomplete">
-                                    <input class="input is-small is-danger" type="text" v-model="multiSearch_masp"
-                                        @input="onInput" placeholder="Chọn sản phẩm">
-                                    <div class="autocomplete-items" v-if="suggestions.length">
-                                        <div class="autocomplete-item" v-for="suggestion in suggestions"
-                                            @click="selectSuggestion(suggestion)">
-                                            {{ suggestion }}
-                                        </div>
-                                    </div>
-                                </div>
-                            </td> -->
               <td style="width: 10.5%">
                 <div class="autocomplete">
                   <input
@@ -598,25 +574,6 @@
                       >HT</span
                     >
                   </td>
-                  <td
-                    v-else
-                    style="
-                      font-size: small;
-                      text-align: center;
-                      vertical-align: middle;
-                    "
-                  >
-                    <span
-                      style="
-                        color: white;
-                        font-weight: bold;
-                        background-color: gray;
-                        padding-left: 7px;
-                        padding-right: 7px;
-                      "
-                      >0</span
-                    >
-                  </td>
                 </template>
                 <td
                   style="
@@ -919,7 +876,18 @@
                             <td
                               v-else
                               style="font-size: small; text-align: center"
-                            ></td>
+                            >
+                              <span
+                                style="
+                                  color: white;
+                                  font-weight: bold;
+                                  background-color: grey;
+                                  padding-left: 7px;
+                                  padding-right: 7px;
+                                "
+                                >0</span
+                              >
+                            </td>
                           </template>
                           <td style="font-size: small; text-align: center">
                             <a @click="onUpdate(item)">
@@ -2669,7 +2637,7 @@ export default {
       if (confirmed) {
         try {
           if (
-            pl.status == 1 &&
+            pl.status == 0 &&
             pl.status_tinhluong == false &&
             pl.datinhluong == false
           ) {
@@ -2716,7 +2684,8 @@ export default {
             });
             Toast.fire({
               icon: "error",
-              title: "Lô đã được đưa vào sản xuất, không thể xóa!!!",
+              title:
+                "Chỉ được xóa lô sản xuất có trạng thái = 0, không thể xóa!!!",
             });
           }
           this.filterData();
