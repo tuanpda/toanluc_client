@@ -451,12 +451,6 @@
                 <td style="text-align: right; font-size: small">
                   {{ dsl.luongcn | formatNumber }}
                 </td>
-                <!-- số ngày làm -->
-                <!-- <td style="text-align: center; font-size: small">
-                  {{ dsl.songaylam }}
-                </td> -->
-                <!-- tổng tiền ăn ca -->
-
                 <!-- ngày hỗ trợ -->
                 <td style="text-align: center; font-size: small">
                   <input
@@ -2587,33 +2581,37 @@ export default {
           luongcd: this.selected[i].luongcd,
           luongps: this.selected[i].luongcn,
           tongluong:
-            this.selected[i].luongcb +
+            parseFloat(this.selected[i].luongqlsp) +
             this.selected[i].luongcd +
             this.selected[i].luongcn +
-            this.selected[i].luongqlsp,
-          antrua: this.selected[i].antrua * this.tienlunch,
+            parseFloat(this.selected[i].ngayhotro) *
+              parseFloat(this.selected[i].luongmem),
+          antrua: this.selected[i].thanhtien,
           bhxh: this.selected[i].bhxh,
-          congdoan: this.congdoan,
-          tamung: this.selected[i].tienung,
+          congdoan: this.selected[i].congdoan,
+          tamung: 0,
           tongtru:
             this.selected[i].bhxh +
-            this.selected[i].tienung +
-            this.selected[i].antrua * this.tienlunch,
+            parseFloat(this.selected[i].congdoan) +
+            parseFloat(this.selected[i].antrua),
           tongnhan:
-            this.selected[i].luongcb +
-            this.selected[i].luongcd +
-            this.selected[i].luongcn +
-            this.selected[i].luongqlsp -
-            (this.selected[i].bhxh +
-              this.selected[i].tienung +
-              this.selected[i].antrua * this.tienlunch),
+            // parseFloat(this.selected[i].luongqlsp) +
+            // this.selected[i].luongcd +
+            // this.selected[i].luongcn +
+            // this.selected[i].thanhtien +
+            // parseFloat(this.selected[i].ngayhotro) *
+            //   parseFloat(this.selected[i].luongmem) -
+            // (this.selected[i].bhxh +
+            //   parseFloat(this.selected[i].congdoan) +
+            //   parseFloat(dsl.this.selected[i])),
+            this.selected[i].thanhtien + 1,
           createdAt: this.createdAt,
           createdBy: this.createdBy,
           thang: this.thangLapluong,
           nam: this.namLapluong,
           status: true,
         };
-        // console.log(data);
+        console.log(data);
         this.$axios.$post("/api/ketoan/themluongthang", data);
       }
     },
@@ -2796,6 +2794,7 @@ export default {
             // console.log(this.isExits);
             if (this.isExits == false) {
               for (let i = 0; i < this.selected.length; i++) {
+                // console.log(this.selected[i]);
                 let data = {
                   mapb: this.dscongnhan[0].mapx,
                   tenpb: this.dscongnhan[0].tenpx,
@@ -2821,12 +2820,12 @@ export default {
                     parseFloat(this.selected[i].ngayhotro) *
                     parseFloat(this.selected[i].luongmem),
                   bhxh: this.selected[i].bhxh,
-                  congdoan: this.selected[i].cong_doan,
+                  congdoan: this.selected[i].congdoan,
                   tamung: this.selected[i].tienung,
                   tongtru:
-                    this.selected[i].cong_doan +
+                    this.selected[i].congdoan +
                     this.selected[i].bhxh +
-                    parseFloat(this.selected[i].antrua),
+                    this.selected[i].antrua,
                   tongnhan:
                     parseFloat(this.selected[i].luongqlsp) +
                     this.selected[i].luongcd +
@@ -2834,9 +2833,9 @@ export default {
                     parseFloat(this.selected[i].ngayhotro) *
                       parseFloat(this.selected[i].luongmem) +
                     parseFloat(this.selected[i].thanhtien) -
-                    (this.selected[i].cong_doan +
-                      this.selected[i].bhxh +
-                      parseFloat(this.selected[i].antrua)),
+                    (this.selected[i].bhxh +
+                      this.selected[i].antrua +
+                      this.selected[i].congdoan),
                   tienphat: this.selected[i].antrua,
                   createdAt: this.createdAt,
                   createdBy: this.createdBy,
@@ -2851,6 +2850,7 @@ export default {
                   nhanl4: 0,
                   nhanl5: 0,
                   nhanl6: 0,
+                  sttchon: this.selected[i].sttchon,
                 };
                 // console.log(data);
                 const res = this.$axios.$post(
@@ -2911,176 +2911,6 @@ export default {
         }
       }
     },
-
-    // onAddLuongthang() {
-    //   Swal.fire({
-    //     title: `Bạn có chắc chắn lập lương tháng ${this.thang} / ${this.nam}?`,
-    //     showCancelButton: true,
-    //     confirmButtonColor: "#3085d6",
-    //     cancelButtonColor: "#d33",
-    //     confirmButtonText: "Chắc chắn",
-    //   }).then((result) => {
-    //     if (result.isConfirmed) {
-    //       try {
-    //         // console.log(this.thang);
-    //         if (this.selected.length <= 0) {
-    //           const Toast = Swal.mixin({
-    //             toast: true,
-    //             position: "top-end",
-    //             showConfirmButton: false,
-    //             timer: 3000,
-    //             timerProgressBar: true,
-    //             didOpen: (toast) => {
-    //               toast.addEventListener("mouseenter", Swal.stopTimer);
-    //               toast.addEventListener("mouseleave", Swal.resumeTimer);
-    //             },
-    //           });
-    //           Toast.fire({
-    //             icon: "error",
-    //             title:
-    //               "Chưa lấy số liệu lương hoặc chưa tích chọn người cần vào lương !!!",
-    //           });
-    //         } else {
-    //           // check key thang nam chốt lương trong CSDL
-    //           this.keyThangnam =
-    //             this.thang.trim() +
-    //             this.nam.trim() +
-    //             "-" +
-    //             this.maxuong +
-    //             "-" +
-    //             this.mato;
-
-    //           console.log(this.keyThangnam);
-    //           console.log(this.arrkeythangnam);
-    //           this.isExits = this.arrkeythangnam.includes(
-    //             this.keyThangnam.trim()
-    //           );
-    //           console.log(this.isExits);
-    //           if (this.isExits == false) {
-    //             for (let i = 0; i < this.selected.length; i++) {
-    //               let data = {
-    //                 mapb: this.dscongnhan[0].mapx,
-    //                 tenpb: this.dscongnhan[0].tenpx,
-    //                 mato: this.selected[i].mato,
-    //                 manv: this.selected[i].macn,
-    //                 hotennv: this.selected[i].tencongnhan,
-    //                 chucvu: this.selected[i].chucvu,
-    //                 luongcb: this.selected[i].luongcb,
-    //                 luongmem: this.selected[i].luongmem,
-    //                 luongqlsp: this.selected[i].luongqlsp,
-    //                 luongcd: this.selected[i].luongcd,
-    //                 luongps: this.selected[i].luongcn,
-    //                 tongluong:
-    //                   parseFloat(this.selected[i].luongqlsp) +
-    //                   this.selected[i].luongcd +
-    //                   this.selected[i].luongcn +
-    //                   parseFloat(this.selected[i].ngayhotro) *
-    //                     parseFloat(this.selected[i].luongmem),
-    //                 antrua: this.selected[i].thanhtien,
-    //                 songaycong: this.selected[i].songaylam,
-    //                 ngayhotro: this.selected[i].ngayhotro,
-    //                 tienhotro:
-    //                   parseFloat(this.selected[i].ngayhotro) *
-    //                   parseFloat(this.selected[i].luongmem),
-    //                 bhxh: this.selected[i].bhxh,
-    //                 congdoan: this.selected[i].cong_doan,
-    //                 tamung: this.selected[i].tienung,
-    //                 tongtru:
-    //                   this.selected[i].cong_doan +
-    //                   this.selected[i].bhxh +
-    //                   parseFloat(this.selected[i].antrua),
-    //                 tongnhan:
-    //                   parseFloat(this.selected[i].luongqlsp) +
-    //                   this.selected[i].luongcd +
-    //                   this.selected[i].luongcn +
-    //                   parseFloat(this.selected[i].ngayhotro) *
-    //                     parseFloat(this.selected[i].luongmem) +
-    //                   parseFloat(this.selected[i].thanhtien) -
-    //                   (this.selected[i].cong_doan +
-    //                     this.selected[i].bhxh +
-    //                     parseFloat(this.selected[i].antrua)),
-    //                 tienphat: this.selected[i].antrua,
-    //                 createdAt: this.createdAt,
-    //                 createdBy: this.createdBy,
-    //                 thang: this.thang,
-    //                 nam: this.nam,
-    //                 key_thangnam: this.keyThangnam,
-    //                 status: true,
-    //                 stk: this.selected[i].stk,
-    //                 nhanl1: 0,
-    //                 nhanl2: 0,
-    //                 nhanl3: 0,
-    //                 nhanl4: 0,
-    //                 nhanl5: 0,
-    //                 nhanl6: 0,
-    //               };
-    //               // console.log(data);
-    //               const res = this.$axios.$post(
-    //                 "/api/ketoan/themluongthang",
-    //                 data
-    //               );
-
-    //               const Toast = Swal.mixin({
-    //                 toast: true,
-    //                 position: "top-end",
-    //                 showConfirmButton: false,
-    //                 timer: 3000,
-    //                 timerProgressBar: true,
-    //                 didOpen: (toast) => {
-    //                   toast.addEventListener("mouseenter", Swal.stopTimer);
-    //                   toast.addEventListener("mouseleave", Swal.resumeTimer);
-    //                 },
-    //               });
-    //               Toast.fire({
-    //                 icon: "success",
-    //                 title: "Tạo số liệu lương thành công",
-    //               });
-
-    //               // Sau khi xác nhận tính lương xong thì phải đánh
-    //               // dấu để lần sau không dùng tính lương nữa.
-    //               // gom toàn bộ phiếu lô dùng đã tính lương tại phân xưởng đó
-    //               // - Cập nhật cột đã tính lương trong bảng losanxuat thành 1 (lần sau sẽ k lấy bản ghi có trường này nếu bằng 1)
-    //               // - Cập nhật cột status = 1 từ bảng luongcongnhan và ghi ngày executedAt vào để biết ngày đã tính lương
-    //             }
-    //           } else {
-    //             const Toast = Swal.mixin({
-    //               toast: true,
-    //               position: "top-end",
-    //               showConfirmButton: false,
-    //               timer: 3000,
-    //               timerProgressBar: true,
-    //               didOpen: (toast) => {
-    //                 toast.addEventListener("mouseenter", Swal.stopTimer);
-    //                 toast.addEventListener("mouseleave", Swal.resumeTimer);
-    //               },
-    //             });
-    //             Toast.fire({
-    //               icon: "error",
-    //               title: "Tháng này đã tạo lương rồi !!!",
-    //             });
-    //           }
-    //         }
-    //       } catch (error) {
-    //         // console.log(error);
-    //         const Toast = Swal.mixin({
-    //           toast: true,
-    //           position: "top-end",
-    //           showConfirmButton: false,
-    //           timer: 3000,
-    //           timerProgressBar: true,
-    //           didOpen: (toast) => {
-    //             toast.addEventListener("mouseenter", Swal.stopTimer);
-    //             toast.addEventListener("mouseleave", Swal.resumeTimer);
-    //           },
-    //         });
-    //         Toast.fire({
-    //           icon: "error",
-    //           title: "Có lỗi xảy ra !!!",
-    //         });
-    //       }
-    //     }
-    //   });
-    // },
   },
 };
 </script>

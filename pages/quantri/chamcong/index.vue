@@ -1070,6 +1070,7 @@ export default {
         `/api/congnhan/showngaychamcongandmapx?mapx=${this.form.mapx}&ngaychamcong=${this.ngaychamcong}`
       );
       this.nhanvien = await this.$axios.$get(`/api/nhanvien/statusnhanvien1`);
+      console.log(this.nhanvien);
       this.items = [];
       // console.log(this.showNgaychamcong);
       if (this.showNgaychamcong.length > 0) {
@@ -1127,7 +1128,7 @@ export default {
         }
       } else {
         this.isSelectsEnabled_Chamcong = true;
-        this.nhanvien = await this.$axios.$get(`/api/nhanvien/`);
+        this.nhanvien = await this.$axios.$get(`/api/nhanvien/statusnhanvien1`);
         // console.log(this.nhanvien);
         this.items = [];
         for (let i = 0; i < this.nhanvien.length; i++) {
@@ -1266,7 +1267,7 @@ export default {
               this.showsuccess = this.selected.length;
               this.isshow = true;
               const progressBar = document.getElementById("progress-bar");
-              console.log(progressBar);
+              // console.log(progressBar);
               progressBar.value = this.showcount;
               progressBar.max = this.showsuccess;
 

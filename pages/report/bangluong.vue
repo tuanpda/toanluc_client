@@ -173,19 +173,25 @@
                 Lương công nhật
               </td>
               <td
+                colspan="2"
+                style="text-align: center; font-size: small; font-weight: bold"
+              >
+                Hỗ trợ
+              </td>
+              <td
                 rowspan="2"
                 style="text-align: center; font-weight: bold; font-size: small"
               >
                 Tổng lương
               </td>
               <td
-                colspan="2"
+                rowspan="2"
                 style="text-align: center; font-weight: bold; font-size: small"
               >
-                Hỗ trợ
+                Ăn ca
               </td>
               <td
-                colspan="5"
+                colspan="4"
                 style="text-align: center; font-weight: bold; font-size: small"
               >
                 Các khoản khấu trừ
@@ -218,12 +224,7 @@
               <td
                 style="text-align: center; font-weight: bold; font-size: small"
               >
-                Ăn trưa
-              </td>
-              <td
-                style="text-align: center; font-weight: bold; font-size: small"
-              >
-                Tạm ứng
+                Tiền phạt
               </td>
               <td
                 style="text-align: center; font-weight: bold; font-size: small"
@@ -261,9 +262,7 @@
               <td style="text-align: right; font-size: small">
                 {{ nv.luongps | formatNumber }}
               </td>
-              <td style="text-align: right; font-size: small">
-                {{ nv.tongluong | formatNumber }}
-              </td>
+
               <td style="text-align: right; font-size: small">
                 {{ nv.ngayhotro }}
               </td>
@@ -271,13 +270,17 @@
                 {{ nv.tienhotro | formatNumber }}
               </td>
               <td style="text-align: right; font-size: small">
-                {{ nv.bhxh | formatNumber }}
+                {{ nv.tongluong | formatNumber }}
               </td>
               <td style="text-align: right; font-size: small">
                 {{ nv.antrua | formatNumber }}
               </td>
               <td style="text-align: right; font-size: small">
-                {{ nv.tamung | formatNumber }}
+                {{ nv.bhxh | formatNumber }}
+              </td>
+
+              <td style="text-align: right; font-size: small">
+                {{ nv.tienphat | formatNumber }}
               </td>
               <td style="text-align: right; font-size: small">
                 {{ nv.congdoan | formatNumber }}
