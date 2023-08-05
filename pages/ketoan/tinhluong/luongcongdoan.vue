@@ -2825,7 +2825,7 @@ export default {
                   tongtru:
                     this.selected[i].congdoan +
                     this.selected[i].bhxh +
-                    this.selected[i].antrua,
+                    parseFloat(this.selected[i].antrua),
                   tongnhan:
                     parseFloat(this.selected[i].luongqlsp) +
                     this.selected[i].luongcd +
@@ -2834,7 +2834,7 @@ export default {
                       parseFloat(this.selected[i].luongmem) +
                     parseFloat(this.selected[i].thanhtien) -
                     (this.selected[i].bhxh +
-                      this.selected[i].antrua +
+                      parseFloat(this.selected[i].antrua) +
                       this.selected[i].congdoan),
                   tienphat: this.selected[i].antrua,
                   createdAt: this.createdAt,
