@@ -87,7 +87,7 @@
                     @change="chamcong($event)"
                     :disabled="!isSelectsEnabled_Chamcong"
                   >
-                    <option selected>-- Chấm công --</option>
+                    <option selected disabled>-- Chấm công --</option>
                     <option
                       v-for="item in chamcongList"
                       :value="item.machamcong"
@@ -103,7 +103,7 @@
                     @change="changeAnca($event)"
                     :disabled="!isSelectsEnabled_Chamcong"
                   >
-                    <option selected>-- Ăn ca --</option>
+                    <option selected disabled>-- Ăn ca --</option>
                     <option v-for="item in tienanca" :value="item.anca">
                       {{ item.anca }} -- {{ item.tienan }}
                     </option>

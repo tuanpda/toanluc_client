@@ -2,7 +2,7 @@
   <div class="columns">
     <div class="column">
       <br />
-      <div class="box" style="margin-right: 10px; margin-left: 10px">
+      <div class="box" style="">
         <div class="columns">
           <div class="column is-4">
             <div class="control">
@@ -2336,7 +2336,10 @@ export default {
     },
     // sum cđ
     subRow_congdoan() {
-      return this.dscongnhan.reduce((total, item) => total + item.congdoan, 0);
+      return this.dscongnhan.reduce(
+        (total, item) => total + parseFloat(item.congdoan),
+        0
+      );
     },
     // sum tổng trừ
     subRow_tongtru() {
@@ -2568,54 +2571,6 @@ export default {
     //   console.log(this.data_download);
     // },
 
-    async onReport() {
-      for (let i = 0; i < this.selected.length; i++) {
-        let data = {
-          mapb: this.dscongnhan[0].mapx,
-          tenpb: this.dscongnhan[0].tenpx,
-          manv: this.selected[i].congnhan,
-          hotennv: this.selected[i].tencn,
-          chucvu: this.selected[i].chucnang,
-          luongcb: this.selected[i].luongcb,
-          luongqlsp: this.selected[i].luongqlsp,
-          luongcd: this.selected[i].luongcd,
-          luongps: this.selected[i].luongcn,
-          tongluong:
-            parseFloat(this.selected[i].luongqlsp) +
-            this.selected[i].luongcd +
-            this.selected[i].luongcn +
-            parseFloat(this.selected[i].ngayhotro) *
-              parseFloat(this.selected[i].luongmem),
-          antrua: this.selected[i].thanhtien,
-          bhxh: this.selected[i].bhxh,
-          congdoan: this.selected[i].congdoan,
-          tamung: 0,
-          tongtru:
-            this.selected[i].bhxh +
-            parseFloat(this.selected[i].congdoan) +
-            parseFloat(this.selected[i].antrua),
-          tongnhan:
-            // parseFloat(this.selected[i].luongqlsp) +
-            // this.selected[i].luongcd +
-            // this.selected[i].luongcn +
-            // this.selected[i].thanhtien +
-            // parseFloat(this.selected[i].ngayhotro) *
-            //   parseFloat(this.selected[i].luongmem) -
-            // (this.selected[i].bhxh +
-            //   parseFloat(this.selected[i].congdoan) +
-            //   parseFloat(dsl.this.selected[i])),
-            this.selected[i].thanhtien + 1,
-          createdAt: this.createdAt,
-          createdBy: this.createdBy,
-          thang: this.thangLapluong,
-          nam: this.namLapluong,
-          status: true,
-        };
-        console.log(data);
-        this.$axios.$post("/api/ketoan/themluongthang", data);
-      }
-    },
-
     async countLuongqlsp(data) {
       // console.log(data);
       const luongqlsp = parseFloat(data.tyleqlsp) * this.tongLuongQuanLy;
@@ -2823,19 +2778,28 @@ export default {
                   congdoan: this.selected[i].congdoan,
                   tamung: this.selected[i].tienung,
                   tongtru:
-                    this.selected[i].congdoan +
+                    parseFloat(this.selected[i].congdoan) +
                     this.selected[i].bhxh +
                     parseFloat(this.selected[i].antrua),
                   tongnhan:
+                    // parseFloat(this.selected[i].luongqlsp) +
+                    // this.selected[i].luongcd +
+                    // this.selected[i].luongcn +
+                    // parseFloat(this.selected[i].ngayhotro) *
+                    //   parseFloat(this.selected[i].luongmem) +
+                    // parseFloat(this.selected[i].thanhtien) -
+                    // (this.selected[i].bhxh +
+                    //   parseFloat(this.selected[i].antrua) +
+                    //   parseFloat(this.selected[i].congdoan)),
                     parseFloat(this.selected[i].luongqlsp) +
                     this.selected[i].luongcd +
                     this.selected[i].luongcn +
+                    this.selected[i].thanhtien +
                     parseFloat(this.selected[i].ngayhotro) *
-                      parseFloat(this.selected[i].luongmem) +
-                    parseFloat(this.selected[i].thanhtien) -
+                      parseFloat(this.selected[i].luongmem) -
                     (this.selected[i].bhxh +
-                      parseFloat(this.selected[i].antrua) +
-                      this.selected[i].congdoan),
+                      parseFloat(this.selected[i].congdoan) +
+                      parseFloat(this.selected[i].antrua)),
                   tienphat: this.selected[i].antrua,
                   createdAt: this.createdAt,
                   createdBy: this.createdBy,

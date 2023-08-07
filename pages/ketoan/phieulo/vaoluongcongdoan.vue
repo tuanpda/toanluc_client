@@ -464,7 +464,19 @@
                     >HT</span
                   >
                 </td>
-                <td v-else style="font-size: small; text-align: center"></td>
+                <td v-else style="font-size: small; text-align: center">
+                  <span
+                    style="
+                      color: white;
+                      font-weight: bold;
+                      background-color: grey;
+                      padding-left: 7px;
+                      padding-right: 7px;
+                      vertical-align: middle;
+                    "
+                    >0</span
+                  >
+                </td>
               </template>
               <td
                 style="
@@ -2008,6 +2020,7 @@ export default {
         { masta: 1, tensta: "DK" },
         { masta: 2, tensta: "SX" },
         { masta: 3, tensta: "HT" },
+        { masta: 0, tensta: "0" },
       ],
       multiSearch_masp: "",
       multiSearch_nhomsp: "",

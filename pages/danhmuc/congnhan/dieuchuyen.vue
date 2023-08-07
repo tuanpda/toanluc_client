@@ -692,27 +692,7 @@ export default {
       tonhomid: [],
       mask: currencyMask,
       dataMacn: [],
-      form: {
-        macn: "",
-        tencn: "",
-        mapx: "",
-        tenpx: "",
-        sdt: "",
-        diachi: "",
-        cccd: "",
-        mato: "",
-        tento: "",
-        chucvu: "",
-        luongcb: "",
-        nguoilienhe: "",
-        sotknh: "",
-        tennh: "",
-        ghichu: "",
-        trangthai: 1,
-        createdAt: "",
-        createdBy: this.$auth.$state.user.username,
-        // updatedAt: new Date().toISOString().substr(0, 10),
-      },
+      form: [],
       checkGhichu: false,
       hisform: {
         tenthaotac: null,
@@ -1053,6 +1033,7 @@ export default {
     },
 
     async dieuChuyen(item) {
+      this.form = [];
       this.dataMacn = [];
       this.isActive_dieuchuyen = true;
       // console.log(item);
@@ -1062,24 +1043,32 @@ export default {
       //   // console.log(dataMacn);
       //   // const arrMacn = dataMacn.map(item => item.macn);
       //   this.dataMacn = dataMacn;
-      // this.form = { ...item };
+      this.form = {
+        ...item,
+        luongcb: item.luongcb.toString().replace(/,/g, ""),
+      };
+      console.log(this.form);
+      const a = "5,6,00,000";
+      const b = "65000000";
+      console.log(a.toString().replace(/,/g, ""));
+      console.log(b.toString().replace(/,/g, ""));
 
-      this.form._id = item._id;
-      this.form.macn = item.macn;
-      this.form.tencn = item.tencn;
-      // this.form.mapx = item.mapx
-      // this.form.tenpx = item.tenpx
-      this.form.sdt = item.sdt;
-      this.form.diachi = item.diachi;
-      this.form.cccd = item.cccd;
-      // this.form.mato = item.mato
-      // this.form.tento = item.tento
-      this.form.chucvu = item.chucvu;
-      this.form.luongcb = item.luongcb;
-      this.form.nguoilienhe = item.nguoilienhe;
-      this.form.sotknh = item.sotknh;
-      this.form.tennh = item.tennh;
-      this.form.trangthai = 1;
+      // this.form._id = item._id;
+      // this.form.macn = item.macn;
+      // this.form.tencn = item.tencn;
+      // // this.form.mapx = item.mapx
+      // // this.form.tenpx = item.tenpx
+      // this.form.sdt = item.sdt;
+      // this.form.diachi = item.diachi;
+      // this.form.cccd = item.cccd;
+      // // this.form.mato = item.mato
+      // // this.form.tento = item.tento
+      // this.form.chucvu = item.chucvu;
+      // this.form.luongcb = item.luongcb;
+      // this.form.nguoilienhe = item.nguoilienhe;
+      // this.form.sotknh = item.sotknh;
+      // this.form.tennh = item.tennh;
+      // this.form.trangthai = 1;
       this.data_dieuchuyen.macn = this.form.macn;
       this.data_dieuchuyen.tencn = this.form.tencn;
       this.data_dieuchuyen.mapx = item.mapx;
@@ -1152,10 +1141,10 @@ export default {
             await this.$axios.$post("/api/congnhan/addcongnhan", this.form);
 
             // b2: ghi dữ liệu vào bảng điều chuyển
-            this.form.mapx = this.data_dieuchuyen.mapx
-            this.form.tenpx = this.data_dieuchuyen.tenpx
-            this.form.mato = this.data_dieuchuyen.mato
-            this.form.tento = this.data_dieuchuyen.tento
+            this.form.mapx = this.data_dieuchuyen.mapx;
+            this.form.tenpx = this.data_dieuchuyen.tenpx;
+            this.form.mato = this.data_dieuchuyen.mato;
+            this.form.tento = this.data_dieuchuyen.tento;
             await this.$axios.$post(
               "/api/congnhan/addcongnhandieuchuyen",
               this.form

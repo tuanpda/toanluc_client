@@ -104,15 +104,30 @@
                 </button>
               </td>
               <td>
-                <button
-                  @click="pritnPdf"
-                  class="button is-small is-info is-fullwidth"
-                >
-                  <span class="icon is-small">
-                    <i class="far fa-file-pdf"></i>
-                  </span>
-                  <span>In PDF</span>
-                </button>
+                <div class="columns">
+                  <div class="column">
+                    <button
+                      @click="pritnPdf"
+                      class="button is-small is-info is-fullwidth"
+                    >
+                      <span class="icon is-small">
+                        <i class="far fa-file-pdf"></i>
+                      </span>
+                      <span>In PDF</span>
+                    </button>
+                  </div>
+                  <div class="column">
+                    <vue-excel-xlsx
+                      :data="report"
+                      :columns="columns_luong"
+                      :file-name="'Lương thang'"
+                      :file-type="'xlsx'"
+                      :sheet-name="'Lương thang'"
+                    >
+                      Download
+                    </vue-excel-xlsx>
+                  </div>
+                </div>
               </td>
             </tr>
           </table>
@@ -332,11 +347,6 @@
               <td
                 style="text-align: right; font-weight: bold; font-size: small"
               >
-                {{ sumrp.sum_tongluong | formatNumber }}
-              </td>
-              <td
-                style="text-align: right; font-weight: bold; font-size: small"
-              >
                 {{ sumrp.sum_ngayhotro | formatNumber }}
               </td>
               <td
@@ -347,7 +357,7 @@
               <td
                 style="text-align: right; font-weight: bold; font-size: small"
               >
-                {{ sumrp.sum_bhxh | formatNumber }}
+                {{ sumrp.sum_tongluong | formatNumber }}
               </td>
               <td
                 style="text-align: right; font-weight: bold; font-size: small"
@@ -357,7 +367,12 @@
               <td
                 style="text-align: right; font-weight: bold; font-size: small"
               >
-                {{ sumrp.sum_tamung | formatNumber }}
+                {{ sumrp.sum_antrua | formatNumber }}
+              </td>
+              <td
+                style="text-align: right; font-weight: bold; font-size: small"
+              >
+                {{ sumrp.sum_tienphat | formatNumber }}
               </td>
               <td
                 style="text-align: right; font-weight: bold; font-size: small"
@@ -404,12 +419,186 @@ export default {
       mato: "",
       tenxuong: "",
       tento: "",
+
+      columns_luong: [
+        {
+          label: "Mã CN",
+          field: "manv",
+        },
+        {
+          label: "Tên CN",
+          field: "hotennv",
+        },
+        {
+          label: "Lương CB",
+          field: "luongcb",
+        },
+        {
+          label: "Lương mềm",
+          field: "luongmem",
+        },
+        {
+          label: "Ngày công",
+          field: "songaycong",
+        },
+        {
+          label: "Lương QLSP",
+          field: "luongqlsp",
+        },
+        {
+          label: "Lương công đoạn",
+          field: "luongcd",
+        },
+        {
+          label: "Lương công nhật",
+          field: "luongcn",
+        },
+        {
+          label: "Số ngày hỗ trợ",
+          field: "ngayhotro",
+        },
+        {
+          label: "Thành tiền hỗ trợ",
+          field: "thanhtienhotro",
+        },
+        {
+          label: "Tổng lương",
+          field: "tongluong",
+        },
+        {
+          label: "Ăn ca",
+          field: "antrua",
+        },
+        {
+          label: "Lương CB",
+          field: "luongcb",
+        },
+        {
+          label: "BHXH",
+          field: "bhxh",
+        },
+        {
+          label: "Công đoàn",
+          field: "congdoan",
+        },
+        {
+          label: "Tiền phạt",
+          field: "tienphat",
+        },
+        {
+          label: "Tổng trừ",
+          field: "tongtru",
+        },
+        {
+          label: "Tổng nhận",
+          field: "tongnhan",
+        },
+      ],
     };
   },
 
   computed: {
     isDisabled() {
       return this.isPdf == false;
+    },
+
+    // sum lương cb
+    subRow_luongcb() {
+      return this.report.reduce(
+        (total, item) => total + parseFloat(item.luongcb),
+        0
+      );
+    },
+    // sum lương mềm
+    subRow_luongmem() {
+      return this.report.reduce(
+        (total, item) => total + parseFloat(item.luongmem),
+        0
+      );
+    },
+    // sum số ngày công
+    subRow_songaycong() {
+      return this.report.reduce(
+        (total, item) => total + parseFloat(item.songaycong),
+        0
+      );
+    },
+    // sum lương công đoạn
+    subRow_luongcongdoan() {
+      return this.report.reduce(
+        (total, item) => total + parseFloat(item.luongcd),
+        0
+      );
+    },
+    // sum lương công nhật
+    subRow_luongcongnhat() {
+      return this.report.reduce(
+        (total, item) => total + parseFloat(item.luongps),
+        0
+      );
+    },
+    // sum ngày hỗ trợ
+    subRow_ngayhotro() {
+      return this.report.reduce(
+        (total, item) => total + parseFloat(item.ngayhotro),
+        0
+      );
+    },
+    // sum tiền hỗ trợ
+    subRow_tienhotro() {
+      return this.report.reduce(
+        (total, item) => total + parseFloat(item.tienhotro),
+        0
+      );
+    },
+    // sum ăn trưa
+    subRow_antrua() {
+      return this.report.reduce(
+        (total, item) => total + parseFloat(item.antrua),
+        0
+      );
+    },
+    // sum tổng lương
+    subRow_tongluong() {
+      return this.report.reduce(
+        (total, item) => total + parseFloat(item.tongluong),
+        0
+      );
+    },
+    // sum bhxh
+    subRow_tongbhxh() {
+      return this.report.reduce(
+        (total, item) => total + parseFloat(item.bhxh),
+        0
+      );
+    },
+    // sum phat
+    subRow_tongphat() {
+      return this.report.reduce(
+        (total, item) => total + parseFloat(item.tienphat),
+        0
+      );
+    },
+    // sum congdoan
+    subRow_tongcongdoan() {
+      return this.report.reduce(
+        (total, item) => total + parseFloat(item.congdoan),
+        0
+      );
+    },
+    // sum tongtru
+    subRow_tongtru() {
+      return this.report.reduce(
+        (total, item) => total + parseFloat(item.tongtru),
+        0
+      );
+    },
+    // sum tong nhan
+    subRow_tongnhan() {
+      return this.report.reduce(
+        (total, item) => total + parseFloat(item.tongnhan),
+        0
+      );
     },
   },
 
@@ -473,7 +662,7 @@ export default {
         this.report = await this.$axios.$get(
           `/api/report/reportluongthang_px?thang=${this.thang}&nam=${this.nam}&mapb=${this.maxuong}`
         );
-        console.log(this.report);
+        // console.log(this.report);
         if (this.report.length <= 0) {
           const Toast = Swal.mixin({
             toast: true,
@@ -516,10 +705,17 @@ export default {
     },
 
     async reportSum() {
-      this.sumreport = await this.$axios.$get(
-        `/api/report/reportsumluong?thang=${this.thang}&nam=${this.nam}`
-      );
-      this.sumrp = this.sumreport[0];
+      if (this.mato == "") {
+        this.sumreport = await this.$axios.$get(
+          `/api/report/reportsumluong?thang=${this.thang}&nam=${this.nam}&mapb=${this.maxuong}`
+        );
+        this.sumrp = this.sumreport[0];
+      } else {
+        this.sumreport = await this.$axios.$get(
+          `/api/report/reportsumluongto?thang=${this.thang}&nam=${this.nam}&mato=${this.mato}`
+        );
+      }
+
       // console.log(this.sumrp)
     },
 
