@@ -367,7 +367,7 @@
               <td
                 style="text-align: right; font-weight: bold; font-size: small"
               >
-                {{ sumrp.sum_antrua | formatNumber }}
+                {{ sumrp.sum_bhxh | formatNumber }}
               </td>
               <td
                 style="text-align: right; font-weight: bold; font-size: small"
@@ -451,7 +451,7 @@ export default {
         },
         {
           label: "Lương công nhật",
-          field: "luongcn",
+          field: "luongps",
         },
         {
           label: "Số ngày hỗ trợ",
@@ -459,7 +459,7 @@ export default {
         },
         {
           label: "Thành tiền hỗ trợ",
-          field: "thanhtienhotro",
+          field: "tienhotro",
         },
         {
           label: "Tổng lương",
