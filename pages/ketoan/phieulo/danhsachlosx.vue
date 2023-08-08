@@ -1313,6 +1313,7 @@ export default {
       // const ngaybd
 
       // thêm lọc theo mã tổ
+      // chọn lọc full
       if (
         this.selectedOptions.length > 0 &&
         this.selectedOptions_to.length > 0 &&
@@ -1325,18 +1326,15 @@ export default {
           {
             params: {
               mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
-              masp: masp,
               status: status,
-              nhomsp: nhomsp,
               mato: matoList,
+              masp: masp,
+              nhomsp: nhomsp,
             },
           }
         );
         // console.log(this.lokehoachsx)
-      }
-
-      // chọn lọc full
-      else if (
+      } else if (
         this.selectedOptions.length > 0 &&
         this.Options_status.length > 0 &&
         this.multiSearch_masp != "" &&
@@ -1394,6 +1392,24 @@ export default {
               mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
               masp: masp,
               // status: status,
+              // nhomsp: nhomsp,
+              mato: matoList,
+            },
+          }
+        );
+        // console.log(this.lokehoachsx)
+      } else if (
+        this.selectedOptions.length > 0 &&
+        this.selectedOptions_to.length > 0 &&
+        this.Options_status.length > 0
+      ) {
+        this.lokehoachsx = await this.$axios.$get(
+          `/api/lokehoach/filtermatomaxuongstatuslosanxuatthemto`,
+          {
+            params: {
+              mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
+              // masp: masp,
+              status: status,
               // nhomsp: nhomsp,
               mato: matoList,
             },

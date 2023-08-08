@@ -123,8 +123,9 @@
                       :file-name="'Lương thang'"
                       :file-type="'xlsx'"
                       :sheet-name="'Lương thang'"
+                      style="width: 100%"
                     >
-                      Download
+                      Download Execl
                     </vue-excel-xlsx>
                   </div>
                 </div>
