@@ -141,6 +141,7 @@
                   type="date"
                   v-model="searchNgaybd"
                   class="input is-small"
+                  @blur="filterNgaybd"
                 />
               </td>
               <td style="width: 5%">
@@ -407,8 +408,16 @@
               >
                 Chọn TT
               </td>
-              <!-- <td style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Số lượng HT
-                            </td> -->
+              <td
+                style="
+                  font-size: small;
+                  text-align: center;
+                  font-weight: 600;
+                  width: 5%;
+                "
+              >
+                Ghi chú
+              </td>
               <td
                 style="font-size: small; text-align: center; font-weight: 600"
               >
@@ -676,7 +685,15 @@
                   </select>
                 </div>
               </td>
-              <!-- <td><input class="input is-small" type="text" v-model="item.soluongkhsx"></td> -->
+              <td style="text-align: center">
+                <a @click="showGhichu(item)"
+                  ><span class="icon is-small">
+                    <i
+                      style="color: green"
+                      class="far fa-comment-dots"
+                    ></i> </span
+                ></a>
+              </td>
               <td style="width: 5%">
                 <button
                   @click="onUpdateLosx(item)"
@@ -728,6 +745,50 @@
           </div>
         </div>
       </div>
+      <!-- Modal ghi chú -->
+      <div class="">
+        <!-- Toggle class  -->
+        <div :class="{ 'is-active': isActive }" class="modal">
+          <div class="modal-background"></div>
+          <div class="modal-content modal-card-1">
+            <section class="modal-card-body">
+              <div class="columns">
+                <div class="column">
+                  <span
+                    style="font-size: small; font-weight: bold; color: #48c78e"
+                    >Ghi chú</span
+                  >
+                </div>
+                <div class="column" style="text-align: right">
+                  <a @click="isActive = false">
+                    <span style="color: red" class="icon is-small">
+                      <i class="fas fa-times"></i>
+                    </span>
+                  </a>
+                </div>
+              </div>
+              <div>
+                <div class="field">
+                  <div class="control">
+                    <textarea
+                      v-model="ghichu"
+                      class="textarea is-small"
+                    ></textarea>
+                  </div>
+                </div>
+                <div style="text-align: right">
+                  <button
+                    @click="capnhatGhichu"
+                    class="button is-small is-success"
+                  >
+                    Cập nhật
+                  </button>
+                </div>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -758,7 +819,7 @@ export default {
 
       // gán biến status
       status: 0,
-
+      isActive: false,
       // lọc talble
       sortDirection: 1,
       sortKey: "ttqt",
@@ -789,6 +850,8 @@ export default {
       nhomspinlosanxuat: [],
 
       search_maphieu_id: "",
+      ghichu: "",
+      getidlosxghichu: "",
 
       reportData: [
         // ['Tháng', 'Doanh thu', 'Lợi nhuận'],
@@ -1296,6 +1359,59 @@ export default {
       );
       // console.log(this.maspinlosanxuat)
     },
+    showGhichu(item) {
+      console.log(item);
+      this.ghichu = "";
+      this.getidlosxghichu = "";
+      // show modal
+      this.isActive = true;
+      this.ghichu = item.ghichu;
+      this.getidlosxghichu = item._id;
+    },
+    async capnhatGhichu() {
+      console.log(this.ghichu);
+      console.log(this.getidlosxghichu);
+      const data = {
+        ghichu: this.ghichu,
+      };
+      // ghi vào csdl
+      const res = await this.$axios.patch(
+        `/api/lokehoach/losanxuat/ghichu/${this.getidlosxghichu}`,
+        data
+      );
+      // console.log(res);
+      if (res.data.success == true) {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+        Toast.fire({
+          icon: "success",
+          title: "Đã cập nhật ghi chú",
+        });
+        if (
+          !this.selectedOptions.length &&
+          this.multiSearch_masp == "" &&
+          this.multiSearch_nhomsp == "" &&
+          !this.Options_status.length &&
+          !this.selectedOptions_to.length &&
+          !this.selectedOptions_to.length
+        ) {
+          this.showAllLokhsx();
+        } else {
+          this.filterData();
+        }
+      }
+    },
+    // lọc ngày bắt đầu
+    async filterNgaybd() {},
     // Chế độ lọc multi
     async filterData() {
       // console.log(this.selectedOptions)
@@ -1310,6 +1426,7 @@ export default {
       const nhomsp = this.multiSearch_nhomsp;
       const status = this.Options_status;
       const matoList = this.selectedOptions_to;
+      const ngaybd = this.searchNgaybd;
       // const ngaybd
 
       // thêm lọc theo mã tổ
@@ -1352,6 +1469,23 @@ export default {
           }
         );
         // console.log(this.lokehoachsx)
+      } else if (
+        this.selectedOptions.length > 0 &&
+        this.selectedOptions_to.length > 0 &&
+        this.Options_status.length > 0 &&
+        this.searchNgaybd != ""
+      ) {
+        this.lokehoachsx = await this.$axios.$get(
+          `/api/lokehoach/filterlosxmapxstatusngaybdwithto`,
+          {
+            params: {
+              mapx: mapxList,
+              mato: matoList,
+              status: status,
+              ngaybd: ngaybd,
+            },
+          }
+        );
       }
 
       // ma xuong ma to nhom ssp
@@ -1484,6 +1618,21 @@ export default {
             params: {
               mapx: mapxList,
               nhomsp: nhomsp,
+            },
+          }
+        );
+      } else if (
+        this.selectedOptions.length > 0 &&
+        this.Options_status.length > 0 &&
+        this.searchNgaybd != ""
+      ) {
+        this.lokehoachsx = await this.$axios.$get(
+          `/api/lokehoach/filterlosxmapxstatusngaybd`,
+          {
+            params: {
+              mapx: mapxList,
+              status: status,
+              ngaybd: ngaybd,
             },
           }
         );
@@ -2259,6 +2408,7 @@ export default {
           this.multiSearch_masp == "" &&
           this.multiSearch_nhomsp == "" &&
           !this.Options_status.length &&
+          !this.selectedOptions_to.length &&
           !this.selectedOptions_to.length
         ) {
           this.showAllLokhsx();
@@ -2303,8 +2453,8 @@ export default {
 
 .modal-content,
 .modal-card {
-  width: 1320px;
-  height: 800px;
+  width: 720px;
+  height: 500px;
 }
 
 #preview {
