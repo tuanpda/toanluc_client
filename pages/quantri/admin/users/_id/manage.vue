@@ -131,7 +131,7 @@
                     placeholder="Chọn quyền hệ thống"
                     label="quyen"
                     track-by="quyen"
-                    style="font-size:12px;"
+                    style="font-size: 12px"
                   ></multiselect>
                 </div>
               </div>

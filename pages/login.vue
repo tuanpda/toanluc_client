@@ -3,7 +3,7 @@
     <div class="hero-body">
       <div class="container has-text-centered">
         <div class="column is-4 is-offset-4">
-          <div class="box" style="margin-top:10px;">
+          <div class="box" style="margin-top: 10px">
             <p class="subtitle is-4">Đăng nhập vào hệ thống</p>
             <br />
             <form>
@@ -138,27 +138,56 @@ export default {
       try {
         this.$v.form.$touch();
         if (this.isFormValid) {
-          let response = await this.$axios
-            .$post("/api/users/auth/login", this.form)
-            .then(() => {
-              this.$auth.loginWith("local", {
-                data: {
-                  username: this.form.username,
-                  password: this.form.password,
-                },
-              });
-              // save log
-              this.hisform.tenthaotac = `${this.form.username} đăng nhập`;
-              this.hisform.ghichu = `Đăng nhập lúc: ${this.hisform.createdAt}`;
-              this.$axios.$post(`/api/logsystem/record-action`, this.hisform);
-            })
-            .catch(() =>
-              this.$toasted.error(
-                "Đăng nhập thất bại! Kiểm tra lại tài khoản",
-                { duration: 3000 }
-              )
-            );
+          // let response = await this.$axios
+          //   .$post("/api/users/auth/login", this.form)
+          //   .then(() => {
+          //     this.$auth.loginWith("local", {
+          //       data: {
+          //         username: this.form.username,
+          //         password: this.form.password,
+          //       },
+          //     });
+          //     // save log
+          //     this.hisform.tenthaotac = `${this.form.username} đăng nhập`;
+          //     this.hisform.ghichu = `Đăng nhập lúc: ${this.hisform.createdAt}`;
+          //     this.$axios.$post(`/api/logsystem/record-action`, this.hisform);
+          //   })
+          //   .catch(() =>
+          //     this.$toasted.error(
+          //       "Đăng nhập thất bại! Kiểm tra lại tài khoản",
+          //       { duration: 3000 }
+          //     )
+          //   );
           //console.log(response);
+          const response = await this.$axios.post(
+            `/api/users/auth/login`,
+            this.form
+          );
+          // console.log(response.data);
+          if (response.data.success == 1) {
+            this.$toasted.error("Đăng nhập thất bại! Tài khoản không tồn tại", {
+              duration: 3000,
+            });
+          } else if (response.data.success == 2) {
+            this.$toasted.error("Đăng nhập thất bại! Tài khoản đã bị khóa", {
+              duration: 3000,
+            });
+          } else if (response.data.success == 3) {
+            this.$auth.loginWith("local", {
+              data: {
+                username: this.form.username,
+                password: this.form.password,
+              },
+            });
+            // save log
+            this.hisform.tenthaotac = `${this.form.username} đăng nhập`;
+            this.hisform.ghichu = `Đăng nhập lúc: ${this.hisform.createdAt}`;
+            this.$axios.$post(`/api/logsystem/record-action`, this.hisform);
+          } else {
+            this.$toasted.error("Đăng nhập thất bại! Sai mật khẩu", {
+              duration: 3000,
+            });
+          }
         }
       } catch (error) {
         console.log(error);

@@ -115,6 +115,15 @@
                   Chấm công
                 </button>
               </td>
+              <td style="width: 7%">
+                <button
+                  @click="onDeleteChamcongDay()"
+                  class="button is-small is-danger"
+                  :disabled="!isDisbeButton_ngaychamcong"
+                >
+                  Xóa Chấm công ngày
+                </button>
+              </td>
               <td></td>
             </tr>
           </table>
@@ -564,7 +573,10 @@ export default {
         tencn: "",
         status: "",
       },
-
+      // lock button xoa ngay cham cong
+      isDisbeButton_ngaychamcong: false,
+      acc: "",
+      idacc: null,
       form: {
         mapx: "",
         tenpx: "",
@@ -692,6 +704,7 @@ export default {
     async lockChoosee() {
       this.isSelectsEnabled = true;
       this.isSelectsEnabled_VP = true;
+      this.isDisbeButton_ngaychamcong = true;
       // console.log(this.ngaychamcong);
       const date = new Date(this.ngaychamcong);
       const weekNumber = this.getWeek(date);
@@ -1386,6 +1399,165 @@ export default {
             title: "Có lỗi xảy ra !!!",
           });
         }
+      }
+    },
+
+    async onDeleteChamcongDay() {
+      this.acc = "";
+      this.idacc = null;
+      if (this.$auth.$state.user) {
+        this.acc = this.$auth.$state.user.username;
+        this.idacc = this.$auth.$state.user._id;
+      }
+      // console.log(this.acc);
+      // console.log(this.ngaychamcong);
+      // console.log(this.form.mapx);
+      // console.log(this.form.mato);
+      // console.log(this.acc, this.idacc);
+      if (this.acc == "ngaht" && this.idacc == 2112) {
+        if (this.form.mapx == "") {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
+          Toast.fire({
+            icon: "error",
+            title: "Chưa chọn phân xưởng hoặc tổ cần xóa",
+          });
+        } else {
+          if (this.form.mato == "") {
+            // console.log(this.showNgaychamcong.length);
+            // tiến hành xóa dữ liệu chấm công của xưởng
+            if (this.showNgaychamcong.length > 0) {
+              const result = await Swal.fire({
+                title: `Bạn có muốn xóa chấm công ngày: ${this.ngaychamcong} của phân xưởng: ${this.form.mapx}?`,
+                showDenyButton: true,
+                confirmButtonText: "Có, Xóa",
+                denyButtonText: `Hủy`,
+              });
+              if (result.isConfirmed) {
+                const res = await this.$axios.$delete(
+                  `/api/congnhan/ngaychamcongphanxuong?ngaychamcong=${this.ngaychamcong}&mapx=${this.form.mapx}`
+                );
+                if (res.success == true) {
+                  const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                      toast.addEventListener("mouseenter", Swal.stopTimer);
+                      toast.addEventListener("mouseleave", Swal.resumeTimer);
+                    },
+                  });
+                  Toast.fire({
+                    icon: "success",
+                    title: `Xóa thành công dữ liệu ngày: ${this.ngaychamcong} của phân xưởng: ${this.form.mapx}`,
+                  });
+                  this.form.mato = "";
+                  this.form.mapx = "";
+                  this.ngaychamcong = "";
+                  this.items = [];
+                  this.showNgaychamcong = [];
+                  this.isSelectsEnabled = false;
+                  this.isSelectsEnabled_VP = false;
+                } else {
+                  const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                      toast.addEventListener("mouseenter", Swal.stopTimer);
+                      toast.addEventListener("mouseleave", Swal.resumeTimer);
+                    },
+                  });
+                  Toast.fire({
+                    icon: "error",
+                    title: "Xóa không thành công !!!",
+                  });
+                }
+              }
+            }
+          } else {
+            const result = await Swal.fire({
+              title: `Bạn có muốn xóa chấm công ngày: ${this.ngaychamcong} của phân xưởng: ${this.form.mato}?`,
+              showDenyButton: true,
+              confirmButtonText: "Có, Xóa",
+              denyButtonText: `Hủy`,
+            });
+            if (result.isConfirmed) {
+              const res = await this.$axios.$delete(
+                `/api/congnhan/ngaychamcongto?ngaychamcong=${this.ngaychamcong}&mato=${this.form.mato}`
+              );
+              if (res.success == true) {
+                const Toast = Swal.mixin({
+                  toast: true,
+                  position: "top-end",
+                  showConfirmButton: false,
+                  timer: 3000,
+                  timerProgressBar: true,
+                  didOpen: (toast) => {
+                    toast.addEventListener("mouseenter", Swal.stopTimer);
+                    toast.addEventListener("mouseleave", Swal.resumeTimer);
+                  },
+                });
+                Toast.fire({
+                  icon: "success",
+                  title: `Xóa thành công dữ liệu ngày: ${this.ngaychamcong} của tổ: ${this.form.mato}`,
+                });
+                this.form.mato = "";
+                this.form.mapx = "";
+                this.ngaychamcong = "";
+                this.items = [];
+                this.showNgaychamcong = [];
+                this.isSelectsEnabled = false;
+                this.isSelectsEnabled_VP = false;
+              } else {
+                const Toast = Swal.mixin({
+                  toast: true,
+                  position: "top-end",
+                  showConfirmButton: false,
+                  timer: 3000,
+                  timerProgressBar: true,
+                  didOpen: (toast) => {
+                    toast.addEventListener("mouseenter", Swal.stopTimer);
+                    toast.addEventListener("mouseleave", Swal.resumeTimer);
+                  },
+                });
+                Toast.fire({
+                  icon: "error",
+                  title: "Xóa không thành công !!!",
+                });
+              }
+            }
+          }
+        }
+      } else {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+        Toast.fire({
+          icon: "error",
+          title: "Bạn không có quyền xóa dữ liệu chấm công !!!",
+        });
       }
     },
   },
