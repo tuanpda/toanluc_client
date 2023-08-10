@@ -216,9 +216,9 @@
                 <vue-excel-xlsx
                   :data="sllosx"
                   :columns="columns_losx"
-                  :file-name="filename_exel"
+                  file-name="file_download"
                   :file-type="'xlsx'"
-                  :sheet-name="filename_exel"
+                  sheet-name="file_download"
                 >
                   Download Excel
                 </vue-excel-xlsx>
