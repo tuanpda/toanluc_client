@@ -870,53 +870,53 @@ export default {
         {
           label: "Mã lô nhà máy",
           field: "malonhamay",
-          dataFormat: this.trimData,
+          // dataFormat: this.trimData,
         },
         {
           label: "Mã kế hoạch phân xưởng",
           field: "makhpx",
-          dataFormat: this.trimData,
+          // dataFormat: this.trimData,
         },
         {
           label: "Mã lô sản xuất",
           field: "malosx",
-          dataFormat: this.trimData,
+          // dataFormat: this.trimData,
         },
         {
           label: "Mã phân xưởng",
           field: "mapx",
-          dataFormat: this.trimData,
+          // dataFormat: this.trimData,
           /* dataFormat: this.priceFormat */
         },
         {
           label: "Tên phân xưởng",
           field: "tenpx",
-          dataFormat: this.trimData,
+          // dataFormat: this.trimData,
         },
         {
           label: "Mã tổ",
           field: "mato",
-          dataFormat: this.trimData,
+          // dataFormat: this.trimData,
         },
         {
           label: "Tên tổ",
           field: "tento",
-          dataFormat: this.trimData,
+          // dataFormat: this.trimData,
         },
         {
           label: "Mã sản phẩm",
           field: "masp",
-          dataFormat: this.trimData,
+          // dataFormat: this.trimData,
         },
         {
           label: "Tên sản phẩm",
           field: "tensp",
-          dataFormat: this.trimData,
+          // dataFormat: this.trimData,
         },
         {
           label: "Số lượng",
           field: "soluonglsx",
-          dataFormat: this.trimData,
+          // dataFormat: this.trimData,
         },
         {
           label: "SL cập nhật nhanh",
@@ -1276,6 +1276,7 @@ export default {
           nhomsp: item.nhomsp,
           soluongkhsx: item.soluongkhsx,
           status: item.status,
+          ghichu: item.ghichu,
         };
       });
       const columnNames = [
@@ -1291,7 +1292,7 @@ export default {
         { header: "SL nhanh", key: "soluongkhsx" },
         { header: "Số lượng hoàn thành", key: "" },
         { header: "Báo cáo hoàn thành", key: "" },
-        { header: "Ghi chú", key: "" },
+        { header: "Ghi chú", key: "ghichu" },
       ];
       const data = selectedColumns.map((item) => {
         const row = {};
