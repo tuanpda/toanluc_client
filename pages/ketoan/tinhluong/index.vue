@@ -620,6 +620,8 @@ export default {
         ghichu: null,
       },
       thuong: null,
+      keyThangnam: "",
+      isExits: null,
       //   các tiêu chí hệ số lương
       form: {
         luong_ttv: null,
@@ -891,111 +893,141 @@ export default {
       // this.dsnhanvien = await this.$axios.$get(`/api/ketoan/nhanvienbangluong`);
     },
 
-    onReport() {
-      Swal.fire({
-        title: `Chắc chắn lập bảng lương tháng ${this.thangLapluong}/${this.namLapluong}?`,
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Chắc chắn lập",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          try {
-            for (let i = 0; i < this.selected.length; i++) {
-              // console.log(this.selected[i].tong_ung);
-              if (this.selected[i].tong_ung) {
-                this.tongtiennhan =
-                  parseFloat(this.selected[i].mucluong) +
-                  parseFloat(this.selected[i].thuong) -
-                  ((parseFloat(this.selected[i].mucluong) *
-                    parseFloat(this.get_qtl.tl_dong_bhxh_cn)) /
-                    100 +
-                    (parseFloat(this.selected[i].mucluong) *
-                      parseFloat(this.get_qtl.tl_dong_bhyt_cn)) /
-                      100 +
-                    (parseFloat(this.selected[i].mucluong) *
-                      parseFloat(this.get_qtl.tl_dong_bhtn_cn)) /
-                      100 +
-                    parseFloat(this.get_qtl.tl_dong_cd_cn) +
-                    parseFloat(this.selected[i].tong_ung));
-              } else {
-                this.tongtiennhan =
-                  parseFloat(this.selected[i].mucluong) +
-                  parseFloat(this.selected[i].thuong) -
-                  ((parseFloat(this.selected[i].mucluong) *
-                    parseFloat(this.get_qtl.tl_dong_bhxh_cn)) /
-                    100 +
-                    (parseFloat(this.selected[i].mucluong) *
-                      parseFloat(this.get_qtl.tl_dong_bhyt_cn)) /
-                      100 +
-                    (parseFloat(this.selected[i].mucluong) *
-                      parseFloat(this.get_qtl.tl_dong_bhtn_cn)) /
-                      100 +
-                    parseFloat(this.get_qtl.tl_dong_cd_cn));
-              }
+    // onReport() {
+    //   Swal.fire({
+    //     title: `Chắc chắn lập bảng lương tháng ${this.thangLapluong}/${this.namLapluong}?`,
+    //     icon: "warning",
+    //     showCancelButton: true,
+    //     confirmButtonColor: "#3085d6",
+    //     cancelButtonColor: "#d33",
+    //     confirmButtonText: "Chắc chắn lập",
+    //   }).then((result) => {
+    //     if (result.isConfirmed) {
+    //       try {
+    //         for (let i = 0; i < this.selected.length; i++) {
+    //           // console.log(this.selected[i].tong_ung);
+    //           if (this.selected[i].tong_ung) {
+    //             this.tongtiennhan =
+    //               parseFloat(this.selected[i].mucluong) +
+    //               parseFloat(this.selected[i].thuong) -
+    //               ((parseFloat(this.selected[i].mucluong) *
+    //                 parseFloat(this.get_qtl.tl_dong_bhxh_cn)) /
+    //                 100 +
+    //                 (parseFloat(this.selected[i].mucluong) *
+    //                   parseFloat(this.get_qtl.tl_dong_bhyt_cn)) /
+    //                   100 +
+    //                 (parseFloat(this.selected[i].mucluong) *
+    //                   parseFloat(this.get_qtl.tl_dong_bhtn_cn)) /
+    //                   100 +
+    //                 parseFloat(this.get_qtl.tl_dong_cd_cn) +
+    //                 parseFloat(this.selected[i].tong_ung));
+    //           } else {
+    //             this.tongtiennhan =
+    //               parseFloat(this.selected[i].mucluong) +
+    //               parseFloat(this.selected[i].thuong) -
+    //               ((parseFloat(this.selected[i].mucluong) *
+    //                 parseFloat(this.get_qtl.tl_dong_bhxh_cn)) /
+    //                 100 +
+    //                 (parseFloat(this.selected[i].mucluong) *
+    //                   parseFloat(this.get_qtl.tl_dong_bhyt_cn)) /
+    //                   100 +
+    //                 (parseFloat(this.selected[i].mucluong) *
+    //                   parseFloat(this.get_qtl.tl_dong_bhtn_cn)) /
+    //                   100 +
+    //                 parseFloat(this.get_qtl.tl_dong_cd_cn));
+    //           }
 
-              let data = {
-                hoten: this.selected[i].tennv,
-                phongban: this.selected[i].tenphong,
-                luong: this.selected[i].mucluong,
-                bhxh:
-                  (parseFloat(this.selected[i].mucluong) *
-                    parseFloat(this.get_qtl.tl_dong_bhxh_cn)) /
-                  100,
-                bhyt:
-                  (parseFloat(this.selected[i].mucluong) *
-                    parseFloat(this.get_qtl.tl_dong_bhyt_cn)) /
-                  100,
-                bhtn:
-                  (parseFloat(this.selected[i].mucluong) *
-                    parseFloat(this.get_qtl.tl_dong_bhtn_cn)) /
-                  100,
-                kpcd: parseFloat(this.get_qtl.tl_dong_cd_cn),
-                tongkt:
-                  (parseFloat(this.selected[i].mucluong) *
-                    parseFloat(this.get_qtl.tl_dong_bhxh_cn)) /
-                    100 +
-                  (parseFloat(this.selected[i].mucluong) *
-                    parseFloat(this.get_qtl.tl_dong_bhyt_cn)) /
-                    100 +
-                  (parseFloat(this.selected[i].mucluong) *
-                    parseFloat(this.get_qtl.tl_dong_bhtn_cn)) /
-                    100 +
-                  parseFloat(this.get_qtl.tl_dong_cd_cn),
-                trutamung: this.selected[i].tong_ung,
-                thuong: this.selected[i].thuong,
-                tongnhan: this.tongtiennhan,
-                thang: this.thangLapluong,
-                nam: this.namLapluong,
-                createdAt: this.createdAt,
-                createdBy: this.createdBy,
-              };
-              this.$axios.$post("/api/ketoan/thembangluongthang", data);
+    //           let data = {
+    //             hoten: this.selected[i].tennv,
+    //             phongban: this.selected[i].tenphong,
+    //             luong: this.selected[i].mucluong,
+    //             bhxh:
+    //               (parseFloat(this.selected[i].mucluong) *
+    //                 parseFloat(this.get_qtl.tl_dong_bhxh_cn)) /
+    //               100,
+    //             bhyt:
+    //               (parseFloat(this.selected[i].mucluong) *
+    //                 parseFloat(this.get_qtl.tl_dong_bhyt_cn)) /
+    //               100,
+    //             bhtn:
+    //               (parseFloat(this.selected[i].mucluong) *
+    //                 parseFloat(this.get_qtl.tl_dong_bhtn_cn)) /
+    //               100,
+    //             kpcd: parseFloat(this.get_qtl.tl_dong_cd_cn),
+    //             tongkt:
+    //               (parseFloat(this.selected[i].mucluong) *
+    //                 parseFloat(this.get_qtl.tl_dong_bhxh_cn)) /
+    //                 100 +
+    //               (parseFloat(this.selected[i].mucluong) *
+    //                 parseFloat(this.get_qtl.tl_dong_bhyt_cn)) /
+    //                 100 +
+    //               (parseFloat(this.selected[i].mucluong) *
+    //                 parseFloat(this.get_qtl.tl_dong_bhtn_cn)) /
+    //                 100 +
+    //               parseFloat(this.get_qtl.tl_dong_cd_cn),
+    //             trutamung: this.selected[i].tong_ung,
+    //             thuong: this.selected[i].thuong,
+    //             tongnhan: this.tongtiennhan,
+    //             thang: this.thangLapluong,
+    //             nam: this.namLapluong,
+    //             createdAt: this.createdAt,
+    //             createdBy: this.createdBy,
+    //           };
+    //           this.$axios.$post("/api/ketoan/thembangluongthang", data);
 
-              // save log
-              this.hisform.tenthaotac = `Lập bảng lương tháng ${this.thangLapluong}/${this.namLapluong}`;
-              this.hisform.ghichu = `Lập bảng chi trả lương`;
-              this.$axios.$post(`/api/logsystem/record-action`, this.hisform);
-            }
+    //           // save log
+    //           this.hisform.tenthaotac = `Lập bảng lương tháng ${this.thangLapluong}/${this.namLapluong}`;
+    //           this.hisform.ghichu = `Lập bảng chi trả lương`;
+    //           this.$axios.$post(`/api/logsystem/record-action`, this.hisform);
+    //         }
 
-            const Toast = Swal.mixin({
-              toast: true,
-              position: "top-end",
-              showConfirmButton: false,
-              timer: 3000,
-              timerProgressBar: true,
-              didOpen: (toast) => {
-                toast.addEventListener("mouseenter", Swal.stopTimer);
-                toast.addEventListener("mouseleave", Swal.resumeTimer);
-              },
-            });
-            Toast.fire({
-              icon: "success",
-              title: "Lập bảng lương thành công",
-            });
-          } catch (error) {
-            console.log(error);
+    //         const Toast = Swal.mixin({
+    //           toast: true,
+    //           position: "top-end",
+    //           showConfirmButton: false,
+    //           timer: 3000,
+    //           timerProgressBar: true,
+    //           didOpen: (toast) => {
+    //             toast.addEventListener("mouseenter", Swal.stopTimer);
+    //             toast.addEventListener("mouseleave", Swal.resumeTimer);
+    //           },
+    //         });
+    //         Toast.fire({
+    //           icon: "success",
+    //           title: "Lập bảng lương thành công",
+    //         });
+    //       } catch (error) {
+    //         console.log(error);
+    //         const Toast = Swal.mixin({
+    //           toast: true,
+    //           position: "top-end",
+    //           showConfirmButton: false,
+    //           timer: 3000,
+    //           timerProgressBar: true,
+    //           didOpen: (toast) => {
+    //             toast.addEventListener("mouseenter", Swal.stopTimer);
+    //             toast.addEventListener("mouseleave", Swal.resumeTimer);
+    //           },
+    //         });
+    //         Toast.fire({
+    //           icon: "error",
+    //           title: "Có lỗi xảy ra !!!",
+    //         });
+    //       }
+    //     }
+    //   });
+    // },
+
+    async onReport() {
+      const result = await Swal.fire({
+        title: `Bạn chắc chắn tạo lương tại kỳ: ${this.thangLapluong}/${this.namLapluong}`,
+        showDenyButton: true,
+        confirmButtonText: "Chắc chắn",
+        denyButtonText: `Hủy`,
+      });
+      if (result.isConfirmed) {
+        try {
+          if (this.selected.length <= 0) {
             const Toast = Swal.mixin({
               toast: true,
               position: "top-end",
@@ -1009,11 +1041,132 @@ export default {
             });
             Toast.fire({
               icon: "error",
-              title: "Có lỗi xảy ra !!!",
+              title:
+                "Chưa lấy số liệu lương hoặc chưa tích chọn người cần vào lương !!!",
             });
+          } else {
+            const arrkeythangnam = [];
+            const listkeythangnam = await this.$axios.$get(
+              `/api/ketoan/getkeythangnam`
+            );
+            // console.log(listkeythangnam);
+            for (let i = 0; i < listkeythangnam.length; i++) {
+              let ktn = listkeythangnam[i].key_thangnam.trim();
+              arrkeythangnam.push(ktn);
+            }
+            // console.log(arrkeythangnam);
+            this.keyThangnam =
+              this.thangLapluong.trim() +
+              this.namLapluong.trim() +
+              "-" +
+              "VanPhong";
+
+            // console.log(this.keyThangnam);
+            this.isExits = arrkeythangnam.includes(this.keyThangnam.trim());
+            // console.log(this.isExits);
+            if (this.isExits == false) {
+              console.log(this.selected);
+              for (let i = 0; i < this.selected.length; i++) {
+                // console.log(this.selected[i]);
+                let data = {
+                  mapb: this.selected[0].mapb,
+                  tenpb: this.selected[0].tenphong,
+                  mato: "",
+                  manv: this.selected[i].macn,
+                  hotennv: this.selected[i].tencongnhan,
+                  chucvu: this.selected[i].chucvu,
+                  luongcb: this.selected[i].luongcb,
+                  luongmem: this.selected[i].luongmem,
+                  luongqlsp: this.selected[i].luongqlsp,
+                  luongcd: this.selected[i].luongcd,
+                  luongps: this.selected[i].luongcn,
+                  tongluong:
+                    parseFloat(this.selected[i].luongqlsp) +
+                    this.selected[i].luongcd +
+                    this.selected[i].luongcn +
+                    parseFloat(this.selected[i].ngayhotro) *
+                      parseFloat(this.selected[i].luongmem),
+                  antrua: this.selected[i].thanhtien,
+                  songaycong: this.selected[i].songaylam,
+                  ngayhotro: parseFloat(this.selected[i].ngayhotro),
+                  tienhotro:
+                    parseFloat(this.selected[i].ngayhotro) *
+                    parseFloat(this.selected[i].luongmem),
+                  bhxh: this.selected[i].bhxh,
+                  congdoan: this.selected[i].congdoan,
+                  tamung: this.selected[i].tienung,
+                  tongtru:
+                    parseFloat(this.selected[i].congdoan) +
+                    this.selected[i].bhxh +
+                    parseFloat(this.selected[i].antrua),
+                  tongnhan:
+                    parseFloat(this.selected[i].luongqlsp) +
+                    this.selected[i].luongcd +
+                    this.selected[i].luongcn +
+                    this.selected[i].thanhtien +
+                    parseFloat(this.selected[i].ngayhotro) *
+                      parseFloat(this.selected[i].luongmem) -
+                    (this.selected[i].bhxh +
+                      parseFloat(this.selected[i].congdoan) +
+                      parseFloat(this.selected[i].antrua)),
+                  tienphat: this.selected[i].antrua,
+                  createdAt: this.createdAt,
+                  createdBy: this.createdBy,
+                  thang: this.thang,
+                  nam: this.nam,
+                  key_thangnam: this.keyThangnam,
+                  status: true,
+                  stk: this.selected[i].stk,
+                  nhanl1: 0,
+                  nhanl2: 0,
+                  nhanl3: 0,
+                  nhanl4: 0,
+                  nhanl5: 0,
+                  nhanl6: 0,
+                  sttchon: this.selected[i].sttchon,
+                };
+                // console.log(data);
+                const res = this.$axios.$post(
+                  "/api/ketoan/themluongthang",
+                  data
+                );
+
+                const Toast = Swal.mixin({
+                  toast: true,
+                  position: "top-end",
+                  showConfirmButton: false,
+                  timer: 3000,
+                  timerProgressBar: true,
+                  didOpen: (toast) => {
+                    toast.addEventListener("mouseenter", Swal.stopTimer);
+                    toast.addEventListener("mouseleave", Swal.resumeTimer);
+                  },
+                });
+                Toast.fire({
+                  icon: "success",
+                  title: "Tạo số liệu lương thành công",
+                });
+              }
+            }
           }
+        } catch (error) {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
+          Toast.fire({
+            icon: "error",
+            title: `Có lỗi xảy ra`,
+          });
         }
-      });
+      }
     },
   },
 };

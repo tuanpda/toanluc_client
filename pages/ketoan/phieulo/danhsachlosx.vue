@@ -685,15 +685,27 @@
                   </select>
                 </div>
               </td>
-              <td style="text-align: center">
-                <a @click="showGhichu(item)"
-                  ><span class="icon is-small">
-                    <i
-                      style="color: green"
-                      class="far fa-comment-dots"
-                    ></i> </span
-                ></a>
-              </td>
+              <template>
+                <td v-if="item.ghichu != ''" style="text-align: center">
+                  <a @click="showGhichu(item)"
+                    ><span class="icon is-small">
+                      <i
+                        style="color: green"
+                        class="far fa-comment-dots"
+                      ></i> </span
+                  ></a>
+                </td>
+                <td v-else style="text-align: center">
+                  <a @click="showGhichu(item)"
+                    ><span class="icon is-small">
+                      <i
+                        style="color: wheat"
+                        class="fas fa-comment-slash"
+                      ></i> </span
+                  ></a>
+                </td>
+              </template>
+
               <td style="width: 5%">
                 <button
                   @click="onUpdateLosx(item)"
@@ -1474,6 +1486,27 @@ export default {
         this.selectedOptions.length > 0 &&
         this.selectedOptions_to.length > 0 &&
         this.Options_status.length > 0 &&
+        this.multiSearch_masp != "" &&
+        this.searchNgaybd != ""
+      ) {
+        this.lokehoachsx = await this.$axios.$get(
+          `/api/lokehoach/filterxuongtomaspstatusngaybd`,
+          {
+            params: {
+              mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
+              masp: masp,
+              status: status,
+              // nhomsp: nhomsp,
+              mato: matoList,
+              ngaybd: ngaybd,
+            },
+          }
+        );
+        // console.log(this.lokehoachsx)
+      } else if (
+        this.selectedOptions.length > 0 &&
+        this.selectedOptions_to.length > 0 &&
+        this.Options_status.length > 0 &&
         this.searchNgaybd != ""
       ) {
         this.lokehoachsx = await this.$axios.$get(
@@ -1528,6 +1561,46 @@ export default {
               masp: masp,
               // status: status,
               // nhomsp: nhomsp,
+              mato: matoList,
+            },
+          }
+        );
+        // console.log(this.lokehoachsx)
+      } else if (
+        this.selectedOptions.length > 0 &&
+        this.selectedOptions_to.length > 0 &&
+        this.Options_status.length > 0 &&
+        this.multiSearch_masp != "" &&
+        this.multiSearch_nhomsp == ""
+      ) {
+        this.lokehoachsx = await this.$axios.$get(
+          `/api/lokehoach/filterxuongtomaspstatus`,
+          {
+            params: {
+              mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
+              masp: masp,
+              status: status,
+              // nhomsp: nhomsp,
+              mato: matoList,
+            },
+          }
+        );
+        // console.log(this.lokehoachsx)
+      } else if (
+        this.selectedOptions.length > 0 &&
+        this.selectedOptions_to.length > 0 &&
+        this.Options_status.length > 0 &&
+        this.multiSearch_masp == "" &&
+        this.multiSearch_nhomsp != ""
+      ) {
+        this.lokehoachsx = await this.$axios.$get(
+          `/api/lokehoach/filterxuongtomaspstatus`,
+          {
+            params: {
+              mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
+              // masp: masp,
+              status: status,
+              nhomsp: nhomsp,
               mato: matoList,
             },
           }
