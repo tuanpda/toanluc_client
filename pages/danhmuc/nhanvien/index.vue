@@ -17,7 +17,7 @@
         </div>
 
         <div class="columns">
-          <div class="column is-8">
+          <div class="column is-10">
             <span>Có tất cả: </span>
             <span style="font-weight: bold">{{
               dsnhanvien.length | formatNumber
@@ -33,14 +33,6 @@
                 <i class="fas fa-pen-fancy"></i>
               </span>
               <span>Thêm nhân viên</span>
-            </button>
-          </div>
-          <div class="column" style="text-align: right">
-            <button class="button is-info is-fullwidth is-small">
-              <span class="icon is-small">
-                <i class="fas fa-angle-double-left"></i>
-              </span>
-              <span>Thoát</span>
             </button>
           </div>
         </div>
@@ -95,29 +87,39 @@
                 <th style="text-align: center; font-size: small; width: 3%">
                   STT
                 </th>
+                <th style="text-align: center; font-size: small">
+                  Tên nhân viên
+                </th>
+                <th style="text-align: center; font-size: small">Mã phòng</th>
+                <th style="text-align: center; font-size: small">Tên phòng</th>
+                <th style="text-align: center; font-size: small">CCCD</th>
+                <th style="text-align: center; font-size: small">Ngày sinh</th>
+                <th style="text-align: center; font-size: small">Giới tính</th>
                 <th style="text-align: center; font-size: small; width: 4%">
                   Sửa
                 </th>
                 <!-- <th style="text-align: center; font-size: small; width: 4%">
                   Xóa
                 </th> -->
-                <th style="text-align: center; font-size: small">
-                  Tên nhân viên
-                </th>
-                <th style="text-align: center; font-size: small">Mã phòng</th>
-                <th style="text-align: center; font-size: small">Tên phòng</th>
-                <!-- <th style="text-align: center; font-size: small">
-                  Lương cơ bản
-                </th> -->
-                <th style="text-align: center; font-size: small">CCCD</th>
-                <th style="text-align: center; font-size: small">Ngày sinh</th>
-                <th style="text-align: center; font-size: small">Giới tính</th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(nv, index) in dsnhanvien" :key="index">
                 <td style="text-align: center; font-size: small">
                   {{ index + 1 }}
+                </td>
+                <td style="font-size: small">{{ nv.tennv }}</td>
+                <td style="font-size: small">{{ nv.mapb }}</td>
+                <td style="font-size: small">{{ nv.tenphong }}</td>
+                <!-- <td style="font-size: small">{{ nv.mucluong }}</td> -->
+                <td style="text-align: center; font-size: small">
+                  {{ nv.cccd }}
+                </td>
+                <td style="text-align: center; font-size: small">
+                  {{ nv.ngaysinh | formatDate }}
+                </td>
+                <td style="text-align: center; font-size: small">
+                  {{ nv.gioitinh }}
                 </td>
                 <td style="text-align: center; color: green">
                   <nuxt-link :to="`/danhmuc/nhanvien/${nv._id}/manage`">
@@ -133,19 +135,6 @@
                     </span>
                   </a>
                 </td> -->
-                <td style="font-size: small">{{ nv.tennv }}</td>
-                <td style="font-size: small">{{ nv.mapb }}</td>
-                <td style="font-size: small">{{ nv.tenphong }}</td>
-                <!-- <td style="font-size: small">{{ nv.mucluong }}</td> -->
-                <td style="text-align: center; font-size: small">
-                  {{ nv.cccd }}
-                </td>
-                <td style="text-align: center; font-size: small">
-                  {{ nv.ngaysinh | formatDate }}
-                </td>
-                <td style="text-align: center; font-size: small">
-                  {{ nv.gioitinh }}
-                </td>
               </tr>
             </tbody>
           </table>
@@ -164,8 +153,8 @@
                   border-top-right-radius: 8px;
                 "
               >
-                <div class="columns">
-                  <div class="column is-9">
+                <div class="columns is-mobile">
+                  <div class="column">
                     <p
                       style="
                         font-size: small;
@@ -182,16 +171,6 @@
                       </span>
                       Thêm Nhân viên
                     </p>
-                  </div>
-                  <div class="column" style="text-align: right">
-                    <a @click="isActive = false">
-                      <span
-                        style="color: red; padding: 20px"
-                        class="icon is-small"
-                      >
-                        <i class="fas fa-power-off"></i>
-                      </span>
-                    </a>
                   </div>
                 </div>
               </header>
@@ -1016,5 +995,12 @@ export default {
 #preview img {
   max-width: 90px;
   max-height: 90px;
+}
+
+@media (max-width: 768px) {
+  .modal-card {
+    width: 90%;
+    max-width: 400px;
+  }
 }
 </style>

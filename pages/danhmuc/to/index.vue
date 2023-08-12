@@ -9,13 +9,15 @@
               <span class="icon is-small is-left">
                 <i style="color: #00d1b2" class="fas fa-outdent"></i>
               </span>
-              <span style="color: #3850b7; font-size: 17px; font-weight: bold;">Danh mục Tổ</span>
+              <span style="color: #3850b7; font-size: 17px; font-weight: bold"
+                >Danh mục Tổ</span
+              >
             </div>
           </div>
         </div>
 
         <div class="columns">
-          <div class="column is-8">
+          <div class="column is-10">
             <span>Có tất cả: </span>
             <span style="font-weight: bold">{{
               tonhom.length | formatNumber
@@ -23,25 +25,18 @@
             <span>tổ</span>
           </div>
           <div class="column" style="text-align: right">
-            <button @click="isActive = true" class="button is-success is-fullwidth is-small">
+            <button
+              @click="isActive = true"
+              class="button is-success is-fullwidth is-small"
+            >
               <span class="icon is-small">
                 <i class="fas fa-pen-fancy"></i>
               </span>
               <span>Thêm Tổ</span>
             </button>
           </div>
-          <div class="column" style="text-align: right">
-            <nuxt-link :to="`/`">
-              <button class="button is-info is-fullwidth is-small">
-                <span class="icon is-small">
-                  <i class="fas fa-angle-double-left"></i>
-                </span>
-                <span>Thoát</span>
-              </button>
-            </nuxt-link>
-          </div>
         </div>
-        <div style="margin-bottom: 3px;">
+        <div style="margin-bottom: 3px">
           <vue-excel-xlsx
             :data="tonhom"
             :columns="columns"
@@ -53,27 +48,98 @@
           </vue-excel-xlsx>
         </div>
         <div class="table_wrapper">
-          <table class="
-                    table
-                    is-bordered is-striped is-narrow is-hoverable is-fullwidth
-                  ">
+          <table
+            class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
+          >
             <thead>
-              <tr style="background-color: #fffaeb;">
-                <th style="text-align: center; font-weight: bold; font-size: smaller; width: 3%">STT</th>
-                <th style="text-align: center; font-weight: bold; font-size: smaller; width: 5%">Sửa</th>
-                <th style="text-align: center; font-weight: bold; font-size: smaller; width: 5%">Xóa</th>
-                <th style="text-align: center; font-weight: bold; font-size: smaller; width: 10%">Mã tổ</th>
-                <th style="text-align: center; font-weight: bold; font-size: smaller;">Tên tổ</th>
-                <th style="text-align: center; font-weight: bold; font-size: smaller; width: 8%">Mã phân xưởng</th>
-                <th style="text-align: center; font-weight: bold; font-size: smaller;">
+              <tr style="background-color: #fffaeb">
+                <th
+                  style="
+                    text-align: center;
+                    font-weight: bold;
+                    font-size: smaller;
+                    width: 3%;
+                  "
+                >
+                  STT
+                </th>
+                <th
+                  style="
+                    text-align: center;
+                    font-weight: bold;
+                    font-size: smaller;
+                    width: 10%;
+                  "
+                >
+                  Mã tổ
+                </th>
+                <th
+                  style="
+                    text-align: center;
+                    font-weight: bold;
+                    font-size: smaller;
+                  "
+                >
+                  Tên tổ
+                </th>
+                <th
+                  style="
+                    text-align: center;
+                    font-weight: bold;
+                    font-size: smaller;
+                    width: 8%;
+                  "
+                >
+                  Mã phân xưởng
+                </th>
+                <th
+                  style="
+                    text-align: center;
+                    font-weight: bold;
+                    font-size: smaller;
+                  "
+                >
                   Phân xưởng
                 </th>
-                <th style="text-align: center; font-weight: bold; font-size: smaller;">Diễn giải</th>
+                <th
+                  style="
+                    text-align: center;
+                    font-weight: bold;
+                    font-size: smaller;
+                  "
+                >
+                  Ghi chú
+                </th>
+                <th
+                  style="
+                    text-align: center;
+                    font-weight: bold;
+                    font-size: smaller;
+                    width: 5%;
+                  "
+                >
+                  Sửa
+                </th>
+                <th
+                  style="
+                    text-align: center;
+                    font-weight: bold;
+                    font-size: smaller;
+                    width: 5%;
+                  "
+                >
+                  Xóa
+                </th>
               </tr>
             </thead>
             <tbody>
               <tr v-for="(px, index) in tonhom" :key="index">
                 <td style="text-align: center">{{ index + 1 }}</td>
+                <td style="font-size: smaller">{{ px.mato }}</td>
+                <td style="font-size: smaller">{{ px.tento }}</td>
+                <td style="font-size: smaller">{{ px.mapx }}</td>
+                <td style="font-size: smaller">{{ px.tenpx }}</td>
+                <td style="font-size: smaller">{{ px.ghichu }}</td>
                 <td style="text-align: center; color: green">
                   <nuxt-link :to="`/danhmuc/to/${px._id}/manage`">
                     <span class="icon is-small">
@@ -88,11 +154,6 @@
                     </span>
                   </a>
                 </td>
-                <td style="font-size: smaller;">{{ px.mato }}</td>
-                <td style="font-size: smaller;">{{ px.tento }}</td>
-                <td style="font-size: smaller;">{{ px.mapx }}</td>
-                <td style="font-size: smaller;">{{ px.tenpx }}</td>
-                <td style="font-size: smaller;">{{ px.ghichu }}</td>
               </tr>
             </tbody>
           </table>
@@ -103,22 +164,31 @@
           <div :class="{ 'is-active': isActive }" class="modal">
             <div class="modal-background"></div>
             <div class="modal-content modal-card">
-              <header style="background-color: #3e8ed0; border-top-left-radius: 8px; border-top-right-radius: 8px;">
-                <div class="columns">
-                  <div class="column is-9">
-                    <p style="font-size: small; font-weight: bold; color: white; padding: 15px;">
+              <header
+                style="
+                  background-color: #3e8ed0;
+                  border-top-left-radius: 8px;
+                  border-top-right-radius: 8px;
+                "
+              >
+                <div class="columns is-mobile">
+                  <div class="column">
+                    <p
+                      style="
+                        font-size: small;
+                        font-weight: bold;
+                        color: white;
+                        padding: 15px;
+                      "
+                    >
                       <span class="icon is-small is-left">
-                        <i style="color: #ffd863ff" class="fas fa-feather-alt"></i>
+                        <i
+                          style="color: #ffd863ff"
+                          class="fas fa-feather-alt"
+                        ></i>
                       </span>
                       Thêm Tổ
                     </p>
-                  </div>
-                  <div class="column" style="text-align:right;">
-                    <a @click="isActive = false">
-                      <span style="color: red; padding: 20px;" class="icon is-small">
-                        <i class="fas fa-power-off"></i>
-                      </span>
-                    </a>
                   </div>
                 </div>
               </header>
@@ -142,40 +212,63 @@
                 <div class="field">
                   <label class="label">Mã tổ</label>
                   <div class="control">
-                    <input v-model="form.mato" @blur="$v.form.mato.$touch()" class="input is-small" type="text"
-                      placeholder="Nhập mã Tổ" />
+                    <input
+                      v-model="form.mato"
+                      @blur="$v.form.mato.$touch()"
+                      class="input is-small"
+                      type="text"
+                      placeholder="Nhập mã Tổ"
+                    />
                   </div>
                   <div v-if="$v.form.mato.$error" class="form-error">
-                    <span v-if="!$v.form.mato.required" class="help is-danger">Yêu cầu nhập mã Tổ</span>
+                    <span v-if="!$v.form.mato.required" class="help is-danger"
+                      >Yêu cầu nhập mã Tổ</span
+                    >
                   </div>
                 </div>
                 <div class="field">
                   <label class="label">Tên tổ</label>
                   <div class="control">
-                    <input v-model="form.tento" @blur="$v.form.tento.$touch()" class="input is-small" type="text"
-                      placeholder="Nhập tên Tổ" />
+                    <input
+                      v-model="form.tento"
+                      @blur="$v.form.tento.$touch()"
+                      class="input is-small"
+                      type="text"
+                      placeholder="Nhập tên Tổ"
+                    />
                   </div>
                   <div v-if="$v.form.tento.$error" class="form-error">
-                    <span v-if="!$v.form.tento.required" class="help is-danger">Yêu cầu nhập tên Tổ</span>
+                    <span v-if="!$v.form.tento.required" class="help is-danger"
+                      >Yêu cầu nhập tên Tổ</span
+                    >
                   </div>
                 </div>
                 <div class="field">
                   <label class="label">Diễn giải thêm</label>
                   <div class="control">
-                    <textarea v-model="form.diengiai" class="textarea is-small"
-                      placeholder="Ghi chú thêm ..."></textarea>
+                    <textarea
+                      v-model="form.diengiai"
+                      class="textarea is-small"
+                      placeholder="Ghi chú thêm ..."
+                    ></textarea>
                   </div>
                 </div>
 
                 <div class="columns">
                   <div class="column">
-                    <button :disabled="$v.form.$invalid" @click.prevent="onAddpx"
-                      class="button is-success is-fullwidth is-small">
+                    <button
+                      :disabled="$v.form.$invalid"
+                      @click.prevent="onAddpx"
+                      class="button is-success is-fullwidth is-small"
+                    >
                       Ghi nhận
                     </button>
                   </div>
                   <div class="column">
-                    <button @click="isActive = false" class="button is-danger is-light is-fullwidth is-small">
+                    <button
+                      @click="isActive = false"
+                      class="button is-danger is-light is-fullwidth is-small"
+                    >
                       Hủy bỏ
                     </button>
                   </div>
@@ -292,7 +385,7 @@ export default {
   mounted() {
     this.getDmpx();
     this.currentDateTime();
-    this.get_phanxuong()
+    this.get_phanxuong();
   },
 
   isFormValid() {
@@ -364,9 +457,9 @@ export default {
             // console.log(this.$auth.$state.user.username);
 
             this.$axios.$post("/api/phongban/addto", this.form);
-            this.getDmpx()
+            this.getDmpx();
 
-            this.isActive = false
+            this.isActive = false;
 
             const Toast = Swal.mixin({
               toast: true,
@@ -383,7 +476,6 @@ export default {
               icon: "success",
               title: "Thêm mới thành công",
             });
-
           } catch (error) {
             console.log(error);
             const Toast = Swal.mixin({
@@ -414,11 +506,13 @@ export default {
         dangerMode: true,
       }).then((willDelete) => {
         if (willDelete) {
-          this.$axios.$delete(`/api/phongban/tonhom/${px._id}`)
-            .then(response => {
-              const index = this.tonhom.findIndex(p => p._id === px._id) // find the post index 
-              if (~index) // if the post exists in array
-                this.tonhom.splice(index, 1) //delete the post
+          this.$axios
+            .$delete(`/api/phongban/tonhom/${px._id}`)
+            .then((response) => {
+              const index = this.tonhom.findIndex((p) => p._id === px._id); // find the post index
+              if (~index)
+                // if the post exists in array
+                this.tonhom.splice(index, 1); //delete the post
             });
           const Toast = Swal.mixin({
             toast: true,
@@ -471,14 +565,10 @@ export default {
   width: 720px;
 }
 
-#preview {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#preview img {
-  max-width: 90px;
-  max-height: 90px;
+@media (max-width: 768px) {
+  .modal-card {
+    width: 90%;
+    max-width: 400px;
+  }
 }
 </style>

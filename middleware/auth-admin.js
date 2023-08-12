@@ -1,7 +1,7 @@
 import Swal from "sweetalert2";
 export default async function ({ $auth, redirect }) {
   let user = $auth.$state.user;
-  if (user && user.role.trim() == "admin") {
+  if (user && user.role == "admin") {
     //console.log('ccc') and let user in
   } else {
     redirect("/");

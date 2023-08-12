@@ -174,12 +174,6 @@
               >
                 Các khoản khấu trừ
               </td>
-              <!-- <td
-                rowspan="2"
-                style="text-align: center; font-weight: bold; font-size: small"
-              >
-                Trừ tạm ứng
-              </td> -->
               <td
                 rowspan="2"
                 style="text-align: center; font-weight: bold; font-size: small"
@@ -1047,7 +1041,7 @@ export default {
           } else {
             const arrkeythangnam = [];
             const listkeythangnam = await this.$axios.$get(
-              `/api/ketoan/getkeythangnam`
+              `/api/ketoan/getkeythangnamvanphong`
             );
             // console.log(listkeythangnam);
             for (let i = 0; i < listkeythangnam.length; i++) {
@@ -1056,81 +1050,75 @@ export default {
             }
             // console.log(arrkeythangnam);
             this.keyThangnam =
-              this.thangLapluong.trim() +
-              this.namLapluong.trim() +
-              "-" +
-              "VanPhong";
+              this.thangLapluong.trim() + this.namLapluong.trim();
 
             // console.log(this.keyThangnam);
             this.isExits = arrkeythangnam.includes(this.keyThangnam.trim());
             // console.log(this.isExits);
             if (this.isExits == false) {
-              console.log(this.selected);
+              // console.log(this.selected);
               for (let i = 0; i < this.selected.length; i++) {
                 // console.log(this.selected[i]);
                 let data = {
-                  mapb: this.selected[0].mapb,
-                  tenpb: this.selected[0].tenphong,
-                  mato: "",
-                  manv: this.selected[i].macn,
-                  hotennv: this.selected[i].tencongnhan,
-                  chucvu: this.selected[i].chucvu,
-                  luongcb: this.selected[i].luongcb,
-                  luongmem: this.selected[i].luongmem,
-                  luongqlsp: this.selected[i].luongqlsp,
-                  luongcd: this.selected[i].luongcd,
-                  luongps: this.selected[i].luongcn,
+                  mapb: this.selected[i].mapb,
+                  tenpb: this.selected[i].tenphong,
+                  manv: this.selected[i].manv,
+                  hotennv: this.selected[i].tennv,
+                  chucvu: "",
+                  mucluong: this.selected[i].mucluong,
+                  luongngay: this.selected[i].luongngay,
+                  luongtrachnhiem: this.selected[i].luongtrachnhiem,
+                  bacluong: this.selected[i].bacluong,
+                  ngaycong: this.selected[i].sum_ngay_lam,
+                  luongngaycong:
+                    parseFloat(this.selected[i].sum_ngay_lam) *
+                    parseFloat(this.selected[i].luongngay),
+                  dieuchinhdt: this.selected[i].dt_dieuchinh,
+                  thuongdt: this.selected[i].dt_thuong,
+                  phat: this.selected[i].dt_phat,
+                  luongngoaigio: this.selected[i].thanhtienngoaigio,
+                  sogiongoaigio: 0,
+                  hotro: this.selected[i].thuong,
                   tongluong:
-                    parseFloat(this.selected[i].luongqlsp) +
-                    this.selected[i].luongcd +
-                    this.selected[i].luongcn +
-                    parseFloat(this.selected[i].ngayhotro) *
-                      parseFloat(this.selected[i].luongmem),
-                  antrua: this.selected[i].thanhtien,
-                  songaycong: this.selected[i].songaylam,
-                  ngayhotro: parseFloat(this.selected[i].ngayhotro),
-                  tienhotro:
-                    parseFloat(this.selected[i].ngayhotro) *
-                    parseFloat(this.selected[i].luongmem),
+                    parseFloat(this.selected[i].luongtrachnhiem) +
+                    (parseFloat(this.selected[i].luongngay) *
+                      parseInt(this.selected[i].sum_ngay_lam) +
+                      parseFloat(this.selected[i].dt_dieuchinh) +
+                      parseFloat(this.selected[i].dt_thuong) +
+                      parseFloat(this.selected[i].thuong) +
+                      parseFloat(this.selected[i].thanhtienngoaigio) -
+                      parseFloat(this.selected[i].dt_phat)),
                   bhxh: this.selected[i].bhxh,
                   congdoan: this.selected[i].congdoan,
-                  tamung: this.selected[i].tienung,
-                  tongtru:
-                    parseFloat(this.selected[i].congdoan) +
-                    this.selected[i].bhxh +
-                    parseFloat(this.selected[i].antrua),
-                  tongnhan:
-                    parseFloat(this.selected[i].luongqlsp) +
-                    this.selected[i].luongcd +
-                    this.selected[i].luongcn +
-                    this.selected[i].thanhtien +
-                    parseFloat(this.selected[i].ngayhotro) *
-                      parseFloat(this.selected[i].luongmem) -
-                    (this.selected[i].bhxh +
-                      parseFloat(this.selected[i].congdoan) +
-                      parseFloat(this.selected[i].antrua)),
-                  tienphat: this.selected[i].antrua,
+                  tongkt:
+                    parseFloat(this.selected[i].bhxh) +
+                    parseFloat(this.selected[i].congdoan),
+                  luongnhan:
+                    parseFloat(this.selected[i].luongtrachnhiem) +
+                    (parseFloat(this.selected[i].luongngay) *
+                      parseInt(this.selected[i].sum_ngay_lam) +
+                      parseFloat(this.selected[i].dt_dieuchinh) +
+                      parseFloat(this.selected[i].dt_thuong) +
+                      parseFloat(this.selected[i].thuong) +
+                      parseFloat(this.selected[i].thanhtienngoaigio) -
+                      parseFloat(this.selected[i].dt_phat)) -
+                    (parseFloat(this.selected[i].bhxh) +
+                      parseFloat(this.selected[i].congdoan)),
                   createdAt: this.createdAt,
                   createdBy: this.createdBy,
-                  thang: this.thang,
-                  nam: this.nam,
+                  thang: this.thangLapluong,
+                  nam: this.namLapluong,
                   key_thangnam: this.keyThangnam,
                   status: true,
-                  stk: this.selected[i].stk,
-                  nhanl1: 0,
-                  nhanl2: 0,
-                  nhanl3: 0,
-                  nhanl4: 0,
-                  nhanl5: 0,
-                  nhanl6: 0,
-                  sttchon: this.selected[i].sttchon,
+                  stk: this.selected[i].stknh,
+                  tennganhang: this.selected[i].tennh,
                 };
                 // console.log(data);
                 const res = this.$axios.$post(
-                  "/api/ketoan/themluongthang",
+                  "/api/ketoan/themluongthangvanphong",
                   data
                 );
-
+                console.log("hh");
                 const Toast = Swal.mixin({
                   toast: true,
                   position: "top-end",
@@ -1147,6 +1135,22 @@ export default {
                   title: "Tạo số liệu lương thành công",
                 });
               }
+            } else {
+              const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.addEventListener("mouseenter", Swal.stopTimer);
+                  toast.addEventListener("mouseleave", Swal.resumeTimer);
+                },
+              });
+              Toast.fire({
+                icon: "error",
+                title: "Đã tạo kỳ  lương này rồi !!!",
+              });
             }
           }
         } catch (error) {

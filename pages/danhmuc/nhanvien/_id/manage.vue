@@ -19,356 +19,269 @@
           </div>
         </div>
 
-        <div class="columns">
+        <div class="table_wrapper">
+          <table class="table is-responsive is-bordered is-narrow is-fullwidth">
+            <tr style="background-color: #fffaeb">
+              <td colspan="2" style="font-size: small; font-weight: bold">
+                Thông tin nhân viên
+              </td>
+            </tr>
+            <tr style="font-size: small">
+              <td style="font-weight: bold; width: 20%">Tên nhân viên</td>
+              <td>
+                <div class="control">
+                  <input
+                    v-model.trim="form.tennv"
+                    @blur="$v.form.tennv.$touch()"
+                    class="input is-small"
+                    type="text"
+                    placeholder="Nhập vào tên nhân viên"
+                  />
+                </div>
+                <div v-if="$v.form.tennv.$error" class="form-error">
+                  <span v-if="!$v.form.tennv.required" class="help is-danger"
+                    >Yêu cầu nhập tên nhân viên</span
+                  >
+                </div>
+              </td>
+            </tr>
+            <tr style="font-size: small">
+              <td style="font-weight: bold; width: 20%">Số điện thoại</td>
+              <td>
+                <div class="control">
+                  <input
+                    @blur="$v.form.sodienthoai.$touch()"
+                    v-model.trim="form.sodienthoai"
+                    class="input is-small"
+                    type="text"
+                    placeholder="Nhập số điện thoại"
+                  />
+                </div>
+                <div v-if="$v.form.sodienthoai.$error" class="form-error">
+                  <span
+                    v-if="!$v.form.sodienthoai.required"
+                    class="help is-danger"
+                    >Yêu cầu nhập số điện thoại</span
+                  >
+                </div>
+              </td>
+            </tr>
+            <tr style="font-size: small">
+              <td style="font-weight: bold; width: 20%">CCCD</td>
+              <td>
+                <div class="control">
+                  <input
+                    @blur="$v.form.cccd.$touch()"
+                    v-model.trim="form.cccd"
+                    class="input is-small"
+                    type="text"
+                    placeholder="Nhập căn cước công dân"
+                  />
+                </div>
+                <div v-if="$v.form.cccd.$error" class="form-error">
+                  <span v-if="!$v.form.cccd.required" class="help is-danger"
+                    >Yêu cầu nhập căn cước công dân</span
+                  >
+                </div>
+              </td>
+            </tr>
+            <tr style="font-size: small">
+              <td style="font-weight: bold; width: 20%">Giới tính</td>
+              <td>
+                <div class="control">
+                  <label class="radio is-small">
+                    <input
+                      v-model="form.gioitinh"
+                      value="Nam"
+                      type="radio"
+                      name="answer"
+                    />
+                    Nam
+                  </label>
+                  <label class="radio">
+                    <input
+                      v-model="form.gioitinh"
+                      value="Nữ"
+                      type="radio"
+                      name="answer"
+                    />
+                    Nữ
+                  </label>
+                </div>
+              </td>
+            </tr>
+            <tr style="font-size: small">
+              <td style="font-weight: bold; width: 20%">Địa chỉ liên hệ</td>
+              <td>
+                <div class="control">
+                  <input
+                    v-model="form.diachilh"
+                    class="input is-small"
+                    type="text"
+                    placeholder="Nhập địa chỉ liên hệ"
+                  />
+                </div>
+              </td>
+            </tr>
+            <tr style="font-size: small">
+              <td style="font-weight: bold; width: 20%">Địa chỉ LH khẩn cấp</td>
+              <td>
+                <div class="control">
+                  <input
+                    v-model="form.lhkhancap"
+                    class="input is-small"
+                    type="text"
+                    placeholder="Nhập địa chỉ liên hệ khẩn cấp"
+                  />
+                </div>
+              </td>
+            </tr>
+            <tr style="font-size: small">
+              <td style="font-weight: bold; width: 20%">Làm việc?</td>
+              <td>
+                <template v-if="form.trangthai == true">
+                  <span
+                    style="font-weight: bold; font-size: small; color: green"
+                    >Đang làm</span
+                  >
+                </template>
+                <template v-else>
+                  <span style="font-weight: bold; font-size: small; color: red"
+                    >Đã nghỉ</span
+                  >
+                </template>
+                &nbsp;
+                <label class="switch" style="vertical-align: middle">
+                  <input v-model="form.trangthai" type="checkbox" />
+                  <span class="slider"></span>
+                </label>
+              </td>
+            </tr>
+            <tr style="font-size: small">
+              <td style="font-weight: bold; width: 20%">Phòng ban</td>
+              <td>
+                <div class="control has-icons-left">
+                  <div class="select is-fullwidth is-small">
+                    <select @change="showmapx($event)">
+                      <option selected disabled>{{ form.tenphong }}</option>
+                      <option v-for="item in phongban" :value="item.maphong">
+                        {{ item.maphong }} -- {{ item.tenphong }}
+                      </option>
+                    </select>
+                  </div>
+                  <span class="icon is-small is-left">
+                    <i style="color: #48c78e" class="fas fa-kaaba"></i>
+                  </span>
+                </div>
+              </td>
+            </tr>
+            <tr style="font-size: small">
+              <td style="font-weight: bold; width: 20%">Ngày sinh</td>
+              <td>
+                <input
+                  :value="formattedNgaybd(form)"
+                  class="input is-small"
+                  type="date"
+                />
+              </td>
+            </tr>
+            <tr style="font-size: small">
+              <td style="font-weight: bold; width: 20%">Mức lương</td>
+              <td>
+                <input
+                  v-model="form.mucluong"
+                  class="input is-small"
+                  type="number"
+                />
+              </td>
+            </tr>
+            <tr style="font-size: small">
+              <td style="font-weight: bold; width: 20%">Số tài khoản</td>
+              <td>
+                <input
+                  v-model="form.sotknh"
+                  class="input is-small"
+                  type="text"
+                />
+              </td>
+            </tr>
+            <tr style="font-size: small">
+              <td style="font-weight: bold; width: 20%">Tên ngân hàng</td>
+              <td>
+                <input
+                  v-model="form.tennh"
+                  class="input is-small"
+                  type="text"
+                />
+              </td>
+            </tr>
+            <tr style="font-size: small">
+              <td style="font-weight: bold; width: 20%">Ghi chú</td>
+              <td>
+                <div class="control">
+                  <textarea
+                    v-model="form.diengiai"
+                    class="textarea is-small"
+                    placeholder="Ghi chú thêm ..."
+                  ></textarea>
+                </div>
+              </td>
+            </tr>
+          </table>
+        </div>
+        <div class="columns" style="margin-top: 5px">
+          <div class="column is-8">
+            <div class="field">
+              <label class="label">Sửa ảnh hồ sơ</label>
+              <div class="file is-info has-name is-small">
+                <label class="file-label">
+                  <input
+                    @change="onFileChange"
+                    class="file-input"
+                    type="file"
+                    name="resume"
+                  />
+                  <span class="file-cta">
+                    <span class="file-icon">
+                      <i class="fas fa-upload"></i>
+                    </span>
+                    <span class="file-label"> Chọn ảnh </span>
+                  </span>
+                  <span class="file-name">
+                    {{ fileName }}
+                  </span>
+                </label>
+              </div>
+            </div>
+          </div>
           <div class="column">
-            <div class="table_wrappert">
-              <table
-                class="table is-responsive is-bordered is-narrow is-fullwidth"
-              >
-                <tr style="background-color: #fffaeb">
-                  <td
-                    colspan="6"
-                    style="
-                      font-size: small;
-                      font-weight: bold;
-                      text-align: right;
-                    "
-                  >
-                    Thông tin nhân viên
-                  </td>
-                </tr>
-                <tr>
-                  <td style="font-size: small; font-weight: bold; width: 20%">
-                    Tên nhân viên
-                  </td>
-                  <td
-                    style="
-                      font-size: small;
-                      text-align: center;
-                      font-weight: bold;
-                    "
-                  >
-                    Giới tính
-                  </td>
-                  <td
-                    style="
-                      font-size: small;
-                      text-align: center;
-                      font-weight: bold;
-                      width: 12%;
-                    "
-                  >
-                    Số điện thoại
-                  </td>
-                  <td
-                    style="
-                      font-size: small;
-                      text-align: center;
-                      font-weight: bold;
-                      width: 12%;
-                    "
-                  >
-                    CCCD
-                  </td>
-                  <td
-                    style="
-                      font-size: small;
-                      text-align: center;
-                      font-weight: bold;
-                    "
-                  >
-                    Địa chỉ liên hệ
-                  </td>
-                  <td
-                    style="
-                      font-size: small;
-                      text-align: center;
-                      font-weight: bold;
-                    "
-                  >
-                    Địa chỉ liên hệ khẩn cấp
-                  </td>
-                </tr>
-                <tr>
-                  <td>
-                    <div class="control">
-                      <input
-                        v-model.trim="form.tennv"
-                        @blur="$v.form.tennv.$touch()"
-                        class="input is-small"
-                        type="text"
-                        placeholder="Nhập vào tên nhân viên"
-                      />
-                    </div>
-                    <div v-if="$v.form.tennv.$error" class="form-error">
-                      <span
-                        v-if="!$v.form.tennv.required"
-                        class="help is-danger"
-                        >Yêu cầu nhập tên nhân viên</span
-                      >
-                    </div>
-                  </td>
-                  <td>
-                    <div style="text-align: center" class="control">
-                      <label class="radio">
-                        <input
-                          v-model="form.gioitinh"
-                          value="Nam"
-                          type="radio"
-                          name="answer"
-                        />
-                        Nam
-                      </label>
-                      <label class="radio">
-                        <input
-                          v-model="form.gioitinh"
-                          value="Nữ"
-                          type="radio"
-                          name="answer"
-                        />
-                        Nữ
-                      </label>
-                    </div>
-                  </td>
-                  <td>
-                    <div class="control">
-                      <input
-                        @blur="$v.form.sodienthoai.$touch()"
-                        v-model.trim="form.sodienthoai"
-                        class="input is-small"
-                        type="text"
-                        placeholder="Nhập số điện thoại"
-                      />
-                    </div>
-                    <div v-if="$v.form.sodienthoai.$error" class="form-error">
-                      <span
-                        v-if="!$v.form.sodienthoai.required"
-                        class="help is-danger"
-                        >Yêu cầu nhập số điện thoại</span
-                      >
-                    </div>
-                  </td>
-                  <td>
-                    <div class="control">
-                      <input
-                        @blur="$v.form.cccd.$touch()"
-                        v-model.trim="form.cccd"
-                        class="input is-small"
-                        type="text"
-                        placeholder="Nhập căn cước công dân"
-                      />
-                    </div>
-                    <div v-if="$v.form.cccd.$error" class="form-error">
-                      <span v-if="!$v.form.cccd.required" class="help is-danger"
-                        >Yêu cầu nhập căn cước công dân</span
-                      >
-                    </div>
-                  </td>
-                  <td>
-                    <div class="control">
-                      <input
-                        v-model="form.diachilh"
-                        class="input is-small"
-                        type="text"
-                        placeholder="Nhập địa chỉ liên hệ"
-                      />
-                    </div>
-                  </td>
-                  <td>
-                    <div class="control">
-                      <input
-                        v-model="form.lhkhancap"
-                        class="input is-small"
-                        type="text"
-                        placeholder="Nhập địa chỉ liên hệ khẩn cấp"
-                      />
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td colspan="6" style="font-size: small">
-                    <template v-if="form.trangthai == true">
-                      <span
-                        style="
-                          font-weight: bold;
-                          font-size: small;
-                          color: green;
-                        "
-                        >Đang làm</span
-                      >
-                    </template>
-                    <template v-else>
-                      <span
-                        style="font-weight: bold; font-size: small; color: red"
-                        >Đã nghỉ</span
-                      >
-                    </template>
-                    &nbsp;
-                    <label class="switch" style="vertical-align: middle">
-                      <input v-model="form.trangthai" type="checkbox" />
-                      <span class="slider"></span>
-                    </label>
-                  </td>
-                </tr>
-              </table>
-
-              <table
-                class="table is-responsive is-bordered is-narrow is-fullwidth"
-              >
-                <tr style="background-color: #fffaeb">
-                  <td
-                    style="
-                      font-size: small;
-                      font-weight: bold;
-                      text-align: center;
-                    "
-                  >
-                    Thông tin đã lưu
-                  </td>
-                  <td
-                    style="
-                      font-size: small;
-                      font-weight: bold;
-                      text-align: center;
-                    "
-                  >
-                    Hiệu chỉnh thông tin
-                  </td>
-                </tr>
-                <tr>
-                  <td>Phòng ban: {{ nhanvien.tenphong }}</td>
-                  <td>
-                    <div class="control has-icons-left">
-                      <div class="select is-fullwidth is-small">
-                        <select @change="showmapx($event)">
-                          <option selected>-- Chọn phòng ban --</option>
-                          <option
-                            v-for="item in phongban"
-                            :value="item.maphong"
-                          >
-                            {{ item.maphong }} -- {{ item.tenphong }}
-                          </option>
-                        </select>
-                      </div>
-                      <span class="icon is-small is-left">
-                        <i style="color: #48c78e" class="fas fa-kaaba"></i>
-                      </span>
-                    </div>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Ngày sinh: {{ nhanvien.ngaysinh | formatDate }}</td>
-                  <td>
-                    <input
-                      v-model="form.ngaysinh"
-                      class="input is-small"
-                      type="date"
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Mức lương: {{ nhanvien.mucluong }}</td>
-                  <td>
-                    <input
-                      v-model="form.mucluong"
-                      class="input is-small"
-                      type="text"
-                      placeholder="Nhập mức lương"
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Số tài khoản: {{ nhanvien.sotknh }}</td>
-                  <td>
-                    <input
-                      v-model="form.sotknh"
-                      class="input is-small"
-                      type="text"
-                      placeholder="Nhập số tài khoản ngân hàng"
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td>Tên ngân hàng: {{ nhanvien.tennh }}</td>
-                  <td>
-                    <input
-                      v-model="form.tennh"
-                      class="input is-small"
-                      type="text"
-                      placeholder="Nhập tên ngân hàng"
-                    />
-                  </td>
-                </tr>
-              </table>
+            <div v-if="form.anhdd && !url" class="column">
+              <div id="preview" class="box">
+                <img :src="form.anhdd" />
+              </div>
+            </div>
+            <div v-if="url" class="column">
+              <div id="preview" class="box">
+                <img :src="url" />
+              </div>
             </div>
           </div>
         </div>
-
-        <div style="border: 1px solid #48c78e; padding: 10px">
-          <div class="columns">
-            <div class="column is-8">
-              <div class="field">
-                <label class="label">Sửa ảnh hồ sơ</label>
-                <div class="file is-info has-name is-small">
-                  <label class="file-label">
-                    <input
-                      @change="onFileChange"
-                      class="file-input"
-                      type="file"
-                      name="resume"
-                    />
-                    <span class="file-cta">
-                      <span class="file-icon">
-                        <i class="fas fa-upload"></i>
-                      </span>
-                      <span class="file-label"> Chọn ảnh </span>
-                    </span>
-                    <span class="file-name">
-                      {{ fileName }}
-                    </span>
-                  </label>
-                </div>
-              </div>
-            </div>
-            <div class="column">
-              <div v-if="form.anhdd && !url" class="column">
-                <div id="preview" class="box">
-                  <img :src="form.anhdd" />
-                </div>
-              </div>
-              <div v-if="url" class="column">
-                <div id="preview" class="box">
-                  <img :src="url" />
-                </div>
-              </div>
-            </div>
+        <div class="columns">
+          <div class="column">
+            <button
+              @click.prevent="onUpdate"
+              class="button is-success is-fullwidth is-small"
+            >
+              Ghi nhận
+            </button>
           </div>
-          <div class="field">
-            <label class="label">Diễn giải thêm</label>
-            <div class="control">
-              <textarea
-                v-model="form.diengiai"
-                class="textarea is-small"
-                placeholder="Ghi chú thêm ..."
-              ></textarea>
-            </div>
-          </div>
-          <div class="columns">
-            <div class="column">
-              <button
-                @click.prevent="onUpdate"
-                class="button is-success is-fullwidth is-small"
-              >
-                Ghi nhận
+          <div class="column">
+            <nuxt-link :to="`/danhmuc/nhanvien/`">
+              <button class="button is-danger is-light is-fullwidth is-small">
+                Hủy bỏ
               </button>
-            </div>
-            <div class="column">
-              <nuxt-link :to="`/danhmuc/nhanvien/`">
-                <button class="button is-danger is-light is-fullwidth is-small">
-                  Hủy bỏ
-                </button>
-              </nuxt-link>
-            </div>
+            </nuxt-link>
           </div>
         </div>
       </div>
@@ -486,6 +399,20 @@ export default {
   mounted() {
     this.currentDateTime();
     this.getphongban();
+  },
+
+  computed: {
+    formattedNgaybd() {
+      return function (form) {
+        // console.log(form);
+        if (!form.ngaysinh) return "";
+        const date = new Date(form.ngaysinh);
+        const year = date.getFullYear();
+        const month = ("0" + (date.getMonth() + 1)).slice(-2);
+        const day = ("0" + date.getDate()).slice(-2);
+        return `${year}-${month}-${day}`;
+      };
+    },
   },
 
   methods: {
@@ -615,6 +542,17 @@ export default {
 </script>
 
 <style scoped>
+.table_wrapper {
+  display: block;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.table_wrapper {
+  position: sticky;
+  left: 0;
+  background-color: whitesmoke;
+}
 .modal-content,
 .modal-card {
   width: 720px;

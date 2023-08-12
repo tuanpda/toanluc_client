@@ -2,14 +2,14 @@
   <div class="columns">
     <div class="column container">
       <br />
-      <div class="box" style="margin-left: 100px; margin-right: 100px">
+      <div class="box" style="margin-left: 3px; margin-right: 3px">
         <div class="columns">
           <div class="column">
             <div class="control">
               <span class="icon is-small is-left">
                 <i style="color: #00d1b2" class="fas fa-fax"></i>
               </span>
-              <span style="color: #3850b7; font-size: 17px; font-weight: bold"
+              <span style="color: #3850b7; font-size: 15px; font-weight: bold"
                 >Danh mục Phòng ban</span
               >
             </div>
@@ -17,7 +17,7 @@
         </div>
 
         <div class="columns">
-          <div class="column is-8">
+          <div class="column is-10">
             <span>Có tất cả: </span>
             <span style="font-weight: bold">{{
               phongban.length | formatNumber
@@ -35,16 +35,8 @@
               <span>Thêm</span>
             </button>
           </div>
-          <div class="column" style="text-align: right">
-            <button class="button is-info is-fullwidth is-small">
-              <span class="icon is-small">
-                <i class="fas fa-angle-double-left"></i>
-              </span>
-              <span>Thoát</span>
-            </button>
-          </div>
         </div>
-        <div style="margin-bottom: 3px;">
+        <div style="margin-bottom: 3px; text-align: right">
           <vue-excel-xlsx
             :data="phongban"
             :columns="columns"
@@ -64,12 +56,6 @@
                 <th style="text-align: center; font-size: smaller; width: 3%">
                   STT
                 </th>
-                <th style="text-align: center; font-size: smaller; width: 5%">
-                  Sửa
-                </th>
-                <th style="text-align: center; font-size: smaller; width: 5%">
-                  Xóa
-                </th>
                 <th style="text-align: center; font-size: smaller; width: 10%">
                   Mã phòng
                 </th>
@@ -77,6 +63,12 @@
                   Tên phòng
                 </th>
                 <th style="text-align: center; font-size: smaller">Ghi chú</th>
+                <th style="text-align: center; font-size: smaller; width: 5%">
+                  Sửa
+                </th>
+                <th style="text-align: center; font-size: smaller; width: 5%">
+                  Xóa
+                </th>
               </tr>
             </thead>
             <tbody>
@@ -84,6 +76,9 @@
                 <td style="text-align: center; font-size: smaller">
                   {{ index + 1 }}
                 </td>
+                <td style="font-size: smaller">{{ phong.maphong }}</td>
+                <td style="font-size: smaller">{{ phong.tenphong }}</td>
+                <td style="font-size: smaller">{{ phong.ghichu }}</td>
                 <td style="text-align: center; color: green">
                   <nuxt-link :to="`/danhmuc/phongban/${phong._id}/manage`">
                     <span class="icon is-small">
@@ -98,15 +93,12 @@
                     </span>
                   </a>
                 </td>
-                <td style="font-size: smaller">{{ phong.maphong }}</td>
-                <td style="font-size: smaller">{{ phong.tenphong }}</td>
-                <td style="font-size: smaller">{{ phong.ghichu }}</td>
               </tr>
             </tbody>
           </table>
         </div>
 
-        <!-- Modal Add nhân viên -->
+        <!-- Modal Add -->
         <div class="">
           <!-- Toggle class  -->
           <div :class="{ 'is-active': isActive }" class="modal">
@@ -119,8 +111,8 @@
                   border-top-right-radius: 8px;
                 "
               >
-                <div class="columns">
-                  <div class="column is-9">
+                <div class="columns is-mobile">
+                  <div class="column">
                     <p
                       style="
                         font-size: small;
@@ -137,16 +129,6 @@
                       </span>
                       Thêm Phòng ban
                     </p>
-                  </div>
-                  <div class="column" style="text-align: right">
-                    <a @click="isActive = false">
-                      <span
-                        style="color: red; padding: 20px"
-                        class="icon is-small"
-                      >
-                        <i class="fas fa-power-off"></i>
-                      </span>
-                    </a>
                   </div>
                 </div>
               </header>
@@ -507,14 +489,17 @@ export default {
   width: 720px;
 }
 
-#preview {
-  display: flex;
-  justify-content: center;
-  align-items: center;
+@media (max-width: 768px) {
+  .modal-card {
+    width: 90%;
+    max-width: 400px;
+  }
 }
 
-#preview img {
-  max-width: 90px;
-  max-height: 90px;
+@media (max-width: 768px) {
+  .is-flex-mobile {
+    display: flex;
+    align-items: center;
+  }
 }
 </style>
