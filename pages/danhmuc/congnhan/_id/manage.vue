@@ -1,8 +1,8 @@
 <template>
-  <div class="columns is-mobile">
-    <div class="column is-three-fifths is-offset-one-fifth">
+  <div class="columns">
+    <div class="column container">
       <br />
-      <div class="box">
+      <div class="box" style="margin-left: 3px; margin-right: 3px">
         <div class="columns">
           <div class="column is-8">
             <nuxt-link :to="`/danhmuc/congnhan/`">
@@ -15,270 +15,244 @@
             </nuxt-link>
           </div>
           <div class="column" style="text-align: right">
-            <span id="tag-fix">Mã công nhân: {{ congnhan.macn }}</span>
+            <span id="tag-fix">Mã số: {{ congnhan.macn }}</span>
           </div>
         </div>
 
-        <div class="table_wrapper table-height">
-          <table
-            class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
-          >
-            <thead>
-              <tr style="background-color: #fffaeb">
-                <td
-                  style="text-align: right; font-size: small; font-weight: bold"
-                  colspan="9"
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label">Mã công nhân</label>
+              <div class="control">
+                <input
+                  v-model.trim="form.macn"
+                  @blur="$v.form.macn.$touch()"
+                  class="input is-small"
+                  type="text"
+                  disabled
+                />
+              </div>
+              <div v-if="$v.form.macn.$error" class="form-error">
+                <span v-if="!$v.form.macn.required" class="help is-danger"
+                  >Yêu cầu nhập mã công nhân</span
                 >
-                  Cập nhật thông tin
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="field">
-                    <label class="label">Mã công nhân</label>
-                    <div class="control">
-                      <input
-                        v-model.trim="form.macn"
-                        @blur="$v.form.macn.$touch()"
-                        class="input is-small"
-                        type="text"
-                        disabled
-                      />
-                    </div>
-                    <div v-if="$v.form.macn.$error" class="form-error">
-                      <span v-if="!$v.form.macn.required" class="help is-danger"
-                        >Yêu cầu nhập mã công nhân</span
-                      >
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div class="field">
-                    <label class="label">Tên công nhân</label>
-                    <div class="control">
-                      <input
-                        v-model.trim="form.tencn"
-                        @blur="$v.form.tencn.$touch()"
-                        class="input is-small"
-                        type="text"
-                        placeholder="Nhập tên công nhân"
-                      />
-                    </div>
-                    <div v-if="$v.form.tencn.$error" class="form-error">
-                      <span
-                        v-if="!$v.form.tencn.required"
-                        class="help is-danger"
-                        >Yêu cầu nhập tên công nhân</span
-                      >
-                    </div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2">
-                  <template v-if="form.trangthai == true">
-                    <span
-                      style="font-weight: bold; font-size: small; color: green"
-                      >Đang làm</span
-                    >
-                  </template>
-                  <template v-else>
-                    <span
-                      style="font-weight: bold; font-size: small; color: red"
-                      >Đã nghỉ</span
-                    >
-                  </template>
-                  &nbsp;
-                  <label class="switch" style="vertical-align: middle">
-                    <input v-model="form.trangthai" type="checkbox" />
-                    <span class="slider"></span>
-                  </label>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="field">
-                    <label class="label">Số điện thoại</label>
-                    <div class="control">
-                      <input
-                        v-model="form.sdt"
-                        @blur="$v.form.sdt.$touch()"
-                        class="input is-small"
-                        type="text"
-                        placeholder="Nhập tên số điện thoại"
-                      />
-                    </div>
-                    <div v-if="$v.form.sdt.$error" class="form-error">
-                      <span v-if="!$v.form.sdt.required" class="help is-danger"
-                        >Yêu cầu nhập số điện thoại</span
-                      >
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div class="field">
-                    <label class="label">Địa chỉ</label>
-                    <div class="control">
-                      <input
-                        v-model="form.diachi"
-                        @blur="$v.form.diachi.$touch()"
-                        class="input is-small"
-                        type="text"
-                        placeholder="Nhập địa chỉ"
-                      />
-                    </div>
-                    <div v-if="$v.form.diachi.$error" class="form-error">
-                      <span
-                        v-if="!$v.form.diachi.required"
-                        class="help is-danger"
-                        >Yêu cầu nhập địa chỉ</span
-                      >
-                    </div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="field">
-                    <label class="label">Căn cước công dân</label>
-                    <div class="control">
-                      <input
-                        v-model="form.cccd"
-                        @blur="$v.form.cccd.$touch()"
-                        class="input is-small"
-                        type="text"
-                        placeholder="Nhập CCCD"
-                      />
-                    </div>
-                    <div v-if="$v.form.cccd.$error" class="form-error">
-                      <span v-if="!$v.form.cccd.required" class="help is-danger"
-                        >Yêu cầu nhập căn cước công dân</span
-                      >
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div class="field">
-                    <label class="label">Chức vụ</label>
-                    <div class="control">
-                      <input
-                        v-model="form.chucvu"
-                        class="input is-small"
-                        type="text"
-                        placeholder="Nhập chức vụ"
-                      />
-                    </div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="field">
-                    <label class="label">Lương cơ bản</label>
-                    <div class="control">
-                      <input
-                        v-model="form.luongcb"
-                        class="input is-small"
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div class="field">
-                    <label class="label">Người liên hệ khẩn cấp</label>
-                    <div class="control">
-                      <input
-                        v-model="form.nguoilienhe"
-                        @blur="$v.form.nguoilienhe.$touch()"
-                        class="input is-small"
-                        type="text"
-                        placeholder="Nhập thông tin người liên hệ khi cần"
-                      />
-                    </div>
-                    <div v-if="$v.form.nguoilienhe.$error" class="form-error">
-                      <span
-                        v-if="!$v.form.nguoilienhe.required"
-                        class="help is-danger"
-                        >Yêu cầu nhập người liên hệ khi cần gấp</span
-                      >
-                    </div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <div class="field">
-                    <label class="label">Số tài khoản</label>
-                    <div class="control">
-                      <input
-                        v-model="form.sotknh"
-                        class="input is-small"
-                        type="text"
-                        placeholder="Nhập thông tin số tài khoản (nếu có)"
-                      />
-                    </div>
-                  </div>
-                </td>
-                <td>
-                  <div class="field">
-                    <label class="label">Tên ngân hàng</label>
-                    <div class="control">
-                      <input
-                        v-model="form.tennh"
-                        class="input is-small"
-                        type="text"
-                        placeholder="Nhập tên ngân hàng"
-                      />
-                    </div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td colspan="2">
-                  <div style="margin-bottom: 10px">
-                    <label class="checkbox">
-                      <input type="checkbox" v-model="checkGhichu" />
-                      <span style="font-weight: bold">Ghi chú </span>
-                    </label>
-                  </div>
-                  <div
-                    v-if="checkGhichu == true"
-                    class="field"
-                    style="margin-top: 10px"
-                  >
-                    <div class="control">
-                      <textarea
-                        v-model="form.ghichu"
-                        class="textarea is-small"
-                        placeholder="Ghi chú thêm ..."
-                      ></textarea>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-              <tr>
-                <td>
-                  <button
-                    :disabled="$v.form.$invalid"
-                    @click.prevent="onUpdate"
-                    class="button is-success is-fullwidth is-small"
-                  >
-                    Ghi nhận
-                  </button>
-                </td>
-                <td>
-                  <nuxt-link :to="`/danhmuc/congnhan/`"
-                    ><button
-                      class="button is-danger is-light is-fullwidth is-small"
-                    >
-                      Hủy bỏ
-                    </button>
-                  </nuxt-link>
-                </td>
-              </tr>
-            </thead>
-          </table>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label">Tên công nhân</label>
+              <div class="control">
+                <input
+                  v-model.trim="form.tencn"
+                  @blur="$v.form.tencn.$touch()"
+                  class="input is-small"
+                  type="text"
+                  placeholder="Nhập tên công nhân"
+                />
+              </div>
+              <div v-if="$v.form.tencn.$error" class="form-error">
+                <span v-if="!$v.form.tencn.required" class="help is-danger"
+                  >Yêu cầu nhập tên công nhân</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="columns">
+          <div class="column">
+            <template v-if="form.trangthai == true">
+              <span style="font-weight: bold; font-size: small; color: green"
+                >Đang làm</span
+              >
+            </template>
+            <template v-else>
+              <span style="font-weight: bold; font-size: small; color: red"
+                >Đã nghỉ</span
+              >
+            </template>
+            &nbsp;
+            <label class="switch" style="vertical-align: middle">
+              <input v-model="form.trangthai" type="checkbox" />
+              <span class="slider"></span>
+            </label>
+          </div>
+          <div class="column"></div>
+        </div>
+
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label">Số điện thoại</label>
+              <div class="control">
+                <input
+                  v-model="form.sdt"
+                  @blur="$v.form.sdt.$touch()"
+                  class="input is-small"
+                  type="text"
+                  placeholder="Nhập tên số điện thoại"
+                />
+              </div>
+              <div v-if="$v.form.sdt.$error" class="form-error">
+                <span v-if="!$v.form.sdt.required" class="help is-danger"
+                  >Yêu cầu nhập số điện thoại</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label">Địa chỉ</label>
+              <div class="control">
+                <input
+                  v-model="form.diachi"
+                  @blur="$v.form.diachi.$touch()"
+                  class="input is-small"
+                  type="text"
+                  placeholder="Nhập địa chỉ"
+                />
+              </div>
+              <div v-if="$v.form.diachi.$error" class="form-error">
+                <span v-if="!$v.form.diachi.required" class="help is-danger"
+                  >Yêu cầu nhập địa chỉ</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label">Căn cước công dân</label>
+              <div class="control">
+                <input
+                  v-model="form.cccd"
+                  @blur="$v.form.cccd.$touch()"
+                  class="input is-small"
+                  type="text"
+                  placeholder="Nhập CCCD"
+                />
+              </div>
+              <div v-if="$v.form.cccd.$error" class="form-error">
+                <span v-if="!$v.form.cccd.required" class="help is-danger"
+                  >Yêu cầu nhập căn cước công dân</span
+                >
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label">Chức vụ</label>
+              <div class="control">
+                <input
+                  v-model="form.chucvu"
+                  class="input is-small"
+                  type="text"
+                  placeholder="Nhập chức vụ"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label">Lương cơ bản</label>
+              <div class="control">
+                <input
+                  v-model="form.luongcb"
+                  class="input is-small"
+                  type="text"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label">Người liên hệ khẩn cấp</label>
+              <div class="control">
+                <input
+                  v-model="form.nguoilienhe"
+                  @blur="$v.form.nguoilienhe.$touch()"
+                  class="input is-small"
+                  type="text"
+                  placeholder="Nhập thông tin người liên hệ khi cần"
+                />
+              </div>
+              <div v-if="$v.form.nguoilienhe.$error" class="form-error">
+                <span
+                  v-if="!$v.form.nguoilienhe.required"
+                  class="help is-danger"
+                  >Yêu cầu nhập người liên hệ khi cần gấp</span
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="columns">
+          <div class="column">
+            <div class="field">
+              <label class="label">Số tài khoản</label>
+              <div class="control">
+                <input
+                  v-model="form.sotknh"
+                  class="input is-small"
+                  type="text"
+                  placeholder="Nhập thông tin số tài khoản (nếu có)"
+                />
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="label">Tên ngân hàng</label>
+              <div class="control">
+                <input
+                  v-model="form.tennh"
+                  class="input is-small"
+                  type="text"
+                  placeholder="Nhập tên ngân hàng"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+        <div style="margin-bottom: 10px">
+          <label class="checkbox">
+            <input type="checkbox" v-model="checkGhichu" />
+            <span style="font-weight: bold">Ghi chú </span>
+          </label>
+        </div>
+        <div v-if="checkGhichu == true" class="field" style="margin-top: 10px">
+          <div class="control">
+            <textarea
+              v-model="form.ghichu"
+              class="textarea is-small"
+              placeholder="Ghi chú thêm ..."
+            ></textarea>
+          </div>
+        </div>
+        <div class="columns" style="margin-top: 10px">
+          <div class="column">
+            <button
+              :disabled="$v.form.$invalid"
+              @click.prevent="onUpdate"
+              class="button is-success is-fullwidth is-small"
+            >
+              Ghi nhận
+            </button>
+          </div>
+          <div class="column">
+            <nuxt-link :to="`/danhmuc/congnhan/`"
+              ><button class="button is-danger is-light is-fullwidth is-small">
+                Hủy bỏ
+              </button>
+            </nuxt-link>
+          </div>
         </div>
       </div>
     </div>

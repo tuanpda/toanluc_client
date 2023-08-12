@@ -9,7 +9,7 @@
               <span class="icon is-small is-left">
                 <i style="color: #00d1b2" class="fas fa-address-card"></i>
               </span>
-              <span style="color: #3850b7; font-size: 17px; font-weight: bold"
+              <span style="color: #3850b7; font-size: 15px; font-weight: bold"
                 >Danh mục Nhân viên</span
               >
             </div>
@@ -65,7 +65,7 @@
             Download Excel
           </vue-excel-xlsx>
         </div>
-        <div class="table_wrapper table-height">
+        <div class="table_wrapper">
           <table
             class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
           >
@@ -466,15 +466,6 @@
                   </div>
                 </div>
               </section>
-              <footer class="modal-card-foot">
-                <!-- close modal -->
-                <button
-                  @click="isActive = false"
-                  class="button is-outlined is-info is-small"
-                >
-                  Đóng
-                </button>
-              </footer>
             </div>
           </div>
         </div>

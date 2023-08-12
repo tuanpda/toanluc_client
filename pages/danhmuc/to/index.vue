@@ -9,7 +9,7 @@
               <span class="icon is-small is-left">
                 <i style="color: #00d1b2" class="fas fa-outdent"></i>
               </span>
-              <span style="color: #3850b7; font-size: 17px; font-weight: bold"
+              <span style="color: #3850b7; font-size: 15px; font-weight: bold"
                 >Danh mục Tổ</span
               >
             </div>
@@ -133,13 +133,17 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(px, index) in tonhom" :key="index">
+              <tr
+                style="font-size: smaller"
+                v-for="(px, index) in tonhom"
+                :key="index"
+              >
                 <td style="text-align: center">{{ index + 1 }}</td>
-                <td style="font-size: smaller">{{ px.mato }}</td>
-                <td style="font-size: smaller">{{ px.tento }}</td>
-                <td style="font-size: smaller">{{ px.mapx }}</td>
-                <td style="font-size: smaller">{{ px.tenpx }}</td>
-                <td style="font-size: smaller">{{ px.ghichu }}</td>
+                <td style="text-align: center">{{ px.mato }}</td>
+                <td>{{ px.tento }}</td>
+                <td>{{ px.mapx }}</td>
+                <td>{{ px.tenpx }}</td>
+                <td>{{ px.ghichu }}</td>
                 <td style="text-align: center; color: green">
                   <nuxt-link :to="`/danhmuc/to/${px._id}/manage`">
                     <span class="icon is-small">
