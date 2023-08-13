@@ -2,14 +2,14 @@
   <div class="columns">
     <div class="column container">
       <br />
-      <div class="box" style="margin-left: 100px; margin-right: 100px">
+      <div class="box" style="margin-left: 3px; margin-right: 3px">
         <div class="columns">
           <div class="column">
             <div class="control">
               <span class="icon is-small is-left">
                 <i style="color: #00d1b2" class="fab fa-firstdraft"></i>
               </span>
-              <span style="color: #3850b7; font-size: 17px; font-weight: bold"
+              <span style="color: #3850b7; font-size: 15px; font-weight: bold"
                 >Danh mục Công nhật</span
               >
             </div>
@@ -17,7 +17,7 @@
         </div>
 
         <div class="columns">
-          <div class="column is-9">
+          <div class="column is-10">
             <span>Có tất cả: </span>
             <span style="font-weight: bold">{{
               congnhat.length | formatNumber
@@ -35,61 +35,41 @@
               <span>Thêm Công</span>
             </button>
           </div>
-          <div class="column" style="text-align: right">
-            <button class="button is-info is-fullwidth is-small">
-              <span class="icon is-small">
-                <i class="fas fa-angle-double-left"></i>
-              </span>
-              <span>Thoát</span>
-            </button>
-          </div>
         </div>
         <div class="table_wrapper">
           <table
             class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
           >
             <thead>
-              <tr style="background-color: #fffaeb">
-                <th style="text-align: center; font-size: smaller; width: 3%">
-                  STT
-                </th>
-                <th style="text-align: center; font-size: smaller; width: 10%">
-                  Mã công
-                </th>
-                <th style="text-align: center; font-size: smaller; width: 15%">
-                  Tên công
-                </th>
-                <th style="text-align: center; font-size: smaller; width: 10%">
-                  Đơn giá
-                </th>
-                <th style="text-align: center; font-size: smaller; width: 10%">
-                  Loại lương
-                </th>
-                <th style="text-align: center; font-size: smaller; width: 10%">
-                  Loại phân bổ
-                </th>
-                <th style="text-align: center; font-size: smaller">Ghi chú</th>
-                <th style="text-align: center; font-size: smaller; width: 5%">
-                  Sửa
-                </th>
-                <th style="text-align: center; font-size: smaller; width: 5%">
-                  Xóa
-                </th>
+              <tr style="background-color: #fffaeb; font-size: small">
+                <th style="text-align: center; width: 3%">STT</th>
+                <th style="text-align: center; width: 10%">Mã công</th>
+                <th style="text-align: center; width: 15%">Tên công</th>
+                <th style="text-align: center; width: 10%">Đơn giá</th>
+                <th style="text-align: center; width: 10%">Loại lương</th>
+                <th style="text-align: center; width: 10%">Loại phân bổ</th>
+                <th style="text-align: center">Ghi chú</th>
+                <th style="text-align: center; width: 5%">Sửa</th>
+                <th style="text-align: center; width: 5%">Xóa</th>
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(cn, index) in congnhat" :key="index">
-                <td style="text-align: center; font-size: smaller">
+              <tr
+                style="font-size: small"
+                v-for="(cn, index) in congnhat"
+                :key="index"
+              >
+                <td style="text-align: center">
                   {{ index + 1 }}
                 </td>
-                <td style="font-size: smaller">{{ cn.macn }}</td>
-                <td style="font-size: smaller">{{ cn.tencn }}</td>
-                <td style="font-size: smaller; text-align: center">
+                <td>{{ cn.macn }}</td>
+                <td>{{ cn.tencn }}</td>
+                <td style="text-align: center">
                   {{ cn.dongia | formatNumber }}
                 </td>
-                <td style="font-size: smaller">{{ cn.loailuong }}</td>
-                <td style="font-size: smaller">{{ cn.loaiphanbo }}</td>
-                <td style="font-size: smaller">{{ cn.ghichu }}</td>
+                <td>{{ cn.loailuong }}</td>
+                <td>{{ cn.loaiphanbo }}</td>
+                <td>{{ cn.ghichu }}</td>
                 <td style="text-align: center; color: green">
                   <a @click="activeModelUpdate(cn)">
                     <span style="color: green" class="icon is-small">
@@ -116,88 +96,92 @@
             <div class="modal-background"></div>
             <div class="modal-content modal-card">
               <section class="modal-card-body">
-                <div class="field">
-                  <label class="label">Mã Công nhật</label>
-                  <div class="control">
-                    <input
-                      v-model="form.macn"
-                      class="input is-small"
-                      type="text"
-                      placeholder="Nhập mã công nhật"
-                    />
-                  </div>
-                </div>
-                <div class="field">
-                  <label class="label">Tên Công</label>
-                  <div class="control">
-                    <input
-                      v-model="form.tencn"
-                      class="input is-small"
-                      type="text"
-                      placeholder="Nhập tên công nhật"
-                    />
-                  </div>
-                </div>
-                <div class="field">
-                  <label class="label">Đơn giá</label>
-                  <div class="control">
-                    <input
-                      v-model="form.dongia"
-                      class="input is-small"
-                      type="text"
-                      placeholder="Đơn giá"
-                    />
-                  </div>
-                </div>
-                <div class="field">
-                  <label class="label">Loại lương</label>
-                  <div class="control">
-                    <input
-                      v-model="form.loailuong"
-                      class="input is-small"
-                      type="text"
-                      placeholder="Nhập loại lương"
-                    />
-                  </div>
-                </div>
-                <div class="field">
-                  <label class="label">Loại phân bổ</label>
-                  <div class="control">
-                    <input
-                      v-model="form.loaiphanbo"
-                      class="input is-small"
-                      type="text"
-                      placeholder="Nhập loại phân bổ"
-                    />
-                  </div>
-                </div>
-                <div class="field">
-                  <label class="label">Ghi chú</label>
-                  <div class="control">
-                    <textarea
-                      v-model="form.ghichu"
-                      class="textarea is-small"
-                      placeholder="Ghi chú thêm ..."
-                    ></textarea>
-                  </div>
-                </div>
+                <div class="columns is-mobile">
+                  <div class="column">
+                    <div class="field">
+                      <label class="label">Mã Công nhật</label>
+                      <div class="control">
+                        <input
+                          v-model="form.macn"
+                          class="input is-small"
+                          type="text"
+                          placeholder="Nhập mã công nhật"
+                        />
+                      </div>
+                    </div>
+                    <div class="field">
+                      <label class="label">Tên Công</label>
+                      <div class="control">
+                        <input
+                          v-model="form.tencn"
+                          class="input is-small"
+                          type="text"
+                          placeholder="Nhập tên công nhật"
+                        />
+                      </div>
+                    </div>
+                    <div class="field">
+                      <label class="label">Đơn giá</label>
+                      <div class="control">
+                        <input
+                          v-model="form.dongia"
+                          class="input is-small"
+                          type="text"
+                          placeholder="Đơn giá"
+                        />
+                      </div>
+                    </div>
+                    <div class="field">
+                      <label class="label">Loại lương</label>
+                      <div class="control">
+                        <input
+                          v-model="form.loailuong"
+                          class="input is-small"
+                          type="text"
+                          placeholder="Nhập loại lương"
+                        />
+                      </div>
+                    </div>
+                    <div class="field">
+                      <label class="label">Loại phân bổ</label>
+                      <div class="control">
+                        <input
+                          v-model="form.loaiphanbo"
+                          class="input is-small"
+                          type="text"
+                          placeholder="Nhập loại phân bổ"
+                        />
+                      </div>
+                    </div>
+                    <div class="field">
+                      <label class="label">Ghi chú</label>
+                      <div class="control">
+                        <textarea
+                          v-model="form.ghichu"
+                          class="textarea is-small"
+                          placeholder="Ghi chú thêm ..."
+                        ></textarea>
+                      </div>
+                    </div>
 
-                <div class="columns">
-                  <div class="column">
-                    <button
-                      @click.prevent="onAddCongnhat"
-                      class="button is-success is-fullwidth is-small"
-                    >
-                      Ghi nhận
-                    </button>
-                  </div>
-                  <div class="column">
-                    <button
-                      @click="isActive = false"
-                      class="button is-danger is-light is-fullwidth is-small"
-                    >
-                      Hủy bỏ
-                    </button>
+                    <div class="columns">
+                      <div class="column">
+                        <button
+                          @click.prevent="onAddCongnhat"
+                          class="button is-success is-fullwidth is-small"
+                        >
+                          Ghi nhận
+                        </button>
+                      </div>
+                      <div class="column">
+                        <button
+                          @click="isActive = false"
+                          class="button is-danger is-light is-fullwidth is-small"
+                        >
+                          Hủy bỏ
+                        </button>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </section>
@@ -212,83 +196,87 @@
             <div class="modal-background"></div>
             <div class="modal-content modal-card">
               <section class="modal-card-body">
-                <div v-if="formUpdate != null">
-                  <div class="field">
-                    <label class="label">Mã công</label>
-                    <div class="control">
-                      <input
-                        v-model="formUpdate.macn"
-                        class="input is-small"
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                  <div class="field">
-                    <label class="label">Tên công</label>
-                    <div class="control">
-                      <input
-                        v-model="formUpdate.tencn"
-                        class="input is-small"
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                  <div class="field">
-                    <label class="label">Đơn giá</label>
-                    <div class="control">
-                      <input
-                        v-model="formUpdate.dongia"
-                        class="input is-small"
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                  <div class="field">
-                    <label class="label">Loại lương</label>
-                    <div class="control">
-                      <input
-                        v-model="formUpdate.loailuong"
-                        class="input is-small"
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                  <div class="field">
-                    <label class="label">Loại phân bổ</label>
-                    <div class="control">
-                      <input
-                        v-model="formUpdate.loaiphanbo"
-                        class="input is-small"
-                        type="text"
-                      />
-                    </div>
-                  </div>
-                  <div class="field">
-                    <label class="label">Ghi chú</label>
-                    <div class="control">
-                      <textarea
-                        v-model="formUpdate.ghichu"
-                        class="textarea is-small"
-                      ></textarea>
-                    </div>
-                  </div>
+                <div class="columns is-mobile">
+                  <div class="column">
+                    <div v-if="formUpdate != null">
+                      <div class="field">
+                        <label class="label">Mã công</label>
+                        <div class="control">
+                          <input
+                            v-model="formUpdate.macn"
+                            class="input is-small"
+                            type="text"
+                          />
+                        </div>
+                      </div>
+                      <div class="field">
+                        <label class="label">Tên công</label>
+                        <div class="control">
+                          <input
+                            v-model="formUpdate.tencn"
+                            class="input is-small"
+                            type="text"
+                          />
+                        </div>
+                      </div>
+                      <div class="field">
+                        <label class="label">Đơn giá</label>
+                        <div class="control">
+                          <input
+                            v-model="formUpdate.dongia"
+                            class="input is-small"
+                            type="text"
+                          />
+                        </div>
+                      </div>
+                      <div class="field">
+                        <label class="label">Loại lương</label>
+                        <div class="control">
+                          <input
+                            v-model="formUpdate.loailuong"
+                            class="input is-small"
+                            type="text"
+                          />
+                        </div>
+                      </div>
+                      <div class="field">
+                        <label class="label">Loại phân bổ</label>
+                        <div class="control">
+                          <input
+                            v-model="formUpdate.loaiphanbo"
+                            class="input is-small"
+                            type="text"
+                          />
+                        </div>
+                      </div>
+                      <div class="field">
+                        <label class="label">Ghi chú</label>
+                        <div class="control">
+                          <textarea
+                            v-model="formUpdate.ghichu"
+                            class="textarea is-small"
+                          ></textarea>
+                        </div>
+                      </div>
 
-                  <div class="columns">
-                    <div class="column">
-                      <button
-                        @click.prevent="onUpdate"
-                        class="button is-success is-fullwidth is-small"
-                      >
-                        Ghi nhận
-                      </button>
-                    </div>
-                    <div class="column">
-                      <button
-                        @click="isActive_update = false"
-                        class="button is-danger is-light is-fullwidth is-small"
-                      >
-                        Hủy bỏ
-                      </button>
+                      <div class="columns">
+                        <div class="column">
+                          <button
+                            @click.prevent="onUpdate"
+                            class="button is-success is-fullwidth is-small"
+                          >
+                            Ghi nhận
+                          </button>
+                        </div>
+                        <div class="column">
+                          <button
+                            @click="isActive_update = false"
+                            class="button is-danger is-light is-fullwidth is-small"
+                          >
+                            Hủy bỏ
+                          </button>
+                        </div>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -525,14 +513,10 @@ export default {
   width: 720px;
 }
 
-#preview {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#preview img {
-  max-width: 90px;
-  max-height: 90px;
+@media (max-width: 768px) {
+  .modal-card {
+    width: 90%;
+    max-width: 400px;
+  }
 }
 </style>

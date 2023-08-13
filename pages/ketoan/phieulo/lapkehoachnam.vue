@@ -1,304 +1,288 @@
 <template>
   <div class="columns">
-    <div class="column">
+    <div class="column container">
       <br />
-      <div class="box" style="margin-left: 20px; margin-right: 20px">
+      <div class="box" style="margin-left: 3px; margin-right: 3px">
         <div class="columns">
-          <div class="column is-11">
+          <div class="column">
             <div class="control">
               <span class="icon is-small is-left">
                 <i style="color: #ff55acee" class="fas fa-broom"></i>
               </span>
               <span style="color: #3850b7; font-size: 16px; font-weight: bold"
-                >LẬP KẾ HOẠCH NĂM</span
+                >Lập kế hoạch năm</span
               >
             </div>
           </div>
-          <div class="column" style="text-align: right">
-            <nuxt-link :to="`/`">
-              <button class="button is-info is-fullwidth is-small">
-                <span class="icon is-small">
-                  <i class="fas fa-angle-double-left"></i>
-                </span>
-                <span>Thoát</span>
-              </button>
-            </nuxt-link>
+        </div>
+
+        <div class="columns">
+          <div class="column is-10"></div>
+          <div class="column">
+            <button
+              @click="onTaophieu"
+              class="button is-danger is-fullwidth is-small"
+            >
+              <span style="font-weight: 600">Ghi dữ liệu</span>
+            </button>
+          </div>
+          <div class="column">
+            <button
+              @click="addKehoach"
+              class="button is-success is-fullwidth is-small"
+            >
+              <span style="font-weight: 600">Thêm</span>
+            </button>
           </div>
         </div>
 
         <!-- Lập kế hoạch nhà máy -->
-        <div class="columns">
-          <div class="column">
-            <table
-              class="table is-responsive is-bordered is-narrow is-fullwidth"
-            >
-              <tr style="background-color: #fffaeb">
-                <td
-                  colspan="11"
-                  style="text-align: right; font-weight: bold; font-size: small"
-                ></td>
-                <td>
-                  <button
-                    @click="onTaophieu"
-                    class="button is-danger is-fullwidth is-small"
-                  >
-                    <span style="font-weight: 600">Ghi dữ liệu</span>
-                  </button>
-                </td>
-                <td>
-                  <button
-                    @click="addKehoach"
-                    class="button is-success is-fullwidth is-small"
-                  >
-                    <span style="font-weight: 600">Thêm</span>
-                  </button>
-                </td>
-              </tr>
-              <tr style="background-color: #faf0f5">
-                <td
-                  style="
-                    text-align: center;
-                    font-weight: bold;
-                    font-size: small;
-                    width: 3%;
-                  "
-                >
-                  STT
-                </td>
-                <td
-                  style="
-                    text-align: center;
-                    font-weight: bold;
-                    font-size: small;
-                    width: 7%;
-                  "
-                >
-                  Mã KẾ HOẠCH
-                </td>
-                <td
-                  style="
-                    text-align: center;
-                    font-weight: bold;
-                    font-size: small;
-                    width: 7%;
-                  "
-                >
-                  Mã thành phẩm
-                </td>
-                <td
-                  style="
-                    text-align: center;
-                    font-weight: bold;
-                    font-size: small;
-                    width: 10%;
-                  "
-                >
-                  Tên thành phẩm
-                </td>
-                <td
-                  style="
-                    text-align: center;
-                    font-weight: bold;
-                    font-size: small;
-                    width: 6%;
-                  "
-                >
-                  Nhóm TP
-                </td>
-                <td
-                  style="
-                    text-align: center;
-                    font-weight: bold;
-                    font-size: small;
-                    width: 3%;
-                  "
-                >
-                  Thời gian bắt Đầu
-                </td>
-                <td
-                  style="
-                    text-align: center;
-                    font-weight: bold;
-                    font-size: small;
-                    width: 3%;
-                  "
-                >
-                  Thời gian kết thúc
-                </td>
-                <td
-                  style="
-                    text-align: center;
-                    font-weight: bold;
-                    font-size: small;
-                    width: 5%;
-                  "
-                >
-                  Số lượng
-                </td>
-                <td
-                  style="
-                    text-align: center;
-                    font-weight: bold;
-                    font-size: small;
-                    width: 7%;
-                  "
-                >
-                  Mã khách hàng
-                </td>
-                <td
-                  style="
-                    text-align: center;
-                    font-weight: bold;
-                    font-size: small;
-                    width: 10%;
-                  "
-                >
-                  Tên khách hàng
-                </td>
-                <td
-                  style="
-                    text-align: center;
-                    font-weight: bold;
-                    font-size: small;
-                    width: 13%;
-                  "
-                >
-                  Ghi chú
-                </td>
-                <td
-                  style="
-                    text-align: center;
-                    font-weight: bold;
-                    font-size: small;
-                    width: 3%;
-                  "
+        <div class="table_wrapper">
+          <table class="table is-responsive is-bordered is-narrow is-fullwidth">
+            <tr style="background-color: #faf0f5">
+              <td
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 3%;
+                "
+              >
+                STT
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 7%;
+                "
+              >
+                Mã KẾ HOẠCH
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 7%;
+                "
+              >
+                Mã thành phẩm
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 10%;
+                "
+              >
+                Tên thành phẩm
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 6%;
+                "
+              >
+                Nhóm TP
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 3%;
+                "
+              >
+                Thời gian bắt Đầu
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 3%;
+                "
+              >
+                Thời gian kết thúc
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 5%;
+                "
+              >
+                Số lượng
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 7%;
+                "
+              >
+                Mã khách hàng
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 10%;
+                "
+              >
+                Tên khách hàng
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 13%;
+                "
+              >
+                Ghi chú
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 3%;
+                "
+              >
+                Xóa
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 3%;
+                "
+              >
+                Copy
+              </td>
+            </tr>
+            <tr v-for="(item, index) in items" :key="index + 'hhjjkk'">
+              <td
+                style="
+                  font-size: small;
+                  text-align: center;
+                  background-color: #eff1fa;
+                "
+              >
+                {{ index + 1 }}
+              </td>
+              <td>
+                <input
+                  v-model.trim="item.makh"
+                  class="input is-fullwidth is-danger is-small"
+                  type="text"
+                  style="vertical-align: middle"
+                />
+              </td>
+              <td style="font-size: small">
+                <input
+                  v-model.trim="item.mathanhpham"
+                  class="input is-fullwidth is-danger is-small"
+                  type="text"
+                  style="vertical-align: middle"
+                />
+              </td>
+              <td>
+                <input
+                  v-model.trim="item.tenthanhpham"
+                  type="text"
+                  class="input is-small"
+                  style="vertical-align: middle"
+                />
+              </td>
+              <td>
+                <input
+                  v-model.trim="item.nhomthanhpham"
+                  type="text"
+                  class="input is-small"
+                  style="vertical-align: middle"
+                />
+              </td>
+
+              <td>
+                <input
+                  v-model.trim="item.tgbatdau"
+                  type="date"
+                  class="input is-small"
+                  style="vertical-align: middle"
+                />
+              </td>
+              <td>
+                <input
+                  v-model.trim="item.tgketthuc"
+                  type="date"
+                  class="input is-small"
+                  style="vertical-align: middle"
+                />
+              </td>
+              <td>
+                <input
+                  v-model.trim="item.soluong"
+                  type="number"
+                  class="input is-small"
+                  style="vertical-align: middle"
+                />
+              </td>
+              <td>
+                <input
+                  v-model.trim="item.makhachhang"
+                  type="text"
+                  class="input is-small"
+                  style="vertical-align: middle"
+                />
+              </td>
+              <td>
+                <input
+                  v-model.trim="item.khachhang"
+                  type="text"
+                  class="input is-small"
+                  style="vertical-align: middle"
+                />
+              </td>
+              <td>
+                <div class="control">
+                  <textarea
+                    rows="1"
+                    v-model.trim="item.ghichu"
+                    class="textarea is-small"
+                    placeholder="Ghi chú ..."
+                    style="vertical-align: middle"
+                  ></textarea>
+                </div>
+              </td>
+              <td>
+                <button
+                  @click="deleteRow(index)"
+                  class="button is-danger is-small is-fullwidth"
                 >
                   Xóa
-                </td>
-                <td
-                  style="
-                    text-align: center;
-                    font-weight: bold;
-                    font-size: small;
-                    width: 3%;
-                  "
+                </button>
+              </td>
+              <td>
+                <button
+                  @click="copyadd(item)"
+                  class="button is-warning is-small is-fullwidth"
                 >
-                  Copy
-                </td>
-              </tr>
-              <tr v-for="(item, index) in items" :key="index + 'hhjjkk'">
-                <td
-                  style="
-                    font-size: small;
-                    text-align: center;
-                    background-color: #eff1fa;
-                  "
-                >
-                  {{ index + 1 }}
-                </td>
-                <td>
-                  <input
-                    v-model.trim="item.makh"
-                    class="input is-fullwidth is-danger is-small"
-                    type="text"
-                    style="vertical-align: middle;"
-                  />
-                </td>
-                <td style="font-size: small">
-                  <input
-                    v-model.trim="item.mathanhpham"
-                    class="input is-fullwidth is-danger is-small"
-                    type="text"
-                    style="vertical-align: middle;"
-                  />
-                </td>
-                <td>
-                  <input
-                    v-model.trim="item.tenthanhpham"
-                    type="text"
-                    class="input is-small"
-                    style="vertical-align: middle;"
-                  />
-                </td>
-                <td>
-                  <input
-                    v-model.trim="item.nhomthanhpham"
-                    type="text"
-                    class="input is-small"
-                    style="vertical-align: middle;"
-                  />
-                </td>
-
-                <td>
-                  <input
-                    v-model.trim="item.tgbatdau"
-                    type="date"
-                    class="input is-small"
-                    style="vertical-align: middle;"
-                  />
-                </td>
-                <td>
-                  <input
-                    v-model.trim="item.tgketthuc"
-                    type="date"
-                    class="input is-small"
-                    style="vertical-align: middle;"
-                  />
-                </td>
-                <td>
-                  <input
-                    v-model.trim="item.soluong"
-                    type="number"
-                    class="input is-small"
-                    style="vertical-align: middle;"
-                  />
-                </td>
-                <td>
-                  <input
-                    v-model.trim="item.makhachhang"
-                    type="text"
-                    class="input is-small"
-                    style="vertical-align: middle;"
-                  />
-                </td>
-                <td>
-                  <input
-                    v-model.trim="item.khachhang"
-                    type="text"
-                    class="input is-small"
-                    style="vertical-align: middle;"
-                  />
-                </td>
-                <td>
-                  <div class="control">
-                    <textarea
-                      rows="1"
-                      v-model.trim="item.ghichu"
-                      class="textarea is-small"
-                      placeholder="Ghi chú ..."
-                      style="vertical-align: middle;"
-                    ></textarea>
-                  </div>
-                </td>
-                <td>
-                  <button
-                    @click="deleteRow(index)"
-                    class="button is-danger is-small is-fullwidth"
-                  >
-                    Xóa
-                  </button>
-                </td>
-                <td>
-                  <button
-                    @click="copyadd(item)"
-                    class="button is-warning is-small is-fullwidth"
-                  >
-                    copy
-                  </button>
-                </td>
-              </tr>
-            </table>
-          </div>
+                  copy
+                </button>
+              </td>
+            </tr>
+          </table>
         </div>
       </div>
     </div>
@@ -693,6 +677,12 @@ export default {
 </script>
 
 <style scoped>
+.input.is-small {
+  min-width: 100px; /* Điều chỉnh độ rộng tùy ý */
+}
+.textarea.is-small {
+  min-width: 150px; /* Điều chỉnh độ rộng tùy ý */
+}
 .table_wrapper {
   display: block;
   overflow-x: auto;
@@ -721,16 +711,6 @@ export default {
   height: 560px;
 }
 
-#preview {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#preview img {
-  max-width: 90px;
-  max-height: 90px;
-}
 .autocomplete {
   position: relative;
 }

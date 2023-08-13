@@ -1,8 +1,8 @@
 <template>
   <div class="columns">
-    <div class="column container">
+    <div class="column">
       <br />
-      <div class="box" style="margin-left: 10px; margin-right: 10px">
+      <div class="box" style="margin-left: 20px; margin-right: 20px">
         <div class="columns">
           <div class="column">
             <div class="control">
@@ -14,13 +14,22 @@
               >
             </div>
           </div>
+          <div class="column" style="text-align: right">
+            <nuxt-link :to="`/`">
+              <button class="button is-info is-small">
+                <span class="icon is-small">
+                  <i class="fas fa-angle-double-left"></i>
+                </span>
+                <span>Thoát</span>
+              </button>
+            </nuxt-link>
+          </div>
         </div>
-
-        <div class="table_wrapper">
-          <table
-            class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
-          >
-            <thead>
+        <div class="columns">
+          <div class="column">
+            <table
+              class="table is-responsive is-bordered is-narrow is-fullwidth"
+            >
               <tr style="background-color: #ebfffc">
                 <td style="width: 20%">
                   <div class="field has-addons">
@@ -86,6 +95,8 @@
                     <span>Refresh</span>
                   </button>
                 </td>
+                <!-- <td><input class="input is-small" type="date" /></td>
+                <td><input class="input is-small" type="date" /></td> -->
                 <td
                   style="width: 9%; text-align: center; vertical-align: middle"
                 >
@@ -106,14 +117,12 @@
                 </td>
                 <td></td>
               </tr>
-            </thead>
-          </table>
+            </table>
+          </div>
         </div>
 
         <div class="table_wrapper">
-          <table
-            class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
-          >
+          <table class="table is-bordered is-narrow is-fullwidth">
             <thead>
               <tr style="background-color: #ebfffc">
                 <th
@@ -455,54 +464,49 @@
               </tr>
             </tbody>
           </table>
-        </div>
-        <div class="columns" style="text-align: center">
-          <div class="column">
-            <div class="pagination">
-              <button
-                class="button is-small is-success"
-                @click="changePage(1)"
-                :disabled="currentPage === 1"
-              >
-                Đầu tiên
-              </button>
-              <button
-                class="button is-small is-info"
-                @click="changePage(currentPage - 1)"
-                :disabled="currentPage === 1"
-              >
-                Trước
-              </button>
-              <button
-                class="button is-small"
-                v-for="page in pages"
-                @click="changePage(page)"
-                :class="{ active: page === currentPage }"
-              >
-                {{ page }}
-              </button>
-              <button
-                class="button is-small is-info"
-                @click="changePage(currentPage + 1)"
-                :disabled="currentPage === pageCount"
-              >
-                Sau
-              </button>
-              <button
-                class="button is-small is-success"
-                @click="changePage(pageCount)"
-                :disabled="currentPage === pageCount"
-              >
-                Cuối
-              </button>
-            </div>
+          <div class="pagination" style="text-align: right">
+            <button
+              class="button is-small is-success"
+              @click="changePage(1)"
+              :disabled="currentPage === 1"
+            >
+              Đầu tiên
+            </button>
+            <button
+              class="button is-small is-info"
+              @click="changePage(currentPage - 1)"
+              :disabled="currentPage === 1"
+            >
+              Trước
+            </button>
+            <button
+              class="button is-small"
+              v-for="page in pages"
+              @click="changePage(page)"
+              :class="{ active: page === currentPage }"
+            >
+              {{ page }}
+            </button>
+            <button
+              class="button is-small is-info"
+              @click="changePage(currentPage + 1)"
+              :disabled="currentPage === pageCount"
+            >
+              Sau
+            </button>
+            <button
+              class="button is-small is-success"
+              @click="changePage(pageCount)"
+              :disabled="currentPage === pageCount"
+            >
+              Cuối
+            </button>
           </div>
         </div>
 
-        <div class="table_wrapper" style="margin-bottom: 10px">
-          <table
-            class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
-          >
+        <!-- Kế hoạch mùa vụ -->
+        <div class="table_wrapper" style="margin-top: 1px">
+          <table class="table is-responsive is-bordered is-narrow is-fullwidth">
             <tr>
               <td colspan="17" style="font-size: small; font-weight: 700">
                 <span
@@ -855,11 +859,10 @@
             </template>
           </table>
         </div>
+        <br />
 
         <div class="table_wrapper">
-          <table
-            class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
-          >
+          <table class="table is-bordered is-narrow is-fullwidth">
             <thead>
               <tr style="background-color: #ebfffc">
                 <th
@@ -1104,14 +1107,14 @@
             </tbody>
           </table>
         </div>
+
+        <!-- Kế hoạch tại từng phân xưởng -->
         <div
-          class="table_wrapper"
           v-if="check_giaopx == true"
+          class="table_wrapper"
           style="margin-top: 1px"
         >
-          <table
-            class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
-          >
+          <table class="table is-responsive is-bordered is-narrow is-fullwidth">
             <tr style="background-color: #faf0f5">
               <td colspan="6" style="font-weight: bold; font-size: small">
                 Lập lô nhà máy
@@ -1262,8 +1265,8 @@
                   border-top-right-radius: 8px;
                 "
               >
-                <div class="columns is-mobile">
-                  <div class="column">
+                <div class="columns">
+                  <div class="column is-9">
                     <p
                       style="
                         font-size: small;
@@ -1275,34 +1278,33 @@
                       <span class="icon is-small is-left">
                         <i style="color: #ffd863ff" class="fas fa-tags"></i>
                       </span>
-                      Kế hoạch nhà máy: {{ one_lokhnm.makh }}
+                      Thông tin về Kế hoạch nhà máy mã: {{ one_lokhnm.makh }}
                     </p>
+                  </div>
+                  <div class="column" style="text-align: right">
+                    <a @click="isActive = false">
+                      <span
+                        style="color: red; padding: 20px"
+                        class="icon is-small"
+                      >
+                        <i class="fas fa-power-off"></i>
+                      </span>
+                    </a>
                   </div>
                 </div>
               </header>
               <section class="modal-card-body">
-                <div class="columns">
-                  <div class="column">
-                    <div class="field">
-                      <div class="control">
-                        <textarea
-                          rows="8"
-                          cols="8"
-                          v-model="one_lokhnm.ghichu"
-                          class="textarea is-small"
-                        ></textarea>
-                      </div>
+                <div>
+                  <div class="field">
+                    <div class="control">
+                      <textarea
+                        rows="20"
+                        cols="120"
+                        v-model="one_lokhnm.ghichu"
+                        class="textarea"
+                        placeholder="Normal textarea"
+                      ></textarea>
                     </div>
-                  </div>
-                </div>
-                <div class="columns">
-                  <div class="column" style="text-align: right">
-                    <button
-                      @click="isActive = false"
-                      class="button is-small is-danger"
-                    >
-                      Đóng
-                    </button>
                   </div>
                 </div>
               </section>
@@ -1313,6 +1315,7 @@
     </div>
   </div>
 </template>
+
 <script>
 import Swal from "sweetalert2";
 import dayjs from "dayjs";
@@ -2519,8 +2522,8 @@ export default {
 
 .modal-content,
 .modal-card {
-  width: 650px;
-  height: 300px;
+  width: 850px;
+  height: 600px;
 }
 
 .pagination {
@@ -2541,18 +2544,5 @@ export default {
 
 .pagination button.active {
   background-color: #cb4b10;
-}
-
-@media (max-width: 768px) {
-  .pagination button {
-    margin: 5px;
-  }
-}
-
-@media (max-width: 768px) {
-  .modal-card {
-    width: 90%;
-    max-width: 400px;
-  }
 }
 </style>
