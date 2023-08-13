@@ -23,9 +23,11 @@
           data-target="navbarMenu"
           @click="toggleMenu"
         >
-          <span></span>
-          <span></span>
-          <span></span>
+          <div style="color: #f14668">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
         </a>
       </div>
 

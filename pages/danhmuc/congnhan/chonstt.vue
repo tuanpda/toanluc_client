@@ -2,22 +2,22 @@
   <div class="columns">
     <div class="column container">
       <br />
-      <div class="box">
+      <div class="box" style="margin-left: 3px; margin-right: 3px">
         <div class="columns">
           <div class="column">
             <div class="control">
               <span class="icon is-small is-left">
                 <i style="color: #00d1b2" class="fas fa-barcode"></i>
               </span>
-              <span style="color: #3850b7; font-size: 17px; font-weight: bold"
-                >Gán số thứ tự cho công nhân theo tổ</span
+              <span style="color: #3850b7; font-size: 15px; font-weight: bold"
+                >Gán số thứ tự công nhân</span
               >
             </div>
           </div>
         </div>
 
         <div class="columns">
-          <div class="column is-8">
+          <div class="column is-10">
             <span>Có tất cả: </span>
             <span style="font-weight: bold">{{
               congnhan.length | formatNumber
@@ -35,21 +35,11 @@
               <span>Thêm công nhân</span>
             </button>
           </div>
-          <div class="column" style="text-align: right">
-            <nuxt-link :to="`/`">
-              <button class="button is-info is-fullwidth is-small">
-                <span class="icon is-small">
-                  <i class="fas fa-angle-double-left"></i>
-                </span>
-                <span>Thoát</span>
-              </button>
-            </nuxt-link>
-          </div>
         </div>
         <div class="columns">
-          <div class="column" style="text-align: right">
+          <div class="column">
             <div class="control has-icons-left">
-              <div class="select is-small">
+              <div class="select is-small is-fullwidth">
                 <select @change="getWithPX($event)">
                   <option selected>-- Xem theo phân xưởng --</option>
                   <option v-for="item in phanxuong" :value="item.mapx">
@@ -60,7 +50,11 @@
               <span class="icon is-small is-left">
                 <i style="color: #48c78e" class="fas fa-kaaba"></i>
               </span>
-              <div class="select is-small">
+            </div>
+          </div>
+          <div class="column">
+            <div class="control has-icons-left">
+              <div class="select is-small is-fullwidth">
                 <select @change="getWithTo($event)">
                   <option selected>-- Xem theo tổ --</option>
                   <option v-for="item in tonhomid" :value="item.mapx">

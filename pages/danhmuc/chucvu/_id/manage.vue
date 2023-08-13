@@ -1,8 +1,8 @@
 <template>
-  <div class="columns is-mobile">
-    <div class="column is-three-fifths is-offset-one-fifth">
+  <div class="columns">
+    <div class="column container">
       <br />
-      <div class="box">
+      <div class="box" style="margin-left: 3px; margin-right: 3px">
         <div class="columns">
           <div class="column is-8">
             <nuxt-link :to="`/danhmuc/chucvu/`">

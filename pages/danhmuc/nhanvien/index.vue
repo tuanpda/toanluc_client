@@ -2,7 +2,7 @@
   <div class="columns">
     <div class="column container">
       <br />
-      <div class="box">
+      <div class="box" style="margin-left: 3px; margin-right: 3px">
         <div class="columns">
           <div class="column">
             <div class="control">
@@ -40,7 +40,7 @@
         <div class="columns">
           <div class="column" style="text-align: right">
             <div class="control has-icons-left">
-              <div class="select is-small">
+              <div class="select is-small is-fullwidth">
                 <select @change="getWithBp($event)">
                   <option selected>-- Xem theo phòng ban --</option>
                   <option v-for="item in phongban" :value="item.mapx">
@@ -54,7 +54,7 @@
             </div>
           </div>
         </div>
-        <div style="margin-bottom: 3px">
+        <div style="margin-bottom: 3px; text-align: right">
           <vue-excel-xlsx
             :data="dsnhanvien"
             :columns="columns"

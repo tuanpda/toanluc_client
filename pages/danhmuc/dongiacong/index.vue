@@ -2,14 +2,14 @@
   <div class="columns">
     <div class="column container">
       <br />
-      <div class="box" style="margin-left: 10px; margin-right: 10px">
+      <div class="box" style="margin-left: 3px; margin-right: 3px">
         <div class="columns">
           <div class="column">
             <div class="control">
               <span class="icon is-small is-left">
                 <i style="color: #00d1b2" class="fab fa-slack-hash"></i>
               </span>
-              <span style="color: #3850b7; font-size: 17px; font-weight: bold"
+              <span style="color: #3850b7; font-size: 15px; font-weight: bold"
                 >Danh mục đơn giá công</span
               >
             </div>
@@ -33,7 +33,7 @@
               placeholder="Gõ tìm theo nhóm lương"
             />
           </div>
-          <div class="column is-1" style="text-align: right">
+          <div class="column" style="text-align: right">
             <button
               @click="openModel()"
               class="button is-success is-fullwidth is-small"
@@ -44,45 +44,32 @@
               <span>Thêm</span>
             </button>
           </div>
-          <div class="column is-1" style="text-align: right">
-            <nuxt-link :to="`/`">
-              <button class="button is-info is-fullwidth is-small">
-                <span class="icon is-small">
-                  <i class="fas fa-angle-double-left"></i>
-                </span>
-                <span>Thoát</span>
-              </button>
-            </nuxt-link>
+        </div>
+        <div class="columns">
+          <div class="column">
+            <div class="control has-icons-left">
+              <div class="select is-small is-fullwidth">
+                <select @change="showDmnc($event)">
+                  <option selected>-- Xem theo phân xưởng --</option>
+                  <option v-for="item in phanxuong" :value="item.mapx">
+                    {{ item.mapx }} -- {{ item.tenpx }}
+                  </option>
+                </select>
+              </div>
+            </div>
           </div>
         </div>
-        <div style="margin-bottom: 3px">
-          <table>
-            <tr>
-              <td style="width: 20%">
-                <div class="select is-small">
-                  <select @change="showDmnc($event)">
-                    <option selected>-- Xem theo phân xưởng --</option>
-                    <option v-for="item in phanxuong" :value="item.mapx">
-                      {{ item.mapx }} -- {{ item.tenpx }}
-                    </option>
-                  </select>
-                </div>
-              </td>
-              <td>
-                <vue-excel-xlsx
-                  :data="dongiacong"
-                  :columns="columns"
-                  :file-name="'Danh_muc_don_gia_cong'"
-                  :file-type="'xlsx'"
-                  :sheet-name="'Danh mục đơn giá công'"
-                >
-                  Download Excel
-                </vue-excel-xlsx>
-              </td>
-            </tr>
-          </table>
+        <div style="margin-bottom: 3px; text-align: right">
+          <vue-excel-xlsx
+            :data="dongiacong"
+            :columns="columns"
+            :file-name="'Danh_muc_don_gia_cong'"
+            :file-type="'xlsx'"
+            :sheet-name="'Danh mục đơn giá công'"
+          >
+            Download Excel
+          </vue-excel-xlsx>
         </div>
-
         <div class="table_wrapper table-height">
           <table
             class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
@@ -150,8 +137,8 @@
                   border-top-right-radius: 8px;
                 "
               >
-                <div class="columns">
-                  <div class="column is-9">
+                <div class="columns is-mobile">
+                  <div class="column">
                     <p
                       style="
                         font-size: small;
@@ -163,93 +150,93 @@
                       <span class="icon is-small is-left">
                         <i style="color: #ffd863ff" class="fab fa-codepen"></i>
                       </span>
-                      Cập nhật thông tin đơn giá công
+                      Cập nhật đơn giá công
                     </p>
-                  </div>
-                  <div class="column" style="text-align: right">
-                    <a @click="isActive = false">
-                      <span
-                        style="color: red; padding: 20px"
-                        class="icon is-small"
-                      >
-                        <i class="fas fa-power-off"></i>
-                      </span>
-                    </a>
                   </div>
                 </div>
               </header>
               <section class="modal-card-body">
-                <div>
-                  <div class="table_wrapper">
-                    <table
-                      class="table is-responsive is-bordered is-narrow is-fullwidth"
+                <div class="columns">
+                  <div class="column">
+                    <div class="field">
+                      <label class="label">Phân xưởng</label>
+                      <div class="control">
+                        <input
+                          type="text"
+                          v-model="one_dongiacong.PX"
+                          class="input is-small"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="column">
+                    <div class="field">
+                      <label class="label">Công đoạn</label>
+                      <div class="control">
+                        <input
+                          type="text"
+                          v-model="one_dongiacong.congdoan"
+                          class="input is-small"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="columns">
+                  <div class="column">
+                    <div class="field">
+                      <label class="label">KHSP</label>
+                      <div class="control">
+                        <input
+                          type="text"
+                          v-model="one_dongiacong.khsp"
+                          class="input is-small"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="column">
+                    <div class="field">
+                      <label class="label">Đơn giá</label>
+                      <div class="control">
+                        <input
+                          type="text"
+                          v-model="one_dongiacong.dongia"
+                          class="input is-small"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="columns">
+                  <div class="column">
+                    <div class="field">
+                      <div class="control">
+                        <textarea
+                          class="textarea is-small"
+                          v-model="one_dongiacong.ghichu"
+                        ></textarea>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="columns">
+                  <div class="column">
+                    <button
+                      @click="onUpdate(one_dongiacong._id)"
+                      class="button is-success is-fullwidth is-small"
                     >
-                      <tr>
-                        <td style="font-size: small">Phân xưởng</td>
-                        <td>
-                          <input
-                            type="text"
-                            v-model="one_dongiacong.PX"
-                            class="input is-small"
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style="font-size: small">Công đoạn</td>
-                        <td>
-                          <input
-                            type="text"
-                            v-model="one_dongiacong.congdoan"
-                            class="input is-small"
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style="font-size: small">KHSP</td>
-                        <td>
-                          <input
-                            type="text"
-                            v-model="one_dongiacong.khsp"
-                            class="input is-small"
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style="font-size: small">Đơn giá</td>
-                        <td>
-                          <input
-                            type="text"
-                            v-model="one_dongiacong.dongia"
-                            class="input is-small is-danger"
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td colspan="2">
-                          <div class="field">
-                            <div class="control">
-                              <textarea
-                                class="textarea is-small"
-                                v-model="one_dongiacong.ghichu"
-                              ></textarea>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td colspan="2">
-                          <button
-                            @click="onUpdate(one_dongiacong._id)"
-                            class="button is-success is-fullwidth is-small"
-                          >
-                            <span class="icon is-small">
-                              <i class="fab fa-jsfiddle"></i>
-                            </span>
-                            <span>Cập nhật thông tin</span>
-                          </button>
-                        </td>
-                      </tr>
-                    </table>
+                      <span>Cập nhật thông tin</span>
+                    </button>
+                  </div>
+                  <div class="column">
+                    <button
+                      @click="isActive = false"
+                      class="button is-danger is-fullwidth is-small"
+                    >
+                      <span>Hủy bỏ</span>
+                    </button>
                   </div>
                 </div>
               </section>
@@ -270,8 +257,8 @@
                   border-top-right-radius: 8px;
                 "
               >
-                <div class="columns">
-                  <div class="column is-9">
+                <div class="columns is-mobile">
+                  <div class="column">
                     <p
                       style="
                         font-size: small;
@@ -286,104 +273,102 @@
                       Thêm mới đơn giá công
                     </p>
                   </div>
-                  <div class="column" style="text-align: right">
-                    <a @click="isActive_cre = false">
-                      <span
-                        style="color: red; padding: 20px"
-                        class="icon is-small"
-                      >
-                        <i class="fas fa-power-off"></i>
-                      </span>
-                    </a>
-                  </div>
                 </div>
               </header>
               <section class="modal-card-body">
                 <div>
-                  <div class="table_wrapper">
-                    <table
-                      class="table is-responsive is-bordered is-narrow is-fullwidth"
-                    >
-                      <tr>
-                        <td style="font-size: small">Mã phân xưởng</td>
-                        <td>
-                          <div class="control has-icons-left">
-                            <div class="select is-small is-fullwidth">
-                              <select @change="getWithPX($event)">
-                                <option selected>-- Chọn phân xưởng --</option>
-                                <option
-                                  v-for="item in phanxuong"
-                                  :value="item.mapx"
-                                >
-                                  {{ item.mapx }} - {{ item.tenpx }}
-                                </option>
-                              </select>
-                            </div>
-                            <span class="icon is-small is-left">
-                              <i
-                                style="color: #48c78e"
-                                class="fas fa-kaaba"
-                              ></i>
-                            </span>
+                  <div class="columns">
+                    <div class="column">
+                      <div class="field">
+                        <label class="label">Phân xưởng</label>
+                        <div class="control has-icons-left">
+                          <div class="select is-small is-fullwidth">
+                            <select @change="getWithPX($event)">
+                              <option selected>-- Chọn phân xưởng --</option>
+                              <option
+                                v-for="item in phanxuong"
+                                :value="item.mapx"
+                              >
+                                {{ item.mapx }} - {{ item.tenpx }}
+                              </option>
+                            </select>
                           </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style="font-size: small">Công đoạn</td>
-                        <td>
-                          <input
-                            type="text"
-                            v-model="form.congdoan"
-                            class="input is-small"
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style="font-size: small">KHSP</td>
-                        <td>
-                          <input
-                            type="text"
-                            v-model="form.khsp"
-                            class="input is-small"
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td style="font-size: small">Đơn giá</td>
-                        <td>
-                          <input
-                            type="text"
-                            v-model="form.dongia"
-                            class="input is-small is-danger"
-                          />
-                        </td>
-                      </tr>
-                      <tr>
-                        <td colspan="2">
-                          <div class="field">
-                            <div class="control">
-                              <textarea
-                                class="textarea is-small"
-                                v-model="form.ghichu"
-                              ></textarea>
-                            </div>
-                          </div>
-                        </td>
-                      </tr>
-                      <tr>
-                        <td colspan="2">
-                          <button
-                            @click="onAddNc()"
-                            class="button is-success is-fullwidth is-small"
-                          >
-                            <span class="icon is-small">
-                              <i class="fas fa-file-signature"></i>
-                            </span>
-                            <span>Thêm mới nguyên công</span>
-                          </button>
-                        </td>
-                      </tr>
-                    </table>
+                          <span class="icon is-small is-left">
+                            <i style="color: #48c78e" class="fas fa-kaaba"></i>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="columns">
+                    <div class="column">
+                      <div class="field">
+                        <label class="label">Công đoạn</label>
+                        <input
+                          type="text"
+                          v-model="form.congdoan"
+                          class="input is-small"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="columns">
+                    <div class="column">
+                      <div class="field">
+                        <label class="label">KHSP</label>
+                        <input
+                          type="text"
+                          v-model="form.khsp"
+                          class="input is-small"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="columns">
+                    <div class="column">
+                      <div class="field">
+                        <label class="label">Đơn giá</label>
+                        <input
+                          type="text"
+                          v-model="form.dongia"
+                          class="input is-small"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="columns">
+                    <div class="column">
+                      <div class="field">
+                        <div class="control">
+                          <textarea
+                            class="textarea is-small"
+                            v-model="form.ghichu"
+                          ></textarea>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="columns">
+                    <div class="column">
+                      <button
+                        @click="onAddNc()"
+                        class="button is-success is-fullwidth is-small"
+                      >
+                        <span class="icon is-small">
+                          <i class="fas fa-file-signature"></i>
+                        </span>
+                        <span>Thêm mới</span>
+                      </button>
+                    </div>
+                    <div class="column">
+                      <button
+                        @click="isActive_cre = false"
+                        class="button is-danger is-fullwidth is-small"
+                      >
+                        <span>Hủy bỏ</span>
+                      </button>
+                    </div>
                   </div>
                 </div>
               </section>
@@ -780,14 +765,10 @@ th {
   width: 620px;
 }
 
-#preview {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#preview img {
-  max-width: 90px;
-  max-height: 90px;
+@media (max-width: 768px) {
+  .modal-card {
+    width: 90%;
+    max-width: 400px;
+  }
 }
 </style>

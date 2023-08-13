@@ -2,7 +2,7 @@
   <div class="columns">
     <div class="column container">
       <br />
-      <div class="box">
+      <div class="box" style="margin-left: 3px; margin-right: 3px">
         <div class="columns">
           <div class="column">
             <div class="control">
@@ -36,7 +36,7 @@
             </button>
           </div>
         </div>
-        <div style="margin-bottom: 3px">
+        <div style="margin-bottom: 3px; text-align: right">
           <vue-excel-xlsx
             :data="tonhom"
             :columns="columns"

@@ -36,7 +36,7 @@
             </button>
           </div>
         </div>
-        <div style="margin-bottom: 3px">
+        <div style="margin-bottom: 3px; text-align: right">
           <vue-excel-xlsx
             :data="phanxuong"
             :columns="columns"

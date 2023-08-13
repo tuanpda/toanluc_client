@@ -2,14 +2,14 @@
   <div class="columns">
     <div class="column container">
       <br />
-      <div class="box">
+      <div class="box" style="margin-left: 3px; margin-right: 3px">
         <div class="columns">
           <div class="column">
             <div class="control">
               <span class="icon is-small is-left">
                 <i style="color: #00d1b2" class="fas fa-compress-alt"></i>
               </span>
-              <span style="color: #3850b7; font-size: 17px; font-weight: bold"
+              <span style="color: #3850b7; font-size: 15px; font-weight: bold"
                 >Điều chuyển công nhân</span
               >
             </div>
@@ -17,39 +17,18 @@
         </div>
 
         <div class="columns">
-          <div class="column is-8">
+          <div class="column">
             <span>Có tất cả: </span>
             <span style="font-weight: bold">{{
               congnhan.length | formatNumber
             }}</span>
             <span>công nhân</span>
           </div>
-          <div class="column" style="text-align: right">
-            <button
-              @click="isActive = true"
-              class="button is-success is-fullwidth is-small"
-            >
-              <span class="icon is-small">
-                <i class="fas fa-pen-fancy"></i>
-              </span>
-              <span>Thêm công nhân</span>
-            </button>
-          </div>
-          <div class="column" style="text-align: right">
-            <nuxt-link :to="`/`">
-              <button class="button is-info is-fullwidth is-small">
-                <span class="icon is-small">
-                  <i class="fas fa-angle-double-left"></i>
-                </span>
-                <span>Thoát</span>
-              </button>
-            </nuxt-link>
-          </div>
         </div>
         <div class="columns">
           <div class="column" style="text-align: right">
             <div class="control has-icons-left">
-              <div class="select is-small">
+              <div class="select is-small is-fullwidth">
                 <select @change="getWithPX($event)">
                   <option selected>-- Xem theo phân xưởng --</option>
                   <option v-for="item in phanxuong" :value="item.mapx">
@@ -60,7 +39,11 @@
               <span class="icon is-small is-left">
                 <i style="color: #48c78e" class="fas fa-kaaba"></i>
               </span>
-              <div class="select is-small">
+            </div>
+          </div>
+          <div class="column" style="text-align: right">
+            <div class="control has-icons-left">
+              <div class="select is-small is-fullwidth">
                 <select @change="getWithTo($event)">
                   <option selected>-- Xem theo tổ --</option>
                   <option v-for="item in tonhomid" :value="item.mapx">
@@ -74,7 +57,8 @@
             </div>
           </div>
         </div>
-        <div style="margin-bottom: 3px">
+
+        <div style="margin-bottom: 3px; text-align: right">
           <vue-excel-xlsx
             :data="congnhan"
             :columns="columns"
@@ -165,347 +149,6 @@
           </table>
         </div>
 
-        <!-- Modal Add công nhân -->
-        <div class="">
-          <div :class="{ 'is-active': isActive }" class="modal">
-            <div class="modal-background"></div>
-            <div class="modal-content modal-card">
-              <header
-                style="
-                  background-color: #3e8ed0;
-                  border-top-left-radius: 8px;
-                  border-top-right-radius: 8px;
-                "
-              >
-                <div class="columns">
-                  <div class="column is-9">
-                    <p
-                      style="
-                        font-size: small;
-                        font-weight: bold;
-                        color: white;
-                        padding: 15px;
-                      "
-                    >
-                      <span class="icon is-small is-left">
-                        <i
-                          style="color: #ffd863ff"
-                          class="fas fa-feather-alt"
-                        ></i>
-                      </span>
-                      Thêm Công nhân
-                    </p>
-                  </div>
-                  <div class="column" style="text-align: right">
-                    <a @click="isActive = false">
-                      <span
-                        style="color: red; padding: 20px"
-                        class="icon is-small"
-                      >
-                        <i class="fas fa-power-off"></i>
-                      </span>
-                    </a>
-                  </div>
-                </div>
-              </header>
-              <section class="modal-card-body">
-                <div class="table_wrapper">
-                  <table
-                    class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
-                  >
-                    <tr style="background-color: #fffaeb">
-                      <td
-                        colspan="2"
-                        style="
-                          text-align: right;
-                          font-size: small;
-                          font-weight: bold;
-                        "
-                      >
-                        Nhập thông tin
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style="width: 50%">
-                        <div class="field">
-                          <label class="label">Mã công nhân</label>
-                          <div class="control">
-                            <input
-                              v-model.trim="form.macn"
-                              @blur="$v.form.macn.$touch()"
-                              class="input is-small"
-                              type="text"
-                              placeholder="Nhập mã công nhân"
-                            />
-                          </div>
-                          <div v-if="$v.form.macn.$error" class="form-error">
-                            <span
-                              v-if="!$v.form.macn.required"
-                              class="help is-danger"
-                              >Yêu cầu nhập mã công nhân</span
-                            >
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="field">
-                          <label class="label">Tên công nhân</label>
-                          <div class="control">
-                            <input
-                              v-model.trim="form.tencn"
-                              @blur="$v.form.tencn.$touch()"
-                              class="input is-small"
-                              type="text"
-                              placeholder="Nhập tên công nhân"
-                            />
-                          </div>
-                          <div v-if="$v.form.tencn.$error" class="form-error">
-                            <span
-                              v-if="!$v.form.tencn.required"
-                              class="help is-danger"
-                              >Yêu cầu nhập tên công nhân</span
-                            >
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="control has-icons-left">
-                          <div class="select is-small is-fullwidth">
-                            <select @change="showmapx($event)">
-                              <option selected>-- Chọn phân xưởng --</option>
-                              <option
-                                v-for="item in phanxuong"
-                                :value="item.mapx"
-                              >
-                                {{ item.mapx }} -- {{ item.tenpx }}
-                              </option>
-                            </select>
-                          </div>
-                          <span class="icon is-small is-left">
-                            <i style="color: #48c78e" class="fas fa-kaaba"></i>
-                          </span>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="control has-icons-left">
-                          <div class="select is-small is-fullwidth">
-                            <select @change="showmato($event)">
-                              <option selected>-- Chọn tổ --</option>
-                              <option v-for="item in tonhom" :value="item.mato">
-                                {{ item.mato }} -- {{ item.tento }}
-                              </option>
-                            </select>
-                          </div>
-                          <span class="icon is-small is-left">
-                            <i style="color: #48c78e" class="fas fa-kaaba"></i>
-                          </span>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="field">
-                          <label class="label">Số điện thoại</label>
-                          <div class="control">
-                            <input
-                              v-model.trim="form.sdt"
-                              @blur="$v.form.sdt.$touch()"
-                              class="input is-small"
-                              type="text"
-                              placeholder="Nhập số điện thoại"
-                            />
-                          </div>
-                          <div v-if="$v.form.sdt.$error" class="form-error">
-                            <span
-                              v-if="!$v.form.sdt.required"
-                              class="help is-danger"
-                              >Yêu cầu nhập số điện thoại</span
-                            >
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="field">
-                          <label class="label">Địa chỉ</label>
-                          <div class="control">
-                            <input
-                              v-model.trim="form.diachi"
-                              @blur="$v.form.diachi.$touch()"
-                              class="input is-small"
-                              type="text"
-                              placeholder="Nhập địa chỉ"
-                            />
-                          </div>
-                          <div v-if="$v.form.diachi.$error" class="form-error">
-                            <span
-                              v-if="!$v.form.diachi.required"
-                              class="help is-danger"
-                              >Yêu cầu nhập địa chỉ</span
-                            >
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="field">
-                          <label class="label">Căn cước công dân</label>
-                          <div class="control">
-                            <input
-                              v-model.trim="form.cccd"
-                              @blur="$v.form.cccd.$touch()"
-                              class="input is-small"
-                              type="text"
-                              placeholder="Nhập căn cước công nhân"
-                            />
-                          </div>
-                          <div v-if="$v.form.cccd.$error" class="form-error">
-                            <span
-                              v-if="!$v.form.cccd.required"
-                              class="help is-danger"
-                              >Yêu cầu nhập căn cước công dân</span
-                            >
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="field">
-                          <label class="label">Chức vụ</label>
-                          <div class="control">
-                            <input
-                              v-model.trim="form.chucvu"
-                              class="input is-small"
-                              type="text"
-                              placeholder="Nhập chức vụ"
-                            />
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="field">
-                          <label class="label">Lương cơ bản</label>
-                          <div class="control">
-                            <input
-                              v-model.trim="form.luongcb"
-                              class="input is-small"
-                              type="text"
-                              v-mask="mask"
-                            />
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="field">
-                          <label class="label">Người liên hệ khẩn cấp</label>
-                          <div class="control">
-                            <input
-                              v-model.trim="form.nguoilienhe"
-                              @blur="$v.form.nguoilienhe.$touch()"
-                              class="input is-small"
-                              type="text"
-                              placeholder="Nhập thông tin người liên hệ khi cần"
-                            />
-                          </div>
-                          <div
-                            v-if="$v.form.nguoilienhe.$error"
-                            class="form-error"
-                          >
-                            <span
-                              v-if="!$v.form.nguoilienhe.required"
-                              class="help is-danger"
-                              >Yêu cầu nhập người liên hệ khi cần gấp</span
-                            >
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <div class="field">
-                          <label class="label">Số tài khoản</label>
-                          <div class="control">
-                            <input
-                              v-model.trim="form.sotknh"
-                              class="input is-small"
-                              type="text"
-                              placeholder="Nhập thông tin số tài khoản (nếu có)"
-                            />
-                          </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="field">
-                          <label class="label">Tên ngân hàng</label>
-                          <div class="control">
-                            <input
-                              v-model.trim="form.tennh"
-                              class="input is-small"
-                              type="text"
-                              placeholder="Nhập tên ngân hàng"
-                            />
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colspan="2">
-                        <div class="field">
-                          <div style="margin-bottom: 10px">
-                            <label class="checkbox">
-                              <input
-                                type="checkbox"
-                                v-model.trim="checkGhichu"
-                              />
-                              <span style="font-weight: bold">Ghi chú </span>
-                            </label>
-                          </div>
-                        </div>
-                        <div
-                          v-if="checkGhichu == true"
-                          class="field"
-                          style="margin-top: 10px"
-                        >
-                          <div class="control">
-                            <textarea
-                              v-model="form.ghichu"
-                              class="textarea is-small"
-                              placeholder="Ghi chú thêm ..."
-                            ></textarea>
-                          </div>
-                        </div>
-                      </td>
-                    </tr>
-                  </table>
-                </div>
-
-                <div class="columns">
-                  <div class="column">
-                    <button
-                      :disabled="$v.form.$invalid"
-                      @click.prevent="onAddCongnhan"
-                      class="button is-success is-fullwidth is-small"
-                    >
-                      Ghi nhận
-                    </button>
-                  </div>
-                  <div class="column">
-                    <button
-                      @click="isActive = false"
-                      class="button is-danger is-light is-fullwidth is-small"
-                    >
-                      Hủy bỏ
-                    </button>
-                  </div>
-                </div>
-              </section>
-            </div>
-          </div>
-        </div>
-
         <!-- Modal điều chuyển công nhân -->
         <div class="">
           <div :class="{ 'is-active': isActive_dieuchuyen }" class="modal">
@@ -518,8 +161,8 @@
                   border-top-right-radius: 8px;
                 "
               >
-                <div class="columns">
-                  <div class="column is-9">
+                <div class="columns is-mobile">
+                  <div class="column">
                     <p
                       style="
                         font-size: small;
@@ -537,16 +180,6 @@
                       Điều chuyển công nhân
                     </p>
                   </div>
-                  <div class="column" style="text-align: right">
-                    <a @click="isActive_dieuchuyen = false">
-                      <span
-                        style="color: red; padding: 20px"
-                        class="icon is-small"
-                      >
-                        <i class="fas fa-power-off"></i>
-                      </span>
-                    </a>
-                  </div>
                 </div>
               </header>
               <section class="modal-card-body">
@@ -557,81 +190,63 @@
                   công nhân đến. 3 - Sau khi bấm điều chuyển thì công nhân sẽ
                   được điều chuyển về xưởng/tổ mới, với mã công nhân vừa gõ vào.
                 </div>
-                <div class="table_wrapper">
-                  <table
-                    class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
-                  >
-                    <tr style="background-color: #fffaeb">
-                      <td
-                        colspan="2"
-                        style="
-                          text-align: right;
-                          font-size: small;
-                          font-weight: bold;
-                        "
-                      >
-                        Nhập thông tin
-                      </td>
-                    </tr>
-                    <tr>
-                      <td style="width: 50%">
-                        <div class="control has-icons-left">
-                          <div class="select is-small is-fullwidth">
-                            <select @change="showmapx($event)">
-                              <option selected>-- Chọn phân xưởng --</option>
-                              <option
-                                v-for="item in phanxuong"
-                                :value="item.mapx"
-                              >
-                                {{ item.mapx }} -- {{ item.tenpx }}
-                              </option>
-                            </select>
-                          </div>
-                          <span class="icon is-small is-left">
-                            <i style="color: #48c78e" class="fas fa-kaaba"></i>
-                          </span>
-                        </div>
-                      </td>
-                      <td>
-                        <div class="control has-icons-left">
-                          <div class="select is-small is-fullwidth">
-                            <select @change="showmato($event)">
-                              <option selected>-- Chọn tổ --</option>
-                              <option v-for="item in tonhom" :value="item.mato">
-                                {{ item.mato }} -- {{ item.tento }}
-                              </option>
-                            </select>
-                          </div>
-                          <span class="icon is-small is-left">
-                            <i style="color: #48c78e" class="fas fa-kaaba"></i>
-                          </span>
-                        </div>
-                      </td>
-                    </tr>
-                    <tr>
-                      <td colspan="2" style="font-size: small">
+                <div class="columns">
+                  <div class="column">
+                    <div class="field">
+                      <label class="label">Phân xưởng</label>
+                      <div class="control has-icons-left">
                         <div class="select is-small is-fullwidth">
-                          <select>
-                            <option selected>
-                              -- Xem danh sách mã công nhân đã có trong phân
-                              xưởng--
-                            </option>
-                            <option v-for="item in dataMacn" :value="item.macn">
-                              {{ item.macn }}
+                          <select @change="showmapx($event)">
+                            <option selected>-- Chọn phân xưởng --</option>
+                            <option
+                              v-for="item in phanxuong"
+                              :value="item.mapx"
+                            >
+                              {{ item.mapx }} -- {{ item.tenpx }}
                             </option>
                           </select>
                         </div>
-                      </td>
-                    </tr>
-                    <tr v-if="form.macn != null">
-                      <td style="font-size: small">
-                        {{ form.macn }}
-                      </td>
-                      <td style="font-size: small; vertical-align: middle">
-                        {{ form.tencn }}
-                      </td>
-                    </tr>
-                  </table>
+                        <span class="icon is-small is-left">
+                          <i style="color: #48c78e" class="fas fa-kaaba"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="columns">
+                  <div class="column">
+                    <div class="field">
+                      <label class="label">Tổ</label>
+                      <div class="control has-icons-left">
+                        <div class="select is-small is-fullwidth">
+                          <select @change="showmato($event)">
+                            <option selected>-- Chọn tổ --</option>
+                            <option v-for="item in tonhom" :value="item.mato">
+                              {{ item.mato }} -- {{ item.tento }}
+                            </option>
+                          </select>
+                        </div>
+                        <span class="icon is-small is-left">
+                          <i style="color: #48c78e" class="fas fa-kaaba"></i>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="columns">
+                  <div class="column">
+                    <div class="field">
+                      <label class="label">{{ form.macn }}</label>
+                    </div>
+                  </div>
+
+                  <div class="column">
+                    <div class="field">
+                      <label class="label">{{ form.tencn }}</label>
+                    </div>
+                  </div>
                 </div>
 
                 <div class="columns" style="margin-top: 10px">
@@ -1250,14 +865,10 @@ export default {
   width: 720px;
 }
 
-#preview {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#preview img {
-  max-width: 90px;
-  max-height: 90px;
+@media (max-width: 768px) {
+  .modal-card {
+    width: 90%;
+    max-width: 400px;
+  }
 }
 </style>

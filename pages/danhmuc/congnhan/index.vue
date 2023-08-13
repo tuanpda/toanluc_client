@@ -2,7 +2,7 @@
   <div class="columns">
     <div class="column container">
       <br />
-      <div class="box">
+      <div class="box" style="margin-left: 3px; margin-right: 3px">
         <div class="columns">
           <div class="column">
             <div class="control">
@@ -37,9 +37,9 @@
           </div>
         </div>
         <div class="columns">
-          <div class="column" style="text-align: right">
+          <div class="column">
             <div class="control has-icons-left">
-              <div class="select is-small">
+              <div class="select is-small is-fullwidth">
                 <select @change="getWithPX($event)">
                   <option selected>-- Xem theo phân xưởng --</option>
                   <option v-for="item in phanxuong" :value="item.mapx">
@@ -50,7 +50,11 @@
               <span class="icon is-small is-left">
                 <i style="color: #48c78e" class="fas fa-kaaba"></i>
               </span>
-              <div class="select is-small">
+            </div>
+          </div>
+          <div class="column">
+            <div class="control has-icons-left">
+              <div class="select is-small is-fullwidth">
                 <select @change="getWithTo($event)">
                   <option selected>-- Xem theo tổ --</option>
                   <option v-for="item in tonhomid" :value="item.mapx">
@@ -64,7 +68,7 @@
             </div>
           </div>
         </div>
-        <div style="margin-bottom: 3px">
+        <div style="margin-bottom: 3px; text-align: right">
           <vue-excel-xlsx
             :data="congnhan"
             :columns="columns"

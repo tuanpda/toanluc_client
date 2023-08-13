@@ -2,54 +2,33 @@
   <div class="columns">
     <div class="column container">
       <br />
-      <div class="box">
+      <div class="box" style="margin-left: 3px; margin-right: 3px">
         <div class="columns">
           <div class="column">
             <div class="control">
               <span class="icon is-small is-left">
                 <i style="color: #00d1b2" class="fas fa-address-book"></i>
               </span>
-              <span style="color: #3850b7; font-size: 17px; font-weight: bold"
-                >Danh mục Công nhân đã nghỉ việc</span
+              <span style="color: #3850b7; font-size: 15px; font-weight: bold"
+                >Công nhân nghỉ việc</span
               >
             </div>
           </div>
         </div>
 
         <div class="columns">
-          <div class="column is-8">
+          <div class="column">
             <span>Có tất cả: </span>
             <span style="font-weight: bold">{{
               congnhan.length | formatNumber
             }}</span>
             <span>công nhân</span>
           </div>
-          <div class="column" style="text-align: right">
-            <button
-              @click="isActive = true"
-              class="button is-success is-fullwidth is-small"
-            >
-              <span class="icon is-small">
-                <i class="fas fa-pen-fancy"></i>
-              </span>
-              <span>Thêm công nhân</span>
-            </button>
-          </div>
-          <div class="column" style="text-align: right">
-            <nuxt-link :to="`/`">
-              <button class="button is-info is-fullwidth is-small">
-                <span class="icon is-small">
-                  <i class="fas fa-angle-double-left"></i>
-                </span>
-                <span>Thoát</span>
-              </button>
-            </nuxt-link>
-          </div>
         </div>
         <div class="columns">
           <div class="column" style="text-align: right">
             <div class="control has-icons-left">
-              <div class="select is-small">
+              <div class="select is-small is-fullwidth">
                 <select @change="getWithPX($event)">
                   <option selected>-- Xem theo phân xưởng --</option>
                   <option v-for="item in phanxuong" :value="item.mapx">
@@ -60,7 +39,11 @@
               <span class="icon is-small is-left">
                 <i style="color: #48c78e" class="fas fa-kaaba"></i>
               </span>
-              <div class="select is-small">
+            </div>
+          </div>
+          <div class="column" style="text-align: right">
+            <div class="control has-icons-left">
+              <div class="select is-small is-fullwidth">
                 <select @change="getWithTo($event)">
                   <option selected>-- Xem theo tổ --</option>
                   <option v-for="item in tonhomid" :value="item.mapx">
@@ -74,7 +57,7 @@
             </div>
           </div>
         </div>
-        <div style="margin-bottom: 3px">
+        <div style="margin-bottom: 3px; text-align: right">
           <vue-excel-xlsx
             :data="congnhan"
             :columns="columns"
@@ -167,44 +150,48 @@
           <div :class="{ 'is-active': isActive }" class="modal">
             <div class="modal-background"></div>
             <div class="modal-content modal-card">
-              <section class="modal-card-body">
-                <div>
-                  <div class="notification">
-                    1. Chức năng này sẽ đưa công nhân đã nghỉ việc trở lại làm
-                    việc
-                    <br />
-                    2. Bấm xác nhận thì công nhân này sẽ trở lại làm việc đúng
-                    xưởng/tổ cũ.
-                  </div>
+              <div class="columns is-mobile">
+                <div class="column">
+                  <section class="modal-card-body">
+                    <div>
+                      <div class="notification">
+                        1. Chức năng này sẽ đưa công nhân đã nghỉ việc trở lại
+                        làm việc
+                        <br />
+                        2. Bấm xác nhận thì công nhân này sẽ trở lại làm việc
+                        đúng xưởng/tổ cũ.
+                      </div>
+                    </div>
+                    <div style="padding-top: 10px">
+                      <textarea
+                        v-model="ghichu"
+                        class="textarea is-small"
+                        cols="30"
+                        rows="5"
+                        placeholder="Viết thêm ghi chú vào đây ..."
+                      ></textarea>
+                    </div>
+                    <div class="columns" style="margin-top: 10px">
+                      <div class="column">
+                        <button
+                          @click.prevent="onDieuchuyenwork"
+                          class="button is-success is-fullwidth is-small"
+                        >
+                          Xác nhận
+                        </button>
+                      </div>
+                      <div class="column">
+                        <button
+                          @click="isActive = false"
+                          class="button is-danger is-light is-fullwidth is-small"
+                        >
+                          Hủy bỏ
+                        </button>
+                      </div>
+                    </div>
+                  </section>
                 </div>
-                <div style="padding-top: 10px">
-                  <textarea
-                    v-model="ghichu"
-                    class="textarea is-small"
-                    cols="30"
-                    rows="5"
-                    placeholder="Viết thêm ghi chú vào đây ..."
-                  ></textarea>
-                </div>
-                <div class="columns" style="margin-top: 10px">
-                  <div class="column">
-                    <button
-                      @click.prevent="onDieuchuyenwork"
-                      class="button is-success is-fullwidth is-small"
-                    >
-                      Xác nhận
-                    </button>
-                  </div>
-                  <div class="column">
-                    <button
-                      @click="isActive = false"
-                      class="button is-danger is-light is-fullwidth is-small"
-                    >
-                      Hủy bỏ
-                    </button>
-                  </div>
-                </div>
-              </section>
+              </div>
             </div>
           </div>
         </div>
@@ -672,14 +659,10 @@ export default {
   width: 620px;
 }
 
-#preview {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#preview img {
-  max-width: 90px;
-  max-height: 90px;
+@media (max-width: 768px) {
+  .modal-card {
+    width: 90%;
+    max-width: 400px;
+  }
 }
 </style>

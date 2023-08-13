@@ -2,53 +2,34 @@
   <div class="columns">
     <div class="column container">
       <br />
-      <div class="box">
+      <div class="box" style="margin-left: 3px; margin-right: 3px">
         <div class="columns">
           <div class="column">
             <div class="control">
               <span class="icon is-small is-left">
                 <i style="color: #00d1b2" class="fas fa-address-card"></i>
               </span>
-              <span style="color: #3850b7; font-size: 17px; font-weight: bold"
-                >Danh mục Nhân viên</span
+              <span style="color: #3850b7; font-size: 15px; font-weight: bold"
+                >Nhân viên nghỉ việc</span
               >
             </div>
           </div>
         </div>
 
         <div class="columns">
-          <div class="column is-8">
+          <div class="column">
             <span>Có tất cả: </span>
             <span style="font-weight: bold">{{
               dsnhanvien.length | formatNumber
             }}</span>
             <span>nhân viên văn phòng</span>
           </div>
-          <div class="column" style="text-align: right">
-            <button
-              @click="isActive = true"
-              class="button is-success is-fullwidth is-small"
-            >
-              <span class="icon is-small">
-                <i class="fas fa-pen-fancy"></i>
-              </span>
-              <span>Thêm nhân viên</span>
-            </button>
-          </div>
-          <div class="column" style="text-align: right">
-            <button class="button is-info is-fullwidth is-small">
-              <span class="icon is-small">
-                <i class="fas fa-angle-double-left"></i>
-              </span>
-              <span>Thoát</span>
-            </button>
-          </div>
         </div>
 
         <div class="columns">
           <div class="column" style="text-align: right">
             <div class="control has-icons-left">
-              <div class="select is-small">
+              <div class="select is-small is-fullwidth">
                 <select @change="getWithBp($event)">
                   <option selected>-- Xem theo phòng ban --</option>
                   <option v-for="item in phongban" :value="item.mapx">
@@ -62,7 +43,7 @@
             </div>
           </div>
         </div>
-        <div style="margin-bottom: 3px">
+        <div style="margin-bottom: 3px; text-align: right">
           <vue-excel-xlsx
             :data="dsnhanvien"
             :columns="columns"
@@ -73,7 +54,7 @@
             Download Excel
           </vue-excel-xlsx>
         </div>
-        <div class="table_wrapper table-height">
+        <div class="table_wrapper">
           <table
             class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
           >
@@ -165,43 +146,47 @@
           <div :class="{ 'is-active': isActive }" class="modal">
             <div class="modal-background"></div>
             <div class="modal-content modal-card">
-              <section class="modal-card-body">
-                <div>
-                  <div class="notification">
-                    1. Chức năng này sẽ đưa nhân viên đã nghỉ việc trở lại làm
-                    việc
-                    <br />
-                    2. Bấm xác nhận thì nhân viên này sẽ trở lại làm việc.
-                  </div>
+              <div class="columns">
+                <div class="column">
+                  <section class="modal-card-body">
+                    <div>
+                      <div class="notification">
+                        1. Chức năng này sẽ đưa nhân viên đã nghỉ việc trở lại
+                        làm việc
+                        <br />
+                        2. Bấm xác nhận thì nhân viên này sẽ trở lại làm việc.
+                      </div>
+                    </div>
+                    <div style="padding-top: 10px">
+                      <textarea
+                        v-model="diengiai"
+                        class="textarea is-small"
+                        cols="30"
+                        rows="5"
+                        placeholder="Viết thêm ghi chú vào đây ..."
+                      ></textarea>
+                    </div>
+                    <div class="columns" style="margin-top: 10px">
+                      <div class="column">
+                        <button
+                          @click.prevent="onDieuchuyenwork"
+                          class="button is-success is-fullwidth is-small"
+                        >
+                          Xác nhận
+                        </button>
+                      </div>
+                      <div class="column">
+                        <button
+                          @click="isActive = false"
+                          class="button is-danger is-light is-fullwidth is-small"
+                        >
+                          Hủy bỏ
+                        </button>
+                      </div>
+                    </div>
+                  </section>
                 </div>
-                <div style="padding-top: 10px">
-                  <textarea
-                    v-model="diengiai"
-                    class="textarea is-small"
-                    cols="30"
-                    rows="5"
-                    placeholder="Viết thêm ghi chú vào đây ..."
-                  ></textarea>
-                </div>
-                <div class="columns" style="margin-top: 10px">
-                  <div class="column">
-                    <button
-                      @click.prevent="onDieuchuyenwork"
-                      class="button is-success is-fullwidth is-small"
-                    >
-                      Xác nhận
-                    </button>
-                  </div>
-                  <div class="column">
-                    <button
-                      @click="isActive = false"
-                      class="button is-danger is-light is-fullwidth is-small"
-                    >
-                      Hủy bỏ
-                    </button>
-                  </div>
-                </div>
-              </section>
+              </div>
             </div>
           </div>
         </div>
@@ -790,14 +775,10 @@ export default {
   width: 920px;
 }
 
-#preview {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#preview img {
-  max-width: 90px;
-  max-height: 90px;
+@media (max-width: 768px) {
+  .modal-card {
+    width: 90%;
+    max-width: 400px;
+  }
 }
 </style>

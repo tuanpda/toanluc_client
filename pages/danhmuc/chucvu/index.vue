@@ -1,15 +1,15 @@
 <template>
-  <div class="columns is-mobile">
-    <div class="column is-10 is-offset-1">
+  <div class="columns">
+    <div class="column container">
       <br />
-      <div class="box">
+      <div class="box" style="margin-left: 3px; margin-right: 3px">
         <div class="columns">
           <div class="column">
             <div class="control">
               <span class="icon is-small is-left">
                 <i style="color: #00d1b2" class="fas fa-award"></i>
               </span>
-              <span style="color: #3850b7; font-size: 17px; font-weight: bold"
+              <span style="color: #3850b7; font-size: 15px; font-weight: bold"
                 >Danh mục Chức vụ</span
               >
             </div>
@@ -17,7 +17,7 @@
         </div>
 
         <div class="columns">
-          <div class="column is-8">
+          <div class="column is-10">
             <span>Có tất cả: </span>
             <span style="font-weight: bold">{{
               chucvu.length | formatNumber
@@ -32,20 +32,13 @@
               Thêm chức vụ
             </button>
           </div>
-          <div class="column" style="text-align: right">
-            <nuxt-link :to="`/`">
-              <button class="button is-info is-fullwidth is-small">
-                Thoát
-              </button>
-            </nuxt-link>
-          </div>
         </div>
-        <div class="table_wrapper table-height">
+        <div class="table_wrapper">
           <table
             class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
           >
             <thead>
-              <tr>
+              <tr style="font-size: small">
                 <th style="text-align: center; width: 5%">STT</th>
                 <th style="text-align: center; width: 10%">Mã chức vụ</th>
                 <th style="text-align: center; width: 20%">Tên chức vụ</th>
@@ -55,7 +48,11 @@
               </tr>
             </thead>
             <tbody>
-              <tr v-for="(chucvu, index) in chucvu" :key="index">
+              <tr
+                v-for="(chucvu, index) in chucvu"
+                :key="index"
+                style="font-size: small"
+              >
                 <td style="text-align: center">{{ index + 1 }}</td>
                 <td style="text-align: center">{{ chucvu.macv }}</td>
                 <td>{{ chucvu.chucvu }}</td>
@@ -85,95 +82,80 @@
           <div :class="{ 'is-active': isActive }" class="modal">
             <div class="modal-background"></div>
             <div class="modal-content modal-card">
-              <header class="modal-card-head" style="background-color: #ebfffc">
-                <p
-                  class="modal-card-title"
-                  style="font-size: 15px; font-weight: bold; color: red"
-                >
-                  Thêm mới chức vụ
-                </p>
-                <!-- close modal -->
-                <button
-                  @click="isActive = false"
-                  class="delete"
-                  aria-label="close"
-                ></button>
-              </header>
-              <section class="modal-card-body">
-                <div class="field">
-                  <label class="label">Mã chức vụ</label>
-                  <div class="control">
-                    <input
-                      v-model="form.macv"
-                      @blur="$v.form.macv.$touch()"
-                      class="input is-small"
-                      type="text"
-                      placeholder="Nhập mã phòng ban"
-                    />
-                  </div>
-                  <div v-if="$v.form.macv.$error" class="form-error">
-                    <span v-if="!$v.form.macv.required" class="help is-danger"
-                      >Yêu cầu nhập mã chức vụ</span
-                    >
-                  </div>
-                </div>
-                <div class="field">
-                  <label class="label">Tên chức vụ</label>
-                  <div class="control">
-                    <input
-                      v-model="form.chucvu"
-                      @blur="$v.form.chucvu.$touch()"
-                      class="input is-small"
-                      type="text"
-                      placeholder="Nhập tên phòng ban"
-                    />
-                  </div>
-                  <div v-if="$v.form.chucvu.$error" class="form-error">
-                    <span v-if="!$v.form.chucvu.required" class="help is-danger"
-                      >Yêu cầu nhập tên chức vụ</span
-                    >
-                  </div>
-                </div>
-                <div class="field">
-                  <label class="label">Diễn giải thêm</label>
-                  <div class="control">
-                    <textarea
-                      v-model="form.ghichu"
-                      class="textarea is-small"
-                      placeholder="Ghi chú thêm ..."
-                    ></textarea>
-                  </div>
-                </div>
+              <div class="columns is-mobile">
+                <div class="column">
+                  <section class="modal-card-body">
+                    <div class="field">
+                      <label class="label">Mã chức vụ</label>
+                      <div class="control">
+                        <input
+                          v-model="form.macv"
+                          @blur="$v.form.macv.$touch()"
+                          class="input is-small"
+                          type="text"
+                          placeholder="Nhập mã phòng ban"
+                        />
+                      </div>
+                      <div v-if="$v.form.macv.$error" class="form-error">
+                        <span
+                          v-if="!$v.form.macv.required"
+                          class="help is-danger"
+                          >Yêu cầu nhập mã chức vụ</span
+                        >
+                      </div>
+                    </div>
+                    <div class="field">
+                      <label class="label">Tên chức vụ</label>
+                      <div class="control">
+                        <input
+                          v-model="form.chucvu"
+                          @blur="$v.form.chucvu.$touch()"
+                          class="input is-small"
+                          type="text"
+                          placeholder="Nhập tên phòng ban"
+                        />
+                      </div>
+                      <div v-if="$v.form.chucvu.$error" class="form-error">
+                        <span
+                          v-if="!$v.form.chucvu.required"
+                          class="help is-danger"
+                          >Yêu cầu nhập tên chức vụ</span
+                        >
+                      </div>
+                    </div>
+                    <div class="field">
+                      <label class="label">Diễn giải thêm</label>
+                      <div class="control">
+                        <textarea
+                          v-model="form.ghichu"
+                          class="textarea is-small"
+                          placeholder="Ghi chú thêm ..."
+                        ></textarea>
+                      </div>
+                    </div>
 
-                <div class="columns">
-                  <div class="column">
-                    <button
-                      :disabled="$v.form.$invalid"
-                      @click.prevent="onAddchucvu"
-                      class="button is-success is-fullwidth is-small"
-                    >
-                      Ghi nhận
-                    </button>
-                  </div>
-                  <div class="column">
-                    <button
-                      @click="isActive = false"
-                      class="button is-danger is-light is-fullwidth is-small"
-                    >
-                      Hủy bỏ
-                    </button>
-                  </div>
+                    <div class="columns">
+                      <div class="column">
+                        <button
+                          :disabled="$v.form.$invalid"
+                          @click.prevent="onAddchucvu"
+                          class="button is-success is-fullwidth is-small"
+                        >
+                          Ghi nhận
+                        </button>
+                      </div>
+                      <div class="column">
+                        <button
+                          @click="isActive = false"
+                          class="button is-danger is-light is-fullwidth is-small"
+                        >
+                          Hủy bỏ
+                        </button>
+                      </div>
+                    </div>
+                  </section>
                 </div>
-              </section>
-              <footer class="modal-card-foot">
-                <!-- close modal -->
-                <button
-                  @click="isActive = false"
-                  class="button is-outlined is-info is-small"
-                >
-                  Đóng
-                </button>
-              </footer>
+              </div>
             </div>
           </div>
         </div>
@@ -389,13 +371,10 @@ th {
   width: 720px;
 }
 
-#preview {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-#preview img {
-  max-width: 90px;
-  max-height: 90px;
+@media (max-width: 768px) {
+  .modal-card {
+    width: 90%;
+    max-width: 400px;
+  }
 }
 </style>
