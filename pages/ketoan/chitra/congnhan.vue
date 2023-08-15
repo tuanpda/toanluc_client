@@ -746,14 +746,14 @@ export default {
 </script>
 
 <style scoped>
-.table_wrapper {
+/* .table_wrapper {
   display: block;
   overflow-x: auto;
   white-space: nowrap;
   position: sticky;
   left: 0;
   background-color: whitesmoke;
-}
+} */
 
 /* @media screen and (max-width: 1199px) {
   .table_wrapper {
@@ -765,6 +765,17 @@ export default {
     background-color: whitesmoke;
   }
 } */
+
+@media (max-width: 1200px) {
+  .table_wrapper {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+    position: sticky;
+    left: 0;
+    background-color: whitesmoke;
+  }
+}
 
 .table-height {
   height: 750px;

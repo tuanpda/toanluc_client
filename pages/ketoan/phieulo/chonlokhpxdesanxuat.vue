@@ -15,6 +15,7 @@
             </div>
           </div>
         </div>
+
         <div class="columns">
           <div class="column" style="display: flex; align-items: center">
             <label
@@ -29,6 +30,7 @@
             </label>
           </div>
         </div>
+
         <div class="box" v-if="isFilter == true">
           <div class="columns">
             <div class="column">

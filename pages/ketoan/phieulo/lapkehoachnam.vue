@@ -9,7 +9,7 @@
               <span class="icon is-small is-left">
                 <i style="color: #ff55acee" class="fas fa-broom"></i>
               </span>
-              <span style="color: #3850b7; font-size: 16px; font-weight: bold"
+              <span style="color: #3850b7; font-size: 15px; font-weight: bold"
                 >Lập kế hoạch năm</span
               >
             </div>
@@ -17,7 +17,7 @@
         </div>
 
         <div class="columns">
-          <div class="column is-10"></div>
+          <div class="column is-8"></div>
           <div class="column">
             <button
               @click="onTaophieu"

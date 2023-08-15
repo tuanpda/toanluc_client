@@ -16,249 +16,142 @@
           </div>
         </div>
 
-        <div
-          class="columns"
-          style="border: 1px solid #00d1b2; background-color: #f4f2f8"
-        >
-          <div class="column">
-            <div class="select-wrapper" style="width: 100%; font-size: small">
-              <div class="select-header" @click="isOpen = !isOpen">
-                {{
-                  selectedOptions.length > 0
-                    ? selectedOptions.join(", ")
-                    : "Phân xưởng"
-                }}
-                <span class="arrow" :class="{ open: isOpen }"></span>
-              </div>
-              <div class="select-options" :class="{ open: isOpen }">
-                <label v-for="option in phanxuong">
-                  <input
-                    type="checkbox"
-                    :value="option.mapx"
-                    v-model="selectedOptions"
-                  />
-                  {{ option.mapx }} &nbsp;
-                </label>
-              </div>
-            </div>
-          </div>
-          <div class="column">
-            <div class="autocomplete">
-              <input
-                class="input is-small is-danger"
-                type="text"
-                v-model="multiSearch_masp"
-                @input="onInput"
-                placeholder="Chọn sản phẩm"
-              />
-              <div class="autocomplete-items" v-if="suggestions.length">
-                <div
-                  class="autocomplete-item"
-                  v-for="suggestion in suggestions"
-                  @click="selectSuggestion(suggestion)"
-                >
-                  {{ suggestion }}
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="column">
-            <div class="select-wrapper" style="width: 100%; font-size: small">
-              <div class="select-header" @click="isOpenst = !isOpenst">
-                {{
-                  Options_status.length > 0
-                    ? Options_status.join(", ")
-                    : "Trạng thái"
-                }}
-                <span class="arrow" :class="{ open: isOpenst }"></span>
-              </div>
-              <div class="select-options" :class="{ open: isOpenst }">
-                <label v-for="option in statusArr">
-                  <input
-                    type="checkbox"
-                    :value="option.masta"
-                    v-model="Options_status"
-                  />
-                  {{ option.tensta }} &nbsp;
-                </label>
-              </div>
-            </div>
-          </div>
-          <div class="column">
-            <input
-              v-model="search_ngayhttt"
-              type="date"
-              class="input is-small"
-            />
-          </div>
-          <div class="column">
-            <button
-              @click="filterData"
-              class="button is-small is-fullwidth is-success"
+        <div class="columns">
+          <div class="column" style="display: flex; align-items: center">
+            <label
+              class="checkbox-label"
+              style="display: flex; align-items: center; margin-right: 10px"
             >
-              Lọc
-            </button>
-          </div>
-          <div class="column">
-            <button
-              @click="getSolieuLSX_ALl_cht"
-              class="button is-small is-fullwidth is-danger"
-            >
-              Refresh
-            </button>
-          </div>
-          <div class="column">
-            <input
-              class="input is-danger is-small"
-              type="number"
-              id="itemsPerPage"
-              v-model.number="itemsPerPage"
-              min="1"
-              max="10"
-            />
-          </div>
-          <div class="column">
-            <input
-              v-model="search_maphieu_id"
-              type="number"
-              class="input is-small"
-              placeholder="Mã phiếu"
-            />
-          </div>
-          <div class="column">
-            <button
-              @click="searchPhieu()"
-              class="button is-small is-info is-fullwidth"
-            >
-              Tìm
-            </button>
+              <input type="checkbox" v-model="isFilter" />
+              &nbsp;
+              <span style="font-weight: bold; font-size: small; color: brown"
+                >Hiển thị bộ lọc</span
+              >
+            </label>
           </div>
         </div>
 
-        <!-- <div class="table_wrapper">
-          <table class="table is-responsive is-bordered is-narrow is-fullwidth">
-            <tr style="background-color: #feecf0">
-              <td style="font-size: small; width: 15%">
-                <div class="select-wrapper">
-                  <div class="select-header" @click="isOpen = !isOpen">
-                    {{
-                      selectedOptions.length > 0
-                        ? selectedOptions.join(", ")
-                        : "Chọn Phân xưởng"
-                    }}
-                    <span class="arrow" :class="{ open: isOpen }"></span>
-                  </div>
-                  <div class="select-options" :class="{ open: isOpen }">
-                    <label v-for="option in phanxuong">
-                      <input
-                        type="checkbox"
-                        :value="option.mapx"
-                        v-model="selectedOptions"
-                      />
-                      {{ option.mapx }} &nbsp;
-                    </label>
+        <div class="box" v-if="isFilter == true">
+          <div class="columns">
+            <div class="column">
+              <div class="select-wrapper" style="width: 100%; font-size: small">
+                <div class="select-header" @click="isOpen = !isOpen">
+                  {{
+                    selectedOptions.length > 0
+                      ? selectedOptions.join(", ")
+                      : "Phân xưởng"
+                  }}
+                  <span class="arrow" :class="{ open: isOpen }"></span>
+                </div>
+                <div class="select-options" :class="{ open: isOpen }">
+                  <label v-for="option in phanxuong">
+                    <input
+                      type="checkbox"
+                      :value="option.mapx"
+                      v-model="selectedOptions"
+                    />
+                    {{ option.mapx }} &nbsp;
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="select-wrapper" style="width: 100%; font-size: small">
+                <div class="select-header" @click="isOpenst = !isOpenst">
+                  {{
+                    Options_status.length > 0
+                      ? Options_status.join(", ")
+                      : "Trạng thái"
+                  }}
+                  <span class="arrow" :class="{ open: isOpenst }"></span>
+                </div>
+                <div class="select-options" :class="{ open: isOpenst }">
+                  <label v-for="option in statusArr">
+                    <input
+                      type="checkbox"
+                      :value="option.masta"
+                      v-model="Options_status"
+                    />
+                    {{ option.tensta }} &nbsp;
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="autocomplete">
+                <input
+                  class="input is-small is-danger"
+                  type="text"
+                  v-model="multiSearch_masp"
+                  @input="onInput"
+                  placeholder="Chọn sản phẩm"
+                />
+                <div class="autocomplete-items" v-if="suggestions.length">
+                  <div
+                    class="autocomplete-item"
+                    v-for="suggestion in suggestions"
+                    @click="selectSuggestion(suggestion)"
+                  >
+                    {{ suggestion }}
                   </div>
                 </div>
-              </td>
-              <td style="width: 15%">
-                <div class="autocomplete">
-                  <input
-                    class="input is-small is-danger"
-                    type="text"
-                    v-model="multiSearch_masp"
-                    @input="onInput"
-                    placeholder="Chọn sản phẩm"
-                  />
-                  <div class="autocomplete-items" v-if="suggestions.length">
-                    <div
-                      class="autocomplete-item"
-                      v-for="suggestion in suggestions"
-                      @click="selectSuggestion(suggestion)"
-                    >
-                      {{ suggestion }}
-                    </div>
-                  </div>
-                </div>
-              </td>
-              <td style="font-size: small; width: 15%">
-                <div class="select-wrapper">
-                  <div class="select-header" @click="isOpenst = !isOpenst">
-                    {{
-                      Options_status.length > 0
-                        ? Options_status.join(", ")
-                        : "Trạng thái"
-                    }}
-                    <span class="arrow" :class="{ open: isOpenst }"></span>
-                  </div>
-                  <div class="select-options" :class="{ open: isOpenst }">
-                    <label v-for="option in statusArr">
-                      <input
-                        type="checkbox"
-                        :value="option.masta"
-                        v-model="Options_status"
-                      />
-                      {{ option.tensta }} &nbsp;
-                    </label>
-                  </div>
-                </div>
-              </td>
-              <td style="font-size: small; width: 5.5%; font-weight: 600">
-                <input
-                  v-model="search_ngayhttt"
-                  type="date"
-                  class="input is-small"
-                />
-              </td>
-              <td style="width: 7%">
-                <button
-                  @click="filterData"
-                  class="button is-small is-fullwidth is-success"
-                >
-                  Lọc
-                </button>
-              </td>
-              <td style="width: 7%">
-                <button
-                  @click="getSolieuLSX_ALl_cht"
-                  class="button is-small is-fullwidth is-danger"
-                >
-                  Refresh
-                </button>
-              </td>
-              <td style="font-size: small; width: 5.5%; font-weight: 600">
-                Số dòng
-              </td>
-              <td style="font-size: small; width: 7.6%">
-                <input
-                  class="input is-danger is-small"
-                  type="number"
-                  id="itemsPerPage"
-                  v-model.number="itemsPerPage"
-                  min="1"
-                  max="10"
-                />
-              </td>
-              <td style="font-size: small; width: 8%; font-weight: 600">
-                <input
-                  v-model="search_maphieu_id"
-                  type="number"
-                  class="input is-small"
-                  placeholder="Mã phiếu"
-                />
-              </td>
-              <td style="width: 5%">
-                <button
-                  @click="searchPhieu()"
-                  class="button is-small is-info is-fullwidth"
-                >
-                  Tìm
-                </button>
-              </td>
-              <td></td>
-            </tr>
-          </table>
-        </div> -->
-        <br />
+              </div>
+            </div>
+            <div class="column">
+              <input
+                v-model="search_ngayhttt"
+                type="date"
+                class="input is-small"
+              />
+            </div>
+            <div class="column">
+              <button
+                @click="filterData"
+                class="button is-small is-fullwidth is-success"
+              >
+                Lọc
+              </button>
+            </div>
+          </div>
+          <div class="columns">
+            <div class="column"></div>
+            <div class="column">
+              <input
+                class="input is-danger is-small"
+                type="number"
+                id="itemsPerPage"
+                v-model.number="itemsPerPage"
+                min="1"
+                max="10"
+              />
+            </div>
+            <div class="column">
+              <button
+                @click="getSolieuLSX_ALl_cht"
+                class="button is-small is-fullwidth is-danger"
+              >
+                Refresh
+              </button>
+            </div>
+            <div class="column">
+              <input
+                v-model="search_maphieu_id"
+                type="number"
+                class="input is-small"
+                placeholder="Mã phiếu"
+              />
+            </div>
+            <div class="column">
+              <button
+                @click="searchPhieu()"
+                class="button is-small is-info is-fullwidth"
+              >
+                Tìm
+              </button>
+            </div>
+          </div>
+        </div>
+
         <div v-if="showConponent" class="table_wrapper">
           <table class="table is-responsive is-bordered is-narrow is-fullwidth">
             <tr style="background-color: #f4f2f8">
@@ -1116,8 +1009,8 @@
                   border-top-right-radius: 8px;
                 "
               >
-                <div class="columns">
-                  <div class="column is-9">
+                <div class="columns is-mobile">
+                  <div class="column">
                     <p
                       style="
                         font-size: small;
@@ -1136,21 +1029,11 @@
                       | Mã lô: {{ getinfoplsx.malosx }}
                     </p>
                   </div>
-                  <div class="column" style="text-align: right">
-                    <a @click="isActive = false">
-                      <span
-                        style="color: red; padding: 20px"
-                        class="icon is-small"
-                      >
-                        <i class="fas fa-power-off"></i>
-                      </span>
-                    </a>
-                  </div>
                 </div>
               </header>
               <section class="modal-card-body">
                 <div class="columns">
-                  <div class="column is-10">
+                  <div class="column is-8">
                     <template v-if="form.tento">
                       <span style="font-size: small; font-weight: 700"
                         >Tổ được chỉ định:
@@ -1161,18 +1044,7 @@
                       </span>
                     </template>
                   </div>
-                  <!-- <div class="column is-2" style="text-align: right">
-                    <button
-                      @click="xacnhanHuyChotphieu"
-                      class="button is-danger is-small is-fullwidth"
-                    >
-                      <span class="icon is-small">
-                        <i class="fas fa-backspace"></i>
-                      </span>
-                      <span>Hủy chốt phiếu</span>
-                    </button>
-                  </div> -->
-                  <div class="column" style="text-align: right">
+                  <div class="column">
                     <button
                       @click="onTaophieu"
                       class="button is-success is-small is-fullwidth"
@@ -1183,11 +1055,22 @@
                       <span>Cập nhật công đoạn</span>
                     </button>
                   </div>
+                  <div class="column">
+                    <button
+                      @click="isActive = false"
+                      class="button is-danger is-fullwidth is-small"
+                    >
+                      <span>Đóng</span>
+                    </button>
+                  </div>
                 </div>
 
                 <div>
                   <!-- hiển thị thông tin về lô sản xuất -->
-                  <div style="margin-bottom: 3px; text-align: right">
+                  <div
+                    class="table_wrapper"
+                    style="margin-bottom: 3px; text-align: right"
+                  >
                     <table
                       class="table is-responsive is-bordered is-narrow is-fullwidth"
                     >
@@ -1435,23 +1318,7 @@
                     </table>
                   </div>
 
-                  <!-- <div style="margin-bottom: 3px; text-align: right">
-                                                <table class="table is-responsive is-bordered is-narrow">
-                                                    <tr>
-                                                        <td style="font-size: small">
-                                                            Tổng đạt:
-                                                        </td>
-                                                        <td><input v-model.trim="tongdatinlo" type="text" class="input is-small">
-                                                        </td>
-                                                    </tr>
-                                                    <tr>
-                                                        <td style="font-size: small">Tổng hỏng: </td>
-                                                        <td style="font-size: small; font-weight: bold;">{{ tonghonginlo }}</td>
-                                                    </tr>
-                                                </table>
-                                            </div> -->
-
-                  <div>
+                  <div class="table_wrapper">
                     <table
                       class="table is-responsive is-bordered is-narrow is-fullwidth"
                     >
@@ -1460,7 +1327,7 @@
                           colspan="11"
                           style="font-weight: bold; font-size: small"
                         >
-                          Cập nhật công đoạn lương trong lô sản xuất
+                          Thêm công đoạn làm việc trong lô sản xuất
                         </td>
                       </tr>
                       <tr>
@@ -2057,7 +1924,7 @@ export default {
       nhomluong: [],
       isExits: null,
       showlsxpx: [],
-
+      isFilter: false,
       tonghonginlo: 0,
       tongdatinlo: "",
       form: {
@@ -4999,5 +4866,29 @@ option:hover {
   .pagination button {
     margin: 5px;
   }
+
+  .modal-card {
+    width: 90%;
+    max-width: 400px;
+  }
+}
+
+@media (max-width: 1200px) {
+  .modal-card {
+    width: 90%;
+    max-width: 1100px;
+  }
+}
+
+.input.is-small {
+  min-width: 60px; /* Điều chỉnh độ rộng tùy ý */
+}
+
+.select.is-small {
+  min-width: 150px; /* Điều chỉnh độ rộng tùy ý */
+}
+
+.textarea.is-small {
+  min-width: 150px; /* Điều chỉnh độ rộng tùy ý */
 }
 </style>
