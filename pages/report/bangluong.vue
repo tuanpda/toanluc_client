@@ -708,7 +708,7 @@ export default {
     async reportSum() {
       if (this.mato == "") {
         this.sumreport = await this.$axios.$get(
-          `/api/report/reportsumluong?thang=${this.thang}&nam=${this.nam}&mapb=${this.maxuong}`
+          `/api/report/reportsumluong_phanxuong?thang=${this.thang}&nam=${this.nam}&mapb=${this.maxuong}`
         );
         this.sumrp = this.sumreport[0];
       } else {

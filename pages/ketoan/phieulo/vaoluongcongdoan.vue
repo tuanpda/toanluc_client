@@ -1,52 +1,141 @@
 <template>
   <div class="columns">
-    <div class="column">
+    <div class="column container">
       <br />
-      <div class="box" style="margin-left: 5px; margin-right: 5px">
+      <div class="box" style="margin-left: 3px; margin-right: 3px">
         <div class="columns">
-          <div class="column is-11">
+          <div class="column is">
             <div class="control">
               <span class="icon is-small is-left">
                 <i style="color: #ff55acee" class="fas fa-broom"></i>
               </span>
-              <span style="color: #3850b7; font-size: 17px; font-weight: bold"
+              <span style="color: #3850b7; font-size: 15px; font-weight: bold"
                 >Vào lương công đoạn</span
               >
             </div>
           </div>
-          <!-- <div class="column" style="text-align: right">
+        </div>
+
+        <div
+          class="columns"
+          style="border: 1px solid #00d1b2; background-color: #f4f2f8"
+        >
+          <div class="column">
+            <div class="select-wrapper" style="width: 100%; font-size: small">
+              <div class="select-header" @click="isOpen = !isOpen">
+                {{
+                  selectedOptions.length > 0
+                    ? selectedOptions.join(", ")
+                    : "Phân xưởng"
+                }}
+                <span class="arrow" :class="{ open: isOpen }"></span>
+              </div>
+              <div class="select-options" :class="{ open: isOpen }">
+                <label v-for="option in phanxuong">
+                  <input
+                    type="checkbox"
+                    :value="option.mapx"
+                    v-model="selectedOptions"
+                  />
+                  {{ option.mapx }} &nbsp;
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="autocomplete">
+              <input
+                class="input is-small is-danger"
+                type="text"
+                v-model="multiSearch_masp"
+                @input="onInput"
+                placeholder="Chọn sản phẩm"
+              />
+              <div class="autocomplete-items" v-if="suggestions.length">
+                <div
+                  class="autocomplete-item"
+                  v-for="suggestion in suggestions"
+                  @click="selectSuggestion(suggestion)"
+                >
+                  {{ suggestion }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="select-wrapper" style="width: 100%; font-size: small">
+              <div class="select-header" @click="isOpenst = !isOpenst">
+                {{
+                  Options_status.length > 0
+                    ? Options_status.join(", ")
+                    : "Trạng thái"
+                }}
+                <span class="arrow" :class="{ open: isOpenst }"></span>
+              </div>
+              <div class="select-options" :class="{ open: isOpenst }">
+                <label v-for="option in statusArr">
+                  <input
+                    type="checkbox"
+                    :value="option.masta"
+                    v-model="Options_status"
+                  />
+                  {{ option.tensta }} &nbsp;
+                </label>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <input
+              v-model="search_ngayhttt"
+              type="date"
+              class="input is-small"
+            />
+          </div>
+          <div class="column">
             <button
-              @click="huychotallPhieulo"
-              class="button is-warning is-fullwidth is-small"
+              @click="filterData"
+              class="button is-small is-fullwidth is-success"
             >
-              <span class="icon is-small">
-                <i class="fas fa-cart-arrow-down"></i>
-              </span>
-              <span>Hủy chốt phiếu đã chọn</span>
+              Lọc
             </button>
           </div>
-          <div class="column" style="text-align: right">
+          <div class="column">
             <button
-              @click="chotPhieulo"
-              class="button is-danger is-fullwidth is-small"
+              @click="getSolieuLSX_ALl_cht"
+              class="button is-small is-fullwidth is-danger"
             >
-              <span class="icon is-small">
-                <i class="fas fa-key"></i>
-              </span>
-              <span>Chốt phiếu đã chọn</span>
+              Refresh
             </button>
-          </div> -->
-          <div class="column" style="text-align: right">
-            <button class="button is-info is-fullwidth is-small">
-              <span class="icon is-small">
-                <i class="fas fa-angle-double-left"></i>
-              </span>
-              <span>Thoát</span>
+          </div>
+          <div class="column">
+            <input
+              class="input is-danger is-small"
+              type="number"
+              id="itemsPerPage"
+              v-model.number="itemsPerPage"
+              min="1"
+              max="10"
+            />
+          </div>
+          <div class="column">
+            <input
+              v-model="search_maphieu_id"
+              type="number"
+              class="input is-small"
+              placeholder="Mã phiếu"
+            />
+          </div>
+          <div class="column">
+            <button
+              @click="searchPhieu()"
+              class="button is-small is-info is-fullwidth"
+            >
+              Tìm
             </button>
           </div>
         </div>
 
-        <div>
+        <div class="table_wrapper">
           <table class="table is-responsive is-bordered is-narrow is-fullwidth">
             <tr style="background-color: #feecf0">
               <td style="font-size: small; width: 15%">
@@ -169,6 +258,7 @@
             </tr>
           </table>
         </div>
+        <br />
         <div v-if="showConponent" class="table_wrapper">
           <table class="table is-responsive is-bordered is-narrow is-fullwidth">
             <tr style="background-color: #f4f2f8">
@@ -555,46 +645,53 @@
               </td>
             </tr>
           </table>
-          <div class="pagination">
-            <button
-              class="button is-small is-success"
-              @click="changePage(1)"
-              :disabled="currentPage === 1"
-            >
-              Đầu tiên
-            </button>
-            <button
-              class="button is-small is-info"
-              @click="changePage(currentPage - 1)"
-              :disabled="currentPage === 1"
-            >
-              Trước
-            </button>
-            <button
-              class="button is-small"
-              v-for="page in pages"
-              @click="changePage(page)"
-              :class="{ active: page === currentPage }"
-            >
-              {{ page }}
-            </button>
-            <button
-              class="button is-small is-info"
-              @click="changePage(currentPage + 1)"
-              :disabled="currentPage === pageCount"
-            >
-              Sau
-            </button>
-            <button
-              class="button is-small is-success"
-              @click="changePage(pageCount)"
-              :disabled="currentPage === pageCount"
-            >
-              Cuối
-            </button>
+        </div>
+        <!-- phân trang -->
+        <div class="columns">
+          <div class="column">
+            <div class="pagination">
+              <button
+                class="button is-small is-success"
+                @click="changePage(1)"
+                :disabled="currentPage === 1"
+              >
+                Đầu tiên
+              </button>
+              <button
+                class="button is-small is-info"
+                @click="changePage(currentPage - 1)"
+                :disabled="currentPage === 1"
+              >
+                Trước
+              </button>
+              <button
+                class="button is-small"
+                v-for="page in pages"
+                @click="changePage(page)"
+                :class="{ active: page === currentPage }"
+              >
+                {{ page }}
+              </button>
+              <button
+                class="button is-small is-info"
+                @click="changePage(currentPage + 1)"
+                :disabled="currentPage === pageCount"
+              >
+                Sau
+              </button>
+              <button
+                class="button is-small is-success"
+                @click="changePage(pageCount)"
+                :disabled="currentPage === pageCount"
+              >
+                Cuối
+              </button>
+            </div>
           </div>
         </div>
+
         <br />
+
         <label class="checkbox">
           <!-- <input type="checkbox" v-model="checkViewluong"> -->
           <span style="font-size: small">Chi tiết lương tại lô sản xuất: </span>
@@ -4726,8 +4823,8 @@ export default {
 }
 
 .table_wrapper {
-  /* display: block;
-    overflow-x: auto; */
+  display: block;
+  overflow-x: auto;
   white-space: nowrap;
 }
 
@@ -4896,5 +4993,11 @@ option {
 
 option:hover {
   background-color: #ccc;
+}
+
+@media (max-width: 768px) {
+  .pagination button {
+    margin: 5px;
+  }
 }
 </style>

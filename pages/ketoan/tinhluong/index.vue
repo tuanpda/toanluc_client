@@ -1,85 +1,62 @@
 <template>
-  <div class="column" style="margin-left: 10px; margin-right: 10px">
-    <br />
-    <div class="box">
-      <div class="columns">
-        <div class="column">
-          <div class="control">
-            <span class="icon is-small is-left">
-              <i class="fas fa-calculator"></i>
-            </span>
-            Lập danh sách lương
+  <div class="columns">
+    <div class="column is-container">
+      <br />
+      <div class="box" style="margin-left: 3px; margin-right: 3px">
+        <div class="columns">
+          <div class="column">
+            <div class="control">
+              <span class="icon is-small is-left">
+                <i style="color: #00d1b2" class="fas fa-calculator"></i>
+              </span>
+              <span style="color: #3850b7; font-size: 15px; font-weight: bold"
+                >Lập danh sách lương</span
+              >
+            </div>
           </div>
         </div>
-      </div>
-      <!-- Mức đóng, thời gian công lương -->
-      <div class="columns">
-        <div class="column">
-          <span style="color: #f14668" class="icon is-small is-left">
-            <i class="fas fa-feather-alt"></i>
-          </span>
-          <span style="font-weight: bold">Thời gian lập</span>
-          <table
-            style="margin-top: 8px"
-            class="table table is-bordered table is-narrow table is-hoverable table is-fullwidth"
-          >
-            <tr>
-              <td style="font-size: small">Tháng lập bảng lương</td>
-              <td style="text-align: right; font-size: small">
-                <div class="select is-small is-fullwidth">
-                  <select id="" @change="onChange_Thang($event)">
-                    <option selected>-- Chọn tháng --</option>
-                    <option value="01">Tháng 1</option>
-                    <option value="02">Tháng 2</option>
-                    <option value="03">Tháng 3</option>
-                    <option value="04">Tháng 4</option>
-                    <option value="05">Tháng 5</option>
-                    <option value="06">Tháng 6</option>
-                    <option value="07">Tháng 7</option>
-                    <option value="08">Tháng 8</option>
-                    <option value="09">Tháng 9</option>
-                    <option value="10">Tháng 10</option>
-                    <option value="11">Tháng 11</option>
-                    <option value="12">Tháng 12</option>
-                  </select>
-                </div>
-              </td>
-              <td>
-                <div class="select is-small is-fullwidth">
-                  <select id="" @change="onChange_Nam($event)">
-                    <option selected>-- Chọn năm --</option>
-                    <option value="2022">Tháng 2022</option>
-                    <option value="2023">Tháng 2023</option>
-                    <option value="2024">Tháng 2024</option>
-                    <option value="2025">Tháng 2025</option>
-                    <option value="2026">Tháng 2026</option>
-                    <option value="2027">Tháng 2027</option>
-                    <option value="2028">Tháng 2028</option>
-                    <option value="2029">Tháng 2029</option>
-                    <option value="2030">Tháng 2030</option>
-                    <option value="2031">Tháng 2031</option>
-                    <option value="2032">Tháng 2032</option>
-                    <option value="2033">Tháng 2033</option>
-                  </select>
-                </div>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="column">
-          <div style="text-align: right">
-            <button
-              @click="onReport"
-              style="text-align: right"
-              class="button is-small is-success"
-            >
-              Lập bảng lương
-            </button>
-          </div>
-        </div>
-      </div>
 
-      <div>
+        <div class="columns">
+          <div class="column">
+            <div class="select is-small is-fullwidth">
+              <select id="" @change="onChange_Thang($event)">
+                <option selected>-- Chọn tháng --</option>
+                <option value="01">Tháng 1</option>
+                <option value="02">Tháng 2</option>
+                <option value="03">Tháng 3</option>
+                <option value="04">Tháng 4</option>
+                <option value="05">Tháng 5</option>
+                <option value="06">Tháng 6</option>
+                <option value="07">Tháng 7</option>
+                <option value="08">Tháng 8</option>
+                <option value="09">Tháng 9</option>
+                <option value="10">Tháng 10</option>
+                <option value="11">Tháng 11</option>
+                <option value="12">Tháng 12</option>
+              </select>
+            </div>
+          </div>
+          <div class="column">
+            <div class="select is-small is-fullwidth">
+              <select id="" @change="onChange_Nam($event)">
+                <option selected>-- Chọn năm --</option>
+                <option value="2022">Tháng 2022</option>
+                <option value="2023">Tháng 2023</option>
+                <option value="2024">Tháng 2024</option>
+                <option value="2025">Tháng 2025</option>
+                <option value="2026">Tháng 2026</option>
+                <option value="2027">Tháng 2027</option>
+                <option value="2028">Tháng 2028</option>
+                <option value="2029">Tháng 2029</option>
+                <option value="2030">Tháng 2030</option>
+                <option value="2031">Tháng 2031</option>
+                <option value="2032">Tháng 2032</option>
+                <option value="2033">Tháng 2033</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
         <div class="table_wrapper">
           <table
             class="table is-responsive is-bordered is-striped is-narrow is-hoverable is-fullwidth"
@@ -464,8 +441,7 @@
           </table>
         </div>
       </div>
-
-      <!-- Modal 3 - detail -->
+      <!-- Modal 3 - detail chấm công ngoài giờ-->
       <div class="">
         <!-- Toggle class  -->
         <div :class="{ 'is-active': isActive }" class="modal">
@@ -887,131 +863,6 @@ export default {
       // this.dsnhanvien = await this.$axios.$get(`/api/ketoan/nhanvienbangluong`);
     },
 
-    // onReport() {
-    //   Swal.fire({
-    //     title: `Chắc chắn lập bảng lương tháng ${this.thangLapluong}/${this.namLapluong}?`,
-    //     icon: "warning",
-    //     showCancelButton: true,
-    //     confirmButtonColor: "#3085d6",
-    //     cancelButtonColor: "#d33",
-    //     confirmButtonText: "Chắc chắn lập",
-    //   }).then((result) => {
-    //     if (result.isConfirmed) {
-    //       try {
-    //         for (let i = 0; i < this.selected.length; i++) {
-    //           // console.log(this.selected[i].tong_ung);
-    //           if (this.selected[i].tong_ung) {
-    //             this.tongtiennhan =
-    //               parseFloat(this.selected[i].mucluong) +
-    //               parseFloat(this.selected[i].thuong) -
-    //               ((parseFloat(this.selected[i].mucluong) *
-    //                 parseFloat(this.get_qtl.tl_dong_bhxh_cn)) /
-    //                 100 +
-    //                 (parseFloat(this.selected[i].mucluong) *
-    //                   parseFloat(this.get_qtl.tl_dong_bhyt_cn)) /
-    //                   100 +
-    //                 (parseFloat(this.selected[i].mucluong) *
-    //                   parseFloat(this.get_qtl.tl_dong_bhtn_cn)) /
-    //                   100 +
-    //                 parseFloat(this.get_qtl.tl_dong_cd_cn) +
-    //                 parseFloat(this.selected[i].tong_ung));
-    //           } else {
-    //             this.tongtiennhan =
-    //               parseFloat(this.selected[i].mucluong) +
-    //               parseFloat(this.selected[i].thuong) -
-    //               ((parseFloat(this.selected[i].mucluong) *
-    //                 parseFloat(this.get_qtl.tl_dong_bhxh_cn)) /
-    //                 100 +
-    //                 (parseFloat(this.selected[i].mucluong) *
-    //                   parseFloat(this.get_qtl.tl_dong_bhyt_cn)) /
-    //                   100 +
-    //                 (parseFloat(this.selected[i].mucluong) *
-    //                   parseFloat(this.get_qtl.tl_dong_bhtn_cn)) /
-    //                   100 +
-    //                 parseFloat(this.get_qtl.tl_dong_cd_cn));
-    //           }
-
-    //           let data = {
-    //             hoten: this.selected[i].tennv,
-    //             phongban: this.selected[i].tenphong,
-    //             luong: this.selected[i].mucluong,
-    //             bhxh:
-    //               (parseFloat(this.selected[i].mucluong) *
-    //                 parseFloat(this.get_qtl.tl_dong_bhxh_cn)) /
-    //               100,
-    //             bhyt:
-    //               (parseFloat(this.selected[i].mucluong) *
-    //                 parseFloat(this.get_qtl.tl_dong_bhyt_cn)) /
-    //               100,
-    //             bhtn:
-    //               (parseFloat(this.selected[i].mucluong) *
-    //                 parseFloat(this.get_qtl.tl_dong_bhtn_cn)) /
-    //               100,
-    //             kpcd: parseFloat(this.get_qtl.tl_dong_cd_cn),
-    //             tongkt:
-    //               (parseFloat(this.selected[i].mucluong) *
-    //                 parseFloat(this.get_qtl.tl_dong_bhxh_cn)) /
-    //                 100 +
-    //               (parseFloat(this.selected[i].mucluong) *
-    //                 parseFloat(this.get_qtl.tl_dong_bhyt_cn)) /
-    //                 100 +
-    //               (parseFloat(this.selected[i].mucluong) *
-    //                 parseFloat(this.get_qtl.tl_dong_bhtn_cn)) /
-    //                 100 +
-    //               parseFloat(this.get_qtl.tl_dong_cd_cn),
-    //             trutamung: this.selected[i].tong_ung,
-    //             thuong: this.selected[i].thuong,
-    //             tongnhan: this.tongtiennhan,
-    //             thang: this.thangLapluong,
-    //             nam: this.namLapluong,
-    //             createdAt: this.createdAt,
-    //             createdBy: this.createdBy,
-    //           };
-    //           this.$axios.$post("/api/ketoan/thembangluongthang", data);
-
-    //           // save log
-    //           this.hisform.tenthaotac = `Lập bảng lương tháng ${this.thangLapluong}/${this.namLapluong}`;
-    //           this.hisform.ghichu = `Lập bảng chi trả lương`;
-    //           this.$axios.$post(`/api/logsystem/record-action`, this.hisform);
-    //         }
-
-    //         const Toast = Swal.mixin({
-    //           toast: true,
-    //           position: "top-end",
-    //           showConfirmButton: false,
-    //           timer: 3000,
-    //           timerProgressBar: true,
-    //           didOpen: (toast) => {
-    //             toast.addEventListener("mouseenter", Swal.stopTimer);
-    //             toast.addEventListener("mouseleave", Swal.resumeTimer);
-    //           },
-    //         });
-    //         Toast.fire({
-    //           icon: "success",
-    //           title: "Lập bảng lương thành công",
-    //         });
-    //       } catch (error) {
-    //         console.log(error);
-    //         const Toast = Swal.mixin({
-    //           toast: true,
-    //           position: "top-end",
-    //           showConfirmButton: false,
-    //           timer: 3000,
-    //           timerProgressBar: true,
-    //           didOpen: (toast) => {
-    //             toast.addEventListener("mouseenter", Swal.stopTimer);
-    //             toast.addEventListener("mouseleave", Swal.resumeTimer);
-    //           },
-    //         });
-    //         Toast.fire({
-    //           icon: "error",
-    //           title: "Có lỗi xảy ra !!!",
-    //         });
-    //       }
-    //     }
-    //   });
-    // },
-
     async onReport() {
       const result = await Swal.fire({
         title: `Bạn chắc chắn tạo lương tại kỳ: ${this.thangLapluong}/${this.namLapluong}`,
@@ -1177,13 +1028,30 @@ export default {
 </script>
 
 <style scoped>
-.table_wrapper {
+/* .table_wrapper {
   display: block;
   overflow-x: auto;
   white-space: nowrap;
+  position: sticky;
+  left: 0;
+  background-color: whitesmoke;
+} */
+
+@media screen and (max-width: 1399px) {
+  .table_wrapper {
+    display: block;
+    overflow-x: auto;
+    white-space: nowrap;
+  }
+
+  .table_wrapper {
+    position: sticky;
+    left: 0;
+    background-color: whitesmoke;
+  }
 }
 
-.table_wrapper td:first-child {
+/* .table_wrapper td:first-child {
   position: sticky;
   left: 0;
   background-color: #fff;
@@ -1208,5 +1076,5 @@ export default {
   left: 43px;
   z-index: 1;
   background-color: whitesmoke;
-}
+} */
 </style>

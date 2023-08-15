@@ -254,7 +254,21 @@
                 </span>
                 &ensp; Kiểm và chốt lương
               </nav-link>
-              <div class="nested navbar-item dropdown">
+              <hr class="navbar-divider" />
+              <nav-link to="" class="navbar-item">
+                <span style="color: #9b6dff" class="icon is-small is-left">
+                  <i class="fab fa-cc-visa"></i>
+                </span>
+                &ensp; Quản lý chi trả Văn phòng
+              </nav-link>
+              <nav-link to="/ketoan/chitra/congnhan" class="navbar-item">
+                <span style="color: #9b6dff" class="icon is-small is-left">
+                  <i class="fab fa-cc-amazon-pay"></i>
+                </span>
+                &ensp; Quản lý chi trả Phân xưởng
+              </nav-link>
+
+              <!-- <div class="nested navbar-item dropdown">
                 <div class="dropdown-trigger">
                   <button
                     class="button"
@@ -289,8 +303,24 @@
                     </nav-link>
                   </div>
                 </div>
-              </div>
-              <div class="nested navbar-item dropdown">
+              </div> -->
+              <hr class="navbar-divider" />
+              <nav-link to="/ketoan/tinhluong/" class="navbar-item">
+                <span style="color: #9b6dff" class="icon is-small is-left">
+                  <i class="fab fa-btc"></i>
+                </span>
+                &ensp; Tạo bảng lương Văn phòng
+              </nav-link>
+              <nav-link
+                to="/ketoan/tinhluong/luongcongdoan"
+                class="navbar-item"
+              >
+                <span style="color: #9b6dff" class="icon is-small is-left">
+                  <i class="fas fa-money-bill"></i>
+                </span>
+                &ensp; Tạo bảng lương Phân xưởng
+              </nav-link>
+              <!-- <div class="nested navbar-item dropdown">
                 <div class="dropdown-trigger">
                   <button
                     class="button"
@@ -328,7 +358,8 @@
                     </nav-link>
                   </div>
                 </div>
-              </div>
+              </div> -->
+              <hr class="navbar-divider" />
               <nav-link to="/ketoan/phieulo/exportdata" class="navbar-item">
                 <span style="color: #9b6dff" class="icon is-small is-left">
                   <i class="far fa-file-excel"></i>

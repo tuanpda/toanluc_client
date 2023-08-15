@@ -9,7 +9,7 @@
               <span class="icon is-small is-left">
                 <i style="color: #f14668" class="fas fa-clipboard-list"></i>
               </span>
-              <span style="color: #3850b7; font-size: 14px; font-weight: bold"
+              <span style="color: #3850b7; font-size: 15px; font-weight: bold"
                 >Lập kế hoạch nhà máy</span
               >
             </div>

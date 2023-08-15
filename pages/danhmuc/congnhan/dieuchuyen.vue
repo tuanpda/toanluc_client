@@ -744,6 +744,7 @@ export default {
             // b2: ghi dữ liệu người được chọn sang 1 bảng khác gọi là bảng dữ liệu điều chuyển
             // b2: xóa dữ liệu người được chọn ở tổ cũ
             // b3: ghi lại lịch sử ở bảng log
+            // console.log(this.form);
             let log = "";
             if (this.form.mato == "") {
               this.form.ghichu = `Điều chuyển công nhân có mã: ${this.data_dieuchuyen.macn} từ phân xưởng ${this.data_dieuchuyen.mapx} sang phân xưởng ${this.form.mapx} vào ngày ${this.form.createdAt} bởi ${this.form.createdBy}`;
@@ -753,8 +754,11 @@ export default {
               log = `Điều chuyển công nhân: ${this.form.tencn}, Mã: ${this.form.macn} từ tổ ${this.data_dieuchuyen.mato} thuộc phân xưởng ${this.data_dieuchuyen.mapx} sang phân xưởng ${this.form.mapx} vào tổ ${this.form.mato}`;
             }
             // b1: ghi dữ liệu ở tổ mới
-            await this.$axios.$post("/api/congnhan/addcongnhan", this.form);
-
+            const res = await this.$axios.$post(
+              "/api/congnhan/addcongnhan",
+              this.form
+            );
+            console.log(res);
             // b2: ghi dữ liệu vào bảng điều chuyển
             this.form.mapx = this.data_dieuchuyen.mapx;
             this.form.tenpx = this.data_dieuchuyen.tenpx;

@@ -503,11 +503,16 @@ export default {
     },
 
     async reportSum() {
-      this.sumreport = await this.$axios.$get(
-        `/api/report/reportsumluong?thang=${this.thang}&nam=${this.nam}`
-      );
-      this.sumrp = this.sumreport[0];
-      // console.log(this.sumrp)
+      if (this.mato == "") {
+        this.sumreport = await this.$axios.$get(
+          `/api/report/reportsumluong_phanxuong?thang=${this.thang}&nam=${this.nam}&mapb=${this.maxuong}`
+        );
+        this.sumrp = this.sumreport[0];
+      } else {
+        this.sumreport = await this.$axios.$get(
+          `/api/report/reportsumluongto?thang=${this.thang}&nam=${this.nam}&mato=${this.mato}`
+        );
+      }
     },
 
     currentDateTime() {

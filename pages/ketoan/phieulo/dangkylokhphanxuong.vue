@@ -1,38 +1,26 @@
 <template>
   <div class="columns">
-    <div class="column">
+    <div class="column container">
       <br />
-      <div class="box" style="margin-left: 20px; margin-right: 20px">
+      <div class="box" style="margin-left: 3px; margin-right: 3px">
         <div class="columns">
-          <div class="column is-11">
+          <div class="column">
             <div class="control">
               <span class="icon is-small is-left">
                 <i style="color: #ff55acee" class="fas fa-broom"></i>
               </span>
-              <span style="color: #3850b7; font-size: 17px; font-weight: bold"
+              <span style="color: #3850b7; font-size: 15px; font-weight: bold"
                 >Đăng ký lô kế hoạch phân xưởng</span
               >
             </div>
           </div>
-          <div class="column" style="text-align: right">
-            <button class="button is-info is-fullwidth is-small">
-              <span class="icon is-small">
-                <i class="fas fa-angle-double-left"></i>
-              </span>
-              <span>Thoát</span>
-            </button>
-          </div>
         </div>
 
-        <div>
+        <div class="table_wrapper">
           <table class="table is-responsive is-bordered is-narrow is-fullwidth">
             <tr style="background-color: #faf0f5">
               <td style="width: 15%">
                 <div class="field has-addons">
-                  <!-- <p class="control is-expanded">
-                                        <input v-model="search_nhomthanhpham" class="input is-small is-fullwidth"
-                                            type="text" placeholder="Nhóm thành phẩm">
-                                    </p> -->
                   <div class="autocomplete">
                     <input
                       class="input is-small"
@@ -63,10 +51,6 @@
               </td>
               <td style="width: 15%">
                 <div class="field has-addons">
-                  <!-- <p class="control is-expanded">
-                                        <input v-model="search_mathanhpham" class="input is-small is-fullwidth" type="text"
-                                            placeholder="Mã thành phẩm">
-                                    </p> -->
                   <div class="autocomplete">
                     <input
                       class="input is-small"
@@ -332,12 +316,6 @@
                 {{ item.mathanhpham }}
               </td>
               <td style="font-size: small">{{ item.tenthanhpham }}</td>
-              <!-- <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
-                                item.ngaybd | formatDate
-                            }}</td>
-                            <td style="font-size: small; text-align: center; background-color: #effaf5;">{{
-                                item.ngaykt | formatDate
-                            }}</td> -->
               <td style="font-size: small; text-align: center">
                 {{ item.tuanbd }}
               </td>
@@ -447,48 +425,53 @@
               </td>
             </tr>
           </table>
-          <div class="pagination">
-            <button
-              class="button is-small is-success"
-              @click="changePage(1)"
-              :disabled="currentPage === 1"
-            >
-              Đầu tiên
-            </button>
-            <button
-              class="button is-small is-info"
-              @click="changePage(currentPage - 1)"
-              :disabled="currentPage === 1"
-            >
-              Trước
-            </button>
-            <button
-              class="button is-small"
-              v-for="page in pages"
-              @click="changePage(page)"
-              :class="{ active: page === currentPage }"
-            >
-              {{ page }}
-            </button>
-            <button
-              class="button is-small is-info"
-              @click="changePage(currentPage + 1)"
-              :disabled="currentPage === pageCount"
-            >
-              Sau
-            </button>
-            <button
-              class="button is-small is-success"
-              @click="changePage(pageCount)"
-              :disabled="currentPage === pageCount"
-            >
-              Cuối
-            </button>
+        </div>
+        <!-- phân trang -->
+        <div class="columns">
+          <div class="column">
+            <div class="pagination" style="text-align: center">
+              <button
+                class="button is-small is-success"
+                @click="changePage(1)"
+                :disabled="currentPage === 1"
+              >
+                Đầu tiên
+              </button>
+              <button
+                class="button is-small is-info"
+                @click="changePage(currentPage - 1)"
+                :disabled="currentPage === 1"
+              >
+                Trước
+              </button>
+              <button
+                class="button is-small"
+                v-for="page in pages"
+                @click="changePage(page)"
+                :class="{ active: page === currentPage }"
+              >
+                {{ page }}
+              </button>
+              <button
+                class="button is-small is-info"
+                @click="changePage(currentPage + 1)"
+                :disabled="currentPage === pageCount"
+              >
+                Sau
+              </button>
+              <button
+                class="button is-small is-success"
+                @click="changePage(pageCount)"
+                :disabled="currentPage === pageCount"
+              >
+                Cuối
+              </button>
+            </div>
           </div>
         </div>
         <br />
         <div v-if="checkViewluong == true">
-          <div class="">
+          <div class="table_wrapper">
             <table
               class="table is-responsive is-bordered is-narrow is-fullwidth"
             >
@@ -2149,8 +2132,8 @@ export default {
 
 <style scoped>
 .table_wrapper {
-  /* display: block;
-    overflow-x: auto; */
+  display: block;
+  overflow-x: auto;
   white-space: nowrap;
 }
 
@@ -2166,15 +2149,8 @@ export default {
   height: 800px;
 }
 
-#preview {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#preview img {
-  max-width: 90px;
-  max-height: 90px;
+.input.is-small {
+  min-width: 100px; /* Điều chỉnh độ rộng tùy ý */
 }
 
 tr:hover {
@@ -2231,5 +2207,11 @@ tr:hover {
 
 .autocomplete-item:hover {
   background-color: #fffaeb;
+}
+
+@media (max-width: 768px) {
+  .pagination button {
+    margin: 5px;
+  }
 }
 </style>

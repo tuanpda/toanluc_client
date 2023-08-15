@@ -2469,6 +2469,7 @@ export default {
       this.phanxuong = await this.$axios.$get(`/api/phongban/allphanxuong`);
     },
     async getWithPX(e) {
+      this.maxuong = "";
       this.mato = "";
       var name = e.target.options[e.target.options.selectedIndex].text;
       // console.log(name)
@@ -2480,9 +2481,12 @@ export default {
       this.tonhomid = await this.$axios.$get(
         `/api/phongban/alltoinxuong?mapx=${p1}`
       );
+      console.log(this.maxuong);
+      console.log(this.mato);
     },
     async getWithTo(e) {
       // console.log(this.mapx)
+      this.mato = "";
       var name = e.target.options[e.target.options.selectedIndex].text;
       // console.log(name)
       let position = name.split("--");
@@ -2617,17 +2621,61 @@ export default {
             title: "Yêu cầu chọn phân xưởng cần tính lương",
           });
         } else {
+          this.dscongnhan = [];
+          // tìm xem những người đã có key_thangnam trong csdl ở bảng luongthang?
+          // nếu có rồi thì không cho hiện ra nữa.
+          this.keyThangnam =
+            this.thang.trim() +
+            this.nam.trim() +
+            "-" +
+            this.maxuong +
+            "-" +
+            this.mato;
+          const arrkeythangnam = [];
+          const listkeythangnam = await this.$axios.$get(
+            `/api/ketoan/getkeythangnamwithdata?key_thangnam=${this.keyThangnam}`
+          );
+          // console.log(this.listkeythangnam);
+          for (let i = 0; i < listkeythangnam.length; i++) {
+            let ktn = listkeythangnam[i].keyfind.trim();
+            arrkeythangnam.push(ktn);
+          }
+          // console.log(arrkeythangnam)
+
           if (this.mato == "") {
             this.isActive_load_luong = true;
             const res = await this.$axios.$get(
               `/api/ketoan/getallluongcongdoanpx?nam=${this.nam}&thang=${this.thang}&mapx=${this.maxuong}`
             );
             this.dscongnhan = res.data;
+            const result = [];
+            for (let i = 0; i < this.dscongnhan.length; i++) {
+              let _key =
+                this.dscongnhan[i].macn +
+                "-" +
+                this.dscongnhan[i].tencongnhan +
+                "-" +
+                this.keyThangnam;
+              let found = false;
+              // console.log(_key);
+              for (let j = 0; j < arrkeythangnam.length; j++) {
+                if (_key === arrkeythangnam[j]) {
+                  found = true;
+                  break;
+                }
+              }
+              if (!found) {
+                result.push(this.dscongnhan[i]);
+              }
+            }
+
+            // console.log(result);
+            this.dscongnhan = result;
             // gọi hàm tính toán lại dữ liệu lương
             if (res.success == true) {
               this.isActive_load_luong = false;
             }
-            if (this.dscongnhan.length < 0) {
+            if (this.dscongnhan.length <= 0) {
               const Toast = Swal.mixin({
                 toast: true,
                 position: "top-end",
@@ -2641,7 +2689,7 @@ export default {
               });
               Toast.fire({
                 icon: "error",
-                title: "Không có dữ liệu",
+                title: "Đã chốt hết dữ liệu lương rồi",
               });
             }
           } else {
@@ -2651,10 +2699,34 @@ export default {
             );
             // console.log(res);
             this.dscongnhan = res.data;
+            const result = [];
+            for (let i = 0; i < this.dscongnhan.length; i++) {
+              let _key =
+                this.dscongnhan[i].macn +
+                "-" +
+                this.dscongnhan[i].tencongnhan +
+                "-" +
+                this.keyThangnam;
+              let found = false;
+              // console.log(_key);
+              for (let j = 0; j < arrkeythangnam.length; j++) {
+                if (_key === arrkeythangnam[j]) {
+                  found = true;
+                  break;
+                }
+              }
+              if (!found) {
+                result.push(this.dscongnhan[i]);
+              }
+            }
+
+            // console.log(result);
+            this.dscongnhan = result;
+
             if (res.success == true) {
               this.isActive_load_luong = false;
             }
-            if (this.dscongnhan.length < 0) {
+            if (this.dscongnhan.length <= 0) {
               const Toast = Swal.mixin({
                 toast: true,
                 position: "top-end",
@@ -2668,7 +2740,7 @@ export default {
               });
               Toast.fire({
                 icon: "error",
-                title: "Không có dữ liệu",
+                title: "Đã chốt hết dữ liệu lương rồi",
               });
             }
           }
@@ -2726,15 +2798,15 @@ export default {
             // khai báo mảng chứa key
             // console.log(this.selected[0].ngayhotro);
             // console.log(parseFloat(this.selected[0].ngayhotro) * 354000);
-            const arrkeythangnam = [];
-            const listkeythangnam = await this.$axios.$get(
-              `/api/ketoan/getkeythangnam`
-            );
-            // console.log(this.listkeythangnam);
-            for (let i = 0; i < listkeythangnam.length; i++) {
-              let ktn = listkeythangnam[i].key_thangnam.trim();
-              arrkeythangnam.push(ktn);
-            }
+            // const arrkeythangnam = [];
+            // const listkeythangnam = await this.$axios.$get(
+            //   `/api/ketoan/getkeythangnam`
+            // );
+            // for (let i = 0; i < listkeythangnam.length; i++) {
+            //   let ktn = listkeythangnam[i].key_thangnam.trim();
+            //   arrkeythangnam.push(ktn);
+            // }
+            this.keyThangnam = "";
             this.keyThangnam =
               this.thang.trim() +
               this.nam.trim() +
@@ -2743,102 +2815,70 @@ export default {
               "-" +
               this.mato;
 
-            // console.log(this.keyThangnam);
-            // console.log(arrkeythangnam);
-            this.isExits = arrkeythangnam.includes(this.keyThangnam.trim());
-            // console.log(this.isExits);
-            if (this.isExits == false) {
-              for (let i = 0; i < this.selected.length; i++) {
-                // console.log(this.selected[i]);
-                let data = {
-                  mapb: this.dscongnhan[0].mapx,
-                  tenpb: this.dscongnhan[0].tenpx,
-                  mato: this.selected[i].mato,
-                  manv: this.selected[i].macn,
-                  hotennv: this.selected[i].tencongnhan,
-                  chucvu: this.selected[i].chucvu,
-                  luongcb: this.selected[i].luongcb,
-                  luongmem: this.selected[i].luongmem,
-                  luongqlsp: this.selected[i].luongqlsp,
-                  luongcd: this.selected[i].luongcd,
-                  luongps: this.selected[i].luongcn,
-                  tongluong:
-                    parseFloat(this.selected[i].luongqlsp) +
-                    this.selected[i].luongcd +
-                    this.selected[i].luongcn +
-                    parseFloat(this.selected[i].ngayhotro) *
-                      parseFloat(this.selected[i].luongmem),
-                  antrua: this.selected[i].thanhtien,
-                  songaycong: this.selected[i].songaylam,
-                  ngayhotro: parseFloat(this.selected[i].ngayhotro),
-                  tienhotro:
-                    parseFloat(this.selected[i].ngayhotro) *
-                    parseFloat(this.selected[i].luongmem),
-                  bhxh: this.selected[i].bhxh,
-                  congdoan: this.selected[i].congdoan,
-                  tamung: this.selected[i].tienung,
-                  tongtru:
-                    parseFloat(this.selected[i].congdoan) +
-                    this.selected[i].bhxh +
-                    parseFloat(this.selected[i].antrua),
-                  tongnhan:
-                    // parseFloat(this.selected[i].luongqlsp) +
-                    // this.selected[i].luongcd +
-                    // this.selected[i].luongcn +
-                    // parseFloat(this.selected[i].ngayhotro) *
-                    //   parseFloat(this.selected[i].luongmem) +
-                    // parseFloat(this.selected[i].thanhtien) -
-                    // (this.selected[i].bhxh +
-                    //   parseFloat(this.selected[i].antrua) +
-                    //   parseFloat(this.selected[i].congdoan)),
-                    parseFloat(this.selected[i].luongqlsp) +
-                    this.selected[i].luongcd +
-                    this.selected[i].luongcn +
-                    this.selected[i].thanhtien +
-                    parseFloat(this.selected[i].ngayhotro) *
-                      parseFloat(this.selected[i].luongmem) -
-                    (this.selected[i].bhxh +
-                      parseFloat(this.selected[i].congdoan) +
-                      parseFloat(this.selected[i].antrua)),
-                  tienphat: this.selected[i].antrua,
-                  createdAt: this.createdAt,
-                  createdBy: this.createdBy,
-                  thang: this.thang,
-                  nam: this.nam,
-                  key_thangnam: this.keyThangnam,
-                  status: true,
-                  stk: this.selected[i].stk,
-                  nhanl1: 0,
-                  nhanl2: 0,
-                  nhanl3: 0,
-                  nhanl4: 0,
-                  nhanl5: 0,
-                  nhanl6: 0,
-                  sttchon: this.selected[i].sttchon,
-                };
-                // console.log(data);
-                const res = this.$axios.$post(
-                  "/api/ketoan/themluongthang",
-                  data
-                );
+            console.log(this.keyThangnam);
 
-                const Toast = Swal.mixin({
-                  toast: true,
-                  position: "top-end",
-                  showConfirmButton: false,
-                  timer: 3000,
-                  timerProgressBar: true,
-                  didOpen: (toast) => {
-                    toast.addEventListener("mouseenter", Swal.stopTimer);
-                    toast.addEventListener("mouseleave", Swal.resumeTimer);
-                  },
-                });
-                Toast.fire({
-                  icon: "success",
-                  title: "Tạo số liệu lương thành công",
-                });
-              }
-            } else {
+            for (let i = 0; i < this.selected.length; i++) {
+              let data = {
+                mapb: this.dscongnhan[0].mapx,
+                tenpb: this.dscongnhan[0].tenpx,
+                mato: this.selected[i].mato,
+                manv: this.selected[i].macn,
+                hotennv: this.selected[i].tencongnhan,
+                chucvu: this.selected[i].chucvu,
+                luongcb: this.selected[i].luongcb,
+                luongmem: this.selected[i].luongmem,
+                luongqlsp: this.selected[i].luongqlsp,
+                luongcd: this.selected[i].luongcd,
+                luongps: this.selected[i].luongcn,
+                tongluong:
+                  parseFloat(this.selected[i].luongqlsp) +
+                  this.selected[i].luongcd +
+                  this.selected[i].luongcn +
+                  parseFloat(this.selected[i].ngayhotro) *
+                    parseFloat(this.selected[i].luongmem),
+                antrua: this.selected[i].thanhtien,
+                songaycong: this.selected[i].songaylam,
+                ngayhotro: parseFloat(this.selected[i].ngayhotro),
+                tienhotro:
+                  parseFloat(this.selected[i].ngayhotro) *
+                  parseFloat(this.selected[i].luongmem),
+                bhxh: this.selected[i].bhxh,
+                congdoan: this.selected[i].congdoan,
+                tamung: this.selected[i].tienung,
+                tongtru:
+                  parseFloat(this.selected[i].congdoan) +
+                  this.selected[i].bhxh +
+                  parseFloat(this.selected[i].antrua),
+                tongnhan:
+                  parseFloat(this.selected[i].luongqlsp) +
+                  this.selected[i].luongcd +
+                  this.selected[i].luongcn +
+                  this.selected[i].thanhtien +
+                  parseFloat(this.selected[i].ngayhotro) *
+                    parseFloat(this.selected[i].luongmem) -
+                  (this.selected[i].bhxh +
+                    parseFloat(this.selected[i].congdoan) +
+                    parseFloat(this.selected[i].antrua)),
+                tienphat: this.selected[i].antrua,
+                createdAt: this.createdAt,
+                createdBy: this.createdBy,
+                thang: this.thang,
+                nam: this.nam,
+                key_thangnam: this.keyThangnam,
+                status: true,
+                stk: this.selected[i].stk,
+                tennganhang: this.selected[i].tennh,
+                nhanl1: 0,
+                nhanl2: 0,
+                nhanl3: 0,
+                nhanl4: 0,
+                nhanl5: 0,
+                nhanl6: 0,
+                sttchon: this.selected[i].sttchon,
+              };
+              // console.log(data);
+              const res = this.$axios.$post("/api/ketoan/themluongthang", data);
+
               const Toast = Swal.mixin({
                 toast: true,
                 position: "top-end",
@@ -2851,8 +2891,8 @@ export default {
                 },
               });
               Toast.fire({
-                icon: "error",
-                title: "Tháng này đã tạo lương rồi !!!",
+                icon: "success",
+                title: "Tạo số liệu lương thành công",
               });
             }
           }

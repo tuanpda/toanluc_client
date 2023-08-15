@@ -48,7 +48,7 @@
 
         <div
           class="columns"
-          style="border: 1px solid #00d1b2; background-color: seashell"
+          style="border: 1px solid #00d1b2; background-color: #f4f2f8"
         >
           <div class="column">
             <div class="select-wrapper" style="width: 100%; font-size: small">
