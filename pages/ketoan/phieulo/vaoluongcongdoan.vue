@@ -135,7 +135,7 @@
           </div>
         </div>
 
-        <div class="table_wrapper">
+        <!-- <div class="table_wrapper">
           <table class="table is-responsive is-bordered is-narrow is-fullwidth">
             <tr style="background-color: #feecf0">
               <td style="font-size: small; width: 15%">
@@ -257,7 +257,7 @@
               <td></td>
             </tr>
           </table>
-        </div>
+        </div> -->
         <br />
         <div v-if="showConponent" class="table_wrapper">
           <table class="table is-responsive is-bordered is-narrow is-fullwidth">
