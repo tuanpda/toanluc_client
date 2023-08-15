@@ -57,7 +57,7 @@
                       type="text"
                       v-model="search_mathanhpham"
                       @input="onInput_mathanhpham"
-                      placeholder="Nhóm thành phẩm"
+                      placeholder="Mã thành phẩm"
                     />
                     <div
                       class="autocomplete-items"
@@ -1381,7 +1381,7 @@ export default {
           .month(0)
           .date((this.items[i].tuanbdkhpx - 1) * 7 + 1);
         const startDateString = startDate.locale("vi").format("YYYY/MM/DD");
-        console.log(startDateString);
+        // console.log(startDateString);
 
         // // Tính toán ngày kết thúc của tuần đó
         const endDate = dayjs()
@@ -2035,7 +2035,22 @@ export default {
                   // if the post exists in array
                   this.datakehoachpx.splice(index, 1); //delete the post
               });
-            this.searhNhomthanhpham();
+            // this.searhNhomthanhpham();
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+              },
+            });
+            Toast.fire({
+              icon: "success",
+              title: "Đã xóa dữ liệu kế hoạch phân xưởng",
+            });
           } else {
             const Toast = Swal.mixin({
               toast: true,
@@ -2060,72 +2075,72 @@ export default {
       });
     },
 
-    async onDeleteKhpx(pl) {
-      // lấy ra _id, mã kế hoạch, mã lô nhà máy để xác định là duy nhất
-      // console.log(pl)
-      let arrlosanxuat;
-      arrlosanxuat = await this.$axios.$get(
-        `/api/lokehoach/predelete_lokehoachpx?_id=${pl._id}`
-      );
-      if (arrlosanxuat.length <= 0) {
-        this.$axios
-          .$delete(`/api/lokehoach/kehoachphanxuong/${pl._id}`)
-          .then((response) => {
-            const index = this.datakehoachpx.findIndex(
-              (khpx) => khpx._id === pl._id
-            ); // find the post index
-            if (~index)
-              // if the post exists in array
-              this.datakehoachpx.splice(index, 1); //delete the post
-          });
-        if (
-          this.search_nhomthanhpham &&
-          !this.search_mathanhpham &&
-          !this.search_timekt
-        ) {
-          this.search_mathanhpham = "";
-          this.search_timekt = null;
-          this.searhNhomthanhpham();
-        } else if (
-          !this.search_nhomthanhpham &&
-          this.search_mathanhpham &&
-          !this.search_timekt
-        ) {
-          this.search_nhomthanhpham = "";
-          this.search_timekt = null;
-          this.searhMathanhpham();
-        } else if (
-          !this.search_nhomthanhpham &&
-          !this.search_mathanhpham &&
-          this.search_timekt
-        ) {
-          this.search_mathanhpham = "";
-          this.search_nhomthanhpham = "";
-          this.searhTimeketthuc();
-        } else {
-          this.sllosx = await this.$axios.$get(
-            `/api/lokehoach/alllonhamaywithsoluonglokhpx`
-          );
-        }
-      } else {
-        const Toast = Swal.mixin({
-          toast: true,
-          position: "top-end",
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.addEventListener("mouseenter", Swal.stopTimer);
-            toast.addEventListener("mouseleave", Swal.resumeTimer);
-          },
-        });
-        Toast.fire({
-          icon: "error",
-          title:
-            "Đã có lô sản xuất phát sinh từ lô Kế hoạch PX này, không thể xóa!!!",
-        });
-      }
-    },
+    // async onDeleteKhpx(pl) {
+    //   // lấy ra _id, mã kế hoạch, mã lô nhà máy để xác định là duy nhất
+    //   // console.log(pl)
+    //   let arrlosanxuat;
+    //   arrlosanxuat = await this.$axios.$get(
+    //     `/api/lokehoach/predelete_lokehoachpx?_id=${pl._id}`
+    //   );
+    //   if (arrlosanxuat.length <= 0) {
+    //     this.$axios
+    //       .$delete(`/api/lokehoach/kehoachphanxuong/${pl._id}`)
+    //       .then((response) => {
+    //         const index = this.datakehoachpx.findIndex(
+    //           (khpx) => khpx._id === pl._id
+    //         ); // find the post index
+    //         if (~index)
+    //           // if the post exists in array
+    //           this.datakehoachpx.splice(index, 1); //delete the post
+    //       });
+    //     if (
+    //       this.search_nhomthanhpham &&
+    //       !this.search_mathanhpham &&
+    //       !this.search_timekt
+    //     ) {
+    //       this.search_mathanhpham = "";
+    //       this.search_timekt = null;
+    //       this.searhNhomthanhpham();
+    //     } else if (
+    //       !this.search_nhomthanhpham &&
+    //       this.search_mathanhpham &&
+    //       !this.search_timekt
+    //     ) {
+    //       this.search_nhomthanhpham = "";
+    //       this.search_timekt = null;
+    //       this.searhMathanhpham();
+    //     } else if (
+    //       !this.search_nhomthanhpham &&
+    //       !this.search_mathanhpham &&
+    //       this.search_timekt
+    //     ) {
+    //       this.search_mathanhpham = "";
+    //       this.search_nhomthanhpham = "";
+    //       this.searhTimeketthuc();
+    //     } else {
+    //       this.sllosx = await this.$axios.$get(
+    //         `/api/lokehoach/alllonhamaywithsoluonglokhpx`
+    //       );
+    //     }
+    //   } else {
+    //     const Toast = Swal.mixin({
+    //       toast: true,
+    //       position: "top-end",
+    //       showConfirmButton: false,
+    //       timer: 3000,
+    //       timerProgressBar: true,
+    //       didOpen: (toast) => {
+    //         toast.addEventListener("mouseenter", Swal.stopTimer);
+    //         toast.addEventListener("mouseleave", Swal.resumeTimer);
+    //       },
+    //     });
+    //     Toast.fire({
+    //       icon: "error",
+    //       title:
+    //         "Đã có lô sản xuất phát sinh từ lô Kế hoạch PX này, không thể xóa!!!",
+    //     });
+    //   }
+    // },
   },
 };
 </script>

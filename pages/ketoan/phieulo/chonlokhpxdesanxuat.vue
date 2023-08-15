@@ -15,141 +15,161 @@
             </div>
           </div>
         </div>
+        <div class="columns">
+          <div class="column" style="display: flex; align-items: center">
+            <label
+              class="checkbox-label"
+              style="display: flex; align-items: center; margin-right: 10px"
+            >
+              <input type="checkbox" v-model="isFilter" />
+              &nbsp;
+              <span style="font-weight: bold; font-size: small; color: brown"
+                >Hiển thị bộ lọc</span
+              >
+            </label>
+          </div>
+        </div>
+        <div class="box" v-if="isFilter == true">
+          <div class="columns">
+            <div class="column">
+              <div class="select-wrapper" style="width: 100%; font-size: small">
+                <div class="select-header" @click="isOpen = !isOpen">
+                  {{
+                    selectedOptions.length > 0
+                      ? selectedOptions.join(", ")
+                      : "Phân xưởng"
+                  }}
+                  <span class="arrow" :class="{ open: isOpen }"></span>
+                </div>
+                <div class="select-options" :class="{ open: isOpen }">
+                  <label v-for="option in phanxuong">
+                    <input
+                      type="checkbox"
+                      :value="option.mapx"
+                      v-model="selectedOptions"
+                    />
+                    {{ option.mapx }} &nbsp;
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="select-wrapper" style="width: 100%; font-size: small">
+                <div class="select-header" @click="isOpenst = !isOpenst">
+                  {{
+                    Options_status.length > 0
+                      ? Options_status.join(", ")
+                      : "Trạng thái"
+                  }}
+                  <span class="arrow" :class="{ open: isOpenst }"></span>
+                </div>
+                <div class="select-options" :class="{ open: isOpenst }">
+                  <label v-for="option in statusArr">
+                    <input
+                      type="checkbox"
+                      :value="option.masta"
+                      v-model="Options_status"
+                    />
+                    {{ option.tensta }} &nbsp;
+                  </label>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="autocomplete">
+                <input
+                  class="input is-small is-info"
+                  type="text"
+                  v-model="multiSearch_nhomtp"
+                  @input="onInput_nhomsp"
+                  placeholder="Nhóm thành phẩm"
+                />
+                <div
+                  class="autocomplete-items"
+                  v-if="suggestions_nhomtp.length"
+                >
+                  <div
+                    class="autocomplete-item"
+                    v-for="suggestion_nhomtp in suggestions_nhomtp"
+                    @click="selectSuggestion_nhomsp(suggestion_nhomtp)"
+                  >
+                    {{ suggestion_nhomtp }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <div class="autocomplete">
+                <input
+                  class="input is-small is-danger"
+                  type="text"
+                  v-model="multiSearch_matp"
+                  @input="onInput_matp"
+                  placeholder="Mã thành phẩm"
+                />
+                <div class="autocomplete-items" v-if="suggestions_matp.length">
+                  <div
+                    class="autocomplete-item"
+                    v-for="suggestion_matp in suggestions_matp"
+                    @click="selectSuggestion_matp(suggestion_matp)"
+                  >
+                    {{ suggestion_matp }}
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="column">
+              <button
+                @click="filterData"
+                class="button is-small is-success is-fullwidth"
+              >
+                Lọc dữ liệu
+              </button>
+            </div>
+          </div>
 
-        <div
-          class="columns"
-          style="border: 1px solid #00d1b2; background-color: #f4f2f8"
-        >
-          <div class="column">
-            <div class="select-wrapper" style="width: 100%; font-size: small">
-              <div class="select-header" @click="isOpen = !isOpen">
-                {{
-                  selectedOptions.length > 0
-                    ? selectedOptions.join(", ")
-                    : "Phân xưởng"
-                }}
-                <span class="arrow" :class="{ open: isOpen }"></span>
-              </div>
-              <div class="select-options" :class="{ open: isOpen }">
-                <label v-for="option in phanxuong">
-                  <input
-                    type="checkbox"
-                    :value="option.mapx"
-                    v-model="selectedOptions"
-                  />
-                  {{ option.mapx }} &nbsp;
-                </label>
-              </div>
+          <div class="columns">
+            <div
+              class="column"
+              style="font-size: small; font-weight: bold; text-align: left"
+            >
+              <span
+                >Có:
+                <span style="color: red">{{ lokehoachpx.length }}</span> bản
+                ghi</span
+              >
             </div>
-          </div>
-          <div class="column">
-            <div class="autocomplete">
+            <div class="column"></div>
+            <div class="column">
               <input
-                class="input is-small is-info"
-                type="text"
-                v-model="multiSearch_nhomtp"
-                @input="onInput_nhomsp"
-                placeholder="Nhóm thành phẩm"
+                class="input is-danger is-small"
+                type="number"
+                id="itemsPerPage"
+                v-model.number="itemsPerPage"
+                min="1"
+                max="10"
               />
-              <div class="autocomplete-items" v-if="suggestions_nhomtp.length">
-                <div
-                  class="autocomplete-item"
-                  v-for="suggestion_nhomtp in suggestions_nhomtp"
-                  @click="selectSuggestion_nhomsp(suggestion_nhomtp)"
-                >
-                  {{ suggestion_nhomtp }}
-                </div>
-              </div>
             </div>
-          </div>
-          <div class="column">
-            <div class="autocomplete">
-              <input
-                class="input is-small is-danger"
-                type="text"
-                v-model="multiSearch_matp"
-                @input="onInput_matp"
-                placeholder="Mã thành phẩm"
-              />
-              <div class="autocomplete-items" v-if="suggestions_matp.length">
-                <div
-                  class="autocomplete-item"
-                  v-for="suggestion_matp in suggestions_matp"
-                  @click="selectSuggestion_matp(suggestion_matp)"
-                >
-                  {{ suggestion_matp }}
-                </div>
-              </div>
+            <div class="column">
+              <vue-excel-xlsx
+                :data="lokehoachpx"
+                :columns="columns"
+                :file-name="'lokehoachphanxuong'"
+                :file-type="'xlsx'"
+                :sheet-name="'Lô kế hoạch phân xưởng'"
+                style="width: 100%"
+              >
+                Download Excel
+              </vue-excel-xlsx>
             </div>
-          </div>
-          <div class="column">
-            <div class="select-wrapper" style="width: 100%; font-size: small">
-              <div class="select-header" @click="isOpenst = !isOpenst">
-                {{
-                  Options_status.length > 0
-                    ? Options_status.join(", ")
-                    : "Trạng thái"
-                }}
-                <span class="arrow" :class="{ open: isOpenst }"></span>
-              </div>
-              <div class="select-options" :class="{ open: isOpenst }">
-                <label v-for="option in statusArr">
-                  <input
-                    type="checkbox"
-                    :value="option.masta"
-                    v-model="Options_status"
-                  />
-                  {{ option.tensta }} &nbsp;
-                </label>
-              </div>
+            <div class="column">
+              <button
+                @click="showAllLokhpx"
+                class="button is-small is-danger is-fullwidth"
+              >
+                Refresh
+              </button>
             </div>
-          </div>
-          <div class="column is-1">
-            <button
-              @click="filterData"
-              class="button is-small is-success is-fullwidth"
-            >
-              Lọc dữ liệu
-            </button>
-          </div>
-          <div class="column is-1">
-            <button
-              @click="showAllLokhpx"
-              class="button is-small is-danger is-fullwidth"
-            >
-              Refresh
-            </button>
-          </div>
-          <div class="column is-1">
-            <input
-              class="input is-danger is-small"
-              type="number"
-              id="itemsPerPage"
-              v-model.number="itemsPerPage"
-              min="1"
-              max="10"
-            />
-          </div>
-          <div class="column">
-            <vue-excel-xlsx
-              :data="lokehoachpx"
-              :columns="columns"
-              :file-name="'lokehoachphanxuong'"
-              :file-type="'xlsx'"
-              :sheet-name="'Lô kế hoạch phân xưởng'"
-              style="width: 100%"
-            >
-              Download Excel
-            </vue-excel-xlsx>
-          </div>
-          <div
-            class="column"
-            style="font-size: small; font-weight: bold; text-align: right"
-          >
-            <span
-              >Có: <span style="color: red">{{ lokehoachpx.length }}</span> bản
-              ghi</span
-            >
           </div>
         </div>
 
@@ -638,6 +658,7 @@ export default {
       multiSearch_matp: "",
       multiSearch_nhomtp: "",
 
+      isFilter: false,
       // suggest input nhóm sản phẩm và mã sản phẩm
       suggestions: [],
       suggestions_nhomtp: [],

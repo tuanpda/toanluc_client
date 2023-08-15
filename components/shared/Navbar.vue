@@ -23,10 +23,8 @@
           data-target="navbarMenu"
           @click="toggleMenu"
         >
-          <div style="color: #f14668">
-            <span></span>
-            <span></span>
-            <span></span>
+          <div>
+            <img style="color: #f14668" src="@/assets/image/buger.jpg" alt="" />
           </div>
         </a>
       </div>
