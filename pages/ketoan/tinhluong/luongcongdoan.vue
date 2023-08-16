@@ -1,27 +1,25 @@
 <template>
   <div class="columns">
-    <div class="column">
+    <div class="column container">
       <br />
-      <div class="box" style="">
+      <div class="box" style="margin-left: 3px; margin-right: 3px">
         <div class="columns">
-          <div class="column is-4">
+          <div class="column">
             <div class="control">
               <span class="icon is-small is-left">
                 <i style="color: #ff55acee" class="fab fa-cc-mastercard"></i>
               </span>
-              <span style="color: #3850b7; font-size: 14px; font-weight: bold"
+              <span style="color: #3850b7; font-size: 15px; font-weight: bold"
                 >Lập lương tháng</span
               >
             </div>
           </div>
-          <div class="column is-3"></div>
-          <div class="column"></div>
         </div>
 
         <div class="columns">
-          <div class="column" style="text-align: right">
+          <div class="column">
             <div class="control has-icons-left">
-              <div class="select is-small">
+              <div class="select is-small is-fullwidth">
                 <select @change="getWithPX($event)">
                   <option selected>-- Chọn phân xưởng --</option>
                   <option v-for="item in phanxuong" :value="item.mapx">
@@ -32,7 +30,11 @@
               <span class="icon is-small is-left">
                 <i style="color: #48c78e" class="fas fa-kaaba"></i>
               </span>
-              <div class="select is-small">
+            </div>
+          </div>
+          <div class="column">
+            <div class="control has-icons-left">
+              <div class="select is-small is-fullwidth">
                 <select @change="getWithTo($event)">
                   <option selected>-- Chọn tổ --</option>
                   <option v-for="item in tonhomid" :value="item.mapx">
@@ -45,10 +47,8 @@
               </span>
             </div>
           </div>
-        </div>
-        <div class="columns">
-          <div class="column" style="">
-            <div class="select is-small">
+          <div class="column">
+            <div class="select is-small is-fullwidth">
               <select id="" @change="onChange_Thang($event)">
                 <option selected>-- Chọn tháng --</option>
                 <option value="01">Tháng 1</option>
@@ -65,7 +65,9 @@
                 <option value="12">Tháng 12</option>
               </select>
             </div>
-            <div class="select is-small">
+          </div>
+          <div class="column">
+            <div class="select is-small is-fullwidth">
               <select id="" @change="onChange_Nam($event)">
                 <option selected>-- Chọn năm --</option>
                 <option value="2022">Tháng 2022</option>
@@ -82,19 +84,37 @@
                 <option value="2033">Tháng 2033</option>
               </select>
             </div>
-            <button @click="getallPhieulsx" class="button is-success is-small">
+          </div>
+        </div>
+        <div class="columns">
+          <div class="column"></div>
+          <div class="column">
+            <button
+              @click="getallPhieulsx"
+              class="button is-success is-small is-fullwidth"
+            >
               <span class="icon is-small">
                 <i class="fas fa-inbox"></i>
               </span>
               <span>Xem phiếu lô tính lương</span>
             </button>
-            <button @click="getDsluong" class="button is-info is-small">
+          </div>
+          <div class="column">
+            <button
+              @click="getDsluong"
+              class="button is-info is-small is-fullwidth"
+            >
               <span class="icon is-small">
                 <i class="fas fa-pen-fancy"></i>
               </span>
               <span>Lấy số liệu lương</span>
             </button>
-            <button @click="onAddLuongthang" class="button is-danger is-small">
+          </div>
+          <div class="column">
+            <button
+              @click="onAddLuongthang"
+              class="button is-danger is-small is-fullwidth"
+            >
               <span class="icon is-small">
                 <i class="fas fa-signature"></i>
               </span>
@@ -102,221 +122,165 @@
             </button>
           </div>
         </div>
-        <div class="columns" style="margin-top: 1px">
-          <div class="table_wrapper table-height">
-            <table
-              class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
-            >
-              <tr>
-                <td style="font-size: small; font-weight: bold">
-                  Công ty cổ phần Toàn Lực
-                </td>
-                <td style="width: 7%; text-align: center">
-                  <vue-excel-xlsx
-                    :data="dscongnhan_download"
-                    :columns="columns_luong"
-                    :file-name="'Lương thang'"
-                    :file-type="'xlsx'"
-                    :sheet-name="'Lương thang'"
-                  >
-                    Download
-                  </vue-excel-xlsx>
-                </td>
-              </tr>
-              <tr>
-                <td
-                  :colspan="2"
-                  style="
-                    text-align: center;
-                    font-size: larger;
-                    font-weight: bold;
-                  "
-                >
-                  <template v-if="mato == ''">
-                    BẢNG LƯƠNG
-                    <span style="text-transform: uppercase">{{
-                      this.tenxuong
-                    }}</span>
-                    THÁNG {{ thang }} NĂM {{ nam }}
-                  </template>
-                  <template v-else>
-                    BẢNG LƯƠNG
-                    <span style="text-transform: uppercase">{{
-                      this.tento
-                    }}</span>
-                    THÁNG {{ thang }} NĂM {{ nam }}
-                  </template>
-                </td>
-              </tr>
-            </table>
 
-            <table
-              class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
-            >
-              <tr style="background-color: #fffaeb">
-                <td
-                  rowspan="2"
-                  style="
-                    text-align: center;
-                    font-weight: bold;
-                    font-size: small;
-                  "
+        <div class="table_wrapper">
+          <table
+            class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
+          >
+            <tr>
+              <td style="font-size: small; font-weight: bold">
+                Công ty cổ phần Toàn Lực
+              </td>
+              <td style="width: 7%; text-align: center">
+                <vue-excel-xlsx
+                  :data="dscongnhan_download"
+                  :columns="columns_luong"
+                  :file-name="'Lương thang'"
+                  :file-type="'xlsx'"
+                  :sheet-name="'Lương thang'"
                 >
-                  <input type="checkbox" v-model="selectAll" />
-                </td>
-                <td
-                  rowspan="2"
-                  style="
-                    text-align: center;
-                    font-size: small;
-                    font-weight: bold;
-                  "
-                >
-                  STT
-                </td>
-                <td
-                  rowspan="2"
-                  style="
-                    text-align: center;
-                    font-size: small;
-                    font-weight: bold;
-                  "
-                >
-                  Mã CN
-                </td>
-                <td
-                  rowspan="2"
-                  style="
-                    text-align: center;
-                    font-size: small;
-                    font-weight: bold;
-                  "
-                >
-                  Tên công nhân
-                </td>
-                <td
-                  rowspan="2"
-                  style="
-                    text-align: center;
-                    font-size: small;
-                    font-weight: bold;
-                  "
-                >
-                  Ngày công
-                </td>
-                <td
-                  rowspan="2"
-                  style="
-                    text-align: center;
-                    font-size: small;
-                    font-weight: bold;
-                  "
-                >
-                  Lương TB
-                </td>
-                <!-- <td rowspan="2" style="text-align: center; font-size:small; font-weight: bold;">
+                  Download
+                </vue-excel-xlsx>
+              </td>
+            </tr>
+            <tr>
+              <td
+                :colspan="2"
+                style="text-align: center; font-size: larger; font-weight: bold"
+              >
+                <template v-if="mato == ''">
+                  BẢNG LƯƠNG
+                  <span style="text-transform: uppercase">{{
+                    this.tenxuong
+                  }}</span>
+                  THÁNG {{ thang }} NĂM {{ nam }}
+                </template>
+                <template v-else>
+                  BẢNG LƯƠNG
+                  <span style="text-transform: uppercase">{{
+                    this.tento
+                  }}</span>
+                  THÁNG {{ thang }} NĂM {{ nam }}
+                </template>
+              </td>
+            </tr>
+          </table>
+        </div>
+
+        <div class="table_wrapper">
+          <table
+            class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
+          >
+            <tr style="background-color: #fffaeb">
+              <td
+                rowspan="2"
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                <input type="checkbox" v-model="selectAll" />
+              </td>
+              <td
+                rowspan="2"
+                style="text-align: center; font-size: small; font-weight: bold"
+              >
+                STT
+              </td>
+              <td
+                rowspan="2"
+                style="text-align: center; font-size: small; font-weight: bold"
+              >
+                Mã CN
+              </td>
+              <td
+                rowspan="2"
+                style="text-align: center; font-size: small; font-weight: bold"
+              >
+                Tên công nhân
+              </td>
+              <td
+                rowspan="2"
+                style="text-align: center; font-size: small; font-weight: bold"
+              >
+                Ngày công
+              </td>
+              <td
+                rowspan="2"
+                style="text-align: center; font-size: small; font-weight: bold"
+              >
+                Lương TB
+              </td>
+              <!-- <td rowspan="2" style="text-align: center; font-size:small; font-weight: bold;">
                   CV
                 </td> -->
-                <!-- <td rowspan="2" style="text-align: center; font-size:small; font-weight: bold;">
+              <!-- <td rowspan="2" style="text-align: center; font-size:small; font-weight: bold;">
                   Lương cơ bản
                 </td> -->
-                <td
-                  rowspan="2"
-                  style="
-                    text-align: center;
-                    font-size: small;
-                    font-weight: bold;
-                    width: 7%;
-                  "
-                >
-                  Lương QLSP
-                </td>
-                <td
-                  rowspan="2"
-                  style="
-                    text-align: center;
-                    font-size: small;
-                    font-weight: bold;
-                    width: 6%;
-                  "
-                >
-                  Lương công <br />
-                  đoạn
-                </td>
-                <td
-                  rowspan="2"
-                  style="
-                    text-align: center;
-                    font-size: small;
-                    font-weight: bold;
-                  "
-                >
-                  Lương phát <br />
-                  sinh
-                </td>
-                <td
-                  colspan="2"
-                  style="
-                    text-align: center;
-                    font-size: small;
-                    font-weight: bold;
-                  "
-                >
-                  Hỗ trợ
-                </td>
-                <td
-                  rowspan="2"
-                  style="
-                    text-align: center;
-                    font-size: small;
-                    font-weight: bold;
-                  "
-                >
-                  Tổng lương
-                </td>
-                <td
-                  rowspan="2"
-                  style="
-                    text-align: center;
-                    font-size: small;
-                    font-weight: bold;
-                  "
-                >
-                  Ăn ca
-                </td>
-                <td
-                  rowspan="2"
-                  style="
-                    text-align: center;
-                    font-size: small;
-                    font-weight: bold;
-                  "
-                >
-                  Lương CB
-                </td>
-                <td
-                  colspan="4"
-                  style="
-                    text-align: center;
-                    font-size: small;
-                    font-weight: bold;
-                  "
-                >
-                  Các khoản giảm trừ
-                </td>
-                <td
-                  rowspan="2"
-                  style="
-                    text-align: center;
-                    font-size: small;
-                    font-weight: bold;
-                  "
-                >
-                  lương nhận
-                </td>
-              </tr>
-              <tr style="background-color: #fffaeb">
-                <!-- <td
+              <td
+                rowspan="2"
+                style="
+                  text-align: center;
+                  font-size: small;
+                  font-weight: bold;
+                  width: 7%;
+                "
+              >
+                Lương QLSP
+              </td>
+              <td
+                rowspan="2"
+                style="
+                  text-align: center;
+                  font-size: small;
+                  font-weight: bold;
+                  width: 6%;
+                "
+              >
+                Lương công đoạn
+              </td>
+              <td
+                rowspan="2"
+                style="text-align: center; font-size: small; font-weight: bold"
+              >
+                Lương phát sinh
+              </td>
+              <td
+                colspan="2"
+                style="text-align: center; font-size: small; font-weight: bold"
+              >
+                Hỗ trợ
+              </td>
+              <td
+                rowspan="2"
+                style="text-align: center; font-size: small; font-weight: bold"
+              >
+                Tổng lương
+              </td>
+              <td
+                rowspan="2"
+                style="text-align: center; font-size: small; font-weight: bold"
+              >
+                Ăn ca
+              </td>
+              <td
+                rowspan="2"
+                style="text-align: center; font-size: small; font-weight: bold"
+              >
+                Lương CB
+              </td>
+              <td
+                colspan="4"
+                style="text-align: center; font-size: small; font-weight: bold"
+              >
+                Các khoản giảm trừ
+              </td>
+              <td
+                rowspan="2"
+                style="text-align: center; font-size: small; font-weight: bold"
+              >
+                lương nhận
+              </td>
+            </tr>
+            <tr style="background-color: #fffaeb">
+              <!-- <td
                   style="
                     text-align: center;
                     font-size: small;
@@ -335,476 +299,439 @@
                 >
                   Thành tiền
                 </td> -->
-                <td
-                  style="
-                    text-align: center;
-                    font-size: small;
-                    font-weight: bold;
-                    width: 3%;
-                  "
-                >
-                  Số ngày
-                </td>
-                <td
-                  style="
-                    text-align: center;
-                    font-size: small;
-                    font-weight: bold;
-                  "
-                >
-                  Thành tiền
-                </td>
-                <td
-                  style="
-                    text-align: center;
-                    font-size: small;
-                    font-weight: bold;
-                  "
-                >
-                  BHXH
-                </td>
-                <td
-                  style="
-                    text-align: center;
-                    font-size: small;
-                    font-weight: bold;
-                  "
-                >
-                  Công đoàn
-                </td>
-                <td
-                  style="
-                    text-align: center;
-                    font-size: small;
-                    font-weight: bold;
-                    width: 8%;
-                  "
-                >
-                  &nbsp; Tiền Phạt &nbsp;
-                </td>
-                <td
-                  style="
-                    text-align: center;
-                    font-size: small;
-                    font-weight: bold;
-                    width: 8%;
-                  "
-                >
-                  Tổng trừ
-                </td>
-              </tr>
-              <!-- :class="{ highlight: pl._id == phieulosx } -->
-              <tr v-for="(dsl, index) in dscongnhan" :key="index + 'j'">
-                <td style="text-align: center">
-                  <input v-model="selected" :value="dsl" type="checkbox" />
-                </td>
-                <td
-                  style="
-                    text-align: center;
-                    font-size: small;
-                    font-weight: bold;
-                  "
-                >
-                  {{ index + 1 }}
-                </td>
-                <td
-                  @click="onSumcongnhandetail(dsl.macn)"
-                  style="
-                    text-align: center;
-                    font-size: small;
-                    background-color: aliceblue;
-                  "
-                >
-                  {{ dsl.macn }}
-                </td>
-                <td style="font-size: small">{{ dsl.tencongnhan }}</td>
-                <td style="text-align: center; font-size: small">
-                  {{ dsl.songaylam }}
-                </td>
-                <td
-                  style="text-align: right; font-size: small; font-weight: bold"
-                >
-                  {{
-                    ((parseFloat(dsl.luongqlsp) +
-                      dsl.luongcd +
-                      dsl.luongcn +
-                      parseFloat(dsl.ngayhotro) * parseFloat(dsl.luongmem)) /
-                      dsl.songaylam)
-                      | formatNumber
-                  }}
-                </td>
-                <!-- <td style="font-size:small;">{{ dsl.chucnang }}</td> -->
-                <!-- <td style="text-align: right; font-size:small;">
+              <td
+                style="
+                  text-align: center;
+                  font-size: small;
+                  font-weight: bold;
+                  width: 3%;
+                "
+              >
+                Số ngày
+              </td>
+              <td
+                style="text-align: center; font-size: small; font-weight: bold"
+              >
+                Thành tiền
+              </td>
+              <td
+                style="text-align: center; font-size: small; font-weight: bold"
+              >
+                BHXH
+              </td>
+              <td
+                style="text-align: center; font-size: small; font-weight: bold"
+              >
+                Công đoàn
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  font-size: small;
+                  font-weight: bold;
+                  width: 8%;
+                "
+              >
+                &nbsp; Tiền Phạt &nbsp;
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  font-size: small;
+                  font-weight: bold;
+                  width: 8%;
+                "
+              >
+                Tổng trừ
+              </td>
+            </tr>
+            <!-- :class="{ highlight: pl._id == phieulosx } -->
+            <tr v-for="(dsl, index) in dscongnhan" :key="index + 'j'">
+              <td style="text-align: center">
+                <input v-model="selected" :value="dsl" type="checkbox" />
+              </td>
+              <td
+                style="text-align: center; font-size: small; font-weight: bold"
+              >
+                {{ index + 1 }}
+              </td>
+              <td
+                @click="onSumcongnhandetail(dsl.macn)"
+                style="
+                  text-align: center;
+                  font-size: small;
+                  background-color: aliceblue;
+                "
+              >
+                {{ dsl.macn }}
+              </td>
+              <td style="font-size: small">{{ dsl.tencongnhan }}</td>
+              <td style="text-align: center; font-size: small">
+                {{ dsl.songaylam }}
+              </td>
+              <td
+                style="text-align: right; font-size: small; font-weight: bold"
+              >
+                {{
+                  ((parseFloat(dsl.luongqlsp) +
+                    dsl.luongcd +
+                    dsl.luongcn +
+                    parseFloat(dsl.ngayhotro) * parseFloat(dsl.luongmem)) /
+                    dsl.songaylam)
+                    | formatNumber
+                }}
+              </td>
+              <!-- <td style="font-size:small;">{{ dsl.chucnang }}</td> -->
+              <!-- <td style="text-align: right; font-size:small;">
                   {{ dsl.luongcb | formatNumber }}
                 </td> -->
-                <td style="text-align: right; font-size: small">
-                  <!-- <input
+              <td style="text-align: right; font-size: small">
+                <!-- <input
                     v-model.trim="dsl.luongqlsp"
                     type="number"
                     class="input is-small"
                   /> -->
-                  {{ dsl.luongqlsp | formatNumber }}
-                </td>
-                <td style="text-align: right; font-size: small">
-                  {{ dsl.luongcd | formatNumber }}
-                </td>
-                <td style="text-align: right; font-size: small">
-                  {{ dsl.luongcn | formatNumber }}
-                </td>
-                <!-- ngày hỗ trợ -->
-                <td style="text-align: center; font-size: small">
-                  <input
-                    v-model.trim="dsl.ngayhotro"
-                    type="number"
-                    class="input is-small"
-                  />
-                </td>
-                <!-- tổng hỗ trợ -->
-                <td style="text-align: center; font-size: small">
-                  {{
-                    (parseFloat(dsl.ngayhotro) * parseFloat(dsl.luongmem))
-                      | formatNumber
-                  }}
-                </td>
-                <!-- tổng lương -->
-                <td
-                  style="
-                    text-align: right;
-                    font-size: small;
-                    font-weight: bold;
-                    color: red;
-                  "
-                >
-                  {{
-                    (parseFloat(dsl.luongqlsp) +
-                      dsl.luongcd +
-                      dsl.luongcn +
-                      parseFloat(dsl.ngayhotro) * parseFloat(dsl.luongmem))
-                      | formatNumber
-                  }}
-                </td>
-                <!-- ăn ca -->
-                <td
-                  @click="detailAnca(dsl)"
-                  style="
-                    text-align: center;
-                    font-size: small;
-                    background-color: honeydew;
-                  "
-                >
-                  {{ dsl.thanhtien | formatNumber }}
-                </td>
-                <td style="text-align: right; font-size: small">
-                  {{ dsl.luongcb | formatNumber }}
-                </td>
-                <td style="text-align: right; font-size: small">
-                  {{ dsl.bhxh | formatNumber }}
-                </td>
-                <td style="text-align: right; font-size: small">
-                  <input
-                    type="number"
-                    class="input is-small"
-                    v-model="dsl.congdoan"
-                  />
-                </td>
-                <!-- cột này là cột phạt. nhưng dùng cột ăn trưa trong csdl -->
-                <td style="text-align: center; font-size: small">
-                  <input
-                    type="number"
-                    class="input is-small"
-                    v-model="dsl.antrua"
-                  />
-                </td>
-                <!-- tổng trừ -->
-                <td
-                  style="text-align: right; font-size: small; font-weight: bold"
-                >
-                  {{
+                {{ dsl.luongqlsp | formatNumber }}
+              </td>
+              <td style="text-align: right; font-size: small">
+                {{ dsl.luongcd | formatNumber }}
+              </td>
+              <td style="text-align: right; font-size: small">
+                {{ dsl.luongcn | formatNumber }}
+              </td>
+              <!-- ngày hỗ trợ -->
+              <td style="text-align: center; font-size: small">
+                <input
+                  v-model.trim="dsl.ngayhotro"
+                  type="number"
+                  class="input is-small"
+                />
+              </td>
+              <!-- tổng hỗ trợ -->
+              <td style="text-align: center; font-size: small">
+                {{
+                  (parseFloat(dsl.ngayhotro) * parseFloat(dsl.luongmem))
+                    | formatNumber
+                }}
+              </td>
+              <!-- tổng lương -->
+              <td
+                style="
+                  text-align: right;
+                  font-size: small;
+                  font-weight: bold;
+                  color: red;
+                "
+              >
+                {{
+                  (parseFloat(dsl.luongqlsp) +
+                    dsl.luongcd +
+                    dsl.luongcn +
+                    parseFloat(dsl.ngayhotro) * parseFloat(dsl.luongmem))
+                    | formatNumber
+                }}
+              </td>
+              <!-- ăn ca -->
+              <td
+                @click="detailAnca(dsl)"
+                style="
+                  text-align: center;
+                  font-size: small;
+                  background-color: honeydew;
+                "
+              >
+                {{ dsl.thanhtien | formatNumber }}
+              </td>
+              <td style="text-align: right; font-size: small">
+                {{ dsl.luongcb | formatNumber }}
+              </td>
+              <td style="text-align: right; font-size: small">
+                {{ dsl.bhxh | formatNumber }}
+              </td>
+              <td style="text-align: right; font-size: small">
+                <input
+                  type="number"
+                  class="input is-small"
+                  v-model="dsl.congdoan"
+                />
+              </td>
+              <!-- cột này là cột phạt. nhưng dùng cột ăn trưa trong csdl -->
+              <td style="text-align: center; font-size: small">
+                <input
+                  type="number"
+                  class="input is-small"
+                  v-model="dsl.antrua"
+                />
+              </td>
+              <!-- tổng trừ -->
+              <td
+                style="text-align: right; font-size: small; font-weight: bold"
+              >
+                {{
+                  (dsl.bhxh + parseFloat(dsl.congdoan) + parseFloat(dsl.antrua))
+                    | formatNumber
+                }}
+              </td>
+              <!-- tổng nhận -->
+              <td
+                style="
+                  text-align: right;
+                  font-size: small;
+                  font-weight: bold;
+                  color: red;
+                "
+              >
+                {{
+                  (parseFloat(dsl.luongqlsp) +
+                    dsl.luongcd +
+                    dsl.luongcn +
+                    dsl.thanhtien +
+                    parseFloat(dsl.ngayhotro) * parseFloat(dsl.luongmem) -
                     (dsl.bhxh +
                       parseFloat(dsl.congdoan) +
-                      parseFloat(dsl.antrua))
-                      | formatNumber
-                  }}
-                </td>
-                <!-- tổng nhận -->
-                <td
-                  style="
-                    text-align: right;
-                    font-size: small;
-                    font-weight: bold;
-                    color: red;
-                  "
-                >
-                  {{
-                    (parseFloat(dsl.luongqlsp) +
-                      dsl.luongcd +
-                      dsl.luongcn +
-                      dsl.thanhtien +
-                      parseFloat(dsl.ngayhotro) * parseFloat(dsl.luongmem) -
-                      (dsl.bhxh +
-                        parseFloat(dsl.congdoan) +
-                        parseFloat(dsl.antrua)))
-                      | formatNumber
-                  }}
-                </td>
-              </tr>
-              <tr>
-                <td colspan="4"></td>
-                <td
-                  style="
-                    font-size: small;
-                    font-weight: bold;
-                    color: #00947e;
-                    text-align: center;
-                  "
-                >
-                  {{ subRow_songaylam | formatNumber }}
-                </td>
-                <td
-                  style="
-                    font-size: small;
-                    font-weight: bold;
-                    color: #00947e;
-                    text-align: right;
-                  "
-                >
-                  {{ subRow_tongluongtb | formatNumber }}
-                </td>
-                <td
-                  style="
-                    font-size: small;
-                    font-weight: bold;
-                    color: #00947e;
-                    text-align: right;
-                  "
-                >
-                  {{ subRow_qlsp | formatNumber }}
-                </td>
-                <td
-                  style="
-                    font-size: small;
-                    font-weight: bold;
-                    color: #00947e;
-                    text-align: right;
-                  "
-                >
-                  {{ subRow_luongcd | formatNumber }}
-                </td>
-                <td
-                  style="
-                    font-size: small;
-                    font-weight: bold;
-                    color: #00947e;
-                    text-align: right;
-                  "
-                >
-                  {{ subRow_luongcn | formatNumber }}
-                </td>
-                <td
-                  style="
-                    font-size: small;
-                    font-weight: bold;
-                    color: #00947e;
-                    text-align: center;
-                  "
-                >
-                  {{ subRow_ngayhotro | formatNumber }}
-                </td>
-                <td
-                  style="
-                    font-size: small;
-                    font-weight: bold;
-                    color: #00947e;
-                    text-align: center;
-                  "
-                >
-                  {{ subRow_tienhotro | formatNumber }}
-                </td>
-                <td
-                  style="
-                    font-size: small;
-                    font-weight: bold;
-                    color: #00947e;
-                    text-align: right;
-                  "
-                >
-                  {{ subRow_tongluong | formatNumber }}
-                </td>
-                <td
-                  style="
-                    font-size: small;
-                    font-weight: bold;
-                    color: #00947e;
-                    text-align: center;
-                  "
-                >
-                  {{ subRow_thanhtienca | formatNumber }}
-                </td>
-                <td
-                  style="
-                    font-size: small;
-                    font-weight: bold;
-                    color: #00947e;
-                    text-align: right;
-                  "
-                >
-                  {{ subRow_luongcb | formatNumber }}
-                </td>
-                <td
-                  style="
-                    font-size: small;
-                    font-weight: bold;
-                    color: #00947e;
-                    text-align: right;
-                  "
-                >
-                  {{ subRow_bhxh | formatNumber }}
-                </td>
-                <td
-                  style="
-                    font-size: small;
-                    font-weight: bold;
-                    color: #00947e;
-                    text-align: right;
-                  "
-                >
-                  {{ subRow_congdoan | formatNumber }}
-                </td>
-                <td
-                  style="
-                    font-size: small;
-                    font-weight: bold;
-                    color: #00947e;
-                    text-align: right;
-                  "
-                >
-                  {{ subRow_phat | formatNumber }}
-                </td>
-                <td
-                  style="
-                    font-size: small;
-                    font-weight: bold;
-                    color: #00947e;
-                    text-align: right;
-                  "
-                >
-                  {{ subRow_tongtru | formatNumber }}
-                </td>
-                <td
-                  style="
-                    font-size: small;
-                    font-weight: bold;
-                    color: #00947e;
-                    text-align: right;
-                  "
-                >
-                  {{ subRow_tongnhan | formatNumber }}
-                </td>
-              </tr>
-            </table>
-          </div>
-        </div>
-        <div class="columns" style="margin-top: 1px">
-          <!-- Lương quản lý sản phẩm -->
-          <div class="table_wrapper">
-            <table
-              class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
-            >
-              <tr style="background-color: antiquewhite">
-                <td
-                  style="text-align: left; font-size: small; font-weight: bold"
-                >
-                  Quản lý
-                </td>
-                <td
-                  style="
-                    text-align: center;
-                    font-size: small;
-                    font-weight: bold;
-                    width: 20%;
-                  "
-                >
-                  Tỷ lệ (%)
-                </td>
-                <td
-                  style="
-                    text-align: center;
-                    font-size: small;
-                    font-weight: bold;
-                  "
-                >
-                  Tổng lương công đoạn
-                </td>
-              </tr>
-              <tr>
-                <td>--</td>
-                <td></td>
-                <td
-                  style="text-align: right; font-size: small; font-weight: bold"
-                >
-                  {{ tongLuongCongDoan | formatNumber }}
-                </td>
-              </tr>
-              <tr>
-                <td
-                  style="text-align: left; font-size: small; font-weight: bold"
-                >
-                  Tổng lương quản lý
-                </td>
-                <td
-                  style="
-                    text-align: center;
-                    font-size: small;
-                    font-weight: bold;
-                  "
-                >
-                  <input
-                    type="number"
-                    class="input is-small"
-                    v-model="tyletongluongql"
-                  />
-                </td>
-                <td
-                  style="text-align: right; font-size: small; font-weight: bold"
-                >
-                  {{ tongLuongQuanLy | formatNumber }}
-                </td>
-              </tr>
-              <tr
-                v-for="(item, index) in dscongnhan"
-                :key="index + 'kkl'"
-                v-if="item.anluongqlsp == true"
+                      parseFloat(dsl.antrua)))
+                    | formatNumber
+                }}
+              </td>
+            </tr>
+            <tr>
+              <td colspan="4"></td>
+              <td
+                style="
+                  font-size: small;
+                  font-weight: bold;
+                  color: #00947e;
+                  text-align: center;
+                "
               >
-                <td
-                  style="text-align: left; font-size: small; font-weight: bold"
-                >
-                  {{ item.tencongnhan }}
-                </td>
-                <td
-                  style="
-                    text-align: center;
-                    font-size: small;
-                    font-weight: bold;
-                  "
-                >
-                  <input
-                    @change="countLuongqlsp(item)"
-                    type="number"
-                    class="input is-small"
-                    v-model="item.tyleqlsp"
-                  />
-                </td>
-                <td
-                  style="text-align: right; font-size: small; font-weight: bold"
-                >
-                  {{
-                    (parseFloat(item.tyleqlsp) * tongLuongQuanLy) | formatNumber
-                  }}
-                </td>
-              </tr>
-            </table>
-          </div>
+                {{ subRow_songaylam | formatNumber }}
+              </td>
+              <td
+                style="
+                  font-size: small;
+                  font-weight: bold;
+                  color: #00947e;
+                  text-align: right;
+                "
+              >
+                {{ subRow_tongluongtb | formatNumber }}
+              </td>
+              <td
+                style="
+                  font-size: small;
+                  font-weight: bold;
+                  color: #00947e;
+                  text-align: right;
+                "
+              >
+                {{ subRow_qlsp | formatNumber }}
+              </td>
+              <td
+                style="
+                  font-size: small;
+                  font-weight: bold;
+                  color: #00947e;
+                  text-align: right;
+                "
+              >
+                {{ subRow_luongcd | formatNumber }}
+              </td>
+              <td
+                style="
+                  font-size: small;
+                  font-weight: bold;
+                  color: #00947e;
+                  text-align: right;
+                "
+              >
+                {{ subRow_luongcn | formatNumber }}
+              </td>
+              <td
+                style="
+                  font-size: small;
+                  font-weight: bold;
+                  color: #00947e;
+                  text-align: center;
+                "
+              >
+                {{ subRow_ngayhotro | formatNumber }}
+              </td>
+              <td
+                style="
+                  font-size: small;
+                  font-weight: bold;
+                  color: #00947e;
+                  text-align: center;
+                "
+              >
+                {{ subRow_tienhotro | formatNumber }}
+              </td>
+              <td
+                style="
+                  font-size: small;
+                  font-weight: bold;
+                  color: #00947e;
+                  text-align: right;
+                "
+              >
+                {{ subRow_tongluong | formatNumber }}
+              </td>
+              <td
+                style="
+                  font-size: small;
+                  font-weight: bold;
+                  color: #00947e;
+                  text-align: center;
+                "
+              >
+                {{ subRow_thanhtienca | formatNumber }}
+              </td>
+              <td
+                style="
+                  font-size: small;
+                  font-weight: bold;
+                  color: #00947e;
+                  text-align: right;
+                "
+              >
+                {{ subRow_luongcb | formatNumber }}
+              </td>
+              <td
+                style="
+                  font-size: small;
+                  font-weight: bold;
+                  color: #00947e;
+                  text-align: right;
+                "
+              >
+                {{ subRow_bhxh | formatNumber }}
+              </td>
+              <td
+                style="
+                  font-size: small;
+                  font-weight: bold;
+                  color: #00947e;
+                  text-align: right;
+                "
+              >
+                {{ subRow_congdoan | formatNumber }}
+              </td>
+              <td
+                style="
+                  font-size: small;
+                  font-weight: bold;
+                  color: #00947e;
+                  text-align: right;
+                "
+              >
+                {{ subRow_phat | formatNumber }}
+              </td>
+              <td
+                style="
+                  font-size: small;
+                  font-weight: bold;
+                  color: #00947e;
+                  text-align: right;
+                "
+              >
+                {{ subRow_tongtru | formatNumber }}
+              </td>
+              <td
+                style="
+                  font-size: small;
+                  font-weight: bold;
+                  color: #00947e;
+                  text-align: right;
+                "
+              >
+                {{ subRow_tongnhan | formatNumber }}
+              </td>
+            </tr>
+          </table>
         </div>
+
+        <!-- Lương quản lý sản phẩm -->
+        <div class="table_wrapper" style="margin-top: 5px">
+          <table class="table is-bordered is-striped is-narrow is-hoverable">
+            <tr style="background-color: antiquewhite">
+              <td style="text-align: left; font-size: small; font-weight: bold">
+                Quản lý
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  font-size: small;
+                  font-weight: bold;
+                  width: 10%;
+                "
+              >
+                Tỷ lệ (%)
+              </td>
+              <td
+                style="text-align: center; font-size: small; font-weight: bold"
+              >
+                Tổng lương công đoạn
+              </td>
+              <td></td>
+            </tr>
+            <tr>
+              <td>--</td>
+              <td></td>
+              <td
+                style="text-align: right; font-size: small; font-weight: bold"
+              >
+                {{ tongLuongCongDoan | formatNumber }}
+              </td>
+            </tr>
+            <tr>
+              <td style="text-align: left; font-size: small; font-weight: bold">
+                Tổng lương quản lý
+              </td>
+              <td
+                style="text-align: center; font-size: small; font-weight: bold"
+              >
+                <input
+                  type="number"
+                  class="input is-small"
+                  v-model="tyletongluongql"
+                />
+              </td>
+              <td
+                style="text-align: right; font-size: small; font-weight: bold"
+              >
+                {{ tongLuongQuanLy | formatNumber }}
+              </td>
+            </tr>
+            <tr
+              v-for="(item, index) in dscongnhan"
+              :key="index + 'kkl'"
+              v-if="item.anluongqlsp == true"
+            >
+              <td style="text-align: left; font-size: small; font-weight: bold">
+                {{ item.tencongnhan }}
+              </td>
+              <td
+                style="text-align: center; font-size: small; font-weight: bold"
+              >
+                <input
+                  @change="countLuongqlsp(item)"
+                  type="number"
+                  class="input is-small"
+                  v-model="item.tyleqlsp"
+                />
+              </td>
+              <td
+                style="text-align: right; font-size: small; font-weight: bold"
+              >
+                {{
+                  (parseFloat(item.tyleqlsp) * tongLuongQuanLy) | formatNumber
+                }}
+              </td>
+              <td></td>
+            </tr>
+          </table>
+        </div>
+
         <!-- Modal 1 -->
         <div class="">
           <!-- Toggle class  -->

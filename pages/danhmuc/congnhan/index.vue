@@ -418,26 +418,39 @@
                   </div>
                 </div>
 
-                <div>
-                  <div class="field">
-                    <div style="margin-bottom: 10px">
-                      <label class="checkbox">
-                        <input type="checkbox" v-model.trim="checkGhichu" />
-                        <span style="font-weight: bold">Ghi chú </span>
-                      </label>
+                <div class="columns">
+                  <div class="column">
+                    <label class="label">Chủ tài khoản</label>
+                    <div class="control">
+                      <input
+                        v-model.trim="form.chutaikhoan"
+                        class="input is-small"
+                        type="text"
+                        placeholder="Nhập tên ngân hàng"
+                      />
                     </div>
                   </div>
-                  <div
-                    v-if="checkGhichu == true"
-                    class="field"
-                    style="margin-top: 10px"
-                  >
-                    <div class="control">
-                      <textarea
-                        v-model="form.ghichu"
-                        class="textarea is-small"
-                        placeholder="Ghi chú thêm ..."
-                      ></textarea>
+                  <div class="column">
+                    <div class="field">
+                      <div style="margin-bottom: 10px">
+                        <label class="checkbox">
+                          <input type="checkbox" v-model.trim="checkGhichu" />
+                          <span style="font-weight: bold">Ghi chú </span>
+                        </label>
+                      </div>
+                    </div>
+                    <div
+                      v-if="checkGhichu == true"
+                      class="field"
+                      style="margin-top: 10px"
+                    >
+                      <div class="control">
+                        <textarea
+                          v-model="form.ghichu"
+                          class="textarea is-small"
+                          placeholder="Ghi chú thêm ..."
+                        ></textarea>
+                      </div>
                     </div>
                   </div>
                 </div>
@@ -530,6 +543,7 @@ export default {
         congdoan: 50000,
         createdAt: "",
         createdBy: this.$auth.$state.user.username,
+        chutaikhoan: "",
         // updatedAt: new Date().toISOString().substr(0, 10),
       },
       checkGhichu: false,

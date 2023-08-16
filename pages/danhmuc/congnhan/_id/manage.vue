@@ -221,21 +221,42 @@
             </div>
           </div>
         </div>
-        <div style="margin-bottom: 10px">
-          <label class="checkbox">
-            <input type="checkbox" v-model="checkGhichu" />
-            <span style="font-weight: bold">Ghi chú </span>
-          </label>
-        </div>
-        <div v-if="checkGhichu == true" class="field" style="margin-top: 10px">
-          <div class="control">
-            <textarea
-              v-model="form.ghichu"
-              class="textarea is-small"
-              placeholder="Ghi chú thêm ..."
-            ></textarea>
+
+        <div class="columns">
+          <div class="column">
+            <label class="label">Chủ tài khoản</label>
+            <div class="control">
+              <input
+                v-model.trim="form.chutaikhoan"
+                class="input is-small"
+                type="text"
+                placeholder="Nhập tên ngân hàng"
+              />
+            </div>
+          </div>
+          <div class="column">
+            <div class="field">
+              <label class="checkbox">
+                <input type="checkbox" v-model="checkGhichu" />
+                <span style="font-weight: bold">Ghi chú </span>
+              </label>
+            </div>
+            <div
+              v-if="checkGhichu == true"
+              class="field"
+              style="margin-top: 10px"
+            >
+              <div class="control">
+                <textarea
+                  v-model="form.ghichu"
+                  class="textarea is-small"
+                  placeholder="Ghi chú thêm ..."
+                ></textarea>
+              </div>
+            </div>
           </div>
         </div>
+
         <div class="columns" style="margin-top: 10px">
           <div class="column">
             <button
@@ -345,22 +366,7 @@ export default {
     this.congnhan = await this.$axios.$get(
       `/api/congnhan/${this.$route.params.id}`
     );
-    this.form.macn = this.congnhan.macn;
-    this.form.tencn = this.congnhan.tencn;
-    this.form.mapx = this.congnhan.mapx;
-    this.form.tenpx = this.congnhan.tenpx;
-    this.form.sdt = this.congnhan.sdt;
-    this.form.diachi = this.congnhan.diachi;
-    this.form.cccd = this.congnhan.cccd;
-    this.form.mato = this.congnhan.mato;
-    this.form.tento = this.congnhan.tento;
-    this.form.chucvu = this.congnhan.chucvu;
-    this.form.luongcb = this.congnhan.luongcb;
-    this.form.nguoilienhe = this.congnhan.nguoilienhe;
-    this.form.sotknh = this.congnhan.sotknh;
-    this.form.tennh = this.congnhan.tennh;
-    this.form.ghichu = this.congnhan.ghichu;
-    this.form.trangthai = this.congnhan.trangthai;
+    this.form = { ...this.congnhan };
   },
 
   mounted() {

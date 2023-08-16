@@ -75,20 +75,11 @@
           </div>
           <div class="column">
             <div class="select is-small is-fullwidth">
-              <select id="" @change="onChange_Nam($event)">
-                <option selected>-- Chọn năm --</option>
-                <option value="2022">Tháng 2022</option>
-                <option value="2023">Tháng 2023</option>
-                <option value="2024">Tháng 2024</option>
-                <option value="2025">Tháng 2025</option>
-                <option value="2026">Tháng 2026</option>
-                <option value="2027">Tháng 2027</option>
-                <option value="2028">Tháng 2028</option>
-                <option value="2029">Tháng 2029</option>
-                <option value="2030">Tháng 2030</option>
-                <option value="2031">Tháng 2031</option>
-                <option value="2032">Tháng 2032</option>
-                <option value="2033">Tháng 2033</option>
+              <select @change="getWithTo($event)">
+                <option selected>-- Chọn tổ --</option>
+                <option v-for="item in tonhom" :value="item.mapx">
+                  {{ item.mato }} -- {{ item.tento }}
+                </option>
               </select>
             </div>
           </div>
@@ -119,249 +110,224 @@
           </div>
         </div>
 
-        <div v-if="report.length > 0" class="columns" style="margin-top: 1px">
-          <div class="column">
-            <div class="table_wrapper">
-              <table
-                class="table is-responsive is-bordered is-striped is-narrow is-hoverable is-fullwidth"
+        <div v-if="report.length > 0" class="table_wrapper">
+          <table
+            class="table is-responsive is-bordered is-striped is-narrow is-hoverable is-fullwidth"
+          >
+            <tr style="background-color: blanchedalmond">
+              <td
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 1%;
+                "
               >
-                <tr>
-                  <td
-                    style="
-                      text-align: center;
-                      font-weight: bold;
-                      font-size: small;
-                      width: 1%;
-                    "
-                  >
-                    <input type="checkbox" v-model="selectAll" />
-                  </td>
-                  <td
-                    style="
-                      text-align: center;
-                      font-weight: bold;
-                      font-size: small;
-                      width: 3%;
-                    "
-                  >
-                    STT
-                  </td>
-                  <td
-                    style="
-                      text-align: center;
-                      font-weight: bold;
-                      font-size: small;
-                      width: 12%;
-                    "
-                  >
-                    Họ tên
-                  </td>
-                  <td
-                    style="
-                      text-align: center;
-                      font-weight: bold;
-                      font-size: small;
-                      background-color: aliceblue;
-                      width: 7%;
-                    "
-                  >
-                    Lương nhận
-                  </td>
-                  <td
-                    style="
-                      text-align: center;
-                      font-weight: bold;
-                      font-size: small;
-                      background-color: aliceblue;
-                      width: 7%;
-                    "
-                  >
-                    Chuyển khoản 1
-                  </td>
-                  <td
-                    style="
-                      text-align: center;
-                      font-weight: bold;
-                      font-size: small;
-                      background-color: aliceblue;
-                      width: 7%;
-                    "
-                  >
-                    Chuyển khoản 2
-                  </td>
-                  <td
-                    style="
-                      text-align: center;
-                      font-weight: bold;
-                      font-size: small;
-                      background-color: aliceblue;
-                      width: 7%;
-                    "
-                  >
-                    Tiền mặt
-                  </td>
-                  <td
-                    style="
-                      text-align: center;
-                      font-weight: bold;
-                      font-size: small;
-                      background-color: aliceblue;
-                      width: 10%;
-                    "
-                  >
-                    Số tài khoản
-                  </td>
-                  <td
-                    style="
-                      text-align: center;
-                      font-weight: bold;
-                      font-size: small;
-                      background-color: aliceblue;
-                      width: 10%;
-                    "
-                  >
-                    Tên ngân hàng
-                  </td>
-                  <td
-                    style="
-                      text-align: center;
-                      font-weight: bold;
-                      font-size: small;
-                      background-color: aliceblue;
-                      width: 10%;
-                    "
-                  >
-                    Chủ tài khoản
-                  </td>
-                  <td
-                    style="
-                      text-align: center;
-                      font-weight: bold;
-                      font-size: small;
-                      background-color: aliceblue;
-                      width: 7%;
-                    "
-                  >
-                    Còn lại
-                  </td>
-                  <td
-                    style="
-                      text-align: center;
-                      font-weight: bold;
-                      font-size: small;
-                      background-color: aliceblue;
-                      width: 30%;
-                    "
-                  >
-                    Ghi chú
-                  </td>
-                </tr>
-                <tr v-for="(nv, index) in report" :key="index">
-                  <td style="text-align: center">
-                    <input v-model="selected" :value="nv" type="checkbox" />
-                  </td>
-                  <td style="text-align: center; font-size: small">
-                    {{ index + 1 }}
-                  </td>
-                  <td style="font-size: small">{{ nv.hotennv }}</td>
-                  <td
-                    style="
-                      text-align: right;
-                      font-size: small;
-                      color: #f14668;
-                      font-weight: bold;
-                    "
-                  >
-                    {{ nv.tongnhan | formatNumber }}
-                  </td>
-                  <!-- gõ tiền chuyển khoản -->
-                  <td style="text-align: center; font-size: small">
-                    <input
-                      v-model="nv.nhanl1"
-                      class="input is-small"
-                      type="number"
-                    />
-                  </td>
-                  <td>
-                    <input
-                      type="number"
-                      class="input is-small"
-                      v-model="nv.nhanl2"
-                    />
-                  </td>
+                <input type="checkbox" v-model="selectAll" />
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 3%;
+                "
+              >
+                STT
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 12%;
+                "
+              >
+                Họ tên
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 7%;
+                "
+              >
+                Lương nhận
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 7%;
+                "
+              >
+                Chuyển khoản 1
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 7%;
+                "
+              >
+                Chuyển khoản 2
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 7%;
+                "
+              >
+                Tiền mặt
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 10%;
+                "
+              >
+                Số tài khoản
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 10%;
+                "
+              >
+                Tên ngân hàng
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 10%;
+                "
+              >
+                Chủ tài khoản
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 7%;
+                "
+              >
+                Còn lại
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  width: 30%;
+                "
+              >
+                Ghi chú
+              </td>
+            </tr>
+            <tr v-for="(nv, index) in report" :key="index">
+              <td style="text-align: center">
+                <input v-model="selected" :value="nv" type="checkbox" />
+              </td>
+              <td style="text-align: center; font-size: small">
+                {{ index + 1 }}
+              </td>
+              <td style="font-size: small">{{ nv.hotennv }}</td>
+              <td
+                style="
+                  text-align: right;
+                  font-size: small;
+                  color: #f14668;
+                  font-weight: bold;
+                "
+              >
+                {{ nv.tongnhan | formatNumber }}
+              </td>
+              <!-- gõ tiền chuyển khoản -->
+              <td style="text-align: center; font-size: small">
+                <input
+                  v-model="nv.nhanl1"
+                  class="input is-small"
+                  type="number"
+                />
+              </td>
+              <td>
+                <input
+                  type="number"
+                  class="input is-small"
+                  v-model="nv.nhanl2"
+                />
+              </td>
 
-                  <!-- gõ tiền mặt -->
-                  <td style="text-align: center; font-size: small">
-                    <input
-                      v-model="nv.nhanl3"
-                      type="number"
-                      class="input is-small"
-                    />
-                  </td>
+              <!-- gõ tiền mặt -->
+              <td style="text-align: center; font-size: small">
+                <input
+                  v-model="nv.nhanl3"
+                  type="number"
+                  class="input is-small"
+                />
+              </td>
 
-                  <td style="text-align: center; font-size: small">
-                    {{ nv.stk }}
-                  </td>
-                  <td style="text-align: center; font-size: small">
-                    {{ nv.tennganhang }}
-                  </td>
-                  <td style="text-align: center; font-size: small">
-                    <input
-                      type="text"
-                      v-model="nv.chutaikhoan"
-                      class="input is-small"
-                    />
-                  </td>
+              <td style="text-align: center; font-size: small">
+                {{ nv.stk }}
+              </td>
+              <td style="text-align: center; font-size: small">
+                {{ nv.tennganhang }}
+              </td>
+              <td style="text-align: center; font-size: small">
+                <input
+                  type="text"
+                  v-model="nv.chutaikhoan"
+                  class="input is-small"
+                />
+              </td>
 
-                  <!-- còn lại -->
-                  <td
-                    style="
-                      text-align: center;
-                      font-size: small;
-                      font-weight: bold;
-                      color: red;
-                    "
-                  >
-                    {{
-                      (nv.tongnhan -
-                        (parseFloat(nv.nhanl1) +
-                          parseFloat(nv.nhanl2) +
-                          parseFloat(nv.nhanl3)))
-                        | formatNumber
-                    }}
-                  </td>
-                  <td>
-                    <input
-                      type="text"
-                      class="input is-small"
-                      v-model="nv.ghichu"
-                    />
-                  </td>
-                </tr>
-                <tr>
-                  <td
-                    style="
-                      text-align: center;
-                      font-weight: bold;
-                      font-size: small;
-                    "
-                    colspan="3"
-                  >
-                    Tổng
-                  </td>
-                  <td
-                    style="
-                      text-align: right;
-                      font-weight: bold;
-                      font-size: small;
-                    "
-                  >
-                    {{ sumrp.sum_tongnhan | formatNumber }}
-                  </td>
-                </tr>
-              </table>
-            </div>
-          </div>
+              <!-- còn lại -->
+              <td
+                style="
+                  text-align: center;
+                  font-size: small;
+                  font-weight: bold;
+                  color: red;
+                "
+              >
+                {{
+                  (nv.tongnhan -
+                    (parseFloat(nv.nhanl1) +
+                      parseFloat(nv.nhanl2) +
+                      parseFloat(nv.nhanl3)))
+                    | formatNumber
+                }}
+              </td>
+              <td>
+                <input type="text" class="input is-small" v-model="nv.ghichu" />
+              </td>
+            </tr>
+            <tr>
+              <td
+                style="text-align: center; font-weight: bold; font-size: small"
+                colspan="3"
+              >
+                Tổng
+              </td>
+              <td
+                style="text-align: right; font-weight: bold; font-size: small"
+              >
+                {{ sumrp.sum_tongnhan | formatNumber }}
+              </td>
+            </tr>
+          </table>
         </div>
       </div>
     </div>
@@ -474,7 +440,7 @@ export default {
         current.getSeconds();
       this.createdAt = date + " " + time;
 
-      console.log(this.createdAt);
+      // console.log(this.createdAt);
     },
 
     async getWithPX(e) {
@@ -746,25 +712,14 @@ export default {
 </script>
 
 <style scoped>
-/* .table_wrapper {
+.table_wrapper {
   display: block;
   overflow-x: auto;
   white-space: nowrap;
   position: sticky;
   left: 0;
   background-color: whitesmoke;
-} */
-
-/* @media screen and (max-width: 1199px) {
-  .table_wrapper {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
-    position: sticky;
-    left: 0;
-    background-color: whitesmoke;
-  }
-} */
+}
 
 @media (max-width: 1200px) {
   .table_wrapper {
@@ -775,14 +730,5 @@ export default {
     left: 0;
     background-color: whitesmoke;
   }
-}
-
-.table-height {
-  height: 750px;
-  display: block;
-  overflow: scroll;
-  width: 100%;
-  position: sticky;
-  top: 0;
 }
 </style>
