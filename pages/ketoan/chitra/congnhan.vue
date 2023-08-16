@@ -15,72 +15,73 @@
             </div>
           </div>
         </div>
-
-        <div class="columns">
-          <div class="column">
-            <div class="select is-small is-fullwidth">
-              <select id="" @change="onChange_Thang($event)">
-                <option selected>-- Chọn tháng --</option>
-                <option value="01">Tháng 1</option>
-                <option value="02">Tháng 2</option>
-                <option value="03">Tháng 3</option>
-                <option value="04">Tháng 4</option>
-                <option value="05">Tháng 5</option>
-                <option value="06">Tháng 6</option>
-                <option value="07">Tháng 7</option>
-                <option value="08">Tháng 8</option>
-                <option value="09">Tháng 9</option>
-                <option value="10">Tháng 10</option>
-                <option value="11">Tháng 11</option>
-                <option value="12">Tháng 12</option>
-              </select>
-            </div>
-          </div>
-          <div class="column">
-            <div class="select is-small is-fullwidth">
-              <select id="" @change="onChange_Nam($event)">
-                <option selected>-- Chọn năm --</option>
-                <option value="2022">Tháng 2022</option>
-                <option value="2023">Tháng 2023</option>
-                <option value="2024">Tháng 2024</option>
-                <option value="2025">Tháng 2025</option>
-                <option value="2026">Tháng 2026</option>
-                <option value="2027">Tháng 2027</option>
-                <option value="2028">Tháng 2028</option>
-                <option value="2029">Tháng 2029</option>
-                <option value="2030">Tháng 2030</option>
-                <option value="2031">Tháng 2031</option>
-                <option value="2032">Tháng 2032</option>
-                <option value="2033">Tháng 2033</option>
-              </select>
-            </div>
-          </div>
-        </div>
-
-        <div class="columns">
-          <div class="column">
-            <div class="control has-icons-left">
+        <div class="box">
+          <div class="columns">
+            <div class="column">
               <div class="select is-small is-fullwidth">
-                <select @change="getWithPX($event)">
-                  <option selected>-- Chọn phân xưởng --</option>
-                  <option v-for="item in phanxuong" :value="item.mapx">
-                    {{ item.mapx }} -- {{ item.tenpx }}
+                <select id="" @change="onChange_Thang($event)">
+                  <option selected>-- Chọn tháng --</option>
+                  <option value="01">Tháng 1</option>
+                  <option value="02">Tháng 2</option>
+                  <option value="03">Tháng 3</option>
+                  <option value="04">Tháng 4</option>
+                  <option value="05">Tháng 5</option>
+                  <option value="06">Tháng 6</option>
+                  <option value="07">Tháng 7</option>
+                  <option value="08">Tháng 8</option>
+                  <option value="09">Tháng 9</option>
+                  <option value="10">Tháng 10</option>
+                  <option value="11">Tháng 11</option>
+                  <option value="12">Tháng 12</option>
+                </select>
+              </div>
+            </div>
+            <div class="column">
+              <div class="select is-small is-fullwidth">
+                <select id="" @change="onChange_Nam($event)">
+                  <option selected>-- Chọn năm --</option>
+                  <option value="2022">Tháng 2022</option>
+                  <option value="2023">Tháng 2023</option>
+                  <option value="2024">Tháng 2024</option>
+                  <option value="2025">Tháng 2025</option>
+                  <option value="2026">Tháng 2026</option>
+                  <option value="2027">Tháng 2027</option>
+                  <option value="2028">Tháng 2028</option>
+                  <option value="2029">Tháng 2029</option>
+                  <option value="2030">Tháng 2030</option>
+                  <option value="2031">Tháng 2031</option>
+                  <option value="2032">Tháng 2032</option>
+                  <option value="2033">Tháng 2033</option>
+                </select>
+              </div>
+            </div>
+          </div>
+
+          <div class="columns">
+            <div class="column">
+              <div class="control has-icons-left">
+                <div class="select is-small is-fullwidth">
+                  <select @change="getWithPX($event)">
+                    <option selected>-- Chọn phân xưởng --</option>
+                    <option v-for="item in phanxuong" :value="item.mapx">
+                      {{ item.mapx }} -- {{ item.tenpx }}
+                    </option>
+                  </select>
+                </div>
+                <span class="icon is-small is-left">
+                  <i style="color: #48c78e" class="fas fa-kaaba"></i>
+                </span>
+              </div>
+            </div>
+            <div class="column">
+              <div class="select is-small is-fullwidth">
+                <select @change="getWithTo($event)">
+                  <option selected>-- Chọn tổ --</option>
+                  <option v-for="item in tonhom" :value="item.mapx">
+                    {{ item.mato }} -- {{ item.tento }}
                   </option>
                 </select>
               </div>
-              <span class="icon is-small is-left">
-                <i style="color: #48c78e" class="fas fa-kaaba"></i>
-              </span>
-            </div>
-          </div>
-          <div class="column">
-            <div class="select is-small is-fullwidth">
-              <select @change="getWithTo($event)">
-                <option selected>-- Chọn tổ --</option>
-                <option v-for="item in tonhom" :value="item.mapx">
-                  {{ item.mato }} -- {{ item.tento }}
-                </option>
-              </select>
             </div>
           </div>
         </div>
@@ -729,6 +730,10 @@ export default {
     position: sticky;
     left: 0;
     background-color: whitesmoke;
+  }
+
+  .input.is-small {
+    width: 100%;
   }
 }
 </style>

@@ -478,6 +478,14 @@
                   </div>
                 </div>
               </div>
+              <!-- chấm công -->
+              <hr class="navbar-divider" />
+              <nav-link to="/quantri/chamcong/" class="navbar-item">
+                <span style="color: #6e4dc3" class="icon is-small is-left">
+                  <i class="fas fa-id-card-alt"></i>
+                </span>
+                &ensp; Chấm công hằng ngày
+              </nav-link>
               <div class="nested navbar-item dropdown">
                 <div class="dropdown-trigger">
                   <button
@@ -493,15 +501,6 @@
                 </div>
                 <div class="dropdown-menu" id="dropdown-menu" role="menu">
                   <div class="dropdown-content">
-                    <nav-link to="/quantri/chamcong/" class="navbar-item">
-                      <span
-                        style="color: #6e4dc3"
-                        class="icon is-small is-left"
-                      >
-                        <i class="fas fa-id-card-alt"></i>
-                      </span>
-                      &ensp; Chấm công hằng ngày
-                    </nav-link>
                     <nav-link
                       to="/quantri/chamcong/ngoaigio"
                       class="navbar-item"
@@ -565,6 +564,8 @@
                   </div>
                 </div>
               </div>
+              <hr class="navbar-divider" />
+              <!-- hồ sơ vi phạm -->
               <div class="nested navbar-item dropdown">
                 <div class="dropdown-trigger">
                   <button

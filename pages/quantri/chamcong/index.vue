@@ -1,11 +1,12 @@
 <template>
-  <div class="columns is-mobile">
-    <div class="column is-10 is-offset-1">
-      <div class="box" style="margin-top: 10px">
+  <div class="columns">
+    <div class="column container">
+      <br />
+      <div class="box" style="margin-left: 3px; margin-right: 3px">
         <div class="columns">
           <div class="column">
             <div class="control has-icons-left">
-              <div class="select is-small">
+              <div class="select is-small is-fullwidth">
                 <select
                   @change="loadCongnhan($event)"
                   :disabled="!isSelectsEnabled"
@@ -19,7 +20,11 @@
               <span class="icon is-small is-left">
                 <i style="color: #48c78e" class="fas fa-kaaba"></i>
               </span>
-              <div class="select is-small">
+            </div>
+          </div>
+          <div class="column">
+            <div class="control has-icons-left">
+              <div class="select is-small is-fullwidth">
                 <select
                   @change="getWithTo($event)"
                   :disabled="!isSelectsEnabled"
@@ -33,28 +38,19 @@
               <span class="icon is-small is-left">
                 <i style="color: #48c78e" class="fas fa-kaaba"></i>
               </span>
-              <div class="select is-small">
-                <!-- <select
-                  @change="vanphong($event)"
-                  :disabled="!isSelectsEnabled_VP"
-                >
-                  <option selected disabled>-- Văn phòng --</option>
-                  <option value="vanphong">Nhân viên văn phòng</option>
-                </select> -->
-                <button
-                  :disabled="!isSelectsEnabled_VP"
-                  @click="vanphong"
-                  class="button is-small is-success"
-                >
-                  Văn phòng
-                </button>
-              </div>
-              <span class="icon is-small is-left">
-                <i style="color: #48c78e" class="fas fa-kaaba"></i>
-              </span>
             </div>
           </div>
+          <div class="column is-12-mobile">
+            <button
+              :disabled="!isSelectsEnabled_VP"
+              @click="vanphong"
+              class="button is-small is-success"
+            >
+              Văn phòng
+            </button>
+          </div>
         </div>
+
         <div v-show="isshow == true" style="margin-bottom: 10px">
           <div style="text-align: center">
             <span style="font-size: small; font-weight: bold; color: red"
@@ -65,7 +61,8 @@
             <progress id="progress-bar" class="progress is-success"></progress>
           </div>
         </div>
-        <div class="table_wrapper table-height">
+
+        <div class="table_wrapper">
           <table class="table is-responsive is-bordered is-narrow is-fullwidth">
             <tr style="background-color: aliceblue">
               <td style="width: 5%">
@@ -127,6 +124,9 @@
               <td></td>
             </tr>
           </table>
+        </div>
+
+        <div class="table_wrapper">
           <table
             v-if="items.length > 0"
             class="table is-responsive is-bordered is-narrow is-fullwidth"
