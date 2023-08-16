@@ -1603,4 +1603,8 @@ export default {
   font-size: 14px;
   color: #f14668;
 }
+
+.input.is-small {
+  min-width: 70px;
+}
 </style>
