@@ -1958,7 +1958,7 @@
 import Swal from "sweetalert2";
 import { mapState } from "vuex";
 export default {
-  middleware: "auth",
+  middleware: "auth-luong",
   data() {
     return {
       selected: [],

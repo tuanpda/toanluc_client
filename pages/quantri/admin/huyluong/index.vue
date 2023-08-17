@@ -396,7 +396,7 @@ import "jspdf-autotable";
 import "~/assets/font/OpenSans-Light-normal";
 import "~/assets/font/OpenSans-SemiBold-normal";
 export default {
-  middleware: "auth",
+  middleware: "auth-luong",
   data() {
     return {
       phanxuong: [],

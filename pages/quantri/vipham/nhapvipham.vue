@@ -271,7 +271,7 @@
 import Swal from "sweetalert2";
 import moment from "moment";
 export default {
-  middleware: "auth",
+  middleware: "auth-admin",
   data() {
     return {
       phanxuong: [],

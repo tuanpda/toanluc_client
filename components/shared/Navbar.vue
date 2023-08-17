@@ -318,6 +318,12 @@
                 </span>
                 &ensp; Tạo bảng lương Phân xưởng
               </nav-link>
+              <nav-link to="/quantri/admin/huyluong/" class="navbar-item">
+                <span style="color: #6e4dc3" class="icon is-small is-left">
+                  <i class="fas fa-check-circle"></i>
+                </span>
+                &ensp; Hủy chốt lương
+              </nav-link>
               <!-- <div class="nested navbar-item dropdown">
                 <div class="dropdown-trigger">
                   <button
@@ -613,12 +619,6 @@
                   <i class="far fa-address-card"></i>
                 </span>
                 &ensp; Người dùng
-              </nav-link>
-              <nav-link to="/quantri/admin/huyluong/" class="navbar-item">
-                <span style="color: #6e4dc3" class="icon is-small is-left">
-                  <i class="fas fa-check-circle"></i>
-                </span>
-                &ensp; Hủy chốt lương
               </nav-link>
               <nav-link to="/quantri/history/" class="navbar-item">
                 <span style="color: #6e4dc3" class="icon is-small is-left">

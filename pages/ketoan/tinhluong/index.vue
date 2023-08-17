@@ -574,7 +574,7 @@ const currencyMask = createNumberMask({
   allowNegative: false,
 });
 export default {
-  middleware: "auth",
+  middleware: "auth-luong",
   data() {
     return {
       dataDetailChamngoaigio: [],

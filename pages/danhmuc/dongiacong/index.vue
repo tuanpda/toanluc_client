@@ -391,7 +391,7 @@ import {
   sameAs,
 } from "vuelidate/lib/validators";
 export default {
-  middleware: "auth",
+  middleware: "auth-luong",
   data() {
     return {
       dongiacong: [],

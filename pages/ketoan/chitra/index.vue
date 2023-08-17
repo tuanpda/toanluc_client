@@ -34,10 +34,7 @@
         </div>
         <div>
           <table
-            class="
-              table
-              is-bordered is-striped is-narrow is-hoverable is-fullwidth
-            "
+            class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
           >
             <thead>
               <tr class="is-selected">
@@ -171,11 +168,21 @@
                   <tr>
                     <div class="control">
                       <label class="radio">
-                        <input type="radio" v-model="form.typeung" value="ungluong" name="answer" />
+                        <input
+                          type="radio"
+                          v-model="form.typeung"
+                          value="ungluong"
+                          name="answer"
+                        />
                         Ứng tiền lương
                       </label>
                       <label class="radio">
-                        <input type="radio" v-model="form.typeung" value="ungkhac" name="answer" />
+                        <input
+                          type="radio"
+                          v-model="form.typeung"
+                          value="ungkhac"
+                          name="answer"
+                        />
                         Ứng tiền khác
                       </label>
                     </div>
@@ -250,7 +257,7 @@ import Multiselect from "vue-multiselect";
 import "vue-multiselect/dist/vue-multiselect.min.css";
 import { required } from "vuelidate/lib/validators";
 export default {
-  middleware: "auth",
+  middleware: "auth-luong",
   components: {
     Multiselect,
   },
