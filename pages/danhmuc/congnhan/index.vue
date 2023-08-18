@@ -140,11 +140,16 @@
                   </template>
                 </td>
                 <td style="text-align: center; color: green">
-                  <nuxt-link :to="`/danhmuc/congnhan/${px._id}/manage`">
+                  <!-- <nuxt-link :to="`/danhmuc/congnhan/${px._id}/manage`">
                     <span class="icon is-small">
                       <i class="far fa-check-circle"></i>
                     </span>
-                  </nuxt-link>
+                  </nuxt-link> -->
+                  <a @click="updateNhanvien(px)">
+                    <span class="icon is-small">
+                      <i class="far fa-check-circle"></i>
+                    </span>
+                  </a>
                 </td>
                 <!-- <td style="text-align: center">
                   <a @click="onDelete(px)">
@@ -478,6 +483,327 @@
             </div>
           </div>
         </div>
+
+        <!-- Modal sửa nhân viên -->
+        <div class="">
+          <div :class="{ 'is-active': isActive_fix }" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-content modal-card">
+              <header
+                style="
+                  background-color: #3e8ed0;
+                  border-top-left-radius: 8px;
+                  border-top-right-radius: 8px;
+                "
+              >
+                <div class="columns is-mobile">
+                  <div class="column">
+                    <p
+                      style="
+                        font-size: small;
+                        font-weight: bold;
+                        color: white;
+                        padding: 15px;
+                      "
+                    >
+                      <span class="icon is-small is-left">
+                        <i
+                          style="color: #ffd863ff"
+                          class="fas fa-feather-alt"
+                        ></i>
+                      </span>
+                      Thêm Công nhân
+                    </p>
+                  </div>
+                </div>
+              </header>
+              <section class="modal-card-body">
+                <div class="columns">
+                  <div class="column">
+                    <div class="field">
+                      <label class="label">Mã công nhân</label>
+                      <div class="control">
+                        <input
+                          v-model.trim="form_update.macn"
+                          @blur="$v.form_update.macn.$touch()"
+                          class="input is-small"
+                          type="text"
+                          disabled
+                        />
+                      </div>
+                      <div v-if="$v.form_update.macn.$error" class="form-error">
+                        <span
+                          v-if="!$v.form_update.macn.required"
+                          class="help is-danger"
+                          >Yêu cầu nhập mã công nhân</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  <div class="column">
+                    <div class="field">
+                      <label class="label">Tên công nhân</label>
+                      <div class="control">
+                        <input
+                          v-model.trim="form_update.tencn"
+                          @blur="$v.form_update.tencn.$touch()"
+                          class="input is-small"
+                          type="text"
+                          placeholder="Nhập tên công nhân"
+                        />
+                      </div>
+                      <div
+                        v-if="$v.form_update.tencn.$error"
+                        class="form-error"
+                      >
+                        <span
+                          v-if="!$v.form_update.tencn.required"
+                          class="help is-danger"
+                          >Yêu cầu nhập tên công nhân</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="columns">
+                  <div class="column">
+                    <template v-if="form_update.trangthai == true">
+                      <span
+                        style="
+                          font-weight: bold;
+                          font-size: small;
+                          color: green;
+                        "
+                        >Đang làm</span
+                      >
+                    </template>
+                    <template v-else>
+                      <span
+                        style="font-weight: bold; font-size: small; color: red"
+                        >Đã nghỉ</span
+                      >
+                    </template>
+                    &nbsp;
+                    <label class="switch" style="vertical-align: middle">
+                      <input v-model="form_update.trangthai" type="checkbox" />
+                      <span class="slider"></span>
+                    </label>
+                  </div>
+                  <div class="column"></div>
+                </div>
+
+                <div class="columns">
+                  <div class="column">
+                    <div class="field">
+                      <label class="label">Số điện thoại</label>
+                      <div class="control">
+                        <input
+                          v-model="form_update.sdt"
+                          @blur="$v.form_update.sdt.$touch()"
+                          class="input is-small"
+                          type="text"
+                          placeholder="Nhập tên số điện thoại"
+                        />
+                      </div>
+                      <div v-if="$v.form_update.sdt.$error" class="form-error">
+                        <span
+                          v-if="!$v.form_update.sdt.required"
+                          class="help is-danger"
+                          >Yêu cầu nhập số điện thoại</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  <div class="column">
+                    <div class="field">
+                      <label class="label">Địa chỉ</label>
+                      <div class="control">
+                        <input
+                          v-model="form_update.diachi"
+                          @blur="$v.form_update.diachi.$touch()"
+                          class="input is-small"
+                          type="text"
+                          placeholder="Nhập địa chỉ"
+                        />
+                      </div>
+                      <div
+                        v-if="$v.form_update.diachi.$error"
+                        class="form-error"
+                      >
+                        <span
+                          v-if="!$v.form_update.diachi.required"
+                          class="help is-danger"
+                          >Yêu cầu nhập địa chỉ</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="columns">
+                  <div class="column">
+                    <div class="field">
+                      <label class="label">Căn cước công dân</label>
+                      <div class="control">
+                        <input
+                          v-model="form_update.cccd"
+                          @blur="$v.form_update.cccd.$touch()"
+                          class="input is-small"
+                          type="text"
+                          placeholder="Nhập CCCD"
+                        />
+                      </div>
+                      <div v-if="$v.form_update.cccd.$error" class="form-error">
+                        <span
+                          v-if="!$v.form_update.cccd.required"
+                          class="help is-danger"
+                          >Yêu cầu nhập căn cước công dân</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                  <div class="column">
+                    <div class="field">
+                      <label class="label">Chức vụ</label>
+                      <div class="control">
+                        <input
+                          v-model="form_update.chucvu"
+                          class="input is-small"
+                          type="text"
+                          placeholder="Nhập chức vụ"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="columns">
+                  <div class="column">
+                    <div class="field">
+                      <label class="label">Lương cơ bản</label>
+                      <div class="control">
+                        <input
+                          v-model="form_update.luongcb"
+                          class="input is-small"
+                          type="text"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="column">
+                    <div class="field">
+                      <label class="label">Người liên hệ khẩn cấp</label>
+                      <div class="control">
+                        <input
+                          v-model="form_update.nguoilienhe"
+                          @blur="$v.form_update.nguoilienhe.$touch()"
+                          class="input is-small"
+                          type="text"
+                          placeholder="Nhập thông tin người liên hệ khi cần"
+                        />
+                      </div>
+                      <div
+                        v-if="$v.form_update.nguoilienhe.$error"
+                        class="form-error"
+                      >
+                        <span
+                          v-if="!$v.form_update.nguoilienhe.required"
+                          class="help is-danger"
+                          >Yêu cầu nhập người liên hệ khi cần gấp</span
+                        >
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="columns">
+                  <div class="column">
+                    <div class="field">
+                      <label class="label">Số tài khoản</label>
+                      <div class="control">
+                        <input
+                          v-model="form_update.sotknh"
+                          class="input is-small"
+                          type="text"
+                          placeholder="Nhập thông tin số tài khoản (nếu có)"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="column">
+                    <div class="field">
+                      <label class="label">Tên ngân hàng</label>
+                      <div class="control">
+                        <input
+                          v-model="form_update.tennh"
+                          class="input is-small"
+                          type="text"
+                          placeholder="Nhập tên ngân hàng"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="columns">
+                  <div class="column">
+                    <label class="label">Chủ tài khoản</label>
+                    <div class="control">
+                      <input
+                        v-model.trim="form_update.chutaikhoan"
+                        class="input is-small"
+                        type="text"
+                        placeholder="Nhập tên ngân hàng"
+                      />
+                    </div>
+                  </div>
+                  <div class="column">
+                    <div class="field">
+                      <label class="checkbox">
+                        <input type="checkbox" v-model="checkGhichu" />
+                        <span style="font-weight: bold">Ghi chú </span>
+                      </label>
+                    </div>
+                    <div
+                      v-if="checkGhichu == true"
+                      class="field"
+                      style="margin-top: 10px"
+                    >
+                      <div class="control">
+                        <textarea
+                          v-model="form_update.ghichu"
+                          class="textarea is-small"
+                          placeholder="Ghi chú thêm ..."
+                        ></textarea>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="columns" style="margin-top: 10px">
+                  <div class="column">
+                    <button
+                      @click.prevent="onUpdate"
+                      class="button is-success is-fullwidth is-small"
+                    >
+                      Ghi nhận
+                    </button>
+                  </div>
+                  <div class="column">
+                    <nuxt-link :to="`/danhmuc/congnhan/`"
+                      ><button
+                        class="button is-danger is-light is-fullwidth is-small"
+                      >
+                        Hủy bỏ
+                      </button>
+                    </nuxt-link>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -556,6 +882,8 @@ export default {
 
       // Modals
       isActive: false,
+      isActive_fix: false,
+      form_update: [],
 
       columns: [
         {
@@ -805,6 +1133,12 @@ export default {
       );
     },
 
+    async updateNhanvien(nhanvien) {
+      this.form_update = [];
+      isActive_fix = true;
+      this.form_update = { ...nhanvien };
+    },
+
     async onAddCongnhan() {
       const result = await Swal.fire({
         title: `Bạn có muốn thêm mới công nhân: ${this.form.tencn}?`,
@@ -915,6 +1249,72 @@ export default {
           });
         }
       }
+    },
+
+    async onUpdate() {
+      Swal.fire({
+        title: "Chắc chắn cập nhật thông tin?",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Chắc chắn cập nhật",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          try {
+            this.$axios.$patch(
+              `/api/congnhan/${this.$route.params.id}`,
+              this.form,
+              {}
+            );
+            // save log
+            const log = `Cập nhật thông tin cho công nhân: ${this.form.tencn}, Mã: ${this.form.macn}, Trạng thái: ${this.form.trangthai}`;
+            const dataLog = {
+              logname: log,
+              createdAt: this.form.updatedAt,
+              createdBy: this.hisform.createdBy,
+            };
+            this.$axios.$post(`/api/congnhan/addlognhansu`, dataLog);
+
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+              },
+            });
+
+            Toast.fire({
+              icon: "success",
+              title: "Cập nhật thông tin thành công",
+            });
+
+            this.isActive = false;
+          } catch (error) {
+            console.log(error);
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+              },
+            });
+
+            Toast.fire({
+              icon: "error",
+              title: "Có lỗi xảy ra !!!",
+            });
+          }
+        }
+      });
     },
 
     async onDelete() {
