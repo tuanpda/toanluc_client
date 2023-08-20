@@ -168,34 +168,6 @@
           <div :class="{ 'is-active': isActive }" class="modal">
             <div class="modal-background"></div>
             <div class="modal-content modal-card">
-              <header
-                style="
-                  background-color: #3e8ed0;
-                  border-top-left-radius: 8px;
-                  border-top-right-radius: 8px;
-                "
-              >
-                <div class="columns is-mobile">
-                  <div class="column">
-                    <p
-                      style="
-                        font-size: small;
-                        font-weight: bold;
-                        color: white;
-                        padding: 15px;
-                      "
-                    >
-                      <span class="icon is-small is-left">
-                        <i
-                          style="color: #ffd863ff"
-                          class="fas fa-feather-alt"
-                        ></i>
-                      </span>
-                      Thêm Công nhân
-                    </p>
-                  </div>
-                </div>
-              </header>
               <section class="modal-card-body">
                 <div class="columns">
                   <div class="column">
@@ -489,34 +461,6 @@
           <div :class="{ 'is-active': isActive_fix }" class="modal">
             <div class="modal-background"></div>
             <div class="modal-content modal-card">
-              <header
-                style="
-                  background-color: #3e8ed0;
-                  border-top-left-radius: 8px;
-                  border-top-right-radius: 8px;
-                "
-              >
-                <div class="columns is-mobile">
-                  <div class="column">
-                    <p
-                      style="
-                        font-size: small;
-                        font-weight: bold;
-                        color: white;
-                        padding: 15px;
-                      "
-                    >
-                      <span class="icon is-small is-left">
-                        <i
-                          style="color: #ffd863ff"
-                          class="fas fa-feather-alt"
-                        ></i>
-                      </span>
-                      Sửa thông tin Công nhân
-                    </p>
-                  </div>
-                </div>
-              </header>
               <section class="modal-card-body">
                 <div v-if="form_update != null">
                   <div class="columns">
@@ -649,6 +593,8 @@
                             v-model="form_update.luongcb"
                             class="input is-small"
                             type="text"
+                            disabled
+                            v-mask="mask"
                           />
                         </div>
                       </div>
@@ -792,6 +738,9 @@ export default {
       mask: currencyMask,
       ischoosePx: false,
       ischooseTo: false,
+      fitered: [],
+      maxuong: "",
+      mato: "",
       form: {
         macn: "",
         tencn: "",
@@ -1061,13 +1010,16 @@ export default {
 
     async getWithPX(e) {
       // console.log(this.mapx)
+      this.mato = "";
       var name = e.target.options[e.target.options.selectedIndex].text;
       // console.log(name)
       let position = name.split("--");
       let p1 = position[0].trim();
+      this.maxuong = p1;
       this.congnhan = await this.$axios.$get(
         `/api/congnhan/allcongnhanpx2trangthai?mapx=${p1}`
       );
+      // console.log(this.fitered);
       this.tonhomid = await this.$axios.$get(
         `/api/phongban/alltoinxuong?mapx=${p1}`
       );
@@ -1079,6 +1031,7 @@ export default {
       // console.log(name)
       let position = name.split("--");
       let p1 = position[0].trim();
+      this.mato = p1;
       this.congnhan = await this.$axios.$get(
         `/api/congnhan/allcongnhanto2trangthai?mato=${p1}`
       );
@@ -1204,30 +1157,30 @@ export default {
     },
 
     async onUpdate() {
-      Swal.fire({
-        title: "Chắc chắn cập nhật thông tin?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Chắc chắn cập nhật",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          try {
-            this.$axios.$patch(
-              `/api/congnhan/${this.form_update._id}`,
-              this.form_update,
-              {}
-            );
-            // save log
-            const log = `Cập nhật thông tin cho công nhân: ${this.form_update.tencn}, Mã: ${this.form_update.macn}, Trạng thái: ${this.form.form_update}`;
-            const dataLog = {
-              logname: log,
-              createdAt: this.form.updatedAt,
-              createdBy: this.hisform.createdBy,
-            };
-            this.$axios.$post(`/api/congnhan/addlognhansu`, dataLog);
+      const result = await Swal.fire({
+        title: `Bạn chắc chắn cập nhật thông tin`,
+        showDenyButton: true,
+        confirmButtonText: "Chắc chắn",
+        denyButtonText: `Hủy`,
+      });
+      if (result.isConfirmed) {
+        try {
+          const res = await this.$axios.$patch(
+            `/api/congnhan/${this.form_update._id}`,
+            this.form_update,
+            {}
+          );
+          // save log
+          const log = `Cập nhật thông tin cho công nhân: ${this.form_update.tencn}, Mã: ${this.form_update.macn}, Trạng thái: ${this.form.form_update}`;
+          const dataLog = {
+            logname: log,
+            createdAt: this.form.updatedAt,
+            createdBy: this.hisform.createdBy,
+          };
+          this.$axios.$post(`/api/congnhan/addlognhansu`, dataLog);
 
+          // console.log(res);
+          if (res.success == true) {
             const Toast = Swal.mixin({
               toast: true,
               position: "top-end",
@@ -1245,28 +1198,39 @@ export default {
               title: "Cập nhật thông tin thành công",
             });
 
-            this.isActive = false;
-          } catch (error) {
-            console.log(error);
-            const Toast = Swal.mixin({
-              toast: true,
-              position: "top-end",
-              showConfirmButton: false,
-              timer: 3000,
-              timerProgressBar: true,
-              didOpen: (toast) => {
-                toast.addEventListener("mouseenter", Swal.stopTimer);
-                toast.addEventListener("mouseleave", Swal.resumeTimer);
-              },
-            });
-
-            Toast.fire({
-              icon: "error",
-              title: "Có lỗi xảy ra !!!",
-            });
+            if (this.maxuong != "" && this.mato == "") {
+              this.congnhan = await this.$axios.$get(
+                `/api/congnhan/allcongnhanpx2trangthai?mapx=${this.maxuong}`
+              );
+              this.congnhan = this.congnhan;
+              // console.log(this.congnhan);
+            } else if (this.maxuong != "" && this.mato != "") {
+              this.congnhan = await this.$axios.$get(
+                `/api/congnhan/allcongnhanto2trangthai?mato=${this.mato}`
+              );
+              this.congnhan = this.congnhan;
+            } else {
+              this.getDmcn();
+            }
           }
+        } catch (error) {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
+          Toast.fire({
+            icon: "error",
+            title: `Có lỗi xảy ra`,
+          });
         }
-      });
+      }
     },
 
     async onDelete() {
@@ -1354,5 +1318,58 @@ export default {
     width: 90%;
     max-width: 400px;
   }
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 15px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #f14668;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 7px;
+  width: 7px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: green;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
 }
 </style>
