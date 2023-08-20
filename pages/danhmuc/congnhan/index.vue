@@ -512,292 +512,243 @@
                           class="fas fa-feather-alt"
                         ></i>
                       </span>
-                      Thêm Công nhân
+                      Sửa thông tin Công nhân
                     </p>
                   </div>
                 </div>
               </header>
               <section class="modal-card-body">
-                <div class="columns">
-                  <div class="column">
-                    <div class="field">
-                      <label class="label">Mã công nhân</label>
-                      <div class="control">
-                        <input
-                          v-model.trim="form_update.macn"
-                          @blur="$v.form_update.macn.$touch()"
-                          class="input is-small"
-                          type="text"
-                          disabled
-                        />
+                <div v-if="form_update != null">
+                  <div class="columns">
+                    <div class="column">
+                      <div class="field">
+                        <label class="label">Mã công nhân</label>
+                        <div class="control">
+                          <input
+                            v-model.trim="form_update.macn"
+                            class="input is-small"
+                            type="text"
+                            disabled
+                          />
+                        </div>
                       </div>
-                      <div v-if="$v.form_update.macn.$error" class="form-error">
-                        <span
-                          v-if="!$v.form_update.macn.required"
-                          class="help is-danger"
-                          >Yêu cầu nhập mã công nhân</span
-                        >
+                    </div>
+                    <div class="column">
+                      <div class="field">
+                        <label class="label">Tên công nhân</label>
+                        <div class="control">
+                          <input
+                            v-model.trim="form_update.tencn"
+                            class="input is-small"
+                            type="text"
+                            placeholder="Nhập tên công nhân"
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <div class="column">
-                    <div class="field">
-                      <label class="label">Tên công nhân</label>
-                      <div class="control">
-                        <input
-                          v-model.trim="form_update.tencn"
-                          @blur="$v.form_update.tencn.$touch()"
-                          class="input is-small"
-                          type="text"
-                          placeholder="Nhập tên công nhân"
-                        />
-                      </div>
-                      <div
-                        v-if="$v.form_update.tencn.$error"
-                        class="form-error"
-                      >
-                        <span
-                          v-if="!$v.form_update.tencn.required"
-                          class="help is-danger"
-                          >Yêu cầu nhập tên công nhân</span
-                        >
-                      </div>
-                    </div>
-                  </div>
-                </div>
 
-                <div class="columns">
-                  <div class="column">
-                    <template v-if="form_update.trangthai == true">
-                      <span
-                        style="
-                          font-weight: bold;
-                          font-size: small;
-                          color: green;
-                        "
-                        >Đang làm</span
-                      >
-                    </template>
-                    <template v-else>
-                      <span
-                        style="font-weight: bold; font-size: small; color: red"
-                        >Đã nghỉ</span
-                      >
-                    </template>
-                    &nbsp;
-                    <label class="switch" style="vertical-align: middle">
-                      <input v-model="form_update.trangthai" type="checkbox" />
-                      <span class="slider"></span>
-                    </label>
-                  </div>
-                  <div class="column"></div>
-                </div>
-
-                <div class="columns">
-                  <div class="column">
-                    <div class="field">
-                      <label class="label">Số điện thoại</label>
-                      <div class="control">
-                        <input
-                          v-model="form_update.sdt"
-                          @blur="$v.form_update.sdt.$touch()"
-                          class="input is-small"
-                          type="text"
-                          placeholder="Nhập tên số điện thoại"
-                        />
-                      </div>
-                      <div v-if="$v.form_update.sdt.$error" class="form-error">
+                  <div class="columns">
+                    <div class="column">
+                      <template v-if="form_update.trangthai == true">
                         <span
-                          v-if="!$v.form_update.sdt.required"
-                          class="help is-danger"
-                          >Yêu cầu nhập số điện thoại</span
+                          style="
+                            font-weight: bold;
+                            font-size: small;
+                            color: green;
+                          "
+                          >Đang làm</span
                         >
-                      </div>
-                    </div>
-                  </div>
-                  <div class="column">
-                    <div class="field">
-                      <label class="label">Địa chỉ</label>
-                      <div class="control">
-                        <input
-                          v-model="form_update.diachi"
-                          @blur="$v.form_update.diachi.$touch()"
-                          class="input is-small"
-                          type="text"
-                          placeholder="Nhập địa chỉ"
-                        />
-                      </div>
-                      <div
-                        v-if="$v.form_update.diachi.$error"
-                        class="form-error"
-                      >
+                      </template>
+                      <template v-else>
                         <span
-                          v-if="!$v.form_update.diachi.required"
-                          class="help is-danger"
-                          >Yêu cầu nhập địa chỉ</span
+                          style="
+                            font-weight: bold;
+                            font-size: small;
+                            color: red;
+                          "
+                          >Đã nghỉ</span
                         >
-                      </div>
+                      </template>
+                      &nbsp;
+                      <label class="switch" style="vertical-align: middle">
+                        <input
+                          v-model="form_update.trangthai"
+                          type="checkbox"
+                        />
+                        <span class="slider"></span>
+                      </label>
                     </div>
+                    <div class="column"></div>
                   </div>
-                </div>
 
-                <div class="columns">
-                  <div class="column">
-                    <div class="field">
-                      <label class="label">Căn cước công dân</label>
-                      <div class="control">
-                        <input
-                          v-model="form_update.cccd"
-                          @blur="$v.form_update.cccd.$touch()"
-                          class="input is-small"
-                          type="text"
-                          placeholder="Nhập CCCD"
-                        />
+                  <div class="columns">
+                    <div class="column">
+                      <div class="field">
+                        <label class="label">Số điện thoại</label>
+                        <div class="control">
+                          <input
+                            v-model="form_update.sdt"
+                            class="input is-small"
+                            type="text"
+                            placeholder="Nhập tên số điện thoại"
+                          />
+                        </div>
                       </div>
-                      <div v-if="$v.form_update.cccd.$error" class="form-error">
-                        <span
-                          v-if="!$v.form_update.cccd.required"
-                          class="help is-danger"
-                          >Yêu cầu nhập căn cước công dân</span
-                        >
+                    </div>
+                    <div class="column">
+                      <div class="field">
+                        <label class="label">Địa chỉ</label>
+                        <div class="control">
+                          <input
+                            v-model="form_update.diachi"
+                            class="input is-small"
+                            type="text"
+                            placeholder="Nhập địa chỉ"
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <div class="column">
-                    <div class="field">
-                      <label class="label">Chức vụ</label>
-                      <div class="control">
-                        <input
-                          v-model="form_update.chucvu"
-                          class="input is-small"
-                          type="text"
-                          placeholder="Nhập chức vụ"
-                        />
-                      </div>
-                    </div>
-                  </div>
-                </div>
 
-                <div class="columns">
-                  <div class="column">
-                    <div class="field">
-                      <label class="label">Lương cơ bản</label>
-                      <div class="control">
-                        <input
-                          v-model="form_update.luongcb"
-                          class="input is-small"
-                          type="text"
-                        />
+                  <div class="columns">
+                    <div class="column">
+                      <div class="field">
+                        <label class="label">Căn cước công dân</label>
+                        <div class="control">
+                          <input
+                            v-model="form_update.cccd"
+                            class="input is-small"
+                            type="text"
+                            placeholder="Nhập CCCD"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="column">
+                      <div class="field">
+                        <label class="label">Chức vụ</label>
+                        <div class="control">
+                          <input
+                            v-model="form_update.chucvu"
+                            class="input is-small"
+                            type="text"
+                            placeholder="Nhập chức vụ"
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <div class="column">
-                    <div class="field">
-                      <label class="label">Người liên hệ khẩn cấp</label>
-                      <div class="control">
-                        <input
-                          v-model="form_update.nguoilienhe"
-                          @blur="$v.form_update.nguoilienhe.$touch()"
-                          class="input is-small"
-                          type="text"
-                          placeholder="Nhập thông tin người liên hệ khi cần"
-                        />
-                      </div>
-                      <div
-                        v-if="$v.form_update.nguoilienhe.$error"
-                        class="form-error"
-                      >
-                        <span
-                          v-if="!$v.form_update.nguoilienhe.required"
-                          class="help is-danger"
-                          >Yêu cầu nhập người liên hệ khi cần gấp</span
-                        >
-                      </div>
-                    </div>
-                  </div>
-                </div>
 
-                <div class="columns">
-                  <div class="column">
-                    <div class="field">
-                      <label class="label">Số tài khoản</label>
-                      <div class="control">
-                        <input
-                          v-model="form_update.sotknh"
-                          class="input is-small"
-                          type="text"
-                          placeholder="Nhập thông tin số tài khoản (nếu có)"
-                        />
+                  <div class="columns">
+                    <div class="column">
+                      <div class="field">
+                        <label class="label">Lương cơ bản</label>
+                        <div class="control">
+                          <input
+                            v-model="form_update.luongcb"
+                            class="input is-small"
+                            type="text"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="column">
+                      <div class="field">
+                        <label class="label">Người liên hệ khẩn cấp</label>
+                        <div class="control">
+                          <input
+                            v-model="form_update.nguoilienhe"
+                            class="input is-small"
+                            type="text"
+                            placeholder="Nhập thông tin người liên hệ khi cần"
+                          />
+                        </div>
                       </div>
                     </div>
                   </div>
-                  <div class="column">
-                    <div class="field">
-                      <label class="label">Tên ngân hàng</label>
+
+                  <div class="columns">
+                    <div class="column">
+                      <div class="field">
+                        <label class="label">Số tài khoản</label>
+                        <div class="control">
+                          <input
+                            v-model="form_update.sotknh"
+                            class="input is-small"
+                            type="text"
+                            placeholder="Nhập thông tin số tài khoản (nếu có)"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="column">
+                      <div class="field">
+                        <label class="label">Tên ngân hàng</label>
+                        <div class="control">
+                          <input
+                            v-model="form_update.tennh"
+                            class="input is-small"
+                            type="text"
+                            placeholder="Nhập tên ngân hàng"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="columns">
+                    <div class="column">
+                      <label class="label">Chủ tài khoản</label>
                       <div class="control">
                         <input
-                          v-model="form_update.tennh"
+                          v-model.trim="form_update.chutaikhoan"
                           class="input is-small"
                           type="text"
                           placeholder="Nhập tên ngân hàng"
                         />
                       </div>
                     </div>
-                  </div>
-                </div>
-
-                <div class="columns">
-                  <div class="column">
-                    <label class="label">Chủ tài khoản</label>
-                    <div class="control">
-                      <input
-                        v-model.trim="form_update.chutaikhoan"
-                        class="input is-small"
-                        type="text"
-                        placeholder="Nhập tên ngân hàng"
-                      />
-                    </div>
-                  </div>
-                  <div class="column">
-                    <div class="field">
-                      <label class="checkbox">
-                        <input type="checkbox" v-model="checkGhichu" />
-                        <span style="font-weight: bold">Ghi chú </span>
-                      </label>
-                    </div>
-                    <div
-                      v-if="checkGhichu == true"
-                      class="field"
-                      style="margin-top: 10px"
-                    >
-                      <div class="control">
-                        <textarea
-                          v-model="form_update.ghichu"
-                          class="textarea is-small"
-                          placeholder="Ghi chú thêm ..."
-                        ></textarea>
+                    <div class="column">
+                      <div class="field">
+                        <label class="checkbox">
+                          <input type="checkbox" v-model="checkGhichu" />
+                          <span style="font-weight: bold">Ghi chú </span>
+                        </label>
+                      </div>
+                      <div
+                        v-if="checkGhichu == true"
+                        class="field"
+                        style="margin-top: 10px"
+                      >
+                        <div class="control">
+                          <textarea
+                            v-model="form_update.ghichu"
+                            class="textarea is-small"
+                            placeholder="Ghi chú thêm ..."
+                          ></textarea>
+                        </div>
                       </div>
                     </div>
                   </div>
-                </div>
 
-                <div class="columns" style="margin-top: 10px">
-                  <div class="column">
-                    <button
-                      @click.prevent="onUpdate"
-                      class="button is-success is-fullwidth is-small"
-                    >
-                      Ghi nhận
-                    </button>
-                  </div>
-                  <div class="column">
-                    <nuxt-link :to="`/danhmuc/congnhan/`"
-                      ><button
+                  <div class="columns" style="margin-top: 10px">
+                    <div class="column">
+                      <button
+                        @click.prevent="onUpdate"
+                        class="button is-success is-fullwidth is-small"
+                      >
+                        Ghi nhận
+                      </button>
+                    </div>
+                    <div class="column">
+                      <button
+                        @click="isActive_fix = false"
                         class="button is-danger is-light is-fullwidth is-small"
                       >
                         Hủy bỏ
                       </button>
-                    </nuxt-link>
+                    </div>
                   </div>
                 </div>
               </section>
@@ -883,7 +834,7 @@ export default {
       // Modals
       isActive: false,
       isActive_fix: false,
-      form_update: [],
+      form_update: null,
 
       columns: [
         {
@@ -1134,9 +1085,10 @@ export default {
     },
 
     async updateNhanvien(nhanvien) {
-      this.form_update = [];
-      isActive_fix = true;
+      // console.log(nhanvien);
+      this.isActive_fix = true;
       this.form_update = { ...nhanvien };
+      // console.log(this.form_update.macn);
     },
 
     async onAddCongnhan() {
@@ -1263,12 +1215,12 @@ export default {
         if (result.isConfirmed) {
           try {
             this.$axios.$patch(
-              `/api/congnhan/${this.$route.params.id}`,
-              this.form,
+              `/api/congnhan/${this.form_update._id}`,
+              this.form_update,
               {}
             );
             // save log
-            const log = `Cập nhật thông tin cho công nhân: ${this.form.tencn}, Mã: ${this.form.macn}, Trạng thái: ${this.form.trangthai}`;
+            const log = `Cập nhật thông tin cho công nhân: ${this.form_update.tencn}, Mã: ${this.form_update.macn}, Trạng thái: ${this.form.form_update}`;
             const dataLog = {
               logname: log,
               createdAt: this.form.updatedAt,
