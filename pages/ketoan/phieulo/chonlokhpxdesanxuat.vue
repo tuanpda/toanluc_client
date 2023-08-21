@@ -1,8 +1,8 @@
 <template>
   <div class="columns">
-    <div class="column container">
+    <div class="column">
       <br />
-      <div class="box" style="margin-left: 3px; margin-right: 3px">
+      <div class="box" style="margin-left: 2px; margin-right: 2px">
         <div class="columns">
           <div class="column">
             <div class="control">

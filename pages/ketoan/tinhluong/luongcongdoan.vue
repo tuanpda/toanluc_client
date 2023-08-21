@@ -2,7 +2,7 @@
   <div class="columns">
     <div class="column">
       <br />
-      <div class="box" style="">
+      <div class="box" style="margin-left: 3px; margin-right: 3px">
         <div class="columns">
           <div class="column is-4">
             <div class="control">

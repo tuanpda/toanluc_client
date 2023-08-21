@@ -1,6 +1,6 @@
 <template>
   <div class="columns">
-    <div class="column container">
+    <div class="column">
       <br />
       <div class="box" style="margin-left: 3px; margin-right: 3px">
         <div class="columns">
@@ -669,6 +669,7 @@
                 >
                   Đơn giá
                 </td>
+
                 <td
                   style="
                     font-size: small;

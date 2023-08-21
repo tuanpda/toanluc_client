@@ -75,7 +75,7 @@
             class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
           >
             <thead>
-              <tr>
+              <tr style="background-color: antiquewhite">
                 <th style="text-align: center; font-size: small">STT</th>
                 <th style="text-align: center; font-size: small">Mã PX</th>
                 <th style="text-align: center; font-size: small">Công đoạn</th>
@@ -224,10 +224,10 @@
                 <div class="columns">
                   <div class="column">
                     <button
-                      @click="onUpdate(one_dongiacong._id)"
+                      @click="onUpdate(one_dongiacong)"
                       class="button is-success is-fullwidth is-small"
                     >
-                      <span>Cập nhật thông tin</span>
+                      <span>Xác nhận cập nhật</span>
                     </button>
                   </div>
                   <div class="column">
@@ -244,7 +244,7 @@
           </div>
         </div>
 
-        <!-- Modal create-->
+        <!-- Modal update-->
         <div class="">
           <!-- Toggle class  -->
           <div :class="{ 'is-active': isActive_cre }" class="modal">
@@ -375,6 +375,146 @@
             </div>
           </div>
         </div>
+
+        <!-- Modal preview update-->
+        <div class="">
+          <!-- Toggle class  -->
+          <div :class="{ 'is-active': isActive_previewupdate }" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-content modal-card-preview">
+              <section class="modal-card-body">
+                <div class="columns">
+                  <div class="column">
+                    <div class="table_wrapper">
+                      <table
+                        class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
+                      >
+                        <tr>
+                          <th colspan="6" style="font-size: small">
+                            Thông tin lô sản xuất
+                          </th>
+                        </tr>
+                        <tr
+                          style="
+                            font-size: small;
+                            background-color: antiquewhite;
+                          "
+                        >
+                          <th style="text-align: center">STT</th>
+                          <th style="text-align: center">Mã số LSX</th>
+                          <!-- <th style="text-align: center">Mã lô NM</th>
+                          <th style="text-align: center">Mã KHPX</th> -->
+                          <th style="text-align: center">Mã lô SX</th>
+                          <th style="text-align: center">Mã PX</th>
+                          <th style="text-align: center">Mã SP</th>
+                          <!-- <th>Tên SP</th> -->
+                          <th style="text-align: center">Nhóm lương</th>
+                          <!-- <th style="text-align: center">Số lượng SX</th>
+                          <th style="text-align: center">Số đạt</th>
+                          <th style="text-align: center">Số hỏng</th> -->
+                        </tr>
+
+                        <tr
+                          v-for="(lsx, index) in data_preview_losx"
+                          :key="index"
+                          style="font-size: small"
+                          :class="{ highlighted: lsx === highlightedRow }"
+                          @click="[highlightRow(lsx), detail_preview_lcd(lsx)]"
+                        >
+                          <td style="text-align: center">{{ index + 1 }}</td>
+                          <td style="text-align: center">
+                            {{ lsx._id }}
+                          </td>
+                          <!-- <td style="text-align: center">
+                            {{ lsx.malonhamay }}
+                          </td>
+                          <td style="text-align: center">{{ lsx.makhpx }}</td> -->
+                          <td style="text-align: center">{{ lsx.malosx }}</td>
+                          <td style="text-align: center">{{ lsx.mapx }}</td>
+                          <td style="text-align: center">{{ lsx.masp }}</td>
+                          <!-- <td>{{ lsx.tensp }}</td> -->
+                          <td style="text-align: center">
+                            {{ lsx.nhomluong }}
+                          </td>
+                          <!-- <td style="text-align: center">
+                            {{ lsx.soluonglsx }}
+                          </td>
+                          <td style="text-align: center">{{ lsx.tongdat }}</td>
+                          <td style="text-align: center">{{ lsx.tonghong }}</td> -->
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                  <div class="column">
+                    <div class="table_wrapper">
+                      <table
+                        class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
+                      >
+                        <tr>
+                          <th colspan="6" style="font-size: small">
+                            Thông tin công đoạn lương
+                          </th>
+                        </tr>
+                        <tr
+                          style="
+                            font-size: small;
+                            background-color: darkseagreen;
+                          "
+                        >
+                          <th style="text-align: center">STT</th>
+                          <th style="text-align: center">Công nhân</th>
+                          <th style="text-align: center">Số đạt</th>
+                          <th style="text-align: center">Số hỏng</th>
+                          <th style="text-align: center">Nguyen công</th>
+                          <th style="text-align: center">Đơn giá</th>
+                        </tr>
+                        <tr
+                          v-for="(lcd, index) in data_preview_detail"
+                          :key="index"
+                          style="font-size: small"
+                        >
+                          <td style="text-align: center">{{ index + 1 }}</td>
+                          <td>
+                            {{ lcd.tencn }}
+                          </td>
+                          <td style="text-align: center">{{ lcd.sodat }}</td>
+                          <td style="text-align: center">{{ lcd.sohong }}</td>
+                          <td style="text-align: center">
+                            {{ lcd.nguyencong }}
+                          </td>
+                          <td style="text-align: center">
+                            {{ lcd.dongia }}
+                          </td>
+                        </tr>
+                      </table>
+                    </div>
+                  </div>
+                </div>
+
+                <div>
+                  <div class="columns">
+                    <div class="column">
+                      <button class="button is-success is-fullwidth is-small">
+                        <span class="icon is-small">
+                          <i class="fas fa-file-signature"></i>
+                        </span>
+                        <span>Cập nhật</span>
+                      </button>
+                    </div>
+                    <div class="column">
+                      <button
+                        @click="isActive_previewupdate = false"
+                        class="button is-danger is-fullwidth is-small"
+                      >
+                        <span>Hủy bỏ</span>
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -397,9 +537,12 @@ export default {
       dongiacong: [],
       phanxuong: [],
       tableName: [],
+      data_preview_losx: [],
+      data_preview_detail: [],
       phienbanluong: "",
       createdAt: null,
       createdBy: this.$auth.$state.user.username,
+      highlightedRow: null,
       form: {
         PX: "",
         congdoan: "",
@@ -410,6 +553,7 @@ export default {
       search: "",
       isActive: false,
       isActive_cre: false,
+      isActive_previewupdate: false,
       one_dongiacong: {},
       columns: [
         {
@@ -601,61 +745,163 @@ export default {
       this.isActive_cre = true;
     },
 
-    async onUpdate(id) {
-      Swal.fire({
-        title: "Chắc chắn cập nhật đơn giá công này?",
-        icon: "warning",
-        showCancelButton: true,
-        confirmButtonColor: "#3085d6",
-        cancelButtonColor: "#d33",
-        confirmButtonText: "Chắc chắn cập nhật",
-      }).then((result) => {
-        if (result.isConfirmed) {
-          try {
-            this.$axios.$patch(
-              `/api/nguyencong/dongiacong/${id}`,
-              this.one_dongiacong,
-              {}
-            );
-
-            const Toast = Swal.mixin({
-              toast: true,
-              position: "top-end",
-              showConfirmButton: false,
-              timer: 3000,
-              timerProgressBar: true,
-              didOpen: (toast) => {
-                toast.addEventListener("mouseenter", Swal.stopTimer);
-                toast.addEventListener("mouseleave", Swal.resumeTimer);
-              },
-            });
-            Toast.fire({
-              icon: "success",
-              title: "Cập nhật thông tin thành công",
-            });
-            this.isActive = false;
-          } catch (error) {
-            console.log(error);
-            const Toast = Swal.mixin({
-              toast: true,
-              position: "top-end",
-              showConfirmButton: false,
-              timer: 3000,
-              timerProgressBar: true,
-              didOpen: (toast) => {
-                toast.addEventListener("mouseenter", Swal.stopTimer);
-                toast.addEventListener("mouseleave", Swal.resumeTimer);
-              },
-            });
-
-            Toast.fire({
-              icon: "error",
-              title: "Có lỗi xảy ra !!!",
-            });
-          }
-        }
-      });
+    highlightRow(row) {
+      this.highlightedRow = row;
     },
+
+    async detail_preview_lcd(item) {
+      const res = await this.$axios.$get(
+        `/api/nguyencong/getdatapreviewbyid?_id_losx=${item._id}`
+      );
+      // console.log(res1);
+      this.data_preview_detail = res;
+    },
+
+    async onUpdate(data) {
+      // tìm các lô sản xuất có công này chưa được chốt
+      //     // select * from losanxuat where status_tinhluong = 0 and nhomluong = khsp
+      const res = await this.$axios.$get(
+        `/api/nguyencong/getalllosxupdatedongiacong?nhomluong=${data.khsp}`
+      );
+      // console.log(res);
+      this.data_preview_losx = res;
+      const arridlsx = [];
+      res.forEach((item) => {
+        arridlsx.push(item._id);
+      });
+      // console.log(arridlsx);
+      this.isActive_previewupdate = true;
+
+      // const result = await Swal.fire({
+      //   title: `Bạn chắc chắn cập nhật đơn giá công này`,
+      //   showDenyButton: true,
+      //   confirmButtonText: "Chắc chắn",
+      //   denyButtonText: `Hủy`,
+      // });
+      // if (result.isConfirmed) {
+      //   try {
+      //     // console.log(data);
+      //     // tìm các lô sản xuất có công này chưa được chốt
+      //     // select * from losanxuat where status_tinhluong = 0 and nhomluong = khsp
+      //     const res = await this.$axios.$get(
+      //       `/api/nguyencong/getalllosxupdatedongiacong?nhomluong=${data.khsp}`
+      //     );
+      //     // console.log(res);
+      //     this.data_preview_losx = res;
+      //     const arridlsx = [];
+      //     res.forEach((item) => {
+      //       arridlsx.push(item._id);
+      //     });
+      //     // console.log(arridlsx);
+      //     const res1 = await this.$axios.$get(
+      //       `/api/nguyencong/getallldatawithidlsx`,
+      //       {
+      //         params: {
+      //           _id: arridlsx,
+      //         },
+      //       }
+      //     );
+      //     console.log(res1);
+      //     this.isActive_previewupdate = true;
+      //     // select * from luongcongnhan where status=0 and _id_losx =
+      //     // const res = await this.$axios.$patch(
+      //     //   `/api/nguyencong/dongiacong/${data._id}`,
+      //     //   this.one_dongiacong
+      //     // );
+
+      //     // console.log(res);
+
+      //     // const Toast = Swal.mixin({
+      //     //   toast: true,
+      //     //   position: "top-end",
+      //     //   showConfirmButton: false,
+      //     //   timer: 3000,
+      //     //   timerProgressBar: true,
+      //     //   didOpen: (toast) => {
+      //     //     toast.addEventListener("mouseenter", Swal.stopTimer);
+      //     //     toast.addEventListener("mouseleave", Swal.resumeTimer);
+      //     //   },
+      //     // });
+      //     // Toast.fire({
+      //     //   icon: "success",
+      //     //   title: "Cập nhật thông tin thành công",
+      //     // });
+      //     // this.isActive = false;
+      //   } catch (error) {
+      //     const Toast = Swal.mixin({
+      //       toast: true,
+      //       position: "top-end",
+      //       showConfirmButton: false,
+      //       timer: 2000,
+      //       timerProgressBar: true,
+      //       didOpen: (toast) => {
+      //         toast.addEventListener("mouseenter", Swal.stopTimer);
+      //         toast.addEventListener("mouseleave", Swal.resumeTimer);
+      //       },
+      //     });
+      //     Toast.fire({
+      //       icon: "error",
+      //       title: `Có lỗi xảy ra`,
+      //     });
+      //   }
+      // }
+    },
+
+    // async onUpdate(id) {
+    //   Swal.fire({
+    //     title: "Chắc chắn cập nhật đơn giá công này?",
+    //     icon: "warning",
+    //     showCancelButton: true,
+    //     confirmButtonColor: "#3085d6",
+    //     cancelButtonColor: "#d33",
+    //     confirmButtonText: "Chắc chắn cập nhật",
+    //   }).then((result) => {
+    //     if (result.isConfirmed) {
+    //       try {
+    //         this.$axios.$patch(
+    //           `/api/nguyencong/dongiacong/${id}`,
+    //           this.one_dongiacong,
+    //           {}
+    //         );
+
+    //         const Toast = Swal.mixin({
+    //           toast: true,
+    //           position: "top-end",
+    //           showConfirmButton: false,
+    //           timer: 3000,
+    //           timerProgressBar: true,
+    //           didOpen: (toast) => {
+    //             toast.addEventListener("mouseenter", Swal.stopTimer);
+    //             toast.addEventListener("mouseleave", Swal.resumeTimer);
+    //           },
+    //         });
+    //         Toast.fire({
+    //           icon: "success",
+    //           title: "Cập nhật thông tin thành công",
+    //         });
+    //         this.isActive = false;
+    //       } catch (error) {
+    //         console.log(error);
+    //         const Toast = Swal.mixin({
+    //           toast: true,
+    //           position: "top-end",
+    //           showConfirmButton: false,
+    //           timer: 3000,
+    //           timerProgressBar: true,
+    //           didOpen: (toast) => {
+    //             toast.addEventListener("mouseenter", Swal.stopTimer);
+    //             toast.addEventListener("mouseleave", Swal.resumeTimer);
+    //           },
+    //         });
+
+    //         Toast.fire({
+    //           icon: "error",
+    //           title: "Có lỗi xảy ra !!!",
+    //         });
+    //       }
+    //     }
+    //   });
+    // },
 
     async onAddNc() {
       try {
@@ -753,16 +999,17 @@ export default {
   top: 0;
 }
 
-th {
-  text-align: left;
-  background: #feecf0;
-  position: sticky;
-  top: 0px;
+.highlighted {
+  background-color: lightblue;
 }
 
 .modal-content,
 .modal-card {
   width: 620px;
+}
+
+.modal-card-preview {
+  width: 1220px;
 }
 
 @media (max-width: 768px) {

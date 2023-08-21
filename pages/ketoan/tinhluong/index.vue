@@ -1,6 +1,6 @@
 <template>
   <div class="columns">
-    <div class="column is-container">
+    <div class="column container">
       <br />
       <div class="box" style="margin-left: 3px; margin-right: 3px">
         <div class="columns">
@@ -61,7 +61,7 @@
           <table
             class="table is-responsive is-bordered is-striped is-narrow is-hoverable is-fullwidth"
           >
-            <tr style="">
+            <tr style="background-color: #fffaeb">
               <td
                 rowspan="2"
                 style="text-align: center; font-weight: bold; font-size: small"
@@ -158,7 +158,7 @@
                 Lương nhận
               </td>
             </tr>
-            <tr style="">
+            <tr style="background-color: #fffaeb">
               <td
                 style="text-align: center; font-weight: bold; font-size: small"
               >
@@ -1028,30 +1028,16 @@ export default {
 </script>
 
 <style scoped>
-/* .table_wrapper {
+.table_wrapper {
   display: block;
   overflow-x: auto;
   white-space: nowrap;
   position: sticky;
   left: 0;
-  background-color: whitesmoke;
-} */
-
-@media screen and (max-width: 1399px) {
-  .table_wrapper {
-    display: block;
-    overflow-x: auto;
-    white-space: nowrap;
-  }
-
-  .table_wrapper {
-    position: sticky;
-    left: 0;
-    background-color: whitesmoke;
-  }
+  /* background-color: whitesmoke; */
 }
 
-/* .table_wrapper td:first-child {
+.table_wrapper td:first-child {
   position: sticky;
   left: 0;
   background-color: #fff;
@@ -1061,14 +1047,14 @@ export default {
   position: sticky;
   left: 0;
   z-index: 1;
-  background-color: white;
+  /* background-color: white; */
 }
 .table_wrapper td:nth-child(2),
 .table_wrapper th:nth-child(2) {
   position: sticky;
   left: 43px;
   z-index: 1;
-  background-color: white;
+  /* background-color: white; */
 }
 .table_wrapper td:nth-child(3),
 .table_wrapper th:nth-child(3) {
@@ -1076,5 +1062,5 @@ export default {
   left: 43px;
   z-index: 1;
   background-color: whitesmoke;
-} */
+}
 </style>

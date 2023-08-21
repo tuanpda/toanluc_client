@@ -1,8 +1,8 @@
 <template>
   <div class="columns">
-    <div class="column container">
+    <div class="column">
       <br />
-      <div class="box" style="margin-left: 10px; margin-right: 10px">
+      <div class="box" style="margin-left: 5px; margin-right: 5px">
         <div class="columns">
           <div class="column">
             <div class="control">
@@ -2501,7 +2501,7 @@ export default {
 }
 
 .input.is-small {
-  min-width: 100px; /* Điều chỉnh độ rộng tùy ý */
+  min-width: 50px;
 }
 
 .highlighted {
