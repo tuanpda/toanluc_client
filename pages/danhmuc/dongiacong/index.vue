@@ -760,8 +760,9 @@ export default {
     async onUpdate(data) {
       // tìm các lô sản xuất có công này chưa được chốt
       //     // select * from losanxuat where status_tinhluong = 0 and nhomluong = khsp
+      console.log(data);
       const res = await this.$axios.$get(
-        `/api/nguyencong/getalllosxupdatedongiacong?nhomluong=${data.khsp}`
+        `/api/nguyencong/getalllosxupdatedongiacong?nhomluong=${data.khsp}&mapx=${data.PX}`
       );
       // console.log(res);
       this.data_preview_losx = res;
