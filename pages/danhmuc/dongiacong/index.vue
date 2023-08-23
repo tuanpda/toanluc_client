@@ -819,7 +819,7 @@ export default {
 
     async accUpdate() {
       const result = await Swal.fire({
-        title: `Bạn chắc chắn cập nhật đơn giá công này`,
+        title: `Bạn chắc chắn cập nhật đơn giá công này?`,
         showDenyButton: true,
         confirmButtonText: "Chắc chắn",
         denyButtonText: `Hủy`,
