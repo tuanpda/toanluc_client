@@ -385,7 +385,7 @@
               <section class="modal-card-body">
                 <div class="columns">
                   <div class="column">
-                    <div class="table_wrapper">
+                    <div class="table_wrapper table-height-lsx">
                       <table
                         class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
                       >
@@ -494,7 +494,10 @@
                 <div>
                   <div class="columns">
                     <div class="column">
-                      <button class="button is-success is-fullwidth is-small">
+                      <button
+                        @click="accUpdate"
+                        class="button is-success is-fullwidth is-small"
+                      >
                         <span class="icon is-small">
                           <i class="fas fa-file-signature"></i>
                         </span>
@@ -513,6 +516,52 @@
                 </div>
               </section>
             </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Modal progress-->
+      <div class="">
+        <!-- Toggle class  -->
+        <div :class="{ 'is-active': isActive_progrss }" class="modal">
+          <div class="modal-background"></div>
+          <div class="modal-content modal-card-progrss">
+            <section class="modal-card-body">
+              <div class="box">
+                <div class="columns">
+                  <div class="column">
+                    <div>
+                      <div style="text-align: center">
+                        <span
+                          style="
+                            font-size: small;
+                            font-weight: bold;
+                            color: red;
+                          "
+                          >{{ showcount }} / {{ showsuccess }} Lô sản xuất</span
+                        >
+                      </div>
+                      <div>
+                        <progress
+                          id="progress-bar"
+                          class="progress is-success"
+                        ></progress>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="columns">
+                  <div class="column" style="text-align: right">
+                    <button
+                      @click="isActive_progrss = false"
+                      class="button is-small is-danger"
+                    >
+                      Đóng
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </section>
           </div>
         </div>
       </div>
@@ -540,6 +589,7 @@ export default {
       data_preview_losx: [],
       data_preview_detail: [],
       phienbanluong: "",
+      array_lsx: [],
       createdAt: null,
       createdBy: this.$auth.$state.user.username,
       highlightedRow: null,
@@ -555,6 +605,13 @@ export default {
       isActive_cre: false,
       isActive_previewupdate: false,
       one_dongiacong: {},
+
+      isActive_progrss: false,
+      // đếm
+      showcount: 0,
+      showsuccess: 0,
+      isshow: false,
+
       columns: [
         {
           label: "Id",
@@ -736,6 +793,9 @@ export default {
     },
 
     async getDN(dongiacong) {
+      this.one_dongiacong = [];
+      this.data_preview_detail = [];
+      this.data_preview_losx = [];
       this.isActive = true;
       this.one_dongiacong = dongiacong;
       // console.log(this.one_nguyencong)
@@ -751,16 +811,105 @@ export default {
 
     async detail_preview_lcd(item) {
       const res = await this.$axios.$get(
-        `/api/nguyencong/getdatapreviewbyid?_id_losx=${item._id}`
+        `/api/nguyencong/getdatapreviewbyid?nguyencong=${this.one_dongiacong.congdoan}&_id_losx=${item._id}`
       );
       // console.log(res1);
       this.data_preview_detail = res;
     },
 
+    async accUpdate() {
+      const result = await Swal.fire({
+        title: `Bạn chắc chắn cập nhật đơn giá công này`,
+        showDenyButton: true,
+        confirmButtonText: "Chắc chắn",
+        denyButtonText: `Hủy`,
+      });
+      if (result.isConfirmed) {
+        try {
+          const progressBar = document.getElementById("progress-bar");
+          // console.log(progressBar);
+          this.showsuccess = this.array_lsx.length;
+          progressBar.value = this.showcount;
+          progressBar.max = this.showsuccess;
+
+          this.isActive_progrss = true;
+          // console.log(this.one_dongiacong);
+          // 1. cập nhật danh mục đơn giá công để ghi lại đơn giá công mới
+          const res = await this.$axios.$patch(
+            `/api/nguyencong/dongiacong/${this.one_dongiacong._id}`,
+            this.one_dongiacong
+          );
+          // console.log(res);
+          // res.true thì ok
+          // 2. cập nhật toàn bộ lương công đoạn đã phát sinh (chưa được chốt lương) có chứa nhóm lương này
+          //    tại phân xưởng đó
+          // update luongcongnhan set dongia = one_dongiacong.dongia
+          // where nguyencong = one_dongiacong.congdoan and _id_losx in (arridlsx)
+          // console.log(this.array_lsx);
+          for (let i = 0; i < this.array_lsx.length; i++) {
+            // console.log(this.array_lsx[i]);
+            const res1 = await this.$axios.$get(
+              `/api/nguyencong/updatedongiaconginlcd`,
+              {
+                params: {
+                  _id_losx: this.array_lsx[i],
+                  dongia: this.one_dongiacong.dongia,
+                  nguyencong: this.one_dongiacong.congdoan,
+                },
+              }
+            );
+            if (res1.success == true) {
+              this.showcount++;
+              progressBar.value = this.showcount;
+            }
+          }
+
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
+          Toast.fire({
+            icon: "success",
+            title: `Đã cập nhật toàn bộ Lô sản xuất theo danh sách tại công đoạn: ${this.one_dongiacong.congdoan}`,
+          });
+
+          // ví dụ cập nhật tại công đoạn PHOT của nhóm lương TDCV2 tại phân xưởng VSBM
+          // 3. báo ra các lô sản xuất nào vừa được cập nhật, cập nhật công đoạn nào
+          // 4. ghi log việc cập nhật trên
+        } catch (error) {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
+          Toast.fire({
+            icon: "error",
+            title: `Có lỗi xảy ra`,
+          });
+        }
+      }
+    },
+
     async onUpdate(data) {
+      this.showcount = 0;
+      this.showsuccess = 0;
+      this.array_lsx = [];
       // tìm các lô sản xuất có công này chưa được chốt
       //     // select * from losanxuat where status_tinhluong = 0 and nhomluong = khsp
-      console.log(data);
+      // console.log(data);
       const res = await this.$axios.$get(
         `/api/nguyencong/getalllosxupdatedongiacong?nhomluong=${data.khsp}&mapx=${data.PX}`
       );
@@ -771,6 +920,8 @@ export default {
         arridlsx.push(item._id);
       });
       // console.log(arridlsx);
+      this.array_lsx = arridlsx;
+      // console.log(this.array_lsx);
       this.isActive_previewupdate = true;
 
       // const result = await Swal.fire({
@@ -1000,6 +1151,15 @@ export default {
   top: 0;
 }
 
+.table-height-lsx {
+  height: 350px;
+  display: block;
+  overflow: scroll;
+  width: 100%;
+  position: sticky;
+  top: 0;
+}
+
 .highlighted {
   background-color: lightblue;
 }
@@ -1011,6 +1171,10 @@ export default {
 
 .modal-card-preview {
   width: 1220px;
+}
+
+.modal-card-progrss {
+  width: 850;
 }
 
 @media (max-width: 768px) {

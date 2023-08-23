@@ -3589,7 +3589,7 @@ export default {
       this.showsuccess = lengtData;
       this.isshow = true;
       const progressBar = document.getElementById("progress-bar");
-      console.log(progressBar);
+      // console.log(progressBar);
       progressBar.value = this.showcount;
       progressBar.max = this.showsuccess;
 
