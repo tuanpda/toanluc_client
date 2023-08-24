@@ -1949,6 +1949,27 @@
             </div>
           </div>
         </div>
+        <!-- Modal progress-->
+        <div class="">
+          <div :class="{ 'is-active': isActive_loading }" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-content modal-card-predata">
+              <section class="modal-card-body">
+                <div>
+                  <span
+                    style="font-size: small; font-weight: bold; color: #00947e"
+                    >Đang load dữ liệu - Xin chờ đợi ....</span
+                  >
+                </div>
+                <div>
+                  <progress class="progress is-small is-danger" max="100">
+                    15%
+                  </progress>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -2065,6 +2086,7 @@ export default {
       search_ngayhttt: "",
       search_ngayhtttend: "",
 
+      isActive_loading: false,
       // nhóm nguyên công trong chi tiết lương
       groups: {},
       totals: {},
@@ -2798,9 +2820,15 @@ export default {
       this.isOpen = false;
       this.isOpenst = false;
       this.selectedOptions = [];
-      this.sllosx = await this.$axios.$get(
+      this.isActive_loading = true;
+      const res = await this.$axios.$get(
         `/api/ketoan/getallphieulosxatcholuong`
       );
+      if (res.success == true) {
+        this.sllosx = res.data;
+        this.isActive_loading = false;
+      }
+
       if (this.sllosx.length <= 0) {
         const Toast = Swal.mixin({
           toast: true,
@@ -4888,15 +4916,9 @@ export default {
   height: 800px;
 }
 
-#preview {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#preview img {
-  max-width: 90px;
-  max-height: 90px;
+.modal-card-predata {
+  width: 320px;
+  height: 200px;
 }
 
 .highlight {
