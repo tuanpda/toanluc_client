@@ -152,7 +152,7 @@
           </div>
         </div>
 
-        <div v-if="showConponent" class="table_wrapper">
+        <div class="table_wrapper">
           <table class="table is-responsive is-bordered is-narrow is-fullwidth">
             <tr style="background-color: #f4f2f8">
               <td
@@ -1904,6 +1904,27 @@
           </div>
         </div>
       </div>
+      <!-- Modal progress-->
+      <div class="">
+        <div :class="{ 'is-active': isActive_loading }" class="modal">
+          <div class="modal-background"></div>
+          <div class="modal-content modal-card-predata">
+            <section class="modal-card-body">
+              <div>
+                <span
+                  style="font-size: small; font-weight: bold; color: #00947e"
+                  >Đang load dữ liệu - Xin chờ đợi ....</span
+                >
+              </div>
+              <div>
+                <progress class="progress is-small is-danger" max="100">
+                  15%
+                </progress>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -1928,6 +1949,7 @@ export default {
       isFilter: false,
       tonghonginlo: 0,
       tongdatinlo: "",
+      isActive_loading: false,
       form: {
         malonhamay: "",
         makhpx: "",
@@ -1993,7 +2015,7 @@ export default {
       highlightedRow: null,
       tempData: [], // dữ liệu sau khi lọc
       filterOptions: 0,
-
+      loadData: false,
       // input suggest
       suggestions: [],
       suggestions_nhomsp: [],
@@ -2019,7 +2041,7 @@ export default {
       // nhóm nguyên công trong chi tiết lương
       groups: {},
       totals: {},
-      showConponent: true,
+      showConponent: false,
 
       ngayhoanthanh: "",
       items: [
@@ -2667,7 +2689,13 @@ export default {
       this.isOpen = false;
       this.isOpenst = false;
       this.selectedOptions = [];
-      this.sllosx = await this.$axios.$get(`/api/ketoan/getallphieulocht`);
+      this.isActive_loading = true;
+      const res = await this.$axios.$get(`/api/ketoan/getallphieulocht`);
+      if (res.success == true) {
+        this.sllosx = res.data;
+        this.isActive_loading = false;
+      }
+      // console.log(res);
       if (this.sllosx.length <= 0) {
         const Toast = Swal.mixin({
           toast: true,
@@ -4501,7 +4529,7 @@ export default {
               title: "Lô sản xuất đã được chốt, muốn xóa phải hủy chốt!!!",
             });
           } else {
-            console.log(this.tempData);
+            // console.log(this.tempData);
             // xóa công đoạn khỏi bảng
             await this.$axios
               .$delete(`/api/lokehoach/luongcongnhan/${cd._id}`)
@@ -4717,15 +4745,9 @@ export default {
   height: 800px;
 }
 
-#preview {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#preview img {
-  max-width: 90px;
-  max-height: 90px;
+.modal-card-predata {
+  width: 320px;
+  height: 200px;
 }
 
 .highlight {

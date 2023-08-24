@@ -1014,6 +1014,28 @@
             </div>
           </div>
         </div>
+
+        <!-- Modal progress-->
+        <div class="">
+          <div :class="{ 'is-active': isActive_loading }" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-content modal-card-predata">
+              <section class="modal-card-body">
+                <div>
+                  <span
+                    style="font-size: small; font-weight: bold; color: #00947e"
+                    >Đang load dữ liệu - Xin chờ đợi ....</span
+                  >
+                </div>
+                <div>
+                  <progress class="progress is-small is-danger" max="100">
+                    15%
+                  </progress>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -1044,7 +1066,7 @@ export default {
 
       // gán biến status
       status: 0,
-
+      isActive_loading: false,
       // check nhiều phân xưởng
       showLuachon: false,
       options: ["Option 1", "Option 2", "Option 3", "Option 4"],
@@ -1361,9 +1383,15 @@ export default {
     },
     // lấy danh sách tất cả các lô kế hoạch phân xưởng sắp xếp theo phân xưởng
     async showAllLokhpx() {
-      this.lokehoachpx = await this.$axios.$get(
+      this.isActive_loading = true;
+      const res = await this.$axios.$get(
         `/api/lokehoach/getallkehoachphanxuongwithout0`
       );
+      if (res.success == true) {
+        this.lokehoachpx = res.data;
+        this.isActive_loading = false;
+      }
+
       this.multiSearch_masp = "";
       this.multiSearch_nhomsp = "";
       this.multiSearch_nhomtp = "";
@@ -2720,15 +2748,9 @@ export default {
   height: 800px;
 }
 
-#preview {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#preview img {
-  max-width: 90px;
-  max-height: 90px;
+.modal-card-predata {
+  width: 320px;
+  height: 200px;
 }
 
 .highlight {

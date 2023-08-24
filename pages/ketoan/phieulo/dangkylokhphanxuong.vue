@@ -669,12 +669,6 @@
                     v-model="item.soluongkhpx"
                   />
                 </td>
-                <!-- <td><input class="input is-small" type="date"
-                                        v-bind:value="item.ngaybdkhpx | inputDateFilter"
-                                        v-on:input="item.ngaybdkhpx = getDate($event.target.value)"></td>
-                                <td><input class="input is-small" type="date"
-                                        v-bind:value="item.ngayktkhpx | inputDateFilter"
-                                        v-on:input="item.ngayktkhpx = getDate($event.target.value)"></td> -->
                 <td>
                   <input
                     type="text"
@@ -931,6 +925,27 @@
         </div>
         <br />
       </div>
+      <!-- Modal progress-->
+      <div class="">
+        <div :class="{ 'is-active': isActive_loading }" class="modal">
+          <div class="modal-background"></div>
+          <div class="modal-content modal-card-predata">
+            <section class="modal-card-body">
+              <div>
+                <span
+                  style="font-size: small; font-weight: bold; color: #00947e"
+                  >Đang load dữ liệu - Xin chờ đợi ....</span
+                >
+              </div>
+              <div>
+                <progress class="progress is-small is-danger" max="100">
+                  15%
+                </progress>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -959,7 +974,7 @@ export default {
         createdBy: this.$auth.$state.user.username,
         updatedAt: "",
       },
-
+      isActive_loading: false,
       isphanxuong: 0,
       phieulosx: {},
       checkViewluong: false,
@@ -1492,9 +1507,18 @@ export default {
       this.search_nhomthanhpham = "";
       this.search_timekt = null;
       this.checkViewluong = false;
-      this.sllosx = await this.$axios.$get(
+      this.isActive_loading = true;
+      const res = await this.$axios.$get(
         `/api/lokehoach/alllonhamaywithsoluonglokhpx`
       );
+
+      console.log(res);
+
+      if (res.success == true) {
+        this.sllosx = res.data;
+        this.isActive_loading = false;
+      }
+
       if (this.sllosx.length <= 0) {
         const Toast = Swal.mixin({
           toast: true,
@@ -2162,6 +2186,11 @@ export default {
 .modal-card {
   width: 1320px;
   height: 800px;
+}
+
+.modal-card-predata {
+  width: 320px;
+  height: 200px;
 }
 
 .input.is-small {
