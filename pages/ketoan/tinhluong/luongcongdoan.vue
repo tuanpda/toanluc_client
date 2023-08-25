@@ -2815,7 +2815,8 @@ export default {
               "-" +
               this.mato;
 
-            console.log(this.keyThangnam);
+            // console.log(this.keyThangnam);
+            // console.log(this.selected);
 
             for (let i = 0; i < this.selected.length; i++) {
               let data = {
@@ -2867,6 +2868,7 @@ export default {
                 key_thangnam: this.keyThangnam,
                 status: true,
                 stk: this.selected[i].stk,
+                chutaikhoan: this.selected[i].chutaikhoan,
                 tennganhang: this.selected[i].tennh,
                 nhanl1: 0,
                 nhanl2: 0,

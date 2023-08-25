@@ -421,13 +421,26 @@
                 <span style="color: #48c78e" class="icon is-small is-left">
                   <i class="fas fa-calculator"></i>
                 </span>
-                &ensp; Chi trả lương công nhân
+                &ensp; Chốt lương Công nhân
               </nav-link>
               <nav-link to="/report/bangluongvp" class="navbar-item">
                 <span style="color: #48c78e" class="icon is-small is-left">
                   <i class="fas fa-chart-pie"></i>
                 </span>
-                &ensp; Chi trả lương văn phòng
+                &ensp; Chốt lương Văn phòng
+              </nav-link>
+              <hr class="navbar-divider" />
+              <nav-link to="/report/chitraluongcongnhan" class="navbar-item">
+                <span style="color: #48c78e" class="icon is-small is-left">
+                  <i class="far fa-file-excel"></i>
+                </span>
+                &ensp; Chi trả lương Công nhân
+              </nav-link>
+              <nav-link to="" class="navbar-item">
+                <span style="color: #48c78e" class="icon is-small is-left">
+                  <i class="fas fa-file-csv"></i>
+                </span>
+                &ensp; Chi trả lương Văn phòng
               </nav-link>
             </div>
           </div>

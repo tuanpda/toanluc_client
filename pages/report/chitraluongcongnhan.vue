@@ -10,7 +10,7 @@
                 <i style="color: #00d1b2" class="far fa-calendar-alt"></i>
               </span>
               <span style="color: #3850b7; font-size: 15px; font-weight: bold"
-                >Chi trả lương</span
+                >Báo cáo Chi trả lương công nhân</span
               >
             </div>
           </div>
@@ -95,33 +95,11 @@
               <span class="icon is-small">
                 <i class="fas fa-file-alt"></i>
               </span>
-              <span>Xem bảng lương</span>
+              <span>Xem dữ liệu chi trả</span>
             </button>
           </div>
-          <div class="column">
-            <button
-              :disabled="!isSaveChitra"
-              @click="onSaveChitra"
-              class="button is-small is-info is-fullwidth"
-            >
-              <span class="icon is-small">
-                <i class="far fa-file-pdf"></i>
-              </span>
-              <span>Chi trả</span>
-            </button>
-          </div>
-          <div class="column">
-            <button
-              :disabled="!isUpdateBank"
-              @click="preShowUpdate"
-              class="button is-small is-danger is-fullwidth"
-            >
-              <span class="icon is-small">
-                <i class="far fa-file-pdf"></i>
-              </span>
-              <span>Cập nhật thông tin ngân hàng</span>
-            </button>
-          </div>
+          <div class="column"></div>
+          <div class="column"></div>
         </div>
 
         <div v-if="report.length > 0" class="table_wrapper">
@@ -168,6 +146,11 @@
                 style="text-align: center; font-weight: bold; font-size: small"
               >
                 Chuyển khoản 2
+              </td>
+              <td
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                Tổng chuyển khoản
               </td>
               <td
                 style="
@@ -223,65 +206,19 @@
               >
                 {{ nv.tongnhan | formatNumber }}
               </td>
-              <!-- gõ tiền chuyển khoản -->
-              <td style="text-align: center; font-size: small">
-                <input
-                  v-model="nv.nhanl1"
-                  class="input is-small"
-                  type="text"
-                  v-mask="mask"
-                  @blur="updateNhanl2(nv)"
-                />
+              <!-- chuyển khoản -->
+              <td style="text-align: right; font-size: small">
+                {{ nv.ck1 | formatNumber }}
               </td>
-
-              <template v-if="nv.stk != ''">
-                <td
-                  style="font-size: small; text-align: right; font-weight: bold"
-                >
-                  <!-- <input
-                    type="text"
-                    class="input is-small"
-                    v-model="nv.tongnhan"
-                    v-mask="mask"
-                  /> -->
-                  {{ computedNhanl2(nv) | formatNumber }}
-                </td>
-              </template>
-              <template v-else>
-                <td>
-                  <!-- <input
-                    type="number"
-                    class="input is-small"
-                    v-model="nv.nhanl2"
-                  /> -->
-                </td>
-              </template>
-
-              <!-- gõ tiền mặt -->
-              <template v-if="nv.stk == ''">
-                <td
-                  style="text-align: right; font-size: small; font-weight: bold"
-                >
-                  <!-- <input
-                    v-model="nv.tongnhan"
-                    type="text"
-                    class="input is-small"
-                    v-mask="mask"
-                  /> -->
-                  {{ nv.tongnhan | formatNumber }}
-                </td>
-              </template>
-              <template v-else>
-                <td style="text-align: center; font-size: small">
-                  <!-- <input
-                    v-model="nv.tienmat"
-                    type="text"
-                    class="input is-small"
-                    v-mask="mask"
-                  /> -->
-                </td>
-              </template>
-
+              <td style="text-align: right; font-size: small">
+                {{ nv.ck2 | formatNumber }}
+              </td>
+              <td style="text-align: right; font-size: small">
+                {{ nv.chuyenkhoan | formatNumber }}
+              </td>
+              <td style="text-align: right; font-size: small">
+                {{ nv.tienmat | formatNumber }}
+              </td>
               <td style="text-align: center; font-size: small">
                 {{ nv.stk }}
               </td>
@@ -296,119 +233,7 @@
                 <input type="text" class="input is-small" v-model="nv.ghichu" />
               </td>
             </tr>
-            <tr>
-              <td
-                style="text-align: center; font-weight: bold; font-size: small"
-                colspan="3"
-              >
-                Tổng
-              </td>
-              <td
-                style="text-align: right; font-weight: bold; font-size: small"
-              >
-                {{ sumrp.sum_tongnhan | formatNumber }}
-              </td>
-            </tr>
           </table>
-        </div>
-      </div>
-      <!-- Modal update-->
-      <div class="">
-        <div :class="{ 'is-active': isActive }" class="modal">
-          <div class="modal-background"></div>
-          <div class="modal-content modal-card">
-            <section class="modal-card-body">
-              <div>
-                <div class="columns">
-                  <div class="column">
-                    <span
-                      style="font-size: small; font-weight: bold; color: red"
-                      >I. Có tất cả {{ show_needupudate.length }} công nhân cần
-                      cập nhật thông tin ngân hàng.
-                    </span>
-                    <div
-                      class="table_wrapper table-height"
-                      style="margin-top: 5px"
-                    >
-                      <table
-                        class="table is-responsive is-bordered is-striped is-narrow is-hoverable is-fullwidth"
-                      >
-                        <tr style="font-size: small; font-weight: bold">
-                          <td style="text-align: center">STT</td>
-                          <td style="text-align: center">Mã CN</td>
-                          <td style="text-align: center">Tên CN</td>
-                          <td style="text-align: center">Chủ tài khoản</td>
-                          <td style="text-align: center">Tên ngân hàng</td>
-                          <td style="text-align: center">Số tài khoản</td>
-                        </tr>
-                        <tr
-                          v-for="(item, index) in show_needupudate"
-                          style="font-size: small"
-                        >
-                          <td style="text-align: center">{{ index + 1 }}</td>
-                          <td>{{ item.manv }}</td>
-                          <td>{{ item.hotennv }}</td>
-                          <td>{{ item.chutaikhoan }}</td>
-                          <td>{{ item.tennganhang }}</td>
-                          <td>{{ item.stk }}</td>
-                        </tr>
-                      </table>
-                    </div>
-                  </div>
-                </div>
-                <div class="columns">
-                  <div class="column">
-                    <span
-                      style="font-size: small; font-weight: bold; color: red"
-                      >II. Bấm nút cập nhật ngay bên dưới để cập nhật lại tất cả
-                      thông tin về tài khoản ngân hàng cho công nhân.
-                    </span>
-                  </div>
-                </div>
-                <div class="columns">
-                  <div class="column">
-                    <button
-                      @click="onUpdateInfoBank"
-                      class="button is-success is-small is-fullwidth"
-                    >
-                      Cập nhật thông tin ngân hàng
-                    </button>
-                  </div>
-                  <div class="column">
-                    <button
-                      @click="isActive = false"
-                      class="button is-info is-small is-fullwidth"
-                    >
-                      Đóng
-                    </button>
-                  </div>
-                </div>
-                <div class="columns">
-                  <div class="column">
-                    <div v-show="isshow == true">
-                      <div style="text-align: center">
-                        <span
-                          style="
-                            font-size: small;
-                            font-weight: bold;
-                            color: red;
-                          "
-                          >{{ showcount }} / {{ showsuccess }} Công nhân cần cập
-                          nhật</span
-                        >
-                      </div>
-                      <div>
-                        <progress
-                          id="progress-bar"
-                          class="progress is-success"
-                        ></progress>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            </section>
-          </div>
         </div>
       </div>
     </div>
@@ -464,8 +289,6 @@ export default {
       showcount: 0,
       showsuccess: 0,
       isshow: false,
-      isUpdateBank: false,
-      isSaveChitra: false,
     };
   },
 
@@ -579,20 +402,19 @@ export default {
     async reportBangluong() {
       if (this.mato == "") {
         this.report = await this.$axios.$get(
-          `/api/report/reportluongthang_px?thang=${this.thang}&nam=${this.nam}&mapb=${this.maxuong}`
+          `/api/report/reportchitraluongthang_px?thang=${this.thang}&nam=${this.nam}&mapb=${this.maxuong}`
         );
         // Làm tròn cột "tongnhan"
-        this.report.forEach((item) => {
-          item.tongnhan = Math.round(item.tongnhan);
-          item.nhanl2 = item.tongnhan - item.nhanl1;
-          if (item.stk == "") {
-            item.tienmat = item.tongnhan;
-          } else {
-            item.tienmat = 0;
-          }
-        });
-        this.isUpdateBank = true;
-        this.isSaveChitra = true;
+        // this.report.forEach((item) => {
+        //   item.tongnhan = Math.round(item.tongnhan);
+        //   item.nhanl2 = item.tongnhan - item.nhanl1;
+        //   if (item.stk == "") {
+        //     item.tienmat = item.tongnhan;
+        //   } else {
+        //     item.tienmat = 0;
+        //   }
+        // });
+        // console.log(this.report);
         if (this.report.length <= 0) {
           const Toast = Swal.mixin({
             toast: true,
@@ -609,8 +431,6 @@ export default {
             icon: "error",
             title: "Không có số liệu kỳ lương tại xưởng này",
           });
-          this.isUpdateBank = false;
-          this.isSaveChitra = false;
         }
       } else {
         this.report = await this.$axios.$get(
@@ -620,8 +440,6 @@ export default {
         this.report.forEach((item) => {
           item.tongnhan = Math.round(item.tongnhan);
         });
-        this.isUpdateBank = true;
-        this.isSaveChitra = true;
         if (this.report.length <= 0) {
           const Toast = Swal.mixin({
             toast: true,
@@ -638,8 +456,6 @@ export default {
             icon: "error",
             title: "Không có số liệu kỳ lương tại tổ này",
           });
-          this.isUpdateBank = false;
-          this.isSaveChitra = false;
         }
       }
     },
@@ -927,7 +743,6 @@ export default {
                     ck2: parseFloat(this.selected[i].nhanl2),
                     ghichu: this.selected[i].ghichu,
                     vanphong: 0,
-                    sttchon: this.selected[i].sttchon,
                   };
                 } else {
                   this.chitra = {
@@ -952,7 +767,6 @@ export default {
                     ck2: 0,
                     ghichu: this.selected[i].ghichu,
                     vanphong: 0,
-                    sttchon: this.selected[i].sttchon,
                   };
                 }
 
