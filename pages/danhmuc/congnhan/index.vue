@@ -1158,7 +1158,7 @@ export default {
 
     async onUpdate() {
       const result = await Swal.fire({
-        title: `Bạn chắc chắn cập nhật thông tin`,
+        title: `Bạn chắc chắn cập nhật thông tin?`,
         showDenyButton: true,
         confirmButtonText: "Chắc chắn",
         denyButtonText: `Hủy`,

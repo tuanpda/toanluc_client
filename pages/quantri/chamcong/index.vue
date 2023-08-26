@@ -40,14 +40,30 @@
               </span>
             </div>
           </div>
-          <div class="column is-12-mobile">
-            <button
+          <div class="column">
+            <!-- <button
               :disabled="!isSelectsEnabled_VP"
               @click="vanphong"
               class="button is-small is-success"
             >
               Văn phòng
-            </button>
+            </button> -->
+            <div class="control has-icons-left">
+              <div class="select is-small is-fullwidth">
+                <select
+                  @change="vanphong($event)"
+                  :disabled="!isSelectsEnabled_VP"
+                >
+                  <option selected>-- Xem theo khối --</option>
+                  <option v-for="item in khoivp" :value="item.makhoi">
+                    {{ item.makhoi }} -- {{ item.tenkhoi }}
+                  </option>
+                </select>
+              </div>
+              <span class="icon is-small is-left">
+                <i style="color: #48c78e" class="fas fa-kaaba"></i>
+              </span>
+            </div>
           </div>
         </div>
 
@@ -594,6 +610,13 @@ export default {
         { machamcong: "X", chamcong: "Nghỉ kế hoạch" },
         { machamcong: "L", chamcong: "Nghỉ lễ, cuối tuần" },
       ],
+      khoivp: [
+        { makhoi: "VPBP", tenkhoi: "Văn phòng bộ phận" },
+        { makhoi: "VPGT1", tenkhoi: "Văn phòng gián tiếp 1" },
+        { makhoi: "VPGT2", tenkhoi: "Văn phòng gián tiếp 2" },
+      ],
+      makhoi: "",
+      tenkhoi: "",
       items: [
         {
           macn: "",
@@ -1075,15 +1098,22 @@ export default {
     },
 
     async vanphong(e) {
+      var name = e.target.options[e.target.options.selectedIndex].text;
+      let position = name.split("--");
+      this.makhoi = position[0];
+      this.tenkhoi = position[1];
+
       // kiểm tra xem có dữ liệu ngày chấm công trong csdl chưa
-      this.form.mapx = "HCVP";
-      // this.form.tenpx = position[1].trim();
+      // console.log(this.makhoi);
       // console.log(this.ngaychamcong);
       this.showNgaychamcong = await this.$axios.$get(
-        `/api/congnhan/showngaychamcongandmapx?mapx=${this.form.mapx}&ngaychamcong=${this.ngaychamcong}`
+        `/api/congnhan/showngaychamcongandmapx?mapx=${this.makhoi}&ngaychamcong=${this.ngaychamcong}`
       );
-      this.nhanvien = await this.$axios.$get(`/api/nhanvien/statusnhanvien1`);
-      console.log(this.nhanvien);
+      // console.log(this.showNgaychamcong);
+      this.nhanvien = await this.$axios.$get(
+        `/api/nhanvien/statusnhanvien1withmakhoi?makhoi=${this.makhoi}`
+      );
+      // console.log(this.nhanvien);
       this.items = [];
       // console.log(this.showNgaychamcong);
       if (this.showNgaychamcong.length > 0) {
@@ -1100,7 +1130,7 @@ export default {
         });
         Toast.fire({
           icon: "error",
-          title: `Phân xưởng ${this.form.tenpx} đã có ${this.showNgaychamcong.length} công nhân chấm công vào ngày ${this.ngaychamcong}`,
+          title: `Khối ${this.makhoi} đã có ${this.showNgaychamcong.length} nhân viên chấm công vào ngày ${this.ngaychamcong}`,
         });
         this.isSelectsEnabled_Chamcong = true;
         let result = [];
@@ -1121,8 +1151,8 @@ export default {
             this.items.push({
               macn: this.nhanvien[i].manv,
               tencn: this.nhanvien[i].tennv,
-              mapx: "HCVP",
-              tenpx: "Hành chính",
+              mapx: this.makhoi,
+              tenpx: this.tenkhoi,
               mato: "",
               tento: "",
               sttchon: "",
@@ -1141,15 +1171,17 @@ export default {
         }
       } else {
         this.isSelectsEnabled_Chamcong = true;
-        this.nhanvien = await this.$axios.$get(`/api/nhanvien/statusnhanvien1`);
+        this.nhanvien = await this.$axios.$get(
+          `/api/nhanvien/statusnhanvien1withmakhoi?makhoi=${this.makhoi}`
+        );
         // console.log(this.nhanvien);
         this.items = [];
         for (let i = 0; i < this.nhanvien.length; i++) {
           this.items.push({
             macn: this.nhanvien[i].manv,
             tencn: this.nhanvien[i].tennv,
-            mapx: "HCVP",
-            tenpx: "Hành chính",
+            mapx: this.makhoi,
+            tenpx: this.tenkhoi,
             mato: "",
             tento: "",
             sttchon: "",

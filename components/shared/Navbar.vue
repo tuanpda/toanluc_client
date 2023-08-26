@@ -660,12 +660,12 @@
               class="navbar-dropdown is-boxed"
               v-show="isDropdownOpen_user"
             >
-              <nav-link to="#" class="navbar-item">
+              <a @click="isActive = true" class="navbar-item">
                 <span class="icon is-small is-left" style="color: #3e8ed0">
                   <i class="fab fa-github-alt"></i>
                 </span>
                 &ensp; Hồ sơ cá nhân
-              </nav-link>
+              </a>
               <nav-link to="#" class="navbar-item">
                 <span class="icon is-small is-left" style="color: #3e8ed0">
                   <i class="fas fa-book"></i>
@@ -680,6 +680,33 @@
                 &ensp; Đăng xuất
               </a>
             </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal info user-->
+      <div class="">
+        <div :class="{ 'is-active': isActive }" class="modal">
+          <div class="modal-background"></div>
+          <div class="modal-content modal-card-predata">
+            <section class="modal-card-body">
+              <div class="box">
+                <div class="columns">
+                  <div class="column">
+                    <button class="button is-small is-success is-fullwidth">
+                      Cập nhật
+                    </button>
+                  </div>
+                  <div class="column">
+                    <button
+                      @click="isActive = false"
+                      class="button is-small is-danger is-fullwidth"
+                    >
+                      Thoát
+                    </button>
+                  </div>
+                </div>
+              </div>
+            </section>
           </div>
         </div>
       </div>
@@ -778,15 +805,6 @@ export default {
       // console.log(this.$auth.$state.loggedIn)
       this.$auth.$state.loggedIn = false;
     },
-
-    // closeNavbar(num) {
-    //   console.log(num);
-    //   this.$refs[`navbarDropDown-${num}`].style.display = "none";
-    //   console.log(this.$refs[`navbarDropDown-${num}`].style.display);
-    //   setTimeout(() => {
-    //     this.$refs[`navbarDropDown-${num}`].style.display = "block";
-    //   }, 300);
-    // },
   },
 };
 </script>
@@ -814,6 +832,11 @@ export default {
 .preview img {
   max-width: 100%;
   max-height: 500px;
+}
+
+.modal-card {
+  width: 820px;
+  height: 400px;
 }
 
 .navbar {

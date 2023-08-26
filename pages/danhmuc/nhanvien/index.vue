@@ -16,44 +16,62 @@
           </div>
         </div>
 
-        <div class="columns">
-          <div class="column is-10">
-            <span>Có tất cả: </span>
-            <span style="font-weight: bold">{{
-              dsnhanvien.length | formatNumber
-            }}</span>
-            <span>nhân viên văn phòng</span>
+        <div class="box">
+          <div class="columns">
+            <div class="column is-10">
+              <span>Có tất cả: </span>
+              <span style="font-weight: bold">{{
+                dsnhanvien.length | formatNumber
+              }}</span>
+              <span>nhân viên văn phòng</span>
+            </div>
+            <div class="column" style="text-align: right">
+              <button
+                @click="isActive = true"
+                class="button is-success is-fullwidth is-small"
+              >
+                <span class="icon is-small">
+                  <i class="fas fa-pen-fancy"></i>
+                </span>
+                <span>Thêm nhân viên</span>
+              </button>
+            </div>
           </div>
-          <div class="column" style="text-align: right">
-            <button
-              @click="isActive = true"
-              class="button is-success is-fullwidth is-small"
-            >
-              <span class="icon is-small">
-                <i class="fas fa-pen-fancy"></i>
-              </span>
-              <span>Thêm nhân viên</span>
-            </button>
-          </div>
-        </div>
 
-        <div class="columns">
-          <div class="column" style="text-align: right">
-            <div class="control has-icons-left">
-              <div class="select is-small is-fullwidth">
-                <select @change="getWithBp($event)">
-                  <option selected>-- Xem theo phòng ban --</option>
-                  <option v-for="item in phongban" :value="item.mapx">
-                    {{ item.maphong }} -- {{ item.tenphong }}
-                  </option>
-                </select>
+          <div class="columns">
+            <div class="column" style="text-align: right">
+              <div class="control has-icons-left">
+                <div class="select is-small is-fullwidth">
+                  <select @change="getWithBp($event)">
+                    <option selected>-- Xem theo phòng ban --</option>
+                    <option v-for="item in phongban" :value="item.mapx">
+                      {{ item.maphong }} -- {{ item.tenphong }}
+                    </option>
+                  </select>
+                </div>
+                <span class="icon is-small is-left">
+                  <i style="color: #48c78e" class="fas fa-kaaba"></i>
+                </span>
               </div>
-              <span class="icon is-small is-left">
-                <i style="color: #48c78e" class="fas fa-kaaba"></i>
-              </span>
+            </div>
+            <div class="column" style="text-align: right">
+              <div class="control has-icons-left">
+                <div class="select is-small is-fullwidth">
+                  <select @change="getWithKhoi($event)">
+                    <option selected>-- Xem theo khối --</option>
+                    <option v-for="item in khoivp" :value="item.makhoi">
+                      {{ item.makhoi }} -- {{ item.tenkhoi }}
+                    </option>
+                  </select>
+                </div>
+                <span class="icon is-small is-left">
+                  <i style="color: #48c78e" class="fas fa-kaaba"></i>
+                </span>
+              </div>
             </div>
           </div>
         </div>
+
         <div style="margin-bottom: 3px; text-align: right">
           <vue-excel-xlsx
             :data="dsnhanvien"
@@ -87,6 +105,7 @@
                 <th style="text-align: center; font-size: small; width: 3%">
                   STT
                 </th>
+                <th style="text-align: center; font-size: small">Mã khối</th>
                 <th style="text-align: center; font-size: small">
                   Tên nhân viên
                 </th>
@@ -108,8 +127,15 @@
                 <td style="text-align: center; font-size: small">
                   {{ index + 1 }}
                 </td>
+                <td
+                  style="font-size: small; text-align: center; font-weight: 600"
+                >
+                  {{ nv.makhoi }}
+                </td>
                 <td style="font-size: small">{{ nv.tennv }}</td>
-                <td style="font-size: small">{{ nv.mapb }}</td>
+                <td style="font-size: small; text-align: center">
+                  {{ nv.mapb }}
+                </td>
                 <td style="font-size: small">{{ nv.tenphong }}</td>
                 <!-- <td style="font-size: small">{{ nv.mucluong }}</td> -->
                 <td style="text-align: center; font-size: small">
@@ -122,11 +148,16 @@
                   {{ nv.gioitinh }}
                 </td>
                 <td style="text-align: center; color: green">
-                  <nuxt-link :to="`/danhmuc/nhanvien/${nv._id}/manage`">
+                  <!-- <nuxt-link :to="`/danhmuc/nhanvien/${nv._id}/manage`">
                     <span class="icon is-small">
                       <i class="far fa-check-circle"></i>
                     </span>
-                  </nuxt-link>
+                  </nuxt-link> -->
+                  <a @click="updateNhanvien(nv)">
+                    <span class="icon is-small">
+                      <i class="far fa-check-circle"></i>
+                    </span>
+                  </a>
                 </td>
                 <!-- <td style="text-align: center">
                   <a @click="onDelete(nv)">
@@ -469,6 +500,323 @@
             </div>
           </div>
         </div>
+
+        <!-- Modal update-->
+        <div class="">
+          <div :class="{ 'is-active': isActive_update }" class="modal">
+            <div class="modal-background"></div>
+            <div class="modal-content modal-card-predata">
+              <section class="modal-card-body">
+                <div v-if="form_update != null">
+                  <div class="columns">
+                    <div class="column">
+                      <div class="field">
+                        <label class="label">Tên nhân viên</label>
+                        <div class="control">
+                          <input
+                            v-model.trim="form_update.tennv"
+                            class="input is-small"
+                            type="text"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="column">
+                      <div class="field">
+                        <label class="label">Số điện thoại</label>
+                        <div class="control">
+                          <input
+                            v-model="form_update.sodienthoai"
+                            class="input is-small"
+                            type="text"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="columns">
+                    <div class="column">
+                      <div class="field">
+                        <label class="label">Căn cước công dân</label>
+                        <div class="control">
+                          <input
+                            v-model="form_update.cccd"
+                            class="input is-small"
+                            type="text"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="column">
+                      <div class="field">
+                        <label class="label">Giới tính</label>
+                        <div class="control">
+                          <label class="radio is-small">
+                            <input
+                              v-model="form_update.gioitinh"
+                              value="Nam"
+                              type="radio"
+                              name="answer"
+                            />
+                            Nam
+                          </label>
+                          <label class="radio">
+                            <input
+                              v-model="form_update.gioitinh"
+                              value="Nữ"
+                              type="radio"
+                              name="answer"
+                            />
+                            Nữ
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="columns">
+                    <div class="column">
+                      <div class="field">
+                        <label class="label">Địa chỉ liên hệ</label>
+                        <div class="control">
+                          <input
+                            v-model="form_update.diachilh"
+                            class="input is-small"
+                            type="text"
+                            placeholder="Nhập địa chỉ liên hệ"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="column">
+                      <div class="field">
+                        <label class="label">Liên hệ khẩn cấp</label>
+                        <div class="control">
+                          <input
+                            v-model="form_update.lhkhancap"
+                            class="input is-small"
+                            type="text"
+                            placeholder="Nhập địa chỉ liên hệ khẩn cấp"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="columns">
+                    <div class="column">
+                      <div class="field">
+                        <label class="label">Làm việc</label>
+                        <template v-if="form_update.trangthai == true">
+                          <span
+                            style="
+                              font-weight: bold;
+                              font-size: small;
+                              color: green;
+                            "
+                            >Đang làm</span
+                          >
+                        </template>
+                        <template v-else>
+                          <span
+                            style="
+                              font-weight: bold;
+                              font-size: small;
+                              color: red;
+                            "
+                            >Đã nghỉ</span
+                          >
+                        </template>
+                        &nbsp;
+                        <label class="switch" style="vertical-align: middle">
+                          <input
+                            v-model="form_update.trangthai"
+                            type="checkbox"
+                          />
+                          <span class="slider"></span>
+                        </label>
+                      </div>
+                    </div>
+                    <div class="column">
+                      <div class="field">
+                        <label class="label">Phòng ban</label>
+                        <div class="control has-icons-left">
+                          <div class="select is-fullwidth is-small">
+                            <select @change="showmapx($event)">
+                              <option selected disabled>
+                                {{ form_update.tenphong }}
+                              </option>
+                              <option
+                                v-for="item in phongban"
+                                :value="item.maphong"
+                              >
+                                {{ item.maphong }} -- {{ item.tenphong }}
+                              </option>
+                            </select>
+                          </div>
+                          <span class="icon is-small is-left">
+                            <i style="color: #48c78e" class="fas fa-kaaba"></i>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="columns">
+                    <div class="column">
+                      <div class="field">
+                        <label class="label">Ngày sinh</label>
+                        <div class="control">
+                          <input
+                            :value="formattedNgaybd(form_update)"
+                            class="input is-small"
+                            type="date"
+                            @blur="updateNgaysinh($event.target.value)"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="column">
+                      <div class="field">
+                        <label class="label">Mức lương</label>
+                        <div class="control">
+                          <input
+                            v-model="form_update.mucluong"
+                            class="input is-small"
+                            type="text"
+                            placeholder="Nhập địa chỉ liên hệ khẩn cấp"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="columns">
+                    <div class="column">
+                      <div class="field">
+                        <label class="label">Số tài khoản</label>
+                        <div class="control">
+                          <input
+                            v-model="form_update.sotknh"
+                            class="input is-small"
+                            type="text"
+                            placeholder="Nhập địa chỉ liên hệ khẩn cấp"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="column">
+                      <div class="field">
+                        <label class="label">Tên ngân hàng</label>
+                        <div class="control">
+                          <input
+                            v-model="form_update.tennh"
+                            class="input is-small"
+                            type="text"
+                            placeholder="Nhập địa chỉ liên hệ khẩn cấp"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="columns">
+                    <div class="column">
+                      <label class="label">Chủ tài khoản</label>
+                      <div class="control">
+                        <input
+                          v-model.trim="form.chutaikhoan"
+                          class="input is-small"
+                          type="text"
+                          placeholder="Nhập tên ngân hàng"
+                        />
+                      </div>
+                    </div>
+                    <div class="column">
+                      <div class="field">
+                        <div style="margin-bottom: 10px">
+                          <label class="checkbox">
+                            <input type="checkbox" v-model.trim="checkGhichu" />
+                            <span style="font-weight: bold">Ghi chú </span>
+                          </label>
+                        </div>
+                      </div>
+                      <div
+                        v-if="checkGhichu == true"
+                        class="field"
+                        style="margin-top: 10px"
+                      >
+                        <div class="control">
+                          <textarea
+                            v-model="form.diengiai"
+                            class="textarea is-small"
+                            placeholder="Ghi chú thêm ..."
+                          ></textarea>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="columns" style="margin-top: 5px">
+                    <div class="column">
+                      <div class="field">
+                        <label class="label">Sửa ảnh hồ sơ</label>
+                        <div class="file is-info has-name is-small">
+                          <label class="file-label">
+                            <input
+                              @change="onFileChange"
+                              class="file-input"
+                              type="file"
+                              name="resume"
+                            />
+                            <span class="file-cta">
+                              <span class="file-icon">
+                                <i class="fas fa-upload"></i>
+                              </span>
+                              <span class="file-label"> Chọn ảnh </span>
+                            </span>
+                            <span class="file-name">
+                              {{ fileName }}
+                            </span>
+                          </label>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="column">
+                      <div v-if="form_update.anhdd && !url" class="column">
+                        <div id="preview" class="box">
+                          <img :src="form_update.anhdd" />
+                        </div>
+                      </div>
+                      <div v-if="url" class="column">
+                        <div id="preview" class="box">
+                          <img :src="url" />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="columns">
+                    <div class="column">
+                      <button
+                        @click="onUpdate"
+                        class="button is-small is-success is-fullwidth"
+                      >
+                        Cập nhật
+                      </button>
+                    </div>
+                    <div class="column">
+                      <button
+                        @click="isActive_update = false"
+                        class="button is-small is-danger is-fullwidth"
+                      >
+                        Thoát
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -507,6 +855,14 @@ export default {
       phongban: [],
       exits: {},
       checkGhichu: false,
+      form_update: [],
+      khoivp: [
+        { makhoi: "VPBP", tenkhoi: "Văn phòng bộ phận" },
+        { makhoi: "VPGT1", tenkhoi: "Văn phòng gián tiếp 1" },
+        { makhoi: "VPGT2", tenkhoi: "Văn phòng gián tiếp 2" },
+      ],
+      mapb: "",
+      makhoi: "",
       form: {
         manv: "",
         tennv: "",
@@ -674,6 +1030,18 @@ export default {
       // you can  check your form is filled or not here.
       return this.checkData == false;
     },
+
+    formattedNgaybd() {
+      return function (form) {
+        // console.log(form);
+        if (!form.ngaysinh) return "";
+        const date = new Date(form.ngaysinh);
+        const year = date.getFullYear();
+        const month = ("0" + (date.getMonth() + 1)).slice(-2);
+        const day = ("0" + date.getDate()).slice(-2);
+        return `${year}-${month}-${day}`;
+      };
+    },
   },
 
   mounted() {
@@ -738,6 +1106,11 @@ export default {
       }
     },
 
+    updateNgaysinh(value) {
+      // console.log(value);
+      this.form_update.ngaysinh = value;
+    },
+
     async getNvccd() {
       this.exits = await this.$axios.$get(
         `/api/nhanvien/getcccd?cccd=${this.form.cccd}`
@@ -790,14 +1163,131 @@ export default {
     },
 
     async getWithBp(e) {
+      this.mapb = "";
       // console.log(this.mapx)
       var name = e.target.options[e.target.options.selectedIndex].text;
       // console.log(name)
       let position = name.split("--");
       let p1 = position[0].trim();
+      this.mapb = p1;
+      this.makhoi = "";
+      // console.log(p1);
       this.dsnhanvien = await this.$axios.$get(
         `/api/nhanvien/getallnhanvien?mapb=${p1}`
       );
+    },
+
+    async getWithKhoi(e) {
+      this.makhoi = "";
+      // console.log(this.mapx)
+      var name = e.target.options[e.target.options.selectedIndex].text;
+      // console.log(name)
+      let position = name.split("--");
+      let p1 = position[0].trim();
+      this.makhoi = p1;
+      this.mapb = "";
+      this.dsnhanvien = await this.$axios.$get(
+        `/api/nhanvien/getallnhanvienmakhoi?makhoi=${p1}`
+      );
+    },
+
+    async updateNhanvien(nhanvien) {
+      this.form_update = [];
+      // console.log(nhanvien);
+      this.isActive_update = true;
+      this.form_update = { ...nhanvien };
+      // console.log(this.form_update);
+    },
+
+    async onUpdate() {
+      const result = await Swal.fire({
+        title: `Bạn chắc chắn cập nhật thông tin?`,
+        showDenyButton: true,
+        confirmButtonText: "Chắc chắn",
+        denyButtonText: `Hủy`,
+      });
+      if (result.isConfirmed) {
+        try {
+          let data = new FormData();
+          data.append("tennv", this.form_update.tennv);
+          data.append("mapb", this.form_update.mapb);
+          data.append("tenphong", this.form_update.tenphong);
+          data.append("sodienthoai", this.form_update.sodienthoai);
+          data.append("cccd", this.form_update.cccd);
+          if (this.selectedFile) {
+            data.append("anhdd", this.selectedFile, this.selectedFile.name);
+          } else {
+            data.append("anhdd", this.form_update.anhdd);
+          }
+          data.append("ngaysinh", this.form_update.ngaysinh);
+          data.append("gioitinh", this.form_update.gioitinh);
+          data.append("mucluong", this.form_update.mucluong);
+          data.append("lhkhancap", this.form_update.lhkhancap);
+          data.append("diachilh", this.form_update.diachilh);
+          data.append("sotknh", this.form_update.sotknh);
+          data.append("tennh", this.form_update.tennh);
+          data.append("diengiai", this.form_update.diengiai);
+          data.append("trangthai", this.form_update.trangthai);
+          data.append("updatedAt", this.form.createdAt);
+          data.append("chutaikhoan", this.form.chutaikhoan);
+
+          this.$axios.$patch(`/api/nhanvien/${this.form_update._id}`, data, {});
+
+          // save log
+          this.hisform.tenthaotac = `Cập nhật nhân viên, tên: ${this.form_update.tennv}`;
+          this.hisform.ghichu = `Cập nhật một nhân viên`;
+          this.$axios.$post(`/api/logsystem/record-action`, this.hisform);
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
+
+          Toast.fire({
+            icon: "success",
+            title: "Cập nhật thông tin thành công",
+          });
+
+          if (this.mapb != "" && this.makhoi == "") {
+            this.dsnhanvien = await this.$axios.$get(
+              `/api/nhanvien/getallnhanvien?mapb=${this.mapb}`
+            );
+            this.dsnhanvien = this.dsnhanvien;
+            // console.log(this.congnhan);
+          } else if (this.mapb == "" && this.makhoi != "") {
+            this.dsnhanvien = await this.$axios.$get(
+              `/api/nhanvien/getallnhanvienmakhoi?makhoi=${this.makhoi}`
+            );
+            this.dsnhanvien = this.dsnhanvien;
+          } else {
+            this.getDsnv();
+          }
+        } catch (error) {
+          console.log(error);
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
+
+          Toast.fire({
+            icon: "error",
+            title: "Có lỗi xảy ra !!!",
+          });
+        }
+      }
     },
 
     async onAddNhanvien() {

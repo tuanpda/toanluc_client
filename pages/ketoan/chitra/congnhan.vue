@@ -619,6 +619,12 @@ export default {
         // Làm tròn cột "tongnhan"
         this.report.forEach((item) => {
           item.tongnhan = Math.round(item.tongnhan);
+          item.nhanl2 = item.tongnhan - item.nhanl1;
+          if (item.stk == "") {
+            item.tienmat = item.tongnhan;
+          } else {
+            item.tienmat = 0;
+          }
         });
         this.isUpdateBank = true;
         this.isSaveChitra = true;
