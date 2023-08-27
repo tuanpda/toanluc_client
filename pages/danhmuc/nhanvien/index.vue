@@ -91,7 +91,7 @@
               <tr style="background-color: #fffaeb">
                 <td
                   style="text-align: right; font-size: small; font-weight: bold"
-                  colspan="10"
+                  colspan="11"
                 >
                   <a @click="getDsnv">
                     <span class="icon is-small is-left">
@@ -114,6 +114,8 @@
                 <th style="text-align: center; font-size: small">CCCD</th>
                 <th style="text-align: center; font-size: small">Ngày sinh</th>
                 <th style="text-align: center; font-size: small">Giới tính</th>
+                <th style="text-align: center; font-size: small">Trạng thái</th>
+                <th style="text-align: center; font-size: small">Ngày tạo</th>
                 <th style="text-align: center; font-size: small; width: 4%">
                   Sửa
                 </th>
@@ -146,6 +148,25 @@
                 </td>
                 <td style="text-align: center; font-size: small">
                   {{ nv.gioitinh }}
+                </td>
+                <td
+                  style="
+                    font-size: small;
+                    text-align: center;
+                    font-weight: bold;
+                  "
+                >
+                  <template v-if="nv.trangthai == 1">
+                    <span style="color: green; font-weight: 900">Đang làm</span>
+                  </template>
+                  <template v-else>
+                    <span style="color: #f96854; font-weight: 900"
+                      >Đã nghỉ</span
+                    >
+                  </template>
+                </td>
+                <td style="text-align: center; font-size: small">
+                  {{ nv.createdAt | formatDate }}
                 </td>
                 <td style="text-align: center; color: green">
                   <!-- <nuxt-link :to="`/danhmuc/nhanvien/${nv._id}/manage`">
@@ -209,22 +230,19 @@
                 <div class="columns">
                   <div class="column">
                     <div class="field">
-                      <label class="label">Mã nhân viên</label>
-                      <div class="control">
-                        <input
-                          v-model.trim="form.manv"
-                          @blur="[$v.form.manv.$touch(), checkManv()]"
-                          class="input is-danger is-small"
-                          type="text"
-                          placeholder="Nhập vào tên nhân viên"
-                        />
-                      </div>
-                      <div v-if="$v.form.manv.$error" class="form-error">
-                        <span
-                          v-if="!$v.form.manv.required"
-                          class="help is-danger"
-                          >Yêu cầu nhập mã nhân viên</span
-                        >
+                      <label class="label">Mã khối</label>
+                      <div class="control has-icons-left">
+                        <div class="select is-small is-fullwidth">
+                          <select @change="getWithKhoi_Addmodal($event)">
+                            <option selected>-- Xem theo khối --</option>
+                            <option v-for="item in khoivp" :value="item.makhoi">
+                              {{ item.makhoi }} -- {{ item.tenkhoi }}
+                            </option>
+                          </select>
+                        </div>
+                        <span class="icon is-small is-left">
+                          <i style="color: #48c78e" class="fas fa-kaaba"></i>
+                        </span>
                       </div>
                     </div>
                   </div>
@@ -251,6 +269,27 @@
                   </div>
                 </div>
                 <div class="columns">
+                  <div class="column">
+                    <div class="field">
+                      <label class="label">Mã nhân viên</label>
+                      <div class="control">
+                        <input
+                          v-model.trim="form.manv"
+                          @blur="[$v.form.manv.$touch(), checkManv()]"
+                          class="input is-danger is-small"
+                          type="text"
+                          placeholder="Nhập vào tên nhân viên"
+                        />
+                      </div>
+                      <div v-if="$v.form.manv.$error" class="form-error">
+                        <span
+                          v-if="!$v.form.manv.required"
+                          class="help is-danger"
+                          >Yêu cầu nhập mã nhân viên</span
+                        >
+                      </div>
+                    </div>
+                  </div>
                   <div class="column">
                     <div class="field">
                       <label class="label">Tên nhân viên</label>
@@ -325,9 +364,17 @@
                       <div class="control">
                         <input
                           v-model="form.ngaysinh"
+                          @blur="$v.form.ngaysinh.$touch()"
                           class="input is-small"
                           type="date"
                         />
+                      </div>
+                      <div v-if="$v.form.ngaysinh.$error" class="form-error">
+                        <span
+                          v-if="!$v.form.ngaysinh.required"
+                          class="help is-danger"
+                          >Yêu cầu nhập ngày sinh</span
+                        >
                       </div>
                     </div>
                   </div>
@@ -409,15 +456,32 @@
                     </div>
                   </div>
                 </div>
-                <div class="field">
-                  <label class="label">Địa chỉ liên hệ</label>
-                  <div class="control">
-                    <input
-                      v-model.trim="form.diachilh"
-                      class="input is-small"
-                      type="text"
-                      placeholder="Nhập địa chỉ liên hệ của nhân viên"
-                    />
+                <div class="columns">
+                  <div class="column">
+                    <div class="field">
+                      <label class="label">Chủ tài khoản</label>
+                      <div class="control">
+                        <input
+                          v-model.trim="form.chutaikhoan"
+                          class="input is-small"
+                          type="text"
+                          placeholder="Nhập chủ tài khoản"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="column">
+                    <div class="field">
+                      <label class="label">Địa chỉ liên hệ</label>
+                      <div class="control">
+                        <input
+                          v-model.trim="form.diachilh"
+                          class="input is-small"
+                          type="text"
+                          placeholder="Nhập địa chỉ liên hệ của nhân viên"
+                        />
+                      </div>
+                    </div>
                   </div>
                 </div>
                 <div class="columns">
@@ -636,6 +700,32 @@
                           />
                           <span class="slider"></span>
                         </label>
+                      </div>
+                    </div>
+                  </div>
+
+                  <div class="columns">
+                    <div class="column">
+                      <div class="field">
+                        <label class="label">Mã khối</label>
+                        <div class="control has-icons-left">
+                          <div class="select is-small is-fullwidth">
+                            <select @change="getWithKhoi_update($event)">
+                              <option selected disabled>
+                                {{ form_update.makhoi }}
+                              </option>
+                              <option
+                                v-for="item in khoivp"
+                                :value="item.makhoi"
+                              >
+                                {{ item.makhoi }} -- {{ item.tenkhoi }}
+                              </option>
+                            </select>
+                          </div>
+                          <span class="icon is-small is-left">
+                            <i style="color: #48c78e" class="fas fa-kaaba"></i>
+                          </span>
+                        </div>
                       </div>
                     </div>
                     <div class="column">
@@ -867,6 +957,8 @@ export default {
         manv: "",
         tennv: "",
         mapb: "",
+        makhoi: "",
+        tenkhoi: "",
         tenphong: "",
         sodienthoai: "",
         cccd: "",
@@ -890,7 +982,12 @@ export default {
         luongtrachnhiem: 0,
         congdoan: 50000,
         trangthai: 1,
-        // updatedAt: new Date().toISOString().substr(0, 10),
+        chutaikhoan: "",
+        phucaptn: 0,
+        luongphatsinh: 0,
+        thuongdoanhthu: 0,
+        ngaycong: 0,
+        luongthemgio: 0,
       },
       hisform: {
         tenthaotac: null,
@@ -1020,6 +1117,15 @@ export default {
         required,
       },
       cccd: {
+        required,
+      },
+      ngaysinh: {
+        required,
+      },
+    },
+
+    form_update: {
+      ngaysinh: {
         required,
       },
     },
@@ -1191,6 +1297,30 @@ export default {
       );
     },
 
+    async getWithKhoi_Addmodal(e) {
+      this.form.makhoi = "";
+      this.form.tenkhoi = "";
+      // console.log(this.mapx)
+      var name = e.target.options[e.target.options.selectedIndex].text;
+      // console.log(name)
+      let position = name.split("--");
+      let p1 = position[0].trim();
+      let p2 = position[1].trim();
+      this.form.makhoi = p1;
+      this.form.tenkhoi = p2;
+    },
+
+    async getWithKhoi_update(e) {
+      // console.log(this.mapx)
+      var name = e.target.options[e.target.options.selectedIndex].text;
+      // console.log(name)
+      let position = name.split("--");
+      let p1 = position[0].trim();
+      let p2 = position[1].trim();
+      this.form_update.makhoi = p1;
+      this.form_update.tenkhoi = p2;
+    },
+
     async updateNhanvien(nhanvien) {
       this.form_update = [];
       // console.log(nhanvien);
@@ -1208,9 +1338,31 @@ export default {
       });
       if (result.isConfirmed) {
         try {
+          console.log(this.form_update.ngaysinh);
+          if (this.form_update.ngaysinh == "") {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+              },
+            });
+
+            Toast.fire({
+              icon: "error",
+              title: "Yêu cầu nhập thông tin ngày sinh",
+            });
+            return;
+          }
           let data = new FormData();
           data.append("tennv", this.form_update.tennv);
           data.append("mapb", this.form_update.mapb);
+          data.append("makhoi", this.form_update.makhoi);
+          data.append("tenkhoi", this.form_update.tenkhoi);
           data.append("tenphong", this.form_update.tenphong);
           data.append("sodienthoai", this.form_update.sodienthoai);
           data.append("cccd", this.form_update.cccd);
@@ -1229,47 +1381,55 @@ export default {
           data.append("diengiai", this.form_update.diengiai);
           data.append("trangthai", this.form_update.trangthai);
           data.append("updatedAt", this.form.createdAt);
-          data.append("chutaikhoan", this.form.chutaikhoan);
+          data.append("chutaikhoan", this.form_update.chutaikhoan);
 
-          this.$axios.$patch(`/api/nhanvien/${this.form_update._id}`, data, {});
+          const res = await this.$axios.$patch(
+            `/api/nhanvien/${this.form_update._id}`,
+            data,
+            {}
+          );
 
-          // save log
-          this.hisform.tenthaotac = `Cập nhật nhân viên, tên: ${this.form_update.tennv}`;
-          this.hisform.ghichu = `Cập nhật một nhân viên`;
-          this.$axios.$post(`/api/logsystem/record-action`, this.hisform);
-          const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.addEventListener("mouseenter", Swal.stopTimer);
-              toast.addEventListener("mouseleave", Swal.resumeTimer);
-            },
-          });
+          if (res.success == true) {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+              },
+            });
 
-          Toast.fire({
-            icon: "success",
-            title: "Cập nhật thông tin thành công",
-          });
+            Toast.fire({
+              icon: "success",
+              title: "Cập nhật thông tin thành công",
+            });
 
-          if (this.mapb != "" && this.makhoi == "") {
-            this.dsnhanvien = await this.$axios.$get(
-              `/api/nhanvien/getallnhanvien?mapb=${this.mapb}`
-            );
-            this.dsnhanvien = this.dsnhanvien;
-            // console.log(this.congnhan);
-          } else if (this.mapb == "" && this.makhoi != "") {
-            this.dsnhanvien = await this.$axios.$get(
-              `/api/nhanvien/getallnhanvienmakhoi?makhoi=${this.makhoi}`
-            );
-            this.dsnhanvien = this.dsnhanvien;
-          } else {
-            this.getDsnv();
+            // save log
+            this.hisform.tenthaotac = `Cập nhật nhân viên, tên: ${this.form_update.tennv}`;
+            this.hisform.ghichu = `Cập nhật một nhân viên`;
+            this.$axios.$post(`/api/logsystem/record-action`, this.hisform);
+
+            if (this.mapb != "" && this.makhoi == "") {
+              this.dsnhanvien = await this.$axios.$get(
+                `/api/nhanvien/getallnhanvien?mapb=${this.mapb}`
+              );
+              this.dsnhanvien = this.dsnhanvien;
+              console.log(this.dsnhanvien);
+            } else if (this.mapb == "" && this.makhoi != "") {
+              this.dsnhanvien = await this.$axios.$get(
+                `/api/nhanvien/getallnhanvienmakhoi?makhoi=${this.makhoi}`
+              );
+              this.dsnhanvien = this.dsnhanvien;
+              console.log(this.dsnhanvien);
+            } else {
+              this.getDsnv();
+            }
           }
         } catch (error) {
-          console.log(error);
+          // console.log(error);
           const Toast = Swal.mixin({
             toast: true,
             position: "top-end",
@@ -1300,70 +1460,81 @@ export default {
       if (result.isConfirmed) {
         try {
           this.$v.form.$touch();
-          if (this.exits.length > 0) {
-            Swal.fire(
-              `Nhân viên có căn cước công dân số: ${this.form.cccd} đã tồn tại trong hệ thống!`
-            );
-            return;
-          } else {
-            // console.log(this.$auth.$state.user.username);
-            let data = new FormData();
-            data.append("manv", this.form.manv);
-            data.append("tennv", this.form.tennv);
-            data.append("mapb", this.form.mapb);
-            data.append("tenphong", this.form.tenphong);
-            data.append("sodienthoai", this.form.sodienthoai);
-            data.append("cccd", this.form.cccd);
-            if (this.selectedFile) {
-              data.append("anhdd", this.selectedFile, this.selectedFile.name);
-            } else {
-              data.append("anhdd", this.form.anhdd);
-            }
-            data.append("ngaysinh", this.form.ngaysinh);
-            data.append("gioitinh", this.form.gioitinh);
-            data.append("mucluong", this.form.mucluong.replace(/,/g, ""));
-            data.append("lhkhancap", this.form.lhkhancap);
-            data.append("diachilh", this.form.diachilh);
-            data.append("sotknh", this.form.sotknh);
-            data.append("tennh", this.form.tennh);
-            data.append("diengiai", this.form.diengiai);
-            data.append("createdAt", this.form.createdAt);
-            data.append("accadd", this.$auth.$state.user.username);
-            data.append("thuong", this.form.thuong);
-            data.append("dt_dieuchinh", this.form.dt_dieuchinh);
-            data.append("dt_thuong", this.form.dt_thuong);
-            data.append("dt_phat", this.form.dt_phat);
-            data.append("luongngoaih", this.form.luongngoaih);
-            data.append("luongngay", this.form.luongngay);
-            data.append("bacluong", this.form.bacluong);
-            data.append("luongtrachnhiem", this.form.luongtrachnhiem);
-            data.append("congdoan", this.form.congdoan);
-            data.append("trangthai", this.form.trangthai);
-            const res = await this.$axios.$post(
-              "/api/nhanvien/addnhanvien",
-              data
-            );
+          console.log(this.form.ngaysinh);
+          // // if (this.exits.length > 0) {
+          // //   Swal.fire(
+          // //     `Nhân viên có căn cước công dân số: ${this.form.cccd} đã tồn tại trong hệ thống!`
+          // //   );
+          // //   return;
+          // // } else {
+          // //   // console.log(this.$auth.$state.user.username);
+          // //   // console.log(this.form.createdAt);
+          // //   let data = new FormData();
+          // //   data.append("manv", this.form.manv);
+          // //   data.append("tennv", this.form.tennv);
+          // //   data.append("mapb", this.form.mapb);
+          // //   data.append("makhoi", this.form.makhoi);
+          // //   data.append("tenkhoi", this.form.tenkhoi);
+          // //   data.append("tenphong", this.form.tenphong);
+          // //   data.append("sodienthoai", this.form.sodienthoai);
+          // //   data.append("cccd", this.form.cccd);
+          // //   if (this.selectedFile) {
+          // //     data.append("anhdd", this.selectedFile, this.selectedFile.name);
+          // //   } else {
+          // //     data.append("anhdd", this.form.anhdd);
+          // //   }
+          // //   data.append("ngaysinh", this.form.ngaysinh);
+          // //   data.append("gioitinh", this.form.gioitinh);
+          // //   data.append("mucluong", this.form.mucluong.replace(/,/g, ""));
+          // //   data.append("lhkhancap", this.form.lhkhancap);
+          // //   data.append("diachilh", this.form.diachilh);
+          // //   data.append("sotknh", this.form.sotknh);
+          // //   data.append("tennh", this.form.tennh);
+          // //   data.append("diengiai", this.form.diengiai);
+          // //   data.append("createdAt", this.form.createdAt);
+          // //   data.append("accadd", this.$auth.$state.user.username);
+          // //   data.append("thuong", this.form.thuong);
+          // //   data.append("dt_dieuchinh", this.form.dt_dieuchinh);
+          // //   data.append("dt_thuong", this.form.dt_thuong);
+          // //   data.append("dt_phat", this.form.dt_phat);
+          // //   data.append("luongngoaih", this.form.luongngoaih);
+          // //   data.append("luongngay", this.form.luongngay);
+          // //   data.append("bacluong", this.form.bacluong);
+          // //   data.append("luongtrachnhiem", this.form.luongtrachnhiem);
+          // //   data.append("congdoan", this.form.congdoan);
+          // //   data.append("trangthai", this.form.trangthai);
+          // //   data.append("chutaikhoan", this.form.chutaikhoan);
+          // //   data.append("phucaptn", this.form.phucaptn);
+          // //   data.append("luongphatsinh", this.form.luongphatsinh);
+          // //   data.append("thuongdoanhthu", this.form.thuongdoanhthu);
+          // //   data.append("ngaycong", this.form.ngaycong);
+          // //   data.append("luongthemgio", this.form.luongthemgio);
+          // //   const res = await this.$axios.$post(
+          // //     "/api/nhanvien/addnhanvien",
+          // //     data
+          // //   );
 
-            if (res.success == true) {
-              const Toast = Swal.mixin({
-                toast: true,
-                position: "top-end",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                  toast.addEventListener("mouseenter", Swal.stopTimer);
-                  toast.addEventListener("mouseleave", Swal.resumeTimer);
-                },
-              });
-              Toast.fire({
-                icon: "success",
-                title: "Thêm nhân viên mới thành công",
-              });
-              this.getDsnv();
-              this.isActive = false;
-            }
-          }
+          // //   if (res.success == true) {
+          // //     const Toast = Swal.mixin({
+          // //       toast: true,
+          // //       position: "top-end",
+          // //       showConfirmButton: false,
+          // //       timer: 3000,
+          // //       timerProgressBar: true,
+          // //       didOpen: (toast) => {
+          // //         toast.addEventListener("mouseenter", Swal.stopTimer);
+          // //         toast.addEventListener("mouseleave", Swal.resumeTimer);
+          // //       },
+          // //     });
+          // //     Toast.fire({
+          // //       icon: "success",
+          // //       title: "Thêm nhân viên mới thành công",
+          // //     });
+          // //     this.getDsnv();
+          // //     this.isActive = false;
+          // //     this.form = [];
+          // //   }
+          // }
         } catch (error) {
           console.log(error);
           const Toast = Swal.mixin({
@@ -1483,5 +1654,58 @@ export default {
     width: 90%;
     max-width: 400px;
   }
+}
+
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 40px;
+  height: 15px;
+}
+
+.switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.slider {
+  position: absolute;
+  cursor: pointer;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: #f14668;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  border-radius: 34px;
+}
+
+.slider:before {
+  position: absolute;
+  content: "";
+  height: 7px;
+  width: 7px;
+  left: 4px;
+  bottom: 4px;
+  background-color: white;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
+  border-radius: 50%;
+}
+
+input:checked + .slider {
+  background-color: green;
+}
+
+input:focus + .slider {
+  box-shadow: 0 0 1px #2196f3;
+}
+
+input:checked + .slider:before {
+  -webkit-transform: translateX(26px);
+  -ms-transform: translateX(26px);
+  transform: translateX(26px);
 }
 </style>

@@ -1170,14 +1170,6 @@ export default {
             this.form_update,
             {}
           );
-          // save log
-          const log = `Cập nhật thông tin cho công nhân: ${this.form_update.tencn}, Mã: ${this.form_update.macn}, Trạng thái: ${this.form.form_update}`;
-          const dataLog = {
-            logname: log,
-            createdAt: this.form.updatedAt,
-            createdBy: this.hisform.createdBy,
-          };
-          this.$axios.$post(`/api/congnhan/addlognhansu`, dataLog);
 
           // console.log(res);
           if (res.success == true) {
@@ -1197,6 +1189,15 @@ export default {
               icon: "success",
               title: "Cập nhật thông tin thành công",
             });
+
+            // save log
+            const log = `Cập nhật thông tin cho công nhân: ${this.form_update.tencn}, Mã: ${this.form_update.macn}, Trạng thái: ${this.form.form_update}`;
+            const dataLog = {
+              logname: log,
+              createdAt: this.form.updatedAt,
+              createdBy: this.hisform.createdBy,
+            };
+            this.$axios.$post(`/api/congnhan/addlognhansu`, dataLog);
 
             if (this.maxuong != "" && this.mato == "") {
               this.congnhan = await this.$axios.$get(
