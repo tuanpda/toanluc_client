@@ -513,7 +513,7 @@
                 <template v-if="item.soluongkhsx != 0">
                   <input
                     @change="updateStatus(item)"
-                    type="text"
+                    type="number"
                     class="input is-small is-success"
                     v-model="item.soluongkhsx"
                   />
@@ -521,7 +521,7 @@
                 <template v-else>
                   <input
                     @change="updateStatus(item)"
-                    type="text"
+                    type="number"
                     class="input is-small is-danger"
                     v-model="item.soluongkhsx"
                   />
