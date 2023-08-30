@@ -644,16 +644,19 @@
         </div>
 
         <div class="navbar-end">
-          <div class="navbar-item has-dropdown is-hoverable">
+          <div
+            v-if="isUser == true"
+            class="navbar-item has-dropdown is-hoverable"
+          >
             <a class="navbar-link" @click="toggleDropdown_user"
               ><img
-                :src="avatar"
+                :src="info_user.avatar"
                 alt=""
                 width="40"
                 height="40"
                 style="border-radius: 50%"
               />
-              &ensp; hi, {{ name }} !</a
+              &ensp; hi, {{ info_user.name }} !</a
             >
             <div
               @click="toggleDropdown_user"
@@ -688,8 +691,60 @@
         <div :class="{ 'is-active': isActive }" class="modal">
           <div class="modal-background"></div>
           <div class="modal-content modal-card-predata">
-            <section class="modal-card-body">
-              <div class="box">
+            <section class="modal-card-body box">
+              <div v-if="isUser == true">
+                <div class="columns">
+                  <div class="column">
+                    <div class="field">
+                      <label class="label">Họ tên</label>
+                      <div class="control">
+                        <input
+                          v-model="info_user.name"
+                          class="input is-small"
+                          type="text"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="column">
+                    <div class="field">
+                      <label class="label">Tên tài khoản</label>
+                      <div class="control">
+                        <input
+                          v-model="info_user.username"
+                          class="input is-small"
+                          type="text"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="columns">
+                  <div class="column">
+                    <div class="field">
+                      <label class="label">Tạo bởi</label>
+                      <div class="control">
+                        <input
+                          v-model="info_user.createdBy"
+                          class="input is-small"
+                          type="text"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="column">
+                    <div class="field">
+                      <label class="label">Ảnh đại diện</label>
+                      <div class="control" style="text-align: center">
+                        <div id="preview" class="box">
+                          <figure class="image is-128x128">
+                            <img class="is-rounded" :src="info_user.avatar" />
+                          </figure>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <div class="columns">
                   <div class="column">
                     <button class="button is-small is-success is-fullwidth">
@@ -740,35 +795,13 @@ export default {
         selectedFile: null,
         url: null,
       },
-      name: null,
-      avatar: null,
+      info_user: null,
+      isUser: false,
     };
   },
 
   mounted() {
-    if (this.$auth.$state.user) {
-      this.name = this.$auth.$state.user.username;
-      this.avatar = this.$auth.$state.user.avatar;
-    } else {
-      this.name = null;
-      this.avatar = null;
-    }
-    // console.log(this.$auth.$state.loggedIn)
-    // console.log(this.$auth.$state.user.success)
-    if (
-      this.$auth.$state.loggedIn == true &&
-      this.$auth.$state.user.success == false
-    ) {
-      // alert('hết phiên')
-      this.$router.push("/notAuthenticated");
-      this.$auth.$state.loggedIn = false;
-    } else if (
-      this.$auth.$state.loggedIn == false &&
-      this.$auth.$state.user == false
-    ) {
-      this.$router.push("/notAuthenticated");
-      this.$auth.$state.loggedIn = false;
-    }
+    this.loadUser();
   },
 
   methods: {
@@ -798,6 +831,28 @@ export default {
 
     toggleDropdown_user() {
       this.isDropdownOpen_user = !this.isDropdownOpen_user;
+    },
+
+    async loadUser() {
+      // if (this.$auth.$state.user) {
+      //   this.info_user = this.$auth.$state.user;
+      //   this.isUser = true;
+      //   console.log(this.info_user);
+      // } else {
+      //   this.info_user = null;
+      // }
+      //   this.info_user = this.$auth.$state.user;
+      //   this.isUser = true;
+      //   console.log(this.info_user);
+      if (this.$auth.$state.user) {
+        this.info_user = this.$auth.$state.user;
+        // console.log(this.info_user);
+        this.isUser = true;
+      } else {
+        this.isUser = false;
+        this.$router.push("/login");
+        this.$auth.$state.loggedIn = false;
+      }
     },
 
     logout() {
@@ -830,13 +885,13 @@ export default {
 }
 
 .preview img {
-  max-width: 100%;
-  max-height: 500px;
+  width: 50px;
+  height: 50px;
 }
 
 .modal-card {
-  width: 820px;
-  height: 400px;
+  width: 620px;
+  height: 500px;
 }
 
 .navbar {

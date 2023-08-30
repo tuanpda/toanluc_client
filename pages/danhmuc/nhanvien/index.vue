@@ -1460,81 +1460,81 @@ export default {
       if (result.isConfirmed) {
         try {
           this.$v.form.$touch();
-          console.log(this.form.ngaysinh);
-          // // if (this.exits.length > 0) {
-          // //   Swal.fire(
-          // //     `Nhân viên có căn cước công dân số: ${this.form.cccd} đã tồn tại trong hệ thống!`
-          // //   );
-          // //   return;
-          // // } else {
-          // //   // console.log(this.$auth.$state.user.username);
-          // //   // console.log(this.form.createdAt);
-          // //   let data = new FormData();
-          // //   data.append("manv", this.form.manv);
-          // //   data.append("tennv", this.form.tennv);
-          // //   data.append("mapb", this.form.mapb);
-          // //   data.append("makhoi", this.form.makhoi);
-          // //   data.append("tenkhoi", this.form.tenkhoi);
-          // //   data.append("tenphong", this.form.tenphong);
-          // //   data.append("sodienthoai", this.form.sodienthoai);
-          // //   data.append("cccd", this.form.cccd);
-          // //   if (this.selectedFile) {
-          // //     data.append("anhdd", this.selectedFile, this.selectedFile.name);
-          // //   } else {
-          // //     data.append("anhdd", this.form.anhdd);
-          // //   }
-          // //   data.append("ngaysinh", this.form.ngaysinh);
-          // //   data.append("gioitinh", this.form.gioitinh);
-          // //   data.append("mucluong", this.form.mucluong.replace(/,/g, ""));
-          // //   data.append("lhkhancap", this.form.lhkhancap);
-          // //   data.append("diachilh", this.form.diachilh);
-          // //   data.append("sotknh", this.form.sotknh);
-          // //   data.append("tennh", this.form.tennh);
-          // //   data.append("diengiai", this.form.diengiai);
-          // //   data.append("createdAt", this.form.createdAt);
-          // //   data.append("accadd", this.$auth.$state.user.username);
-          // //   data.append("thuong", this.form.thuong);
-          // //   data.append("dt_dieuchinh", this.form.dt_dieuchinh);
-          // //   data.append("dt_thuong", this.form.dt_thuong);
-          // //   data.append("dt_phat", this.form.dt_phat);
-          // //   data.append("luongngoaih", this.form.luongngoaih);
-          // //   data.append("luongngay", this.form.luongngay);
-          // //   data.append("bacluong", this.form.bacluong);
-          // //   data.append("luongtrachnhiem", this.form.luongtrachnhiem);
-          // //   data.append("congdoan", this.form.congdoan);
-          // //   data.append("trangthai", this.form.trangthai);
-          // //   data.append("chutaikhoan", this.form.chutaikhoan);
-          // //   data.append("phucaptn", this.form.phucaptn);
-          // //   data.append("luongphatsinh", this.form.luongphatsinh);
-          // //   data.append("thuongdoanhthu", this.form.thuongdoanhthu);
-          // //   data.append("ngaycong", this.form.ngaycong);
-          // //   data.append("luongthemgio", this.form.luongthemgio);
-          // //   const res = await this.$axios.$post(
-          // //     "/api/nhanvien/addnhanvien",
-          // //     data
-          // //   );
+          // console.log(this.form.ngaysinh);
+          if (this.exits.length > 0) {
+            Swal.fire(
+              `Nhân viên có căn cước công dân số: ${this.form.cccd} đã tồn tại trong hệ thống!`
+            );
+            return;
+          } else {
+            // console.log(this.$auth.$state.user.username);
+            // console.log(this.form.createdAt);
+            let data = new FormData();
+            data.append("manv", this.form.manv);
+            data.append("tennv", this.form.tennv);
+            data.append("mapb", this.form.mapb);
+            data.append("makhoi", this.form.makhoi);
+            data.append("tenkhoi", this.form.tenkhoi);
+            data.append("tenphong", this.form.tenphong);
+            data.append("sodienthoai", this.form.sodienthoai);
+            data.append("cccd", this.form.cccd);
+            if (this.selectedFile) {
+              data.append("anhdd", this.selectedFile, this.selectedFile.name);
+            } else {
+              data.append("anhdd", this.form.anhdd);
+            }
+            data.append("ngaysinh", this.form.ngaysinh);
+            data.append("gioitinh", this.form.gioitinh);
+            data.append("mucluong", this.form.mucluong.replace(/,/g, ""));
+            data.append("lhkhancap", this.form.lhkhancap);
+            data.append("diachilh", this.form.diachilh);
+            data.append("sotknh", this.form.sotknh);
+            data.append("tennh", this.form.tennh);
+            data.append("diengiai", this.form.diengiai);
+            data.append("createdAt", this.form.createdAt);
+            data.append("accadd", this.$auth.$state.user.username);
+            data.append("thuong", this.form.thuong);
+            data.append("dt_dieuchinh", this.form.dt_dieuchinh);
+            data.append("dt_thuong", this.form.dt_thuong);
+            data.append("dt_phat", this.form.dt_phat);
+            data.append("luongngoaih", this.form.luongngoaih);
+            data.append("luongngay", this.form.luongngay);
+            data.append("bacluong", this.form.bacluong);
+            data.append("luongtrachnhiem", this.form.luongtrachnhiem);
+            data.append("congdoan", this.form.congdoan);
+            data.append("trangthai", this.form.trangthai);
+            data.append("chutaikhoan", this.form.chutaikhoan);
+            data.append("phucaptn", this.form.phucaptn);
+            data.append("luongphatsinh", this.form.luongphatsinh);
+            data.append("thuongdoanhthu", this.form.thuongdoanhthu);
+            data.append("ngaycong", this.form.ngaycong);
+            data.append("luongthemgio", this.form.luongthemgio);
+            const res = await this.$axios.$post(
+              "/api/nhanvien/addnhanvien",
+              data
+            );
 
-          // //   if (res.success == true) {
-          // //     const Toast = Swal.mixin({
-          // //       toast: true,
-          // //       position: "top-end",
-          // //       showConfirmButton: false,
-          // //       timer: 3000,
-          // //       timerProgressBar: true,
-          // //       didOpen: (toast) => {
-          // //         toast.addEventListener("mouseenter", Swal.stopTimer);
-          // //         toast.addEventListener("mouseleave", Swal.resumeTimer);
-          // //       },
-          // //     });
-          // //     Toast.fire({
-          // //       icon: "success",
-          // //       title: "Thêm nhân viên mới thành công",
-          // //     });
-          // //     this.getDsnv();
-          // //     this.isActive = false;
-          // //     this.form = [];
-          // //   }
-          // }
+            if (res.success == true) {
+              const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.addEventListener("mouseenter", Swal.stopTimer);
+                  toast.addEventListener("mouseleave", Swal.resumeTimer);
+                },
+              });
+              Toast.fire({
+                icon: "success",
+                title: "Thêm nhân viên mới thành công",
+              });
+              this.getDsnv();
+              this.isActive = false;
+              this.form = [];
+            }
+          }
         } catch (error) {
           console.log(error);
           const Toast = Swal.mixin({
