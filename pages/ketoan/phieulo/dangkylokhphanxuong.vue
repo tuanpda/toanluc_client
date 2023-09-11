@@ -16,7 +16,7 @@
           </div>
         </div>
 
-        <div class="table_wrapper">
+        <div>
           <table class="table is-responsive is-bordered is-narrow is-fullwidth">
             <tr style="background-color: #faf0f5">
               <td style="width: 15%">
@@ -140,6 +140,16 @@
                 "
               >
                 STT
+              </td>
+              <td
+                style="
+                  font-size: small;
+                  text-align: center;
+                  font-weight: 600;
+                  width: 5%;
+                "
+              >
+                Mã phiếu
               </td>
               <td
                 @click="sortTable('kehoachnam')"
@@ -304,6 +314,9 @@
             >
               <td style="font-size: small; text-align: center">
                 {{ index + 1 }}
+              </td>
+              <td style="font-size: small; text-align: center">
+                {{ item._id }}
               </td>
               <td style="font-size: small">{{ item.kehoachnam }}</td>
               <td style="font-size: small; font-weight: 600; color: red">
@@ -471,7 +484,7 @@
         </div>
         <br />
         <div v-if="checkViewluong == true">
-          <div class="table_wrapper">
+          <div>
             <table
               class="table is-responsive is-bordered is-narrow is-fullwidth"
             >

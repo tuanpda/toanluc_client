@@ -774,15 +774,9 @@ export default {
       // console.log(name)
       let position = name.split("--");
       let p1 = position[0].trim();
-      let mapx;
-      if (p1 == "AL_PXD" || p1 == "DV_PXD") {
-        mapx = "pxd";
-      } else {
-        mapx = p1;
-      }
 
       this.dongiacong = await this.$axios.$get(
-        `/api/nguyencong/getalldongiacongwithpx?PX=${mapx}`
+        `/api/nguyencong/getalldongiacongwithpx?PX=${p1}`
       );
       if (this.dongiacong.length <= 0) {
         this.$toasted.show("Danh mục đơn giá công rỗng", {

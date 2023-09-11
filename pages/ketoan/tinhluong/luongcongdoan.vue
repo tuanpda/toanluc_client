@@ -1769,7 +1769,7 @@
                         width: 15%;
                       "
                     >
-                      chamcong
+                      Chấm công
                     </td>
                     <td
                       style="
@@ -1779,7 +1779,7 @@
                         width: 10%;
                       "
                     >
-                      anca
+                      Ăn ca
                     </td>
                     <td
                       style="
@@ -1789,7 +1789,7 @@
                         width: 10%;
                       "
                     >
-                      tienan
+                      Tiền ăn
                     </td>
                     <td></td>
                   </tr>
