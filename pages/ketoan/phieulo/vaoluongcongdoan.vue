@@ -2732,21 +2732,10 @@ export default {
     async addCongdoan() {
       // console.log(this.getinfoplsx)
       let arrayCongdoan;
-      let px;
 
-      if (
-        this.getinfoplsx.mapx.trim() == "AL_PXD" ||
-        this.getinfoplsx.mapx.trim() == "DV_PXD"
-      ) {
-        px = "PXD";
-        arrayCongdoan = await this.$axios.$get(
-          `/api/ketoan/getnguyencong?khsp=${this.getinfoplsx.nhomluong}&px=${px}`
-        );
-      } else {
-        arrayCongdoan = await this.$axios.$get(
-          `/api/ketoan/getnguyencong?khsp=${this.getinfoplsx.nhomluong}&px=${this.getinfoplsx.mapx}`
-        );
-      }
+      arrayCongdoan = await this.$axios.$get(
+        `/api/ketoan/getnguyencong?khsp=${this.getinfoplsx.nhomluong}&px=${this.getinfoplsx.mapx}`
+      );
 
       if (this.getinfoplsx.mapx && !this.getinfoplsx.mato) {
         this.cong_nhan = await this.$axios.$get(
@@ -2900,18 +2889,10 @@ export default {
     // Copy công đoạn sản xuất
     async copyCongdoan(data, index) {
       let arrayCongdoan;
-      let px;
 
-      if (data.mapx.trim() == "AL_PXD" || data.mapx.trim() == "DV_PXD") {
-        px = "PXD";
-        arrayCongdoan = await this.$axios.$get(
-          `/api/ketoan/getnguyencong?khsp=${data.nhomluong}&px=${px}`
-        );
-      } else {
-        arrayCongdoan = await this.$axios.$get(
-          `/api/ketoan/getnguyencong?khsp=${data.nhomluong}&px=${data.mapx}`
-        );
-      }
+      arrayCongdoan = await this.$axios.$get(
+        `/api/ketoan/getnguyencong?khsp=${data.nhomluong}&px=${data.mapx}`
+      );
 
       if (data.mapx && !data.mato) {
         this.cong_nhan = await this.$axios.$get(
