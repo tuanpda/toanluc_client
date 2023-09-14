@@ -489,7 +489,6 @@ export default {
         current.getMinutes() +
         ":" +
         current.getSeconds();
-      this.form.createdAt = date + " " + time;
       this.hisform.createdAt = date + " " + time;
     },
 
@@ -747,10 +746,10 @@ export default {
             // console.log(this.form);
             let log = "";
             if (this.form.mato == "") {
-              this.form.ghichu = `Điều chuyển công nhân có mã: ${this.data_dieuchuyen.macn} từ phân xưởng ${this.data_dieuchuyen.mapx} sang phân xưởng ${this.form.mapx} vào ngày ${this.form.createdAt} bởi ${this.form.createdBy}`;
+              this.form.ghichu = `Điều chuyển công nhân có mã: ${this.data_dieuchuyen.macn} từ phân xưởng ${this.data_dieuchuyen.mapx} sang phân xưởng ${this.form.mapx} vào ngày ${this.hisform.createdAt} bởi ${this.hisform.createdBy}`;
               log = `Điều chuyển công nhân: ${this.form.tencn}, Mã: ${this.form.macn} từ phân xưởng ${this.data_dieuchuyen.mapx} sang phân xưởng ${this.form.mapx}`;
             } else {
-              this.form.ghichu = `Điều chuyển công nhân có mã: ${this.data_dieuchuyen.macn} từ tổ ${this.data_dieuchuyen.mato} thuộc phân xưởng ${this.data_dieuchuyen.mapx} sang phân xưởng ${this.form.mapx} vào tổ ${this.form.mato} vào ngày ${this.form.createdAt} bởi ${this.form.createdBy}`;
+              this.form.ghichu = `Điều chuyển công nhân có mã: ${this.data_dieuchuyen.macn} từ tổ ${this.data_dieuchuyen.mato} thuộc phân xưởng ${this.data_dieuchuyen.mapx} sang phân xưởng ${this.form.mapx} vào tổ ${this.form.mato} vào ngày ${this.hisform.createdAt} bởi ${this.hisform.createdBy}`;
               log = `Điều chuyển công nhân: ${this.form.tencn}, Mã: ${this.form.macn} từ tổ ${this.data_dieuchuyen.mato} thuộc phân xưởng ${this.data_dieuchuyen.mapx} sang phân xưởng ${this.form.mapx} vào tổ ${this.form.mato}`;
             }
             // b1: ghi dữ liệu ở tổ mới

@@ -362,11 +362,11 @@
               >
                 User tạo
               </td>
-              <!-- <td
+              <td
                 style="font-size: small; font-weight: bold; text-align: center"
               >
-                Cập nhật
-              </td> -->
+                Xóa
+              </td>
             </tr>
             <tr v-for="(item, index) in showNgaychamcong" :key="index">
               <td style="font-size: small; text-align: center">
@@ -440,12 +440,11 @@
               <td style="font-size: small; text-align: center">
                 {{ item.createdBy }}
               </td>
-              <!-- <td style="text-align: center">
-                <a @click="capnhatcc(item)"
-                  ><span>
-                    <i style="color: red" class="fa fa-check-circle"></i> </span
+              <td style="text-align: center">
+                <a @click="onDelete(item)"
+                  ><span> <i style="color: red" class="fas fa-times"></i> </span
                 ></a>
-              </td> -->
+              </td>
             </tr>
           </table>
         </div>
@@ -1007,6 +1006,7 @@ export default {
     },
 
     async getWithTo(e) {
+      this.items = [];
       var name = e.target.options[e.target.options.selectedIndex].text;
       let position = name.split("--");
       this.form.mato = position[0];
@@ -1590,6 +1590,60 @@ export default {
           icon: "error",
           title: "Bạn không có quyền xóa dữ liệu chấm công !!!",
         });
+      }
+    },
+
+    async onDelete(cc) {
+      const result = await Swal.fire({
+        title: `Bạn có xóa hẳn chấm công này?`,
+        showDenyButton: true,
+        confirmButtonText: "Có, Xóa",
+        denyButtonText: `Hủy`,
+      });
+      if (result.isConfirmed) {
+        try {
+          await this.$axios
+            .$delete(`/api/congnhan/chamcongid/${cc._id}`)
+            .then((response) => {
+              const index = this.showNgaychamcong.findIndex(
+                (p) => p._id === cc._id
+              ); // find the post index
+              if (~index)
+                // if the post exists in array
+                this.showNgaychamcong.splice(index, 1); //delete the post
+            });
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
+          Toast.fire({
+            icon: "success",
+            title: "Xóa thành công",
+          });
+        } catch (error) {
+          const Toast = Swal.mixin({
+            toast: true,
+            position: "top-end",
+            showConfirmButton: false,
+            timer: 2000,
+            timerProgressBar: true,
+            didOpen: (toast) => {
+              toast.addEventListener("mouseenter", Swal.stopTimer);
+              toast.addEventListener("mouseleave", Swal.resumeTimer);
+            },
+          });
+          Toast.fire({
+            icon: "error",
+            title: `Có lỗi xảy ra`,
+          });
+        }
       }
     },
   },
