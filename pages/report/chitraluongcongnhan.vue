@@ -84,22 +84,33 @@
               </div>
             </div>
           </div>
-        </div>
 
-        <div class="columns">
-          <div class="column">
-            <button
-              @click="[reportBangluong(), reportSum()]"
-              class="button is-small is-success is-fullwidth"
-            >
-              <span class="icon is-small">
-                <i class="fas fa-file-alt"></i>
-              </span>
-              <span>Xem dữ liệu chi trả</span>
-            </button>
+          <div class="columns">
+            <div class="column is-6"></div>
+            <div class="column">
+              <button
+                @click="[reportBangluong(), reportSum()]"
+                class="button is-small is-success is-fullwidth"
+              >
+                <span class="icon is-small">
+                  <i class="fas fa-file-alt"></i>
+                </span>
+                <span>Xem dữ liệu chi trả</span>
+              </button>
+            </div>
+            <div class="column">
+              <vue-excel-xlsx
+                :data="report"
+                :columns="columns"
+                :file-name="`Chi trả lương tháng ${this.thang}/${this.nam}_${this.maxuong}_${this.mato}`"
+                :file-type="'xlsx'"
+                :sheet-name="'Chi trả lương'"
+                style="width: 100%"
+              >
+                Download Execl
+              </vue-excel-xlsx>
+            </div>
           </div>
-          <div class="column"></div>
-          <div class="column"></div>
         </div>
 
         <div v-if="report.length > 0" class="table_wrapper">
@@ -107,7 +118,7 @@
             class="table is-responsive is-bordered is-striped is-narrow is-hoverable is-fullwidth"
           >
             <tr style="background-color: blanchedalmond">
-              <td
+              <!-- <td
                 style="
                   text-align: center;
                   font-weight: bold;
@@ -116,7 +127,7 @@
                 "
               >
                 <input type="checkbox" v-model="selectAll" />
-              </td>
+              </td> -->
               <td
                 style="
                   text-align: center;
@@ -189,9 +200,9 @@
               </td>
             </tr>
             <tr v-for="(nv, index) in report" :key="index">
-              <td style="text-align: center">
+              <!-- <td style="text-align: center">
                 <input v-model="selected" :value="nv" type="checkbox" />
-              </td>
+              </td> -->
               <td style="text-align: center; font-size: small">
                 {{ index + 1 }}
               </td>
@@ -289,6 +300,54 @@ export default {
       showcount: 0,
       showsuccess: 0,
       isshow: false,
+
+      columns: [
+        {
+          label: "Họ và tên",
+          field: "hotennv",
+        },
+        {
+          label: "Tổng Lương nhận",
+          field: "tongnhan",
+          dataFormat: this.priceFormat,
+        },
+        {
+          label: "Chuyển khoản lần 1",
+          field: "ck1",
+          dataFormat: this.priceFormat,
+        },
+        {
+          label: "Chuyển khoản lần 2",
+          field: "ck2",
+          dataFormat: this.priceFormat,
+        },
+        {
+          label: "Tổng tiền chuyển khoản",
+          field: "chuyenkhoan",
+          dataFormat: this.priceFormat,
+        },
+        {
+          label: "Tiền mặt nhận",
+          field: "tienmat",
+          dataFormat: this.priceFormat,
+        },
+        {
+          label: "Số tài khoản",
+          field: "stk",
+        },
+        {
+          label: "Tên ngân hàng",
+          field: "tennganhang",
+        },
+        {
+          label: "Chủ tài khoản",
+          field: "chutaikhoan",
+        },
+        {
+          label: "Ghi chú",
+          field: "ghichu",
+        },
+      ],
     };
   },
 
@@ -343,6 +402,11 @@ export default {
         current.getSeconds();
       this.createdAt = date + " " + time;
       // console.log(this.createdAt);
+    },
+
+    priceFormat(value) {
+      // Áp dụng định dạng tiền tệ vào giá trị
+      return value.toLocaleString("en-US");
     },
 
     async getPhanxuong() {
@@ -434,7 +498,7 @@ export default {
         }
       } else {
         this.report = await this.$axios.$get(
-          `/api/report/reportluongthang_to?thang=${this.thang}&nam=${this.nam}&mato=${this.mato}`
+          `/api/report/reportchitraluongthang_to?thang=${this.thang}&nam=${this.nam}&mato=${this.mato}`
         );
         // Làm tròn cột "tongnhan"
         this.report.forEach((item) => {

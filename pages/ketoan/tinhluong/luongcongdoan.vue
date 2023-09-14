@@ -124,9 +124,9 @@
                   <vue-excel-xlsx
                     :data="dscongnhan_download"
                     :columns="columns_luong"
-                    :file-name="'Lương thang'"
+                    :file-name="'Lương tháng'"
                     :file-type="'xlsx'"
-                    :sheet-name="'Lương thang'"
+                    :sheet-name="'Lương tháng'"
                   >
                     Download
                   </vue-excel-xlsx>
