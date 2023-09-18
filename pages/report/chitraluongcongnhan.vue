@@ -17,9 +17,9 @@
         </div>
         <div class="box">
           <div class="columns">
-            <div class="column">
+            <div class="column is-3">
               <div class="select is-small is-fullwidth">
-                <select id="" @change="onChange_Thang($event)">
+                <select @change="onChange_Thang($event)">
                   <option selected>-- Chọn tháng --</option>
                   <option value="01">Tháng 1</option>
                   <option value="02">Tháng 2</option>
@@ -36,7 +36,7 @@
                 </select>
               </div>
             </div>
-            <div class="column">
+            <div class="column is-3">
               <div class="select is-small is-fullwidth">
                 <select id="" @change="onChange_Nam($event)">
                   <option selected>-- Chọn năm --</option>
@@ -55,13 +55,35 @@
                 </select>
               </div>
             </div>
+            <div class="column is-3">
+              <button
+                @click="reportBangluong()"
+                class="button is-small is-success is-fullwidth"
+              >
+                <span class="icon is-small">
+                  <i class="fas fa-file-alt"></i>
+                </span>
+                <span>Xem dữ liệu chi trả</span>
+              </button>
+            </div>
+            <div class="column is-3">
+              <button
+                @click="exportExcel"
+                class="button is-small is-info is-fullwidth"
+              >
+                Xuất Execl
+              </button>
+            </div>
           </div>
 
           <div class="columns">
-            <div class="column">
+            <div class="column is-3">
               <div class="control has-icons-left">
                 <div class="select is-small is-fullwidth">
-                  <select @change="getWithPX($event)">
+                  <select
+                    @change="getWithPX($event)"
+                    :disabled="isDisabled_toxuong"
+                  >
                     <option selected>-- Chọn phân xưởng --</option>
                     <option v-for="item in phanxuong" :value="item.mapx">
                       {{ item.mapx }} -- {{ item.tenpx }}
@@ -73,9 +95,12 @@
                 </span>
               </div>
             </div>
-            <div class="column">
+            <div class="column is-3">
               <div class="select is-small is-fullwidth">
-                <select @change="getWithTo($event)">
+                <select
+                  @change="getWithTo($event)"
+                  :disabled="isDisabled_toxuong"
+                >
                   <option selected>-- Chọn tổ --</option>
                   <option v-for="item in tonhom" :value="item.mapx">
                     {{ item.mato }} -- {{ item.tento }}
@@ -83,32 +108,11 @@
                 </select>
               </div>
             </div>
-          </div>
-
-          <div class="columns">
-            <div class="column is-6"></div>
-            <div class="column">
-              <button
-                @click="[reportBangluong(), reportSum()]"
-                class="button is-small is-success is-fullwidth"
-              >
-                <span class="icon is-small">
-                  <i class="fas fa-file-alt"></i>
-                </span>
-                <span>Xem dữ liệu chi trả</span>
-              </button>
-            </div>
-            <div class="column">
-              <vue-excel-xlsx
-                :data="report"
-                :columns="columns"
-                :file-name="`Chi trả lương tháng ${this.thang}/${this.nam}_${this.maxuong}_${this.mato}`"
-                :file-type="'xlsx'"
-                :sheet-name="'Chi trả lương'"
-                style="width: 100%"
-              >
-                Download Execl
-              </vue-excel-xlsx>
+            <div class="column is-3">
+              <label class="checkbox">
+                <input type="checkbox" v-model="alltoxuong" />
+                Lương toàn xưởng/tổ
+              </label>
             </div>
           </div>
         </div>
@@ -252,131 +256,29 @@
 </template>
 
 <script>
-import createNumberMask from "text-mask-addons/dist/createNumberMask";
-const currencyMask = createNumberMask({
-  prefix: "",
-  allowDecimal: true,
-  includeThousandsSeparator: true,
-  allowNegative: false,
-});
 import Swal from "sweetalert2";
-import jsPDF from "jspdf";
-import "jspdf-autotable";
-import "~/assets/font/OpenSans-Light-normal";
-import "~/assets/font/OpenSans-SemiBold-normal";
+import XLSX from "xlsx";
 export default {
   middleware: "auth-luong",
   data() {
     return {
-      chitra: {},
-      selected: [],
       phanxuong: [],
       tonhom: [],
       report: [],
-      sumreport: [],
-      sumrp: [],
       thang: null,
       nam: null,
-      isPdf: false,
       maxuong: "",
       mato: "",
       tenxuong: "",
       tento: "",
-      mask: currencyMask,
-      form: {
-        chuyenkhoan: 0,
-        tienmat: 0,
-      },
-      createdBy: this.$auth.$state.user.username,
-      createdAt: null,
-      keyThangnam: null,
 
-      // modal update
-      isActive: false,
-      show_needupudate: [],
-      show_datasave: [],
-
-      // progress
-      showcount: 0,
-      showsuccess: 0,
-      isshow: false,
-
-      columns: [
-        {
-          label: "Họ và tên",
-          field: "hotennv",
-        },
-        {
-          label: "Tổng Lương nhận",
-          field: "tongnhan",
-          dataFormat: this.priceFormat,
-        },
-        {
-          label: "Chuyển khoản lần 1",
-          field: "ck1",
-          dataFormat: this.priceFormat,
-        },
-        {
-          label: "Chuyển khoản lần 2",
-          field: "ck2",
-          dataFormat: this.priceFormat,
-        },
-        {
-          label: "Tổng tiền chuyển khoản",
-          field: "chuyenkhoan",
-          dataFormat: this.priceFormat,
-        },
-        {
-          label: "Tiền mặt nhận",
-          field: "tienmat",
-          dataFormat: this.priceFormat,
-        },
-        {
-          label: "Số tài khoản",
-          field: "stk",
-        },
-        {
-          label: "Tên ngân hàng",
-          field: "tennganhang",
-        },
-        {
-          label: "Chủ tài khoản",
-          field: "chutaikhoan",
-        },
-        {
-          label: "Ghi chú",
-          field: "ghichu",
-        },
-      ],
+      alltoxuong: false,
     };
   },
 
   computed: {
-    selectAll: {
-      get: function () {
-        return this.report ? this.selected.length == this.report.length : false;
-      },
-      set: function (value) {
-        var selected = [];
-
-        if (value) {
-          this.report.forEach(function (nv) {
-            selected.push(nv);
-          });
-        }
-
-        this.selected = selected;
-      },
-    },
-
-    isDisabled() {
-      return this.isPdf == false;
-    },
-
-    computedNhanl2() {
-      return (nv) => {
-        return nv.nhanl2;
-      };
+    isDisabled_toxuong() {
+      return this.alltoxuong == true;
     },
   },
 
@@ -400,34 +302,10 @@ export default {
         current.getMinutes() +
         ":" +
         current.getSeconds();
-      this.createdAt = date + " " + time;
-      // console.log(this.createdAt);
-    },
-
-    priceFormat(value) {
-      // Áp dụng định dạng tiền tệ vào giá trị
-      return value.toLocaleString("en-US");
     },
 
     async getPhanxuong() {
       this.phanxuong = await this.$axios.$get(`/api/phongban/allphanxuong`);
-
-      const current = new Date();
-      const date =
-        current.getFullYear() +
-        "-" +
-        (current.getMonth() + 1) +
-        "-" +
-        current.getDate();
-      const time =
-        current.getHours() +
-        ":" +
-        current.getMinutes() +
-        ":" +
-        current.getSeconds();
-      this.createdAt = date + " " + time;
-
-      // console.log(this.createdAt);
     },
 
     async getWithPX(e) {
@@ -456,103 +334,6 @@ export default {
       this.tento = p2;
     },
 
-    updateNhanl2(nv) {
-      // console.log(nv.nhanl1);
-      const number = parseInt(nv.nhanl1.replace(/,/g, ""), 10);
-      // console.log(number);
-      nv.nhanl2 = nv.tongnhan - number;
-    },
-
-    async reportBangluong() {
-      if (this.mato == "") {
-        this.report = await this.$axios.$get(
-          `/api/report/reportchitraluongthang_px?thang=${this.thang}&nam=${this.nam}&mapb=${this.maxuong}`
-        );
-        // Làm tròn cột "tongnhan"
-        // this.report.forEach((item) => {
-        //   item.tongnhan = Math.round(item.tongnhan);
-        //   item.nhanl2 = item.tongnhan - item.nhanl1;
-        //   if (item.stk == "") {
-        //     item.tienmat = item.tongnhan;
-        //   } else {
-        //     item.tienmat = 0;
-        //   }
-        // });
-        // console.log(this.report);
-        if (this.report.length <= 0) {
-          const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.addEventListener("mouseenter", Swal.stopTimer);
-              toast.addEventListener("mouseleave", Swal.resumeTimer);
-            },
-          });
-          Toast.fire({
-            icon: "error",
-            title: "Không có số liệu kỳ lương tại xưởng này",
-          });
-        }
-      } else {
-        this.report = await this.$axios.$get(
-          `/api/report/reportchitraluongthang_to?thang=${this.thang}&nam=${this.nam}&mato=${this.mato}`
-        );
-        // Làm tròn cột "tongnhan"
-        this.report.forEach((item) => {
-          item.tongnhan = Math.round(item.tongnhan);
-        });
-        if (this.report.length <= 0) {
-          const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.addEventListener("mouseenter", Swal.stopTimer);
-              toast.addEventListener("mouseleave", Swal.resumeTimer);
-            },
-          });
-          Toast.fire({
-            icon: "error",
-            title: "Không có số liệu kỳ lương tại tổ này",
-          });
-        }
-      }
-    },
-
-    async reportSum() {
-      if (this.mato == "") {
-        this.sumreport = await this.$axios.$get(
-          `/api/report/reportsumluong_phanxuong?thang=${this.thang}&nam=${this.nam}&mapb=${this.maxuong}`
-        );
-        this.sumrp = this.sumreport[0];
-      } else {
-        this.sumreport = await this.$axios.$get(
-          `/api/report/reportsumluongto?thang=${this.thang}&nam=${this.nam}&mato=${this.mato}`
-        );
-      }
-    },
-
-    currentDateTime() {
-      const current = new Date();
-      const date =
-        current.getFullYear() +
-        "-" +
-        (current.getMonth() + 1) +
-        "-" +
-        current.getDate();
-      const time =
-        current.getHours() +
-        ":" +
-        current.getMinutes() +
-        ":" +
-        current.getSeconds();
-    },
-
     onChange_Thang(e) {
       var id = e.target.value;
       var name = e.target.options[e.target.options.selectedIndex].text;
@@ -573,124 +354,14 @@ export default {
       // console.log(this.tennam)
     },
 
-    async preShowUpdate() {
-      this.show_needupudate = [];
-      this.show_datasave = [];
-      // console.log(this.report);
-      // tìm thông tin của toàn bộ công nhân trong danh mục công nhân
-      // console.log(this.maxuong);
-      // console.log(this.mato);
-      const arrCn = [];
-      for (let i = 0; i < this.report.length; i++) {
-        arrCn.push(this.report[i].manv);
-      }
-      // console.log(arrCn);
-      let listcn = [];
-      const res = await this.$axios.$get(
-        `/api/congnhan/showallcongnhanwitharrmacn`,
-        {
-          params: {
-            macn: arrCn,
-          },
-        }
-      );
-      listcn = res.data;
-      // console.log(keytn);
-      // console.log(listcn);
-      // tiến hành cập nhật thông tin tài khoản ngân hàng vào bảng luongthang
-      // đầu tiên xem mã công nhân trong mảng arrCn có những mã nào. ứng với từng mã sẽ cập nhật
-      // mã đó theo thông tin ngân hàng
-
-      for (let i = 0; i < listcn.length; i++) {
-        this.show_datasave.push({
-          manv: listcn[i].macn,
-          chutaikhoan: listcn[i].chutaikhoan,
-          tennganhang: listcn[i].tennh,
-          stk: listcn[i].sotknh,
-        });
-      }
-
-      // tìm xem công nhân nào chưa có thông tin đầy đủ về tài khoản ngân hàng
-      // tìm xong đẩy vào mảng show_needupudate
-      for (let i = 0; i < this.report.length; i++) {
-        if (
-          this.report[i].stk == "" ||
-          this.report[i].chutaikhoan == "" ||
-          this.report[i].tennganhang == ""
-        ) {
-          this.show_needupudate.push({
-            _id: this.report[i]._id,
-            manv: this.report[i].manv,
-            hotennv: this.report[i].hotennv,
-            chutaikhoan: this.report[i].chutaikhoan,
-            tennganhang: this.report[i].tennganhang,
-            stk: this.report[i].stk,
-          });
-        }
-      }
-      // console.log(this.show_needupudate);
-      // console.log(this.show_datasave);
-      this.isActive = true;
-    },
-
-    async onUpdateInfoBank() {
-      const result = await Swal.fire({
-        title: `Bạn chắc chắn cập nhật thông tin cho các công nhân trên?`,
-        showDenyButton: true,
-        confirmButtonText: "Chắc chắn",
-        denyButtonText: `Hủy`,
-      });
-      if (result.isConfirmed) {
-        try {
-          let keytn =
-            this.thang.trim() +
-            this.nam.trim() +
-            "-" +
-            this.maxuong +
-            "-" +
-            this.mato;
-
-          const lengtData = this.show_needupudate.length;
-          // console.log(lengtData);
-          this.showsuccess = lengtData;
-          this.isshow = true;
-          const progressBar = document.getElementById("progress-bar");
-          progressBar.value = this.showcount;
-          progressBar.max = this.showsuccess;
-
-          // chạy vòng lặp để cập nhật
-          for (let i = 0; i < this.show_needupudate.length; i++) {
-            for (let j = 0; j < this.show_datasave.length; j++) {
-              if (this.show_needupudate[i].manv == this.show_datasave[j].manv) {
-                // console.log(data_update);
-                // console.log(this.show_needupudate[i].manv);
-                // console.log(this.show_needupudate[i]._id);
-                // update
-                const res = await this.$axios.$get(
-                  `/api/congnhan/updatethongtinbank`,
-                  {
-                    params: {
-                      _id: this.show_needupudate[i]._id,
-                      manv: this.show_needupudate[i].manv,
-                      key_thangnam: keytn,
-                      chutaikhoan: this.show_datasave[j].chutaikhoan,
-                      tennganhang: this.show_datasave[j].tennganhang,
-                      stk: this.show_datasave[j].stk,
-                    },
-                  }
-                );
-                // console.log(res);
-                if (res.success) {
-                  this.showcount++;
-                  progressBar.value = this.showcount;
-                }
-              }
-            }
-
-            //update luongthang set chutaikhoan='', tennganhang='', stk=''
-            // where _id=_id and manv=manv and key_thangnam=keytn
-          }
-
+    // load report
+    async reportBangluong() {
+      if (this.alltoxuong == true) {
+        this.report = [];
+        this.report = await this.$axios.$get(
+          `/api/report/reportchitraluongthang_allpxandto?thang=${this.thang}&nam=${this.nam}`
+        );
+        if (this.report.length <= 0) {
           const Toast = Swal.mixin({
             toast: true,
             position: "top-end",
@@ -703,43 +374,27 @@ export default {
             },
           });
           Toast.fire({
-            icon: "success",
-            title:
-              "Cập nhật thành công. Bạn bấm lại nút Xem bảng lương để hiển thị lại dữ liệu!!",
-          });
-          this.isshow = false;
-          this.showcount = 0;
-          this.showsuccess = 0;
-        } catch (error) {
-          const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 2000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.addEventListener("mouseenter", Swal.stopTimer);
-              toast.addEventListener("mouseleave", Swal.resumeTimer);
-            },
-          });
-          Toast.fire({
             icon: "error",
-            title: `Có lỗi xảy ra`,
+            title: "Không có số liệu kỳ lương tại xưởng này",
           });
         }
-      }
-    },
-
-    async onSaveChitra() {
-      const result = await Swal.fire({
-        title: `Bạn chắc chắn ghi dữ liệu Chi trả?`,
-        showDenyButton: true,
-        confirmButtonText: "Chắc chắn",
-        denyButtonText: `Hủy`,
-      });
-      if (result.isConfirmed) {
-        try {
-          if (this.selected.length < 1) {
+      } else {
+        if (this.mato == "") {
+          this.report = await this.$axios.$get(
+            `/api/report/reportchitraluongthang_px?thang=${this.thang}&nam=${this.nam}&mapb=${this.maxuong}`
+          );
+          // Làm tròn cột "tongnhan"
+          // this.report.forEach((item) => {
+          //   item.tongnhan = Math.round(item.tongnhan);
+          //   item.nhanl2 = item.tongnhan - item.nhanl1;
+          //   if (item.stk == "") {
+          //     item.tienmat = item.tongnhan;
+          //   } else {
+          //     item.tienmat = 0;
+          //   }
+          // });
+          // console.log(this.report);
+          if (this.report.length <= 0) {
             const Toast = Swal.mixin({
               toast: true,
               position: "top-end",
@@ -753,145 +408,148 @@ export default {
             });
             Toast.fire({
               icon: "error",
-              title: "Không có phiếu nào được tích chọn",
+              title: "Không có số liệu kỳ lương tại xưởng này",
             });
-            return;
-          } else {
-            const arrkeythangnam = [];
-            const listkeythangnam = await this.$axios.$get(
-              `/api/ketoan/getkeythangnam_chitraluong`
-            );
-            // console.log(this.listkeythangnam);
-            for (let i = 0; i < listkeythangnam.length; i++) {
-              let ktn = listkeythangnam[i].key_thangnam.trim();
-              arrkeythangnam.push(ktn);
-            }
-            this.keyThangnam =
-              this.thang.trim() +
-              this.nam.trim() +
-              "-" +
-              this.maxuong +
-              "-" +
-              this.mato;
-
-            // console.log(this.keyThangnam);
-            // console.log(this.selected);
-            this.isExits = arrkeythangnam.includes(this.keyThangnam.trim());
-            if (this.isExits == false) {
-              for (let i = 0; i < this.selected.length; i++) {
-                if (this.selected[i].tienmat == 0) {
-                  this.chitra = {
-                    mapb: this.selected[i].mapb,
-                    tenpb: this.selected[i].tenpb,
-                    mato: this.selected[i].mato,
-                    manv: this.selected[i].manv,
-                    hotennv: this.selected[i].hotennv,
-                    tongnhan: this.selected[i].tongnhan,
-                    createdAt: this.createdAt,
-                    createdBy: this.createdBy,
-                    thang: this.thang,
-                    nam: this.nam,
-                    key_thangnam: this.keyThangnam,
-                    status: 1,
-                    chutaikhoan: this.selected[i].chutaikhoan,
-                    tennganhang: this.selected[i].tennganhang,
-                    stk: this.selected[i].stk,
-                    chuyenkhoan:
-                      parseInt(this.selected[i].nhanl1.replace(/,/g, ""), 10) +
-                      parseFloat(this.selected[i].nhanl2),
-                    tienmat: 0,
-                    ck1: parseInt(
-                      this.selected[i].nhanl1.replace(/,/g, ""),
-                      10
-                    ),
-                    ck2: parseFloat(this.selected[i].nhanl2),
-                    ghichu: this.selected[i].ghichu,
-                    vanphong: 0,
-                  };
-                } else {
-                  this.chitra = {
-                    mapb: this.selected[i].mapb,
-                    tenpb: this.selected[i].tenpb,
-                    mato: this.selected[i].mato,
-                    manv: this.selected[i].manv,
-                    hotennv: this.selected[i].hotennv,
-                    tongnhan: this.selected[i].tongnhan,
-                    createdAt: this.createdAt,
-                    createdBy: this.createdBy,
-                    thang: this.thang,
-                    nam: this.nam,
-                    key_thangnam: this.keyThangnam,
-                    status: 1,
-                    chutaikhoan: this.selected[i].chutaikhoan,
-                    tennganhang: this.selected[i].tennganhang,
-                    stk: this.selected[i].stk,
-                    chuyenkhoan: 0,
-                    tienmat: parseFloat(this.selected[i].tienmat),
-                    ck1: 0,
-                    ck2: 0,
-                    ghichu: this.selected[i].ghichu,
-                    vanphong: 0,
-                  };
-                }
-
-                const res = await this.$axios.post(
-                  `/api/ketoan/addchitraluongthang`,
-                  this.chitra
-                );
-                // console.log(res);
-              }
-
-              const Toast = Swal.mixin({
-                toast: true,
-                position: "top-end",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                  toast.addEventListener("mouseenter", Swal.stopTimer);
-                  toast.addEventListener("mouseleave", Swal.resumeTimer);
-                },
-              });
-              Toast.fire({
-                icon: "success",
-                title: "Đã ghi số liệu chi trả lương",
-              });
-            } else {
-              const Toast = Swal.mixin({
-                toast: true,
-                position: "top-end",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                  toast.addEventListener("mouseenter", Swal.stopTimer);
-                  toast.addEventListener("mouseleave", Swal.resumeTimer);
-                },
-              });
-              Toast.fire({
-                icon: "error",
-                title: "Số liệu chi trả kỳ này đã có",
-              });
-            }
           }
-        } catch (error) {
-          const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 2000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.addEventListener("mouseenter", Swal.stopTimer);
-              toast.addEventListener("mouseleave", Swal.resumeTimer);
-            },
+        } else {
+          this.report = await this.$axios.$get(
+            `/api/report/reportchitraluongthang_to?thang=${this.thang}&nam=${this.nam}&mato=${this.mato}`
+          );
+          // Làm tròn cột "tongnhan"
+          this.report.forEach((item) => {
+            item.tongnhan = Math.round(item.tongnhan);
           });
-          Toast.fire({
-            icon: "error",
-            title: `Có lỗi xảy ra`,
-          });
+          if (this.report.length <= 0) {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+              },
+            });
+            Toast.fire({
+              icon: "error",
+              title: "Không có số liệu kỳ lương tại tổ này",
+            });
+          }
         }
       }
+    },
+
+    // xuất execl
+    exportExcel() {
+      // Hàm định dạng số với dấu ngăn cách thập phân
+      function formatNumber(number) {
+        const parts = number.toString().split(".");
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return parts.join(".");
+      }
+      let filename_phanxuong;
+      if (this.alltoxuong == true) {
+        filename_phanxuong = "Tất cả phân xưởng";
+      } else {
+        filename_phanxuong = this.maxuong + "_" + this.mato;
+      }
+      const selectedColumns = this.report.map((item) => {
+        // const formattedDate = new Date(item.ngaybd).toLocaleDateString("en-GB");
+        const tongnhan = parseFloat(item.tongnhan); // Chuyển đổi giá trị thành số
+        const ck1 = parseFloat(item.ck2);
+        const ck2 = parseFloat(item.ck1);
+        const chuyenkhoan = parseFloat(item.chuyenkhoan);
+        const tienmat = parseFloat(item.tienmat);
+        return {
+          hotennv: item.hotennv,
+          tongnhan: isNaN(tongnhan) ? item.tongnhan : formatNumber(tongnhan),
+          // Định dạng nếu là số, ngược lại giữ nguyên giá trị
+          ck1: isNaN(ck1) ? item.ck1 : formatNumber(ck1),
+          ck2: isNaN(ck2) ? item.ck2 : formatNumber(ck2),
+          chuyenkhoan: isNaN(chuyenkhoan)
+            ? item.chuyenkhoan
+            : formatNumber(chuyenkhoan),
+          tienmat: isNaN(tienmat) ? item.tienmat : formatNumber(tienmat),
+          stk: item.stk,
+          tennganhang: item.tennganhang,
+          chutaikhoan: item.chutaikhoan,
+          ghichu: item.ghichu,
+        };
+      });
+
+      // Tính tổng cho các cột
+      const totalTongnhan = this.report.reduce((sum, item) => {
+        return sum + item.tongnhan;
+      }, 0);
+      const totalCk1 = this.report.reduce((sum, item) => {
+        return sum + item.ck1;
+      }, 0);
+      const totalCk2 = this.report.reduce((sum, item) => {
+        return sum + item.ck2;
+      }, 0);
+      const totalTongck = this.report.reduce((sum, item) => {
+        return sum + item.chuyenkhoan;
+      }, 0);
+      const totalTm = this.report.reduce((sum, item) => {
+        return sum + item.tienmat;
+      }, 0);
+
+      // Thêm dòng tổng vào dữ liệu
+      const data_export = [
+        ...selectedColumns,
+        {
+          hotennv: "Tổng cộng",
+          tongnhan: formatNumber(totalTongnhan),
+          ck1: formatNumber(totalCk1),
+          ck2: formatNumber(totalCk2),
+          chuyenkhoan: formatNumber(totalTongck),
+          tienmat: formatNumber(totalTm),
+          ghichu: "",
+        },
+      ];
+      const columnNames = [
+        { header: "Họ tên", key: "hotennv" },
+        { header: "Tổng nhận", key: "tongnhan" },
+        { header: "Chuyển khoản lần 1", key: "ck1" },
+        { header: "Chuyển khoản lần 2", key: "ck2" },
+        { header: "Tổng chuyển khoản", key: "chuyenkhoan" },
+        { header: "Tiền mặt", key: "tienmat" },
+        { header: "Số tài khoản", key: "stk" },
+        { header: "Tên ngân hàng", key: "tennganhang" },
+        { header: "Chủ tài khoản", key: "chutaikhoan" },
+        { header: "Ghi chú", key: "ghichu" },
+      ];
+      const data = data_export.map((item) => {
+        const row = {};
+        columnNames.forEach((column) => {
+          row[column.header] = item[column.key];
+        });
+        return row;
+      });
+
+      const filenameyc = filename_phanxuong + "_" + this.thang + "_" + this.nam;
+      const worksheet = XLSX.utils.json_to_sheet(data);
+      // const workbook = { Sheets: { data: worksheet }, SheetNames: ["data"] };
+      const workbook = {
+        Sheets: { [filenameyc]: worksheet },
+        SheetNames: [filenameyc],
+      };
+      const excelBuffer = XLSX.write(workbook, {
+        bookType: "xlsx",
+        type: "array",
+      });
+      const fileName = `${filenameyc}`;
+      const blob = new Blob([excelBuffer], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
+      });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", fileName);
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     },
   },
 };
