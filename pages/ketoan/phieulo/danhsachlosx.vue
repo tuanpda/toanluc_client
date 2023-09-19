@@ -2017,18 +2017,10 @@ export default {
 
       // công đoạn
       let arrayCongdoan;
-      let px;
 
-      if (phieu.mapx.trim() == "AL_PXD" || phieu.mapx.trim() == "DV_PXD") {
-        px = "PXD";
-        arrayCongdoan = await this.$axios.$get(
-          `/api/ketoan/getnguyencong?khsp=${phieu.nhomluong}&px=${px}`
-        );
-      } else {
-        arrayCongdoan = await this.$axios.$get(
-          `/api/ketoan/getnguyencong?khsp=${phieu.nhomluong}&px=${phieu.mapx}`
-        );
-      }
+      arrayCongdoan = await this.$axios.$get(
+        `/api/ketoan/getnguyencong?khsp=${phieu.nhomluong}&px=${phieu.mapx}`
+      );
 
       doc.rect(2, 5, 50, 8);
       doc.addFont("OpenSans-SemiBold-normal.ttf", "OpenSans-SemiBold", "bold");
@@ -2333,7 +2325,7 @@ export default {
       // + 8 ở tọa độ y là thêm được 1 dòng nếu dùng vòng lặp
       // vậy đặt biến là tọa độ y
       // lặp cái mảng arrCongdoan
-      // console.log(arrayCongdoan); // in ra 14 dòng bất kể chiều dài mảng
+      console.log(arrayCongdoan); // in ra 12 dòng bất kể chiều dài mảng
       for (let i = 0; i < lengthPrint; i++) {
         textyPoint = textyPoint + 8;
         yPoint = yPoint + 8;
