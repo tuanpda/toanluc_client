@@ -174,7 +174,22 @@
                 >
                   <tr>
                     <td style="font-size: small; font-weight: bold">
-                      Loại ăn ca
+                      Phòng ban
+                    </td>
+                    <td>
+                      <div class="select is-small is-fullwidth">
+                        <select @change="getWithKhoi($event)">
+                          <option selected>-- Xem theo khối --</option>
+                          <option v-for="item in khoivp" :value="item.makhoi">
+                            {{ item.makhoi }} -- {{ item.tenkhoi }}
+                          </option>
+                        </select>
+                      </div>
+                    </td>
+                  </tr>
+                  <tr>
+                    <td style="font-size: small; font-weight: bold">
+                      Nhân viên
                     </td>
                     <td>
                       <div class="select is-small is-fullwidth">
@@ -263,13 +278,15 @@
 <script>
 import Swal from "sweetalert2";
 export default {
-  middleware: "auth",
+  middleware: "auth-luong",
   data() {
     return {
       ngoaigio: [],
       nhanvien: [],
       dinhmucngoaigio: [],
       form: {
+        mapb: "",
+        tenpb: "",
         manv: "",
         tennv: "",
         muctien: "",
@@ -279,14 +296,21 @@ export default {
         createdAt: null,
         createdBy: this.$auth.$state.user.username,
       },
+      makhoi: "",
+      tenkhoi: "",
       // Modals
       isActive: false,
+      khoivp: [
+        { makhoi: "VPBP", tenkhoi: "Văn phòng bộ phận" },
+        { makhoi: "VPGT1", tenkhoi: "Văn phòng gián tiếp 1" },
+        { makhoi: "VPGT2", tenkhoi: "Văn phòng gián tiếp 2" },
+      ],
     };
   },
 
   mounted() {
     this.dinhmucng();
-    this.allnhanvien();
+    // this.allnhanvien();
     this.getNgoaigio();
     this.currentDateTime();
   },
@@ -314,10 +338,10 @@ export default {
       this.ngoaigio = await this.$axios.$get(`/api/ketoan/getallngoaigio`);
     },
 
-    async allnhanvien() {
-      const res = await this.$axios.get("/api/nhanvien/");
-      this.nhanvien = res.data;
-    },
+    // async allnhanvien() {
+    //   const res = await this.$axios.get("/api/nhanvien/");
+    //   this.nhanvien = res.data;
+    // },
 
     // định mức ngoài giờ
     async dinhmucng() {
@@ -326,16 +350,24 @@ export default {
       );
     },
 
-    async getDinhmuc(e) {
-      this.form.muctien = "";
+    async getWithKhoi(e) {
+      this.form.makhoi = "";
+      this.form.tenkhoi = "";
+      // console.log(this.mapx)
       var name = e.target.options[e.target.options.selectedIndex].text;
       // console.log(name)
       let position = name.split("--");
       let p1 = position[0].trim();
       let p2 = position[1].trim();
-      // console.log(p1, p2);
-      this.form.muctien = p2;
+      this.form.mapb = p1;
+      this.form.tenpb = p2;
+
+      this.nhanvien = await this.$axios.$get(
+        `/api/nhanvien/statusnhanvien1withmakhoi?makhoi=${this.form.mapb}`
+      );
+      // console.log(this.nhanvien);
     },
+
     async getNhanvien(e) {
       this.form.manv = "";
       this.form.tennv = "";
@@ -347,6 +379,17 @@ export default {
       // console.log(p1, p2);
       this.form.manv = p1;
       this.form.tennv = p2;
+    },
+
+    async getDinhmuc(e) {
+      this.form.muctien = "";
+      var name = e.target.options[e.target.options.selectedIndex].text;
+      // console.log(name)
+      let position = name.split("--");
+      let p1 = position[0].trim();
+      let p2 = position[1].trim();
+      // console.log(p1, p2);
+      this.form.muctien = p2;
     },
 
     async onAdd() {

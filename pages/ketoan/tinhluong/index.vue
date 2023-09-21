@@ -104,13 +104,7 @@
               >
                 Phòng
               </td>
-              <td
-                rowspan="2"
-                style="text-align: center; font-weight: bold; font-size: small"
-              >
-                Lương trách <br />
-                nhiệm
-              </td>
+
               <td
                 rowspan="2"
                 style="text-align: center; font-weight: bold; font-size: small"
@@ -123,6 +117,13 @@
               >
                 Lương ngày <br />
                 công
+              </td>
+              <td
+                rowspan="2"
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                Lương trách <br />
+                nhiệm
               </td>
               <td
                 colspan="2"
@@ -160,7 +161,7 @@
                 rowspan="2"
                 style="text-align: center; font-weight: bold; font-size: small"
               >
-                Lương CB
+                Lương BHXH
               </td>
               <td
                 colspan="3"
@@ -215,16 +216,16 @@
                 {{ nv.tenphong }}
               </td>
               <td style="text-align: center; font-size: small">
-                {{ nv.luongtrachnhiem | formatNumber }}
-              </td>
-              <td style="text-align: center; font-size: small">
                 {{ nv.sum_ngay_lam }}
               </td>
               <td style="text-align: center; font-size: small">
                 {{
-                  (parseFloat(nv.luongngay) * parseInt(nv.sum_ngay_lam))
+                  ((parseFloat(nv.luongngay) / 26) * parseInt(nv.sum_ngay_lam))
                     | formatNumber
                 }}
+              </td>
+              <td style="text-align: center; font-size: small">
+                {{ nv.luongtrachnhiem | formatNumber }}
               </td>
               <td style="text-align: center; font-size: small">
                 <input
@@ -270,7 +271,8 @@
               >
                 {{
                   (parseFloat(nv.luongtrachnhiem) +
-                    (parseFloat(nv.luongngay) * parseInt(nv.sum_ngay_lam) +
+                    ((parseFloat(nv.luongngay) / 26) *
+                      parseInt(nv.sum_ngay_lam) +
                       parseFloat(nv.dt_dieuchinh) +
                       parseFloat(nv.dt_thuong) +
                       parseFloat(nv.thuong) +
@@ -309,7 +311,8 @@
                 >
                   {{
                     (parseFloat(nv.luongtrachnhiem) +
-                      (parseFloat(nv.luongngay) * parseInt(nv.sum_ngay_lam) +
+                      ((parseFloat(nv.luongngay) / 26) *
+                        parseInt(nv.sum_ngay_lam) +
                         parseFloat(nv.dt_dieuchinh) +
                         parseFloat(nv.dt_thuong) +
                         parseFloat(nv.thuong) +
@@ -692,7 +695,8 @@ export default {
     subRow_luongcongngay() {
       return this.dsnhanvien.reduce(
         (total, item) =>
-          total + parseFloat(item.luongngay) * parseInt(item.sum_ngay_lam),
+          total +
+          (parseFloat(item.luongngay) / 26) * parseInt(item.sum_ngay_lam),
         0
       );
     },
@@ -730,7 +734,7 @@ export default {
         (total, item) =>
           total +
           (parseFloat(item.luongtrachnhiem) +
-            parseFloat(item.luongngay) * parseInt(item.sum_ngay_lam) +
+            (parseFloat(item.luongngay) / 26) * parseInt(item.sum_ngay_lam) +
             parseFloat(item.dt_dieuchinh) +
             parseFloat(item.dt_thuong) +
             parseFloat(item.thuong) +
@@ -774,7 +778,7 @@ export default {
         (total, item) =>
           total +
           (parseFloat(item.luongtrachnhiem) +
-            (parseFloat(item.luongngay) * parseInt(item.sum_ngay_lam) +
+            ((parseFloat(item.luongngay) / 26) * parseInt(item.sum_ngay_lam) +
               parseFloat(item.dt_dieuchinh) +
               parseFloat(item.dt_thuong) +
               parseFloat(item.thuong) +
@@ -976,8 +980,8 @@ export default {
                   bacluong: this.selected[i].bacluong,
                   ngaycong: this.selected[i].sum_ngay_lam,
                   luongngaycong:
-                    parseFloat(this.selected[i].sum_ngay_lam) *
-                    parseFloat(this.selected[i].luongngay),
+                    (parseFloat(this.selected[i].luongngay) / 26) *
+                    parseFloat(this.selected[i].sum_ngay_lam),
                   dieuchinhdt: this.selected[i].dt_dieuchinh,
                   thuongdt: this.selected[i].dt_thuong,
                   phat: this.selected[i].dt_phat,
@@ -986,7 +990,7 @@ export default {
                   hotro: this.selected[i].thuong,
                   tongluong:
                     parseFloat(this.selected[i].luongtrachnhiem) +
-                    (parseFloat(this.selected[i].luongngay) *
+                    ((parseFloat(this.selected[i].luongngay) / 26) *
                       parseInt(this.selected[i].sum_ngay_lam) +
                       parseFloat(this.selected[i].dt_dieuchinh) +
                       parseFloat(this.selected[i].dt_thuong) +

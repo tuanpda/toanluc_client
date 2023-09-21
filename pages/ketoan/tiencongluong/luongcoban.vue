@@ -101,10 +101,13 @@
                 <th style="text-align: center; font-size: small">Mã phòng</th>
                 <th style="text-align: center; font-size: small">Tên phòng</th>
                 <th style="text-align: center; font-size: small; width: 10%">
-                  Lương cơ bản
+                  Lương BHXH
                 </th>
                 <th style="text-align: center; font-size: small; width: 10%">
-                  Lương ngày
+                  Lương Tháng
+                </th>
+                <th style="text-align: center; font-size: small; width: 10%">
+                  Lương ngày công
                 </th>
                 <th style="text-align: center; font-size: small; width: 10%">
                   Lương trách nhiệm
@@ -136,12 +139,17 @@
                 </td>
                 <td style="text-align: center; font-size: small">
                   <!-- {{ nv.luongngay | formatNumber }} -->
+                  <!-- 21/9/2023 sửa lại là lương tháng, nhưng tạm vẫn để luongngay -->
+                  <!-- xem như nó là lương tháng để khỏi phải tạo cột dữ liệu mới -->
                   <input
                     v-model="nv.luongngay"
                     v-mask="mask"
                     type="text"
                     class="input is-small"
                   />
+                </td>
+                <td style="text-align: center; font-size: small">
+                  {{ (parseFloat(nv.luongngay) / 26) | formatNumber }}
                 </td>
                 <td style="text-align: center; font-size: small">
                   <input
