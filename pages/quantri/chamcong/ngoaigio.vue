@@ -207,7 +207,7 @@
                       Định mức
                     </td>
                     <td>
-                      <div class="select is-small is-fullwidth">
+                      <!-- <div class="select is-small is-fullwidth">
                         <select @change="getDinhmuc($event)">
                           <option selected>-- Định mức --</option>
                           <option
@@ -217,7 +217,12 @@
                             {{ item.noidung }} -- {{ item.muctien }}
                           </option>
                         </select>
-                      </div>
+                      </div> -->
+                      <input
+                        class="input is-small"
+                        type="number"
+                        v-model="form.muctien"
+                      />
                     </td>
                   </tr>
                   <tr>

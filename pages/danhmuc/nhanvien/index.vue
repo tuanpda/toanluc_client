@@ -1509,6 +1509,8 @@ export default {
             data.append("thuongdoanhthu", this.form.thuongdoanhthu);
             data.append("ngaycong", this.form.ngaycong);
             data.append("luongthemgio", this.form.luongthemgio);
+            data.append("sogiongoaigio", 0);
+            data.append("sogiongoaigiochunhat", 0);
             const res = await this.$axios.$post(
               "/api/nhanvien/addnhanvien",
               data

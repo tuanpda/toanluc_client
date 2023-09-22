@@ -71,6 +71,14 @@
                 </span>
               </div>
             </div>
+            <div class="column" style="text-align: right">
+              <button @click="onReport" class="button is-danger is-small">
+                <span class="icon is-small">
+                  <i class="fas fa-signature"></i>
+                </span>
+                <span>Chốt và lưu lương</span>
+              </button>
+            </div>
           </div>
         </div>
 
@@ -141,6 +149,21 @@
                 rowspan="2"
                 style="text-align: center; font-weight: bold; font-size: small"
               >
+                Số giờ <br />
+                ngoài giờ
+              </td>
+              <td
+                rowspan="2"
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                Số giờ <br />
+                ngoài giờ <br />
+                Chủ nhật
+              </td>
+              <td
+                rowspan="2"
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
                 Lương ngoài giờ
                 <br />
                 / Chủ nhật
@@ -178,9 +201,14 @@
             </tr>
             <tr style="background-color: #fffaeb">
               <td
-                style="text-align: center; font-weight: bold; font-size: small"
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  background-color: #fffaeb;
+                "
               >
-                &nbsp; &nbsp; Điều chỉnh &nbsp; &nbsp;
+                Điều chỉnh
               </td>
               <td
                 style="text-align: center; font-weight: bold; font-size: small"
@@ -189,7 +217,12 @@
               </td>
 
               <td
-                style="text-align: center; font-weight: bold; font-size: small"
+                style="
+                  text-align: center;
+                  font-weight: bold;
+                  font-size: small;
+                  background-color: #fffaeb;
+                "
               >
                 BHXH
               </td>
@@ -248,11 +281,30 @@
                   class="input is-small"
                 />
               </td>
-              <td
-                @click="detailChamngoaigio(nv)"
-                style="text-align: center; font-size: small"
-              >
-                {{ nv.thanhtienngoaigio | formatNumber }}
+              <td style="text-align: center; font-size: small">
+                <input
+                  v-model="nv.sogiongoaigio"
+                  type="number"
+                  class="input is-small"
+                />
+              </td>
+              <td style="text-align: center; font-size: small">
+                <input
+                  v-model="nv.sogiongoaigiochunhat"
+                  type="number"
+                  class="input is-small"
+                />
+              </td>
+              <td style="text-align: center; font-size: small">
+                {{
+                  ((parseFloat(nv.luongngay) / 26 / 8) *
+                    parseInt(nv.sogiongoaigio) *
+                    1.5 +
+                    (parseFloat(nv.luongngay) / 26) *
+                      parseInt(nv.sogiongoaigiochunhat) *
+                      2)
+                    | formatNumber
+                }}
               </td>
               <td>
                 <input
@@ -276,7 +328,12 @@
                       parseFloat(nv.dt_dieuchinh) +
                       parseFloat(nv.dt_thuong) +
                       parseFloat(nv.thuong) +
-                      parseFloat(nv.thanhtienngoaigio) -
+                      ((parseFloat(nv.luongngay) / 26 / 8) *
+                        parseInt(nv.sogiongoaigio) *
+                        1.5 +
+                        (parseFloat(nv.luongngay) / 26) *
+                          parseInt(nv.sogiongoaigiochunhat) *
+                          2) -
                       parseFloat(nv.dt_phat)))
                     | formatNumber
                 }}
@@ -316,7 +373,12 @@
                         parseFloat(nv.dt_dieuchinh) +
                         parseFloat(nv.dt_thuong) +
                         parseFloat(nv.thuong) +
-                        parseFloat(nv.thanhtienngoaigio) -
+                        ((parseFloat(nv.luongngay) / 26 / 8) *
+                          parseInt(nv.sogiongoaigio) *
+                          1.5 +
+                          (parseFloat(nv.luongngay) / 26) *
+                            parseInt(nv.sogiongoaigiochunhat) *
+                            2) -
                         parseFloat(nv.dt_phat)) -
                       (parseFloat(nv.bhxh) + parseFloat(nv.congdoan)))
                       | formatNumber
@@ -334,16 +396,6 @@
                   text-align: center;
                 "
               >
-                {{ subRow_luongtrachnhiem | formatNumber }}
-              </td>
-              <td
-                style="
-                  color: red;
-                  font-size: small;
-                  font-weight: bold;
-                  text-align: center;
-                "
-              >
                 {{ subRow_ngaylam | formatNumber }}
               </td>
               <td
@@ -352,9 +404,20 @@
                   font-size: small;
                   font-weight: bold;
                   text-align: center;
+                  background-color: white;
                 "
               >
                 {{ subRow_luongcongngay | formatNumber }}
+              </td>
+              <td
+                style="
+                  color: red;
+                  font-size: small;
+                  font-weight: bold;
+                  text-align: center;
+                "
+              >
+                {{ subRow_luongtrachnhiem | formatNumber }}
               </td>
               <td
                 style="
@@ -386,7 +449,36 @@
               >
                 {{ subRow_phat | formatNumber }}
               </td>
-              <td></td>
+              <td
+                style="
+                  color: red;
+                  font-size: small;
+                  font-weight: bold;
+                  text-align: center;
+                "
+              >
+                {{ subRow_sogiongoaigio }}
+              </td>
+              <td
+                style="
+                  color: red;
+                  font-size: small;
+                  font-weight: bold;
+                  text-align: center;
+                "
+              >
+                {{ subRow_sogiongoaigiochunhat }}
+              </td>
+              <td
+                style="
+                  color: red;
+                  font-size: small;
+                  font-weight: bold;
+                  text-align: center;
+                "
+              >
+                {{ subRow_tongtienngoaigio | formatNumber }}
+              </td>
               <td
                 style="
                   color: red;
@@ -452,7 +544,7 @@
                   color: red;
                   font-size: small;
                   font-weight: bold;
-                  text-align: center;
+                  text-align: right;
                 "
               >
                 {{ subRow_luongnhan | formatNumber }}
@@ -721,6 +813,34 @@ export default {
         0
       );
     },
+    // sum tong giờ ngoài giờ
+    subRow_sogiongoaigio() {
+      return this.dsnhanvien.reduce(
+        (total, item) => total + parseFloat(item.sogiongoaigio),
+        0
+      );
+    },
+    // sum phat
+    subRow_sogiongoaigiochunhat() {
+      return this.dsnhanvien.reduce(
+        (total, item) => total + parseFloat(item.sogiongoaigiochunhat),
+        0
+      );
+    },
+    // sum phat
+    subRow_tongtienngoaigio() {
+      return this.dsnhanvien.reduce(
+        (total, item) =>
+          total +
+          ((parseFloat(item.luongngay) / 26 / 8) *
+            parseInt(item.sogiongoaigio) *
+            1.5 +
+            (parseFloat(item.luongngay) / 26) *
+              parseInt(item.sogiongoaigiochunhat) *
+              2),
+        0
+      );
+    },
     // sum thưởng
     subRow_thuong() {
       return this.dsnhanvien.reduce(
@@ -738,7 +858,12 @@ export default {
             parseFloat(item.dt_dieuchinh) +
             parseFloat(item.dt_thuong) +
             parseFloat(item.thuong) +
-            parseFloat(item.thanhtienngoaigio) -
+            ((parseFloat(item.luongngay) / 26 / 8) *
+              parseInt(item.sogiongoaigio) *
+              1.5 +
+              (parseFloat(item.luongngay) / 26) *
+                parseInt(item.sogiongoaigiochunhat) *
+                2) -
             parseFloat(item.dt_phat)),
         0
       );
@@ -782,7 +907,12 @@ export default {
               parseFloat(item.dt_dieuchinh) +
               parseFloat(item.dt_thuong) +
               parseFloat(item.thuong) +
-              parseFloat(item.thanhtienngoaigio) -
+              ((parseFloat(item.luongngay) / 26 / 8) *
+                parseInt(item.sogiongoaigio) *
+                1.5 +
+                (parseFloat(item.luongngay) / 26) *
+                  parseInt(item.sogiongoaigiochunhat) *
+                  2) -
               parseFloat(item.dt_phat)) -
             (parseFloat(item.bhxh) + parseFloat(item.congdoan))),
         0
@@ -979,14 +1109,21 @@ export default {
                   luongtrachnhiem: this.selected[i].luongtrachnhiem,
                   bacluong: this.selected[i].bacluong,
                   ngaycong: this.selected[i].sum_ngay_lam,
-                  luongngaycong:
+                  luongthang:
                     (parseFloat(this.selected[i].luongngay) / 26) *
                     parseFloat(this.selected[i].sum_ngay_lam),
                   dieuchinhdt: this.selected[i].dt_dieuchinh,
                   thuongdt: this.selected[i].dt_thuong,
                   phat: this.selected[i].dt_phat,
-                  luongngoaigio: this.selected[i].thanhtienngoaigio,
-                  sogiongoaigio: 0,
+                  luongngoaigio:
+                    (parseFloat(this.selected[i].luongngay) / 26 / 8) *
+                      parseInt(this.selected[i].sogiongoaigio) *
+                      1.5 +
+                    (parseFloat(this.selected[i].luongngay) / 26) *
+                      parseInt(this.selected[i].sogiongoaigiochunhat) *
+                      2,
+                  sogiongoaigio: this.selected[i].sogiongoaigio,
+                  sogiongoaigiochunhat: this.selected[i].sogiongoaigiochunhat,
                   hotro: this.selected[i].thuong,
                   tongluong:
                     parseFloat(this.selected[i].luongtrachnhiem) +
@@ -995,7 +1132,12 @@ export default {
                       parseFloat(this.selected[i].dt_dieuchinh) +
                       parseFloat(this.selected[i].dt_thuong) +
                       parseFloat(this.selected[i].thuong) +
-                      parseFloat(this.selected[i].thanhtienngoaigio) -
+                      ((parseFloat(this.selected[i].luongngay) / 26 / 8) *
+                        parseInt(this.selected[i].sogiongoaigio) *
+                        1.5 +
+                        (parseFloat(this.selected[i].luongngay) / 26) *
+                          parseInt(this.selected[i].sogiongoaigiochunhat) *
+                          2) -
                       parseFloat(this.selected[i].dt_phat)),
                   bhxh: this.selected[i].bhxh,
                   congdoan: this.selected[i].congdoan,
@@ -1004,12 +1146,17 @@ export default {
                     parseFloat(this.selected[i].congdoan),
                   luongnhan:
                     parseFloat(this.selected[i].luongtrachnhiem) +
-                    (parseFloat(this.selected[i].luongngay) *
-                      parseInt(this.selected[i].sum_ngay_lam) +
+                    ((parseFloat(this.selected[i].luongngay) / 26) *
+                      parseFloat(this.selected[i].sum_ngay_lam) +
                       parseFloat(this.selected[i].dt_dieuchinh) +
                       parseFloat(this.selected[i].dt_thuong) +
                       parseFloat(this.selected[i].thuong) +
-                      parseFloat(this.selected[i].thanhtienngoaigio) -
+                      ((parseFloat(this.selected[i].luongngay) / 26 / 8) *
+                        parseInt(this.selected[i].sogiongoaigio) *
+                        1.5 +
+                        (parseFloat(this.selected[i].luongngay) / 26) *
+                          parseInt(this.selected[i].sogiongoaigiochunhat) *
+                          2) -
                       parseFloat(this.selected[i].dt_phat)) -
                     (parseFloat(this.selected[i].bhxh) +
                       parseFloat(this.selected[i].congdoan)),
@@ -1120,5 +1267,9 @@ export default {
   left: 43px;
   z-index: 1;
   background-color: whitesmoke;
+}
+
+.input {
+  min-width: 90px;
 }
 </style>
