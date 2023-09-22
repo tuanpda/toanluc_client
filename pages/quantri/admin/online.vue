@@ -1,4 +1,4 @@
-<template>
+<!-- <template>
   <div>
     <h1>Người dùng trực tuyến</h1>
     <ul>
@@ -25,4 +25,4 @@ export default {
     });
   },
 };
-</script>
+</script> -->
