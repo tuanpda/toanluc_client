@@ -106,9 +106,9 @@
                 <th style="text-align: center; font-size: small; width: 10%">
                   Lương Tháng
                 </th>
-                <th style="text-align: center; font-size: small; width: 10%">
+                <!-- <th style="text-align: center; font-size: small; width: 10%">
                   Lương ngày công
-                </th>
+                </th> -->
                 <th style="text-align: center; font-size: small; width: 10%">
                   Lương trách nhiệm
                 </th>
@@ -148,9 +148,9 @@
                     class="input is-small"
                   />
                 </td>
-                <td style="text-align: center; font-size: small">
-                  {{ (parseFloat(nv.luongngay) / 26) | formatNumber }}
-                </td>
+                <!-- <td style="text-align: center; font-size: small">
+                  {{ parseFloat(nv.luongngay) / 26 }}
+                </td> -->
                 <td style="text-align: center; font-size: small">
                   <input
                     v-model="nv.luongtrachnhiem"
