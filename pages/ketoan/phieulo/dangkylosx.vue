@@ -2411,9 +2411,9 @@ export default {
                   this.items[i]
                 );
                 this.items[i]._id = newItem._id;
-                this.lokehoachpx = await this.$axios.$get(
-                  `/api/lokehoach/getallkehoachphanxuongwithout0`
-                );
+                // this.lokehoachpx = await this.$axios.$get(
+                //   `/api/lokehoach/getallkehoachphanxuongwithout0`
+                // );
               }
             }
             const Toast = Swal.mixin({
@@ -2513,9 +2513,9 @@ export default {
                   this.items[i]
                 );
                 this.items[i]._id = newItem._id;
-                this.lokehoachpx = await this.$axios.$get(
-                  `/api/lokehoach/getallkehoachphanxuongwithout0`
-                );
+                // this.lokehoachpx = await this.$axios.$get(
+                //   `/api/lokehoach/getallkehoachphanxuongwithout0`
+                // );
                 const Toast = Swal.mixin({
                   toast: true,
                   position: "top-end",
@@ -2560,13 +2560,13 @@ export default {
           (a, b) => new Date(a.ngaykt) - new Date(b.ngaykt)
         );
 
-        this.lokehoachpx = await this.$axios.$get(
-          `/api/lokehoach/getallkehoachphanxuongwithout0`
-        );
-        // ở đây phải lọc lại mới có dữ liệu mới nhất. cần phải cập nhật lại tempData
-        if (this.filterOptions == 9) {
-          this.tempData = await this.filterData1(1);
-        }
+        // this.lokehoachpx = await this.$axios.$get(
+        //   `/api/lokehoach/getallkehoachphanxuongwithout0`
+        // );
+        // // ở đây phải lọc lại mới có dữ liệu mới nhất. cần phải cập nhật lại tempData
+        // if (this.filterOptions == 9) {
+        //   this.tempData = await this.filterData1(1);
+        // }
         const Toast = Swal.mixin({
           toast: true,
           position: "top-end",
@@ -2668,9 +2668,9 @@ export default {
               // console.log(this.dataChildren);
             }
             await this.$axios.$delete(`/api/lokehoach/losx/${pl._id}`);
-            this.lokehoachpx = await this.$axios.$get(
-              `/api/lokehoach/getallkehoachphanxuongwithout0`
-            );
+            // this.lokehoachpx = await this.$axios.$get(
+            //   `/api/lokehoach/getallkehoachphanxuongwithout0`
+            // );
 
             const Toast = Swal.mixin({
               toast: true,
