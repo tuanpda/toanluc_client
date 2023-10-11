@@ -715,6 +715,8 @@ export default {
         this.sumreport = await this.$axios.$get(
           `/api/report/reportsumluongto?thang=${this.thang}&nam=${this.nam}&mato=${this.mato}`
         );
+        this.sumrp = this.sumreport[0];
+        // console.log(this.sumreport);
       }
 
       // console.log(this.sumrp)

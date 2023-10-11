@@ -2490,8 +2490,8 @@ export default {
       this.tonhomid = await this.$axios.$get(
         `/api/phongban/alltoinxuong?mapx=${p1}`
       );
-      console.log(this.maxuong);
-      console.log(this.mato);
+      // console.log(this.maxuong);
+      // console.log(this.mato);
     },
     async getWithTo(e) {
       // console.log(this.mapx)

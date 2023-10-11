@@ -903,7 +903,7 @@ export default {
         this.items[index].tienan = tienanca;
       }
 
-      // console.log(this.items);
+      console.log(this.items);
       this.selected = [];
     },
 
