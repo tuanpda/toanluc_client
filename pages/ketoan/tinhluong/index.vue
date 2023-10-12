@@ -72,7 +72,11 @@
               </div>
             </div>
             <div class="column" style="text-align: right">
-              <button @click="onReport" class="button is-danger is-small">
+              <button
+                :disabled="isSaveSale"
+                @click="onReport"
+                class="button is-danger is-small"
+              >
                 <span class="icon is-small">
                   <i class="fas fa-signature"></i>
                 </span>
@@ -294,7 +298,7 @@
               </td>
               <td style="text-align: center; font-size: small">
                 {{
-                  ((parseFloat(nv.luongngay) / 8) *
+                  ((parseFloat(nv.luongngay) / 26 / 8) *
                     parseInt(nv.sogiongoaigio) *
                     1.5 +
                     (parseFloat(nv.luongngay) / 26) *
@@ -324,7 +328,7 @@
                       parseFloat(nv.dt_dieuchinh) +
                       parseFloat(nv.dt_thuong) +
                       parseFloat(nv.thuong) +
-                      ((parseFloat(nv.luongngay) / 8) *
+                      ((parseFloat(nv.luongngay) / 26 / 8) *
                         parseInt(nv.sogiongoaigio) *
                         1.5 +
                         (parseFloat(nv.luongngay) / 26) *
@@ -368,7 +372,7 @@
                         parseFloat(nv.dt_dieuchinh) +
                         parseFloat(nv.dt_thuong) +
                         parseFloat(nv.thuong) +
-                        ((parseFloat(nv.luongngay) / 8) *
+                        ((parseFloat(nv.luongngay) / 26 / 8) *
                           parseInt(nv.sogiongoaigio) *
                           1.5 +
                           (parseFloat(nv.luongngay) / 26) *
@@ -768,34 +772,17 @@
                   class="input is-small"
                 />
               </td>
-              <template v-if="parseFloat(nv.sum_ngay_lam) >= 26">
-                <td style="text-align: center; font-size: small">
-                  {{
-                    (((parseFloat(nv.luongngay) * 26) / 8) *
-                      parseInt(nv.sogiongoaigio) *
-                      1.5 +
-                      ((parseFloat(nv.luongngay) * 26) / 26) *
-                        parseInt(nv.sogiongoaigiochunhat) *
-                        2)
-                      | formatNumber
-                  }}
-                </td>
-              </template>
-              <template v-else>
-                <td style="text-align: center; font-size: small">
-                  {{
-                    (((parseFloat(nv.luongngay) * parseInt(nv.sum_ngay_lam)) /
-                      8) *
-                      parseInt(nv.sogiongoaigio) *
-                      1.5 +
-                      ((parseFloat(nv.luongngay) * parseInt(nv.sum_ngay_lam)) /
-                        26) *
-                        parseInt(nv.sogiongoaigiochunhat) *
-                        2)
-                      | formatNumber
-                  }}
-                </td>
-              </template>
+              <td style="text-align: center; font-size: small">
+                {{
+                  ((parseFloat(nv.luongngay) / 8) *
+                    parseInt(nv.sogiongoaigio) *
+                    1.5 +
+                    parseFloat(nv.luongngay) *
+                      parseInt(nv.sogiongoaigiochunhat) *
+                      2)
+                    | formatNumber
+                }}
+              </td>
               <td>
                 <input
                   v-model="nv.thuong"
@@ -820,10 +807,10 @@
                       parseFloat(nv.dt_dieuchinh) +
                       parseFloat(nv.dt_thuong) +
                       parseFloat(nv.thuong) +
-                      (((parseFloat(nv.luongngay) * 26) / 8) *
+                      ((parseFloat(nv.luongngay) / 8) *
                         parseInt(nv.sogiongoaigio) *
                         1.5 +
-                        ((parseFloat(nv.luongngay) * 26) / 26) *
+                        parseFloat(nv.luongngay) *
                           parseInt(nv.sogiongoaigiochunhat) *
                           2) -
                       parseFloat(nv.dt_phat))
@@ -847,13 +834,10 @@
                       parseFloat(nv.dt_dieuchinh) +
                       parseFloat(nv.dt_thuong) +
                       parseFloat(nv.thuong) +
-                      (((parseFloat(nv.luongngay) * parseInt(nv.sum_ngay_lam)) /
-                        8) *
+                      ((parseFloat(nv.luongngay) / 8) *
                         parseInt(nv.sogiongoaigio) *
                         1.5 +
-                        ((parseFloat(nv.luongngay) *
-                          parseInt(nv.sum_ngay_lam)) /
-                          26) *
+                        parseFloat(nv.luongngay) *
                           parseInt(nv.sogiongoaigiochunhat) *
                           2) -
                       parseFloat(nv.dt_phat))
@@ -898,10 +882,10 @@
                       parseFloat(nv.dt_dieuchinh) +
                       parseFloat(nv.dt_thuong) +
                       parseFloat(nv.thuong) +
-                      (((parseFloat(nv.luongngay) * 26) / 8) *
+                      ((parseFloat(nv.luongngay) / 8) *
                         parseInt(nv.sogiongoaigio) *
                         1.5 +
-                        ((parseFloat(nv.luongngay) * 26) / 26) *
+                        parseFloat(nv.luongngay) *
                           parseInt(nv.sogiongoaigiochunhat) *
                           2) -
                       parseFloat(nv.dt_phat) -
@@ -926,13 +910,10 @@
                       parseFloat(nv.dt_dieuchinh) +
                       parseFloat(nv.dt_thuong) +
                       parseFloat(nv.thuong) +
-                      (((parseFloat(nv.luongngay) * parseInt(nv.sum_ngay_lam)) /
-                        8) *
+                      ((parseFloat(nv.luongngay) / 8) *
                         parseInt(nv.sogiongoaigio) *
                         1.5 +
-                        ((parseFloat(nv.luongngay) *
-                          parseInt(nv.sum_ngay_lam)) /
-                          26) *
+                        parseFloat(nv.luongngay) *
                           parseInt(nv.sogiongoaigiochunhat) *
                           2) -
                       parseFloat(nv.dt_phat) -
@@ -1261,6 +1242,7 @@ export default {
       keyThangnam: "",
       isExits: null,
       isKhoiVP: false,
+      isSaveSale: false,
       //   các tiêu chí hệ số lương
       form: {
         luong_ttv: null,
@@ -1406,7 +1388,7 @@ export default {
       return this.dsnhanvien.reduce(
         (total, item) =>
           total +
-          ((parseFloat(item.luongngay) / 8) *
+          ((parseFloat(item.luongngay) / 26 / 8) *
             parseInt(item.sogiongoaigio) *
             1.5 +
             (parseFloat(item.luongngay) / 26) *
@@ -1418,27 +1400,15 @@ export default {
     // sum tổng tiền ngoài giờ khối gián tiếp
     subRow_tongtienngoaigio_khoigiantiep() {
       return this.dsnhanvien.reduce((total, item) => {
-        if (item.sum_ngay_lam >= 26) {
-          return (
-            total +
-            (((parseFloat(item.luongngay) * 26) / 8) *
-              parseInt(item.sogiongoaigio) *
-              1.5 +
-              ((parseFloat(item.luongngay) * 26) / 26) *
-                parseInt(item.sogiongoaigiochunhat) *
-                2)
-          );
-        } else {
-          return (
-            total +
-            (((parseFloat(item.luongngay) * item.sum_ngay_lam) / 8) *
-              parseInt(item.sogiongoaigio) *
-              1.5 +
-              ((parseFloat(item.luongngay) * item.sum_ngay_lam) / 26) *
-                parseInt(item.sogiongoaigiochunhat) *
-                2)
-          );
-        }
+        return (
+          total +
+          ((parseFloat(item.luongngay) / 8) *
+            parseInt(item.sogiongoaigio) *
+            1.5 +
+            parseFloat(item.luongngay) *
+              parseInt(item.sogiongoaigiochunhat) *
+              2)
+        );
       }, 0);
     },
 
@@ -1460,7 +1430,7 @@ export default {
             parseFloat(item.dt_dieuchinh) +
             parseFloat(item.dt_thuong) +
             parseFloat(item.thuong) +
-            ((parseFloat(item.luongngay) / 8) *
+            ((parseFloat(item.luongngay) / 26 / 8) *
               parseInt(item.sogiongoaigio) *
               1.5 +
               (parseFloat(item.luongngay) / 26) *
@@ -1481,10 +1451,10 @@ export default {
             parseFloat(item.dt_dieuchinh) +
             parseFloat(item.dt_thuong) +
             parseFloat(item.thuong) +
-            (((parseFloat(item.luongngay) * 26) / 8) *
+            ((parseFloat(item.luongngay) / 8) *
               parseInt(item.sogiongoaigio) *
               1.5 +
-              ((parseFloat(item.luongngay) * 26) / 26) *
+              parseFloat(item.luongngay) *
                 parseInt(item.sogiongoaigiochunhat) *
                 2) -
             parseFloat(item.dt_phat)
@@ -1497,10 +1467,10 @@ export default {
             parseFloat(item.dt_dieuchinh) +
             parseFloat(item.dt_thuong) +
             parseFloat(item.thuong) +
-            (((parseFloat(item.luongngay) * item.sum_ngay_lam) / 8) *
+            ((parseFloat(item.luongngay) / 8) *
               parseInt(item.sogiongoaigio) *
               1.5 +
-              ((parseFloat(item.luongngay) * item.sum_ngay_lam) / 26) *
+              parseFloat(item.luongngay) *
                 parseInt(item.sogiongoaigiochunhat) *
                 2) -
             parseFloat(item.dt_phat)
@@ -1552,7 +1522,7 @@ export default {
             parseFloat(item.dt_dieuchinh) +
             parseFloat(item.dt_thuong) +
             parseFloat(item.thuong) +
-            ((parseFloat(item.luongngay) / 8) *
+            ((parseFloat(item.luongngay) / 26 / 8) *
               parseInt(item.sogiongoaigio) *
               1.5 +
               (parseFloat(item.luongngay) / 26) *
@@ -1575,10 +1545,10 @@ export default {
               parseFloat(item.dt_dieuchinh) +
               parseFloat(item.dt_thuong) +
               parseFloat(item.thuong) +
-              (((parseFloat(item.luongngay) * 26) / 8) *
+              ((parseFloat(item.luongngay) / 8) *
                 parseInt(item.sogiongoaigio) *
                 1.5 +
-                ((parseFloat(item.luongngay) * 26) / 26) *
+                parseFloat(item.luongngay) *
                   parseInt(item.sogiongoaigiochunhat) *
                   2) -
               parseFloat(item.dt_phat)) -
@@ -1592,10 +1562,10 @@ export default {
               parseFloat(item.dt_dieuchinh) +
               parseFloat(item.dt_thuong) +
               parseFloat(item.thuong) +
-              (((parseFloat(item.luongngay) * item.sum_ngay_lam) / 8) *
+              ((parseFloat(item.luongngay) / 8) *
                 parseInt(item.sogiongoaigio) *
                 1.5 +
-                ((parseFloat(item.luongngay) * item.sum_ngay_lam) / 26) *
+                parseFloat(item.luongngay) *
                   parseInt(item.sogiongoaigiochunhat) *
                   2) -
               parseFloat(item.dt_phat)) -
@@ -1610,7 +1580,6 @@ export default {
     this.getDsnv();
     this.currentDateTime();
     this.getDay();
-    this.getQTL();
   },
 
   methods: {
@@ -1712,33 +1681,6 @@ export default {
       );
     },
 
-    // lấy số liệu quy tắc lương
-    async getQTL() {
-      this.qtl = await this.$axios.$get(`/api/ketoan/quytactinhluong`);
-      this.get_qtl = this.qtl[0];
-      this.form.luong_ttv = this.qtl[0].luong_ttv;
-      this.form.luong_max_bhxh_bhyt = this.qtl[0].luong_max_bhxh_bhyt;
-      this.form.luong_max_bhtn = this.qtl[0].luong_max_bhtn;
-      this.form.songay_tinhluong = this.qtl[0].songay_tinhluong;
-      this.form.sogio_tinhluong = this.qtl[0].sogio_tinhluong;
-      this.form.tl_lamthem_thuong_bn = this.qtl[0].tl_lamthem_thuong_bn;
-      this.form.tl_lamthem_nghi_bn = this.qtl[0].tl_lamthem_nghi_bn;
-      this.form.tl_lamthem_le_bn = this.qtl[0].tl_lamthem_le_bn;
-      this.form.tl_lamthem_thuong_bd = this.qtl[0].tl_lamthem_thuong_bd;
-      this.form.tl_lamthem_nghi_bd = this.qtl[0].tl_lamthem_nghi_bd;
-      this.form.tl_lamthem_le_bd = this.qtl[0].tl_lamthem_le_bd;
-      this.form.tl_dong_bhxh_ct = this.qtl[0].tl_dong_bhxh_ct;
-      this.form.tl_dong_bhyt_ct = this.qtl[0].tl_dong_bhyt_ct;
-      this.form.tl_dong_bhtn_ct = this.qtl[0].tl_dong_bhtn_ct;
-      this.form.tl_dong_cd_ct = this.qtl[0].tl_dong_cd_ct;
-      this.form.tl_dong_bhxh_cn = this.qtl[0].tl_dong_bhxh_cn;
-      this.form.tl_dong_bhyt_cn = this.qtl[0].tl_dong_bhyt_cn;
-      this.form.tl_dong_bhtn_cn = this.qtl[0].tl_dong_bhtn_cn;
-      this.form.tl_dong_cd_cn = this.qtl[0].tl_dong_cd_cn;
-      this.form.thue_tncn_gtcn = this.qtl[0].thue_tncn_gtcn;
-      this.form.thue_tncn_gtnt = this.qtl[0].thue_tncn_gtnt;
-    },
-
     async getDsnv() {
       // this.dsnhanvien = await this.$axios.$get(`/api/ketoan/nhanvienbangluong`);
     },
@@ -1788,100 +1730,194 @@ export default {
             // console.log(this.isExits);
             if (this.isExits == false) {
               // console.log(this.selected);
-              for (let i = 0; i < this.selected.length; i++) {
-                // console.log(this.selected[i]);
-                let data = {
-                  mapb: this.selected[i].mapb,
-                  tenpb: this.selected[i].tenphong,
-                  manv: this.selected[i].manv,
-                  hotennv: this.selected[i].tennv,
-                  chucvu: "",
-                  mucluong: this.selected[i].mucluong,
-                  luongngay: this.selected[i].luongngay,
-                  luongtrachnhiem: this.selected[i].luongtrachnhiem,
-                  bacluong: this.selected[i].bacluong,
-                  ngaycong: this.selected[i].sum_ngay_lam,
-                  luongthang:
-                    (parseFloat(this.selected[i].luongngay) / 26) *
-                    parseFloat(this.selected[i].sum_ngay_lam),
-                  dieuchinhdt: this.selected[i].dt_dieuchinh,
-                  thuongdt: this.selected[i].dt_thuong,
-                  phat: this.selected[i].dt_phat,
-                  luongngoaigio:
-                    (parseFloat(this.selected[i].luongngay) / 26 / 8) *
-                      parseInt(this.selected[i].sogiongoaigio) *
-                      1.5 +
-                    (parseFloat(this.selected[i].luongngay) / 26) *
-                      parseInt(this.selected[i].sogiongoaigiochunhat) *
-                      2,
-                  sogiongoaigio: this.selected[i].sogiongoaigio,
-                  sogiongoaigiochunhat: this.selected[i].sogiongoaigiochunhat,
-                  hotro: this.selected[i].thuong,
-                  tongluong:
-                    parseFloat(this.selected[i].luongtrachnhiem) +
-                    ((parseFloat(this.selected[i].luongngay) / 26) *
-                      parseInt(this.selected[i].sum_ngay_lam) +
-                      parseFloat(this.selected[i].dt_dieuchinh) +
-                      parseFloat(this.selected[i].dt_thuong) +
-                      parseFloat(this.selected[i].thuong) +
-                      ((parseFloat(this.selected[i].luongngay) / 26 / 8) *
+              if (this.isKhoiVP == true) {
+                for (let i = 0; i < this.selected.length; i++) {
+                  // console.log(this.selected[i]);
+                  let data = {
+                    makhoi: this.selected[i].makhoi,
+                    mapb: this.selected[i].mapb,
+                    tenpb: this.selected[i].tenphong,
+                    manv: this.selected[i].manv,
+                    hotennv: this.selected[i].tennv,
+                    chucvu: "",
+                    mucluong: this.selected[i].mucluong,
+                    luongngay: this.selected[i].luongngay,
+                    luongtrachnhiem: this.selected[i].luongtrachnhiem,
+                    bacluong: this.selected[i].bacluong,
+                    ngaycong: this.selected[i].sum_ngay_lam,
+                    luongthang: parseFloat(this.selected[i].luongngay),
+                    dieuchinhdt: this.selected[i].dt_dieuchinh,
+                    thuongdt: this.selected[i].dt_thuong,
+                    phat: this.selected[i].dt_phat,
+                    luongngoaigio:
+                      (parseFloat(this.selected[i].luongngay) / 26 / 8) *
                         parseInt(this.selected[i].sogiongoaigio) *
                         1.5 +
-                        (parseFloat(this.selected[i].luongngay) / 26) *
-                          parseInt(this.selected[i].sogiongoaigiochunhat) *
-                          2) -
-                      parseFloat(this.selected[i].dt_phat)),
-                  bhxh: this.selected[i].bhxh,
-                  congdoan: this.selected[i].congdoan,
-                  tongkt:
-                    parseFloat(this.selected[i].bhxh) +
-                    parseFloat(this.selected[i].congdoan),
-                  luongnhan:
-                    parseFloat(this.selected[i].luongtrachnhiem) +
-                    ((parseFloat(this.selected[i].luongngay) / 26) *
-                      parseFloat(this.selected[i].sum_ngay_lam) +
-                      parseFloat(this.selected[i].dt_dieuchinh) +
-                      parseFloat(this.selected[i].dt_thuong) +
-                      parseFloat(this.selected[i].thuong) +
-                      ((parseFloat(this.selected[i].luongngay) / 26 / 8) *
+                      (parseFloat(this.selected[i].luongngay) / 26) *
+                        parseInt(this.selected[i].sogiongoaigiochunhat) *
+                        2,
+                    sogiongoaigio: this.selected[i].sogiongoaigio,
+                    sogiongoaigiochunhat: this.selected[i].sogiongoaigiochunhat,
+                    hotro: this.selected[i].thuong,
+                    tongluong:
+                      parseFloat(this.selected[i].luongtrachnhiem) +
+                      ((parseFloat(this.selected[i].luongngay) / 26) *
+                        parseInt(this.selected[i].sum_ngay_lam) +
+                        parseFloat(this.selected[i].dt_dieuchinh) +
+                        parseFloat(this.selected[i].dt_thuong) +
+                        parseFloat(this.selected[i].thuong) +
+                        ((parseFloat(this.selected[i].luongngay) / 26 / 8) *
+                          parseInt(this.selected[i].sogiongoaigio) *
+                          1.5 +
+                          (parseFloat(this.selected[i].luongngay) / 26) *
+                            parseInt(this.selected[i].sogiongoaigiochunhat) *
+                            2) -
+                        parseFloat(this.selected[i].dt_phat)),
+                    bhxh: this.selected[i].bhxh,
+                    congdoan: this.selected[i].congdoan,
+                    tongkt:
+                      parseFloat(this.selected[i].bhxh) +
+                      parseFloat(this.selected[i].congdoan),
+                    luongnhan:
+                      parseFloat(this.selected[i].luongtrachnhiem) +
+                      ((parseFloat(this.selected[i].luongngay) / 26) *
+                        parseFloat(this.selected[i].sum_ngay_lam) +
+                        parseFloat(this.selected[i].dt_dieuchinh) +
+                        parseFloat(this.selected[i].dt_thuong) +
+                        parseFloat(this.selected[i].thuong) +
+                        ((parseFloat(this.selected[i].luongngay) / 26 / 8) *
+                          parseInt(this.selected[i].sogiongoaigio) *
+                          1.5 +
+                          (parseFloat(this.selected[i].luongngay) / 26) *
+                            parseInt(this.selected[i].sogiongoaigiochunhat) *
+                            2) -
+                        parseFloat(this.selected[i].dt_phat)) -
+                      (parseFloat(this.selected[i].bhxh) +
+                        parseFloat(this.selected[i].congdoan)),
+                    createdAt: this.createdAt,
+                    createdBy: this.createdBy,
+                    thang: this.thangLapluong,
+                    nam: this.namLapluong,
+                    key_thangnam: this.keyThangnam,
+                    status: true,
+                    stk: this.selected[i].stknh,
+                    tennganhang: this.selected[i].tennh,
+                  };
+                  // console.log(data);
+                  const res = this.$axios.$post(
+                    "/api/ketoan/themluongthangvanphong",
+                    data
+                  );
+                  const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                      toast.addEventListener("mouseenter", Swal.stopTimer);
+                      toast.addEventListener("mouseleave", Swal.resumeTimer);
+                    },
+                  });
+                  Toast.fire({
+                    icon: "success",
+                    title: "Tạo số liệu lương thành công",
+                  });
+                }
+              } else {
+                for (let i = 0; i < this.selected.length; i++) {
+                  console.log(this.selected[i]);
+                  let data = {
+                    makhoi: this.selected[i].makhoi,
+                    mapb: this.selected[i].mapb,
+                    tenpb: this.selected[i].tenphong,
+                    manv: this.selected[i].manv,
+                    hotennv: this.selected[i].tennv,
+                    chucvu: "",
+                    mucluong: this.selected[i].mucluong,
+                    luongngay: this.selected[i].luongngay,
+                    luongtrachnhiem: this.selected[i].luongtrachnhiem,
+                    bacluong: this.selected[i].bacluong,
+                    ngaycong: this.selected[i].sum_ngay_lam,
+                    luongthang: parseFloat(this.selected[i].luongngay),
+                    dieuchinhdt: this.selected[i].dt_dieuchinh,
+                    thuongdt: this.selected[i].dt_thuong,
+                    phat: this.selected[i].dt_phat,
+                    luongngoaigio:
+                      (parseFloat(this.selected[i].luongngay) / 8) *
                         parseInt(this.selected[i].sogiongoaigio) *
                         1.5 +
-                        (parseFloat(this.selected[i].luongngay) / 26) *
-                          parseInt(this.selected[i].sogiongoaigiochunhat) *
-                          2) -
-                      parseFloat(this.selected[i].dt_phat)) -
-                    (parseFloat(this.selected[i].bhxh) +
-                      parseFloat(this.selected[i].congdoan)),
-                  createdAt: this.createdAt,
-                  createdBy: this.createdBy,
-                  thang: this.thangLapluong,
-                  nam: this.namLapluong,
-                  key_thangnam: this.keyThangnam,
-                  status: true,
-                  stk: this.selected[i].stknh,
-                  tennganhang: this.selected[i].tennh,
-                };
-                // console.log(data);
-                const res = this.$axios.$post(
-                  "/api/ketoan/themluongthangvanphong",
-                  data
-                );
-                console.log("hh");
-                const Toast = Swal.mixin({
-                  toast: true,
-                  position: "top-end",
-                  showConfirmButton: false,
-                  timer: 3000,
-                  timerProgressBar: true,
-                  didOpen: (toast) => {
-                    toast.addEventListener("mouseenter", Swal.stopTimer);
-                    toast.addEventListener("mouseleave", Swal.resumeTimer);
-                  },
-                });
-                Toast.fire({
-                  icon: "success",
-                  title: "Tạo số liệu lương thành công",
-                });
+                      parseFloat(this.selected[i].luongngay) *
+                        parseInt(this.selected[i].sogiongoaigiochunhat) *
+                        2,
+                    sogiongoaigio: this.selected[i].sogiongoaigio,
+                    sogiongoaigiochunhat: this.selected[i].sogiongoaigiochunhat,
+                    hotro: this.selected[i].thuong,
+                    tongluong:
+                      parseFloat(this.selected[i].luongtrachnhiem) +
+                      ((parseFloat(this.selected[i].luongngay) / 26) *
+                        parseInt(this.selected[i].sum_ngay_lam) +
+                        parseFloat(this.selected[i].dt_dieuchinh) +
+                        parseFloat(this.selected[i].dt_thuong) +
+                        parseFloat(this.selected[i].thuong) +
+                        ((parseFloat(this.selected[i].luongngay) / 8) *
+                          parseInt(this.selected[i].sogiongoaigio) *
+                          1.5 +
+                          parseFloat(this.selected[i].luongngay) *
+                            parseInt(this.selected[i].sogiongoaigiochunhat) *
+                            2) -
+                        parseFloat(this.selected[i].dt_phat)),
+                    bhxh: this.selected[i].bhxh,
+                    congdoan: this.selected[i].congdoan,
+                    tongkt:
+                      parseFloat(this.selected[i].bhxh) +
+                      parseFloat(this.selected[i].congdoan),
+                    luongnhan:
+                      parseFloat(this.selected[i].luongtrachnhiem) +
+                      ((parseFloat(this.selected[i].luongngay) / 26) *
+                        parseFloat(this.selected[i].sum_ngay_lam) +
+                        parseFloat(this.selected[i].dt_dieuchinh) +
+                        parseFloat(this.selected[i].dt_thuong) +
+                        parseFloat(this.selected[i].thuong) +
+                        ((parseFloat(this.selected[i].luongngay) / 8) *
+                          parseInt(this.selected[i].sogiongoaigio) *
+                          1.5 +
+                          parseFloat(this.selected[i].luongngay) *
+                            parseInt(this.selected[i].sogiongoaigiochunhat) *
+                            2) -
+                        parseFloat(this.selected[i].dt_phat)) -
+                      (parseFloat(this.selected[i].bhxh) +
+                        parseFloat(this.selected[i].congdoan)),
+                    createdAt: this.createdAt,
+                    createdBy: this.createdBy,
+                    thang: this.thangLapluong,
+                    nam: this.namLapluong,
+                    key_thangnam: this.keyThangnam,
+                    status: true,
+                    stk: this.selected[i].stknh,
+                    tennganhang: this.selected[i].tennh,
+                  };
+                  // console.log(data);
+                  const res = this.$axios.$post(
+                    "/api/ketoan/themluongthangvanphong",
+                    data
+                  );
+                  const Toast = Swal.mixin({
+                    toast: true,
+                    position: "top-end",
+                    showConfirmButton: false,
+                    timer: 3000,
+                    timerProgressBar: true,
+                    didOpen: (toast) => {
+                      toast.addEventListener("mouseenter", Swal.stopTimer);
+                      toast.addEventListener("mouseleave", Swal.resumeTimer);
+                    },
+                  });
+                  Toast.fire({
+                    icon: "success",
+                    title: "Tạo số liệu lương thành công",
+                  });
+                }
               }
             } else {
               const Toast = Swal.mixin({

@@ -100,6 +100,7 @@
               </button>
               <button
                 @click="onAddLuongthang"
+                :disabled="!isSaveSale"
                 class="button is-danger is-small"
               >
                 <span class="icon is-small">
@@ -1885,6 +1886,7 @@ export default {
       congdoan: 50000,
       listkeythangnam: [],
       isExits: null,
+      isSaveSale: false,
       arrkeythangnam: [],
       hisform: {
         tenthaotac: null,
@@ -2653,6 +2655,7 @@ export default {
 
           if (this.mato == "") {
             this.isActive_load_luong = true;
+            this.isSaveSale = true;
             const res = await this.$axios.$get(
               `/api/ketoan/getallluongcongdoanpx?nam=${this.nam}&thang=${this.thang}&mapx=${this.maxuong}`
             );
@@ -2703,6 +2706,7 @@ export default {
             }
           } else {
             this.isActive_load_luong = true;
+            this.isSaveSale = true;
             const res = await this.$axios.$get(
               `/api/ketoan/getallluongcongdoanto?nam=${this.nam}&thang=${this.thang}&mato=${this.mato}`
             );
@@ -2905,6 +2909,7 @@ export default {
                 icon: "success",
                 title: "Tạo số liệu lương thành công",
               });
+              this.isSaveSale = false;
             }
           }
         } catch (error) {

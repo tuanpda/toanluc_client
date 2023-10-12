@@ -101,28 +101,16 @@
                 </button>
               </td>
               <td>
-                <template v-if="report.length > 0">
-                  <button
-                    @click="onHuychotluong"
-                    class="button is-small is-danger is-fullwidth"
-                  >
-                    <span class="icon is-small">
-                      <i class="far fa-file-pdf"></i>
-                    </span>
-                    <span>Hủy chốt</span>
-                  </button>
-                </template>
-                <template v-else>
-                  <button
-                    disabled
-                    class="button is-small is-danger is-fullwidth"
-                  >
-                    <span class="icon is-small">
-                      <i class="far fa-file-pdf"></i>
-                    </span>
-                    <span>Hủy chốt</span>
-                  </button>
-                </template>
+                <button
+                  :disabled="!isHuychot"
+                  @click="onHuychotluong"
+                  class="button is-small is-danger is-fullwidth"
+                >
+                  <span class="icon is-small">
+                    <i class="far fa-file-pdf"></i>
+                  </span>
+                  <span>Hủy chốt</span>
+                </button>
               </td>
             </tr>
           </table>
@@ -133,7 +121,13 @@
           <table
             class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
           >
-            <tr>
+            <tr style="background-color: antiquewhite">
+              <td
+                rowspan="2"
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                <input type="checkbox" v-model="selectAll" />
+              </td>
               <td
                 rowspan="2"
                 style="text-align: center; font-weight: bold; font-size: small"
@@ -207,7 +201,7 @@
                 Lương nhận
               </td>
             </tr>
-            <tr>
+            <tr style="background-color: antiquewhite">
               <!-- rowspan hỗ trợ -->
               <td
                 style="text-align: center; font-weight: bold; font-size: small"
@@ -247,6 +241,9 @@
               </td>
             </tr>
             <tr v-for="(nv, index) in report" :key="index">
+              <td style="text-align: center">
+                <input v-model="selected" :value="nv" type="checkbox" />
+              </td>
               <td style="text-align: center; font-size: small">
                 {{ index + 1 }}
               </td>
@@ -399,6 +396,7 @@ export default {
   middleware: "auth-luong",
   data() {
     return {
+      selected: [],
       phanxuong: [],
       tonhom: [],
       report: [],
@@ -411,12 +409,29 @@ export default {
       mato: "",
       tenxuong: "",
       tento: "",
+      isHuychot: false,
     };
   },
 
   computed: {
     isDisabled() {
       return this.isPdf == false;
+    },
+    selectAll: {
+      get: function () {
+        return this.report ? this.selected.length == this.report.length : false;
+      },
+      set: function (value) {
+        var selected = [];
+
+        if (value) {
+          this.report.forEach(function (nv) {
+            selected.push(nv);
+          });
+        }
+
+        this.selected = selected;
+      },
     },
   },
 
@@ -457,6 +472,8 @@ export default {
 
     async reportBangluong() {
       this.report = [];
+      this.selected = [];
+      this.isHuychot = true;
       if (this.mato == "") {
         this.report = await this.$axios.$get(
           `/api/report/reportluongthang_px?thang=${this.thang}&nam=${this.nam}&mapb=${this.maxuong}`
@@ -581,26 +598,55 @@ export default {
                 icon: "error",
                 title: "Tổng hợp số liệu lương tháng cần xóa !!!",
               });
+              this.isHuychot = false;
             } else {
-              this.$axios.$delete(
-                `/api/ketoan/delluongthang?thang=${this.thang}&nam=${this.nam}&mapb=${this.maxuong}`
-              );
+              if (this.mato == "") {
+                // console.log(this.selected);
+                for (let i = 0; i < this.selected.length; i++) {
+                  this.$axios.$delete(
+                    `/api/ketoan/delluongthang?thang=${this.thang}&nam=${this.nam}&mapb=${this.maxuong}&_id=${this.selected[i]._id}`
+                  );
+                }
 
-              const Toast = Swal.mixin({
-                toast: true,
-                position: "top-end",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                  toast.addEventListener("mouseenter", Swal.stopTimer);
-                  toast.addEventListener("mouseleave", Swal.resumeTimer);
-                },
-              });
-              Toast.fire({
-                icon: "success",
-                title: `Xóa thành công số liệu lương tháng ${this.thang} / ${this.nam}`,
-              });
+                const Toast = Swal.mixin({
+                  toast: true,
+                  position: "top-end",
+                  showConfirmButton: false,
+                  timer: 3000,
+                  timerProgressBar: true,
+                  didOpen: (toast) => {
+                    toast.addEventListener("mouseenter", Swal.stopTimer);
+                    toast.addEventListener("mouseleave", Swal.resumeTimer);
+                  },
+                });
+                Toast.fire({
+                  icon: "success",
+                  title: `Hủy thành công!`,
+                });
+              } else {
+                for (let i = 0; i < this.selected.length; i++) {
+                  this.$axios.$delete(
+                    `/api/ketoan/delluongthangtheoto?thang=${this.thang}&nam=${this.nam}&mato=${this.mato}&_id=${this.selected[i]._id}`
+                  );
+                }
+
+                const Toast = Swal.mixin({
+                  toast: true,
+                  position: "top-end",
+                  showConfirmButton: false,
+                  timer: 3000,
+                  timerProgressBar: true,
+                  didOpen: (toast) => {
+                    toast.addEventListener("mouseenter", Swal.stopTimer);
+                    toast.addEventListener("mouseleave", Swal.resumeTimer);
+                  },
+                });
+                Toast.fire({
+                  icon: "success",
+                  title: `Hủy thành công!`,
+                });
+                this.isHuychot = false;
+              }
             }
           } catch (error) {
             // console.log(error);
