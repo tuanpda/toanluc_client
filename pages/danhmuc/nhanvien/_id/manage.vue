@@ -354,6 +354,7 @@ export default {
         diachilh: null,
         diengiai: null,
         trangthai: null,
+        chutaikhoan: null,
       },
       hisform: {
         tenthaotac: null,
@@ -403,6 +404,7 @@ export default {
     this.form.mucluong = this.nhanvien.mucluong;
     this.form.lhkhancap = this.nhanvien.lhkhancap;
     this.form.diachilh = this.nhanvien.diachilh;
+    this.form.chutaikhoan = this.nhanvien.chutaikhoan;
     this.form.sotknh = this.nhanvien.sotknh;
     this.form.tennh = this.nhanvien.tennh;
     this.form.diengiai = this.nhanvien.diengiai;
@@ -502,6 +504,7 @@ export default {
             data.append("mucluong", this.form.mucluong);
             data.append("lhkhancap", this.form.lhkhancap);
             data.append("diachilh", this.form.diachilh);
+            data.append("chutaikhoan", this.form.chutaikhoan);
             data.append("sotknh", this.form.sotknh);
             data.append("tennh", this.form.tennh);
             data.append("diengiai", this.form.diengiai);

@@ -253,7 +253,7 @@
                 &ensp; Kiểm và chốt lương
               </nav-link>
               <hr class="navbar-divider" />
-              <nav-link to="" class="navbar-item">
+              <nav-link to="/ketoan/chitra/vanphong" class="navbar-item">
                 <span style="color: #9b6dff" class="icon is-small is-left">
                   <i class="fab fa-cc-visa"></i>
                 </span>
@@ -318,11 +318,21 @@
                 </span>
                 &ensp; Tạo bảng lương Phân xưởng
               </nav-link>
+              <hr class="navbar-divider" />
               <nav-link to="/quantri/admin/huyluong/" class="navbar-item">
                 <span style="color: #6e4dc3" class="icon is-small is-left">
                   <i class="fas fa-check-circle"></i>
                 </span>
-                &ensp; Hủy chốt lương
+                &ensp; Hủy chốt lương Phân xưởng
+              </nav-link>
+              <nav-link
+                to="/quantri/admin/huyluong/huyluongvp"
+                class="navbar-item"
+              >
+                <span style="color: #6e4dc3" class="icon is-small is-left">
+                  <i class="fas fa-angle-double-down"></i>
+                </span>
+                &ensp; Hủy chốt lương Văn phòng
               </nav-link>
               <!-- <div class="nested navbar-item dropdown">
                 <div class="dropdown-trigger">
@@ -436,7 +446,7 @@
                 </span>
                 &ensp; Chi trả lương Công nhân
               </nav-link>
-              <nav-link to="" class="navbar-item">
+              <nav-link to="/report/chitraluongvanphong" class="navbar-item">
                 <span style="color: #48c78e" class="icon is-small is-left">
                   <i class="fas fa-file-csv"></i>
                 </span>

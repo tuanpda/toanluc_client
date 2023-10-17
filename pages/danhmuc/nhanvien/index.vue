@@ -815,7 +815,7 @@
                       <label class="label">Chủ tài khoản</label>
                       <div class="control">
                         <input
-                          v-model.trim="form.chutaikhoan"
+                          v-model.trim="form_update.chutaikhoan"
                           class="input is-small"
                           type="text"
                           placeholder="Nhập tên ngân hàng"
@@ -838,7 +838,7 @@
                       >
                         <div class="control">
                           <textarea
-                            v-model="form.diengiai"
+                            v-model="form_update.diengiai"
                             class="textarea is-small"
                             placeholder="Ghi chú thêm ..."
                           ></textarea>
@@ -1338,7 +1338,7 @@ export default {
       });
       if (result.isConfirmed) {
         try {
-          console.log(this.form_update.ngaysinh);
+          console.log(this.form_update.chutaikhoan);
           if (this.form_update.ngaysinh == "") {
             const Toast = Swal.mixin({
               toast: true,

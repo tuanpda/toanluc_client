@@ -87,31 +87,16 @@
                 </button>
               </td>
               <td>
-                <div class="columns">
-                  <div class="column">
-                    <button
-                      @click="pritnPdf"
-                      class="button is-small is-info is-fullwidth"
-                    >
-                      <span class="icon is-small">
-                        <i class="far fa-file-pdf"></i>
-                      </span>
-                      <span>In PDF</span>
-                    </button>
-                  </div>
-                  <div class="column">
-                    <vue-excel-xlsx
-                      :data="report"
-                      :columns="columns_luong"
-                      :file-name="'Lương thang'"
-                      :file-type="'xlsx'"
-                      :sheet-name="'Lương thang'"
-                      style="width: 100%"
-                    >
-                      Download Execl
-                    </vue-excel-xlsx>
-                  </div>
-                </div>
+                <button
+                  :disabled="!isHuychot"
+                  @click="onHuychotluong"
+                  class="button is-small is-danger is-fullwidth"
+                >
+                  <span class="icon is-small">
+                    <i class="far fa-file-pdf"></i>
+                  </span>
+                  <span>Hủy chốt</span>
+                </button>
               </td>
             </tr>
           </table>
@@ -123,6 +108,12 @@
             class="table is-responsive is-bordered is-striped is-narrow is-hoverable is-fullwidth"
           >
             <tr style="">
+              <td
+                rowspan="2"
+                style="text-align: center; font-weight: bold; font-size: small"
+              >
+                <input type="checkbox" v-model="selectAll" />
+              </td>
               <td
                 rowspan="2"
                 style="text-align: center; font-weight: bold; font-size: small"
@@ -241,6 +232,9 @@
               </td>
             </tr>
             <tr v-for="(nv, index) in report" :key="index">
+              <td style="text-align: center">
+                <input v-model="selected" :value="nv" type="checkbox" />
+              </td>
               <td style="text-align: center; font-size: small">
                 {{ index + 1 }}
               </td>
@@ -307,7 +301,7 @@
               </td>
             </tr>
             <tr>
-              <td colspan="3"></td>
+              <td colspan="4"></td>
               <td
                 style="
                   color: red;
@@ -479,7 +473,8 @@ export default {
       tenxuong: "",
       tento: "",
       khoi: "",
-
+      selected: [],
+      isHuychot: false,
       columns_luong: [
         {
           label: "Mã nhân viên",
@@ -550,6 +545,23 @@ export default {
   },
 
   computed: {
+    selectAll: {
+      get: function () {
+        return this.report ? this.selected.length == this.report.length : false;
+      },
+      set: function (value) {
+        var selected = [];
+
+        if (value) {
+          this.report.forEach(function (nv) {
+            selected.push(nv);
+          });
+        }
+
+        this.selected = selected;
+      },
+    },
+
     isDisabled() {
       return this.isPdf == false;
     },
@@ -717,6 +729,8 @@ export default {
           icon: "error",
           title: "Không có số liệu kỳ lương này",
         });
+      } else {
+        this.isHuychot = true;
       }
     },
 
@@ -726,6 +740,83 @@ export default {
       );
       this.sumrp = this.sumreport[0];
       // console.log(this.sumrp)
+    },
+
+    onHuychotluong() {
+      Swal.fire({
+        title: `Bạn muốn hủy số liệu lương tháng ${this.thang} / ${this.nam}?`,
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Chắc chắn",
+      }).then((result) => {
+        if (result.isConfirmed) {
+          try {
+            // console.log(this.dscongnhan.length);
+            // sau này sẽ làm check admin trước khi xóa.
+            // console.log(this.report);
+            if (this.report.length <= 0) {
+              const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.addEventListener("mouseenter", Swal.stopTimer);
+                  toast.addEventListener("mouseleave", Swal.resumeTimer);
+                },
+              });
+              Toast.fire({
+                icon: "error",
+                title: "Tổng hợp số liệu lương tháng cần xóa !!!",
+              });
+              this.isHuychot = false;
+            } else {
+              // console.log(this.selected);
+              for (let i = 0; i < this.selected.length; i++) {
+                this.$axios.$delete(
+                  `/api/ketoan/delluongthangvanphong?thang=${this.thang}&nam=${this.nam}&makhoi=${this.khoi}&_id=${this.selected[i]._id}`
+                );
+              }
+
+              const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.addEventListener("mouseenter", Swal.stopTimer);
+                  toast.addEventListener("mouseleave", Swal.resumeTimer);
+                },
+              });
+              Toast.fire({
+                icon: "success",
+                title: `Hủy thành công!`,
+              });
+            }
+          } catch (error) {
+            // console.log(error);
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+              },
+            });
+            Toast.fire({
+              icon: "error",
+              title: "Có lỗi xảy ra !!!",
+            });
+          }
+        }
+      });
     },
 
     currentDateTime() {

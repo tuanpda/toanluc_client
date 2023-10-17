@@ -10,7 +10,7 @@
                 <i style="color: #00d1b2" class="far fa-calendar-alt"></i>
               </span>
               <span style="color: #3850b7; font-size: 15px; font-weight: bold"
-                >Chi trả lương Công nhân</span
+                >Chi trả lương Văn phòng</span
               >
             </div>
           </div>
@@ -59,30 +59,16 @@
 
           <div class="columns">
             <div class="column">
-              <div class="control has-icons-left">
-                <div class="select is-small is-fullwidth">
-                  <select @change="getWithPX($event)">
-                    <option selected>-- Chọn phân xưởng --</option>
-                    <option v-for="item in phanxuong" :value="item.mapx">
-                      {{ item.mapx }} -- {{ item.tenpx }}
-                    </option>
-                  </select>
-                </div>
-                <span class="icon is-small is-left">
-                  <i style="color: #48c78e" class="fas fa-kaaba"></i>
-                </span>
-              </div>
-            </div>
-            <div class="column">
               <div class="select is-small is-fullwidth">
-                <select @change="getWithTo($event)">
-                  <option selected>-- Chọn tổ --</option>
-                  <option v-for="item in tonhom" :value="item.mapx">
-                    {{ item.mato }} -- {{ item.tento }}
-                  </option>
+                <select id="" @change="onChangeVanphong($event)">
+                  <option disabled selected>-- Chọn Loại văn phòng --</option>
+                  <option value="VPBP">Văn phòng bộ phận</option>
+                  <option value="VPGT1">Văn phòng gián tiếp 1</option>
+                  <option value="VPGT2">Văn phòng gián tiếp 2</option>
                 </select>
               </div>
             </div>
+            <div class="column"></div>
           </div>
         </div>
 
@@ -221,7 +207,7 @@
                   font-weight: bold;
                 "
               >
-                {{ nv.tongnhan | formatNumber }}
+                {{ nv.luongnhan | formatNumber }}
               </td>
               <!-- gõ tiền chuyển khoản -->
               <td style="text-align: center; font-size: small">
@@ -268,7 +254,7 @@
                     class="input is-small"
                     v-mask="mask"
                   /> -->
-                  {{ nv.tongnhan | formatNumber }}
+                  {{ nv.tienmat | formatNumber }}
                 </td>
               </template>
               <template v-else>
@@ -306,7 +292,7 @@
               <td
                 style="text-align: right; font-weight: bold; font-size: small"
               >
-                {{ sumrp.sum_tongnhan | formatNumber }}
+                {{ sum_tongluongnhan | formatNumber }}
               </td>
             </tr>
           </table>
@@ -323,7 +309,7 @@
                   <div class="column">
                     <span
                       style="font-size: small; font-weight: bold; color: red"
-                      >I. Có tất cả {{ show_needupudate.length }} công nhân cần
+                      >I. Có tất cả {{ show_needupudate.length }} nhân viên cần
                       cập nhật thông tin ngân hàng.
                     </span>
                     <div
@@ -335,8 +321,8 @@
                       >
                         <tr style="font-size: small; font-weight: bold">
                           <td style="text-align: center">STT</td>
-                          <td style="text-align: center">Mã CN</td>
-                          <td style="text-align: center">Tên CN</td>
+                          <td style="text-align: center">Mã NV</td>
+                          <td style="text-align: center">Tên NV</td>
                           <td style="text-align: center">Chủ tài khoản</td>
                           <td style="text-align: center">Tên ngân hàng</td>
                           <td style="text-align: center">Số tài khoản</td>
@@ -361,7 +347,7 @@
                     <span
                       style="font-size: small; font-weight: bold; color: red"
                       >II. Bấm nút cập nhật ngay bên dưới để cập nhật lại tất cả
-                      thông tin về tài khoản ngân hàng cho công nhân.
+                      thông tin về tài khoản ngân hàng cho nhân viên.
                     </span>
                   </div>
                 </div>
@@ -446,6 +432,7 @@ export default {
       mato: "",
       tenxuong: "",
       tento: "",
+      khoi: "",
       mask: currencyMask,
       form: {
         chuyenkhoan: 0,
@@ -495,6 +482,11 @@ export default {
       return (nv) => {
         return nv.nhanl2;
       };
+    },
+
+    // tổng lương
+    sum_tongluongnhan() {
+      return this.report.reduce((total, item) => total + item.luongnhan, 0);
     },
   },
 
@@ -569,84 +561,60 @@ export default {
       this.tento = p2;
     },
 
+    onChangeVanphong(e) {
+      var id = e.target.value;
+      // var name = e.target.options[e.target.options.selectedIndex].text;
+      // console.log('id ',id );
+      // console.log('name ',name );
+      this.khoi = id;
+      // console.log(this.nam)
+      // console.log(this.tennam)
+      // load dữ liệu lương
+    },
+
     updateNhanl2(nv) {
       // console.log(nv.nhanl1);
       const number = parseInt(nv.nhanl1.replace(/,/g, ""), 10);
       // console.log(number);
-      nv.nhanl2 = nv.tongnhan - number;
+      nv.nhanl2 = nv.luongnhan - number;
     },
 
     async reportBangluong() {
-      if (this.mato == "") {
-        this.report = await this.$axios.$get(
-          `/api/report/reportluongthang_px?thang=${this.thang}&nam=${this.nam}&mapb=${this.maxuong}`
-        );
-        // Làm tròn cột "tongnhan"
-        this.report.forEach((item) => {
-          item.tongnhan = Math.round(item.tongnhan);
-          item.nhanl2 = item.tongnhan - item.nhanl1;
-          if (item.stk == "") {
-            item.tienmat = item.tongnhan;
-          } else {
-            item.tienmat = 0;
-          }
+      this.report = await this.$axios.$get(
+        `/api/report/reportluongthangvanphong?thang=${this.thang}&nam=${this.nam}&makhoi=${this.khoi}`
+      );
+      // console.log(this.report);
+      if (this.report.length <= 0) {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
         });
-        this.isUpdateBank = true;
-        this.isSaveChitra = true;
-        if (this.report.length <= 0) {
-          const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.addEventListener("mouseenter", Swal.stopTimer);
-              toast.addEventListener("mouseleave", Swal.resumeTimer);
-            },
-          });
-          Toast.fire({
-            icon: "error",
-            title: "Không có số liệu kỳ lương tại xưởng này",
-          });
-          this.isUpdateBank = false;
-          this.isSaveChitra = false;
-        }
+        Toast.fire({
+          icon: "error",
+          title: "Không có số liệu kỳ lương này",
+        });
       } else {
-        this.report = await this.$axios.$get(
-          `/api/report/reportluongthang_to?thang=${this.thang}&nam=${this.nam}&mato=${this.mato}`
-        );
         // Làm tròn cột "tongnhan"
         this.report.forEach((item) => {
-          item.tongnhan = Math.round(item.tongnhan);
-          item.nhanl2 = item.tongnhan - item.nhanl1;
+          item.luongnhan = Math.round(item.luongnhan);
+          item.nhanl2 = item.luongnhan - item.nhanl1;
           if (item.stk == "") {
-            item.tienmat = item.tongnhan;
+            item.tienmat = item.luongnhan;
+            // console.log(item.tienmat);
           } else {
             item.tienmat = 0;
           }
         });
+        // console.log(this.report);
         this.isUpdateBank = true;
         this.isSaveChitra = true;
-        if (this.report.length <= 0) {
-          const Toast = Swal.mixin({
-            toast: true,
-            position: "top-end",
-            showConfirmButton: false,
-            timer: 3000,
-            timerProgressBar: true,
-            didOpen: (toast) => {
-              toast.addEventListener("mouseenter", Swal.stopTimer);
-              toast.addEventListener("mouseleave", Swal.resumeTimer);
-            },
-          });
-          Toast.fire({
-            icon: "error",
-            title: "Không có số liệu kỳ lương tại tổ này",
-          });
-          this.isUpdateBank = false;
-          this.isSaveChitra = false;
-        }
       }
     },
 
@@ -713,10 +681,10 @@ export default {
       // console.log(arrCn);
       let listcn = [];
       const res = await this.$axios.$get(
-        `/api/congnhan/showallcongnhanwitharrmacn`,
+        `/api/congnhan/showallnhanvienwitharrmacn`,
         {
           params: {
-            macn: arrCn,
+            manv: arrCn,
           },
         }
       );
@@ -729,7 +697,7 @@ export default {
 
       for (let i = 0; i < listcn.length; i++) {
         this.show_datasave.push({
-          manv: listcn[i].macn,
+          manv: listcn[i].manv,
           chutaikhoan: listcn[i].chutaikhoan,
           tennganhang: listcn[i].tennh,
           stk: listcn[i].sotknh,
@@ -761,20 +729,14 @@ export default {
 
     async onUpdateInfoBank() {
       const result = await Swal.fire({
-        title: `Bạn chắc chắn cập nhật thông tin cho các công nhân trên?`,
+        title: `Bạn chắc chắn cập nhật thông tin cho các nhân viên trên?`,
         showDenyButton: true,
         confirmButtonText: "Chắc chắn",
         denyButtonText: `Hủy`,
       });
       if (result.isConfirmed) {
         try {
-          let keytn =
-            this.thang.trim() +
-            this.nam.trim() +
-            "-" +
-            this.maxuong +
-            "-" +
-            this.mato;
+          let keytn = this.thang.trim() + this.nam.trim();
 
           const lengtData = this.show_needupudate.length;
           // console.log(lengtData);
@@ -793,7 +755,7 @@ export default {
                 // console.log(this.show_needupudate[i]._id);
                 // update
                 const res = await this.$axios.$get(
-                  `/api/congnhan/updatethongtinbank`,
+                  `/api/congnhan/updatethongtinbankvanphong`,
                   {
                     params: {
                       _id: this.show_needupudate[i]._id,
@@ -893,15 +855,11 @@ export default {
               arrkeythangnam.push(ktn);
             }
             this.keyThangnam =
-              this.thang.trim() +
-              this.nam.trim() +
-              "-" +
-              this.maxuong +
-              "-" +
-              this.mato;
+              this.thang.trim() + this.nam.trim() + "-" + this.khoi;
 
             // console.log(this.keyThangnam);
             // console.log(this.selected);
+
             this.isExits = arrkeythangnam.includes(this.keyThangnam.trim());
             if (this.isExits == false) {
               for (let i = 0; i < this.selected.length; i++) {
@@ -909,10 +867,10 @@ export default {
                   this.chitra = {
                     mapb: this.selected[i].mapb,
                     tenpb: this.selected[i].tenpb,
-                    mato: this.selected[i].mato,
+                    mato: "",
                     manv: this.selected[i].manv,
                     hotennv: this.selected[i].hotennv,
-                    tongnhan: this.selected[i].tongnhan,
+                    tongnhan: this.selected[i].luongnhan,
                     createdAt: this.createdAt,
                     createdBy: this.createdBy,
                     thang: this.thang,
@@ -932,18 +890,18 @@ export default {
                     ),
                     ck2: parseFloat(this.selected[i].nhanl2),
                     ghichu: this.selected[i].ghichu,
-                    vanphong: 0,
-                    sttchon: this.selected[i].sttchon,
-                    makhoi: "",
+                    vanphong: 1,
+                    sttchon: "",
+                    makhoi: this.khoi,
                   };
                 } else {
                   this.chitra = {
                     mapb: this.selected[i].mapb,
                     tenpb: this.selected[i].tenpb,
-                    mato: this.selected[i].mato,
+                    mato: "",
                     manv: this.selected[i].manv,
                     hotennv: this.selected[i].hotennv,
-                    tongnhan: this.selected[i].tongnhan,
+                    tongnhan: this.selected[i].luongnhan,
                     createdAt: this.createdAt,
                     createdBy: this.createdBy,
                     thang: this.thang,
@@ -958,9 +916,9 @@ export default {
                     ck1: 0,
                     ck2: 0,
                     ghichu: this.selected[i].ghichu,
-                    vanphong: 0,
-                    sttchon: this.selected[i].sttchon,
-                    makhoi: "",
+                    vanphong: 1,
+                    sttchon: "",
+                    makhoi: this.khoi,
                   };
                 }
 

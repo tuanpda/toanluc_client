@@ -7,7 +7,7 @@
           <span style="color: #f14668" class="icon is-small is-left">
             <i class="far fa-calendar-alt"></i>
           </span>
-          <span style="font-weight: bold">Chọn kỳ lương tại phân xưởng</span>
+          <span style="font-weight: bold">Chọn kỳ lương đã chốt</span>
           <table
             style="margin-top: 8px"
             class="table table is-bordered table is-narrow table is-hoverable table is-fullwidth"
