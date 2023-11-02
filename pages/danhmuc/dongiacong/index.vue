@@ -81,6 +81,8 @@
                 <th style="text-align: center; font-size: small">Công đoạn</th>
                 <th style="text-align: center; font-size: small">KHSP</th>
                 <th style="text-align: center; font-size: small">Đơn giá</th>
+                <th style="text-align: center; font-size: small">Thời gian</th>
+                <th style="text-align: center; font-size: small">Số máy</th>
                 <th style="text-align: center; font-size: small">Ghi chú</th>
                 <th style="text-align: center; font-size: small">Cập nhật</th>
                 <th style="text-align: center; font-size: small">Xóa</th>
@@ -101,7 +103,13 @@
                   {{ nc.khsp }}
                 </td>
                 <td style="text-align: right; font-size: small">
-                  {{ nc.dongia | formatNumber }}
+                  {{ nc.dongia }}
+                </td>
+                <td style="text-align: right; font-size: small">
+                  {{ nc.thoigian }}
+                </td>
+                <td style="text-align: right; font-size: small">
+                  {{ nc.somay }}
                 </td>
                 <td style="font-size: small">
                   {{ nc.ghichu }}
@@ -209,6 +217,33 @@
                     </div>
                   </div>
                 </div>
+
+                <div class="columns">
+                  <div class="column">
+                    <div class="field">
+                      <label class="label">Thời gian</label>
+                      <div class="control">
+                        <input
+                          type="text"
+                          v-model="one_dongiacong.thoigian"
+                          class="input is-small"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="column">
+                    <div class="field">
+                      <label class="label">Số máy</label>
+                      <div class="control">
+                        <input
+                          type="text"
+                          v-model="one_dongiacong.somay"
+                          class="input is-small"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
                 <div class="columns">
                   <div class="column">
                     <div class="field">
@@ -244,7 +279,7 @@
           </div>
         </div>
 
-        <!-- Modal update-->
+        <!-- Modal Add-->
         <div class="">
           <!-- Toggle class  -->
           <div :class="{ 'is-active': isActive_cre }" class="modal">
@@ -332,6 +367,30 @@
                         <input
                           type="text"
                           v-model="form.dongia"
+                          class="input is-small"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="columns">
+                    <div class="column">
+                      <div class="field">
+                        <label class="label">Thời gian</label>
+                        <input
+                          type="text"
+                          v-model="form.thoigian"
+                          class="input is-small"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="columns">
+                    <div class="column">
+                      <div class="field">
+                        <label class="label">Số máy</label>
+                        <input
+                          type="text"
+                          v-model="form.somay"
                           class="input is-small"
                         />
                       </div>
@@ -465,7 +524,7 @@
                           <th style="text-align: center">Công nhân</th>
                           <th style="text-align: center">Số đạt</th>
                           <th style="text-align: center">Số hỏng</th>
-                          <th style="text-align: center">Nguyen công</th>
+                          <th style="text-align: center">Nguyên công</th>
                           <th style="text-align: center">Đơn giá</th>
                         </tr>
                         <tr
@@ -598,6 +657,8 @@ export default {
         congdoan: "",
         khsp: "",
         dongia: "",
+        thoigian: "",
+        somay: "",
         ghichu: "",
       },
       search: "",
@@ -745,16 +806,17 @@ export default {
 
     async getWithPX(e) {
       var name = e.target.options[e.target.options.selectedIndex].text;
-      // console.log(name)
+      console.log(name);
       let position = name.split("-");
       let p1 = position[0].trim();
       // console.log(p1)
-      if (p1 == "AL_PXD" || p1 == "DV_PXD" || p1 == "PXD") {
-        this.form.PX = "PXD";
-        // alert('PXD')
-      } else {
-        this.form.PX = p1;
-      }
+      // if (p1 == "AL_PXD" || p1 == "DV_PXD" || p1 == "PXD") {
+      //   this.form.PX = "PXD";
+      //   // alert('PXD')
+      // } else {
+      //   this.form.PX = p1;
+      // }
+      this.form.PX = p1;
     },
 
     async getDongiacong() {
@@ -771,7 +833,7 @@ export default {
 
     async showDmnc(e) {
       var name = e.target.options[e.target.options.selectedIndex].text;
-      // console.log(name)
+      // console.log(name);
       let position = name.split("--");
       let p1 = position[0].trim();
 
@@ -1051,6 +1113,7 @@ export default {
 
     async onAddNc() {
       try {
+        // console.log(this.form);
         this.$axios.$post("/api/nguyencong/adddongiacong", this.form);
 
         const Toast = Swal.mixin({
