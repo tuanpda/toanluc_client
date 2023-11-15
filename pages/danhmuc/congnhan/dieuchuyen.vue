@@ -731,8 +731,8 @@ export default {
       } else {
         // console.log(this.tonhom_dieuchuyen.length);
         if (this.tonhom_dieuchuyen.length <= 0) {
-          console.log(this.form_dieuchuyen.mapx);
-          console.log(this.maxuong);
+          // console.log(this.form_dieuchuyen.mapx);
+          // console.log(this.maxuong);
           if (this.maxuong == this.form_dieuchuyen.mapx) {
             const Toast = Swal.mixin({
               toast: true,
