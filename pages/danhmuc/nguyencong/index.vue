@@ -508,7 +508,7 @@
                 <div class="columns">
                   <div class="column">
                     <div class="field">
-                      <label class="label">Nhóm lương</label>
+                      <label class="label">Nhóm sản phẩm</label>
                       <div class="control">
                         <input
                           type="text"
