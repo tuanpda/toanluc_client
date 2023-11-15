@@ -573,6 +573,7 @@ export default {
       this.tonhom_dieuchuyen = await this.$axios.$get(
         `/api/phongban/alltoinxuong?mapx=${this.maxuong}`
       );
+      // console.log(this.tonhom_dieuchuyen);
 
       //   this.data_dieuchuyen.mapx = position[0].trim();
       //   this.data_dieuchuyen.tenpx = position[1].trim();
@@ -705,11 +706,8 @@ export default {
       this.data_dieuchuyen.tento = item.tento;
     },
 
-    async onDieuchuyen() {
-      // console.log(this.form_dieuchuyen);
-      // console.log(this.dataMacn);
-      const arrMacn = this.dataMacn.map((item) => item.macn);
-      // console.log(this.form);
+    async onDieuchuyen111() {
+      // nếu chưa chọn mã xưởng => báo lỗi
       if (this.maxuong == "") {
         // console.log(`${this.data_dieuchuyen.macn} đã tồn tại trong mảng.`);
         const Toast = Swal.mixin({
@@ -728,7 +726,18 @@ export default {
           title: `Yêu cầu chọn phân xưởng`,
         });
       } else {
+        // nếu chọn đúng xưởng có tổ thì phải chọn tổ còn nếu không có tổ thì cho điều chuyển luôn
+        // check dữ liệu tổ
+        // this.form_dieuchuyen là dữ liệu của công nhân cần điều chuyển
+        // console.log(this.form_dieuchuyen);
+        // console.log(this.tonhom_dieuchuyen.length);
+        // console.log((this.form_dieuchuyen.mato = ""));
+        // console.log((this.form_dieuchuyen.tento = ""));
+        // tonhom_dieuchuyen.leng <=0 tức là không có tổ. vậy cho chuyển luôn
         if (this.tonhom_dieuchuyen.length <= 0) {
+          // không có tổ nhưng nếu chọn đúng mã xưởng chuyển đi chuyển đến như nhau thì báo lỗi
+          // console.log(this.form_dieuchuyen);
+          // console.log(this.maxuong);
           if (this.maxuong == this.form_dieuchuyen.mapx) {
             const Toast = Swal.mixin({
               toast: true,
@@ -745,9 +754,139 @@ export default {
               icon: "error",
               title: `Công nhân đang ở xưởng hiện tại. Mời bạn chọn phân xưởng khác!`,
             });
+          } else {
+            alert("cho chuyen xuong");
+          }
+        }
+      }
+    },
+
+    async onDieuchuyen() {
+      // console.log(this.form_dieuchuyen);
+      // console.log(this.dataMacn);
+      const arrMacn = this.dataMacn.map((item) => item.macn);
+      // console.log(this.maxuong);
+      if (this.maxuong == "") {
+        // console.log(`${this.data_dieuchuyen.macn} đã tồn tại trong mảng.`);
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+        Toast.fire({
+          icon: "error",
+          title: `Yêu cầu chọn phân xưởng`,
+        });
+      } else {
+        // console.log(this.tonhom_dieuchuyen.length);
+        if (this.tonhom_dieuchuyen.length <= 0) {
+          console.log(this.form_dieuchuyen.mapx);
+          console.log(this.maxuong);
+          if (this.maxuong == this.form_dieuchuyen.mapx) {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+              },
+            });
+            Toast.fire({
+              icon: "error",
+              title: `Công nhân đang ở xưởng hiện tại. Mời bạn chọn phân xưởng khác!`,
+            });
+          } else {
+            // nếu không cùng xưởng (khi không có tổ) thì cho chuyển xưởng
+            const result = await Swal.fire({
+              title: `Bạn có muốn điều chuyển công nhân: ${this.form_dieuchuyen.tencn}?`,
+              showDenyButton: true,
+              confirmButtonText: "Có, Điều chuyển",
+              denyButtonText: `Hủy`,
+            });
+            if (result.isConfirmed) {
+              // điều chuyển gồm các bước sau:
+              // b1: ghi dữ liệu người được chọn điều chuyển sang tổ mới
+              // b2: ghi dữ liệu người được chọn sang 1 bảng khác gọi là bảng dữ liệu điều chuyển
+              // b2: xóa dữ liệu người được chọn ở tổ cũ
+              // b3: ghi lại lịch sử ở bảng log
+              // console.log(this.form);
+              // b1: ghi dữ liệu ở tổ mới
+              this.form_dieuchuyen.mapx = this.maxuong;
+              this.form_dieuchuyen.tenpx = this.tenxuong;
+              this.form_dieuchuyen.mato = this.mato;
+              this.form_dieuchuyen.tento = this.tento;
+              let log = "";
+              if (this.mato == "") {
+                this.form_dieuchuyen.ghichu = `Điều chuyển công nhân có mã: ${this.data_dieuchuyen.macn} từ phân xưởng ${this.data_dieuchuyen.mapx} sang phân xưởng ${this.form_dieuchuyen.mapx} vào ngày ${this.hisform.createdAt} bởi ${this.hisform.createdBy}`;
+                log = `Điều chuyển công nhân: ${this.form_dieuchuyen.tencn}, Mã: ${this.form_dieuchuyen.macn} từ phân xưởng ${this.data_dieuchuyen.mapx} sang phân xưởng ${this.form.mapx}`;
+              } else {
+                this.form_dieuchuyen.ghichu = `Điều chuyển công nhân có mã: ${this.form_dieuchuyen.macn} từ tổ ${this.data_dieuchuyen.mato} thuộc phân xưởng ${this.data_dieuchuyen.mapx} sang phân xưởng ${this.form_dieuchuyen.mapx} vào tổ ${this.form_dieuchuyen.mato} vào ngày ${this.hisform.createdAt} bởi ${this.hisform.createdBy}`;
+                log = `Điều chuyển công nhân: ${this.form_dieuchuyen.tencn}, Mã: ${this.form_dieuchuyen.macn} từ tổ ${this.data_dieuchuyen.mato} thuộc phân xưởng ${this.data_dieuchuyen.mapx} sang phân xưởng ${this.form_dieuchuyen.mapx} vào tổ ${this.form_dieuchuyen.mato}`;
+              }
+              const res = await this.$axios.$post(
+                "/api/congnhan/addcongnhan",
+                this.form_dieuchuyen
+              );
+              // console.log(res);
+              // b2: ghi dữ liệu vào bảng điều chuyển
+              // this.form.mapx = this.data_dieuchuyen.mapx;
+              // this.form.tenpx = this.data_dieuchuyen.tenpx;
+              // this.form.mato = this.data_dieuchuyen.mato;
+              // this.form.tento = this.data_dieuchuyen.tento;
+              await this.$axios.$post(
+                "/api/congnhan/addcongnhandieuchuyen",
+                this.form_dieuchuyen
+              );
+              // b3: xóa dữ liệu bảng cũ
+              await this.$axios.$delete(
+                `/api/congnhan/${this.form_dieuchuyen._id}`
+              );
+              // ghi lại log điều chuyển
+              // const data = {
+              //   trangthai: 0,
+              //   ghichu: this.form.ghichu,
+              // };
+              // await this.$axios.$patch(
+              //   `/api/congnhan/updatetrangthaicongnhan/${this.form._id}`,
+              //   data
+              // );
+              const dataLog = {
+                logname: log,
+                createdAt: this.hisform.createdAt,
+                createdBy: this.hisform.createdBy,
+              };
+              await this.$axios.$post(`/api/congnhan/addlognhansu`, dataLog);
+
+              const Toast = Swal.mixin({
+                toast: true,
+                position: "top-end",
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                  toast.addEventListener("mouseenter", Swal.stopTimer);
+                  toast.addEventListener("mouseleave", Swal.resumeTimer);
+                },
+              });
+              Toast.fire({
+                icon: "success",
+                title: "Điều chuyển công nhân thành công",
+              });
+
+              this.getDmcn();
+            }
           }
         } else {
-          // console.log(this.form.mato);
+          // console.log(this.mato);
           if (this.mato == "") {
             const Toast = Swal.mixin({
               toast: true,
