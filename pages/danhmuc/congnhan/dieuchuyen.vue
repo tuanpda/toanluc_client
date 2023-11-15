@@ -706,61 +706,6 @@ export default {
       this.data_dieuchuyen.tento = item.tento;
     },
 
-    async onDieuchuyen111() {
-      // nếu chưa chọn mã xưởng => báo lỗi
-      if (this.maxuong == "") {
-        // console.log(`${this.data_dieuchuyen.macn} đã tồn tại trong mảng.`);
-        const Toast = Swal.mixin({
-          toast: true,
-          position: "top-end",
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.addEventListener("mouseenter", Swal.stopTimer);
-            toast.addEventListener("mouseleave", Swal.resumeTimer);
-          },
-        });
-        Toast.fire({
-          icon: "error",
-          title: `Yêu cầu chọn phân xưởng`,
-        });
-      } else {
-        // nếu chọn đúng xưởng có tổ thì phải chọn tổ còn nếu không có tổ thì cho điều chuyển luôn
-        // check dữ liệu tổ
-        // this.form_dieuchuyen là dữ liệu của công nhân cần điều chuyển
-        // console.log(this.form_dieuchuyen);
-        // console.log(this.tonhom_dieuchuyen.length);
-        // console.log((this.form_dieuchuyen.mato = ""));
-        // console.log((this.form_dieuchuyen.tento = ""));
-        // tonhom_dieuchuyen.leng <=0 tức là không có tổ. vậy cho chuyển luôn
-        if (this.tonhom_dieuchuyen.length <= 0) {
-          // không có tổ nhưng nếu chọn đúng mã xưởng chuyển đi chuyển đến như nhau thì báo lỗi
-          // console.log(this.form_dieuchuyen);
-          // console.log(this.maxuong);
-          if (this.maxuong == this.form_dieuchuyen.mapx) {
-            const Toast = Swal.mixin({
-              toast: true,
-              position: "top-end",
-              showConfirmButton: false,
-              timer: 3000,
-              timerProgressBar: true,
-              didOpen: (toast) => {
-                toast.addEventListener("mouseenter", Swal.stopTimer);
-                toast.addEventListener("mouseleave", Swal.resumeTimer);
-              },
-            });
-            Toast.fire({
-              icon: "error",
-              title: `Công nhân đang ở xưởng hiện tại. Mời bạn chọn phân xưởng khác!`,
-            });
-          } else {
-            alert("cho chuyen xuong");
-          }
-        }
-      }
-    },
-
     async onDieuchuyen() {
       // console.log(this.form_dieuchuyen);
       // console.log(this.dataMacn);

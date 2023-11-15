@@ -74,9 +74,9 @@ module.exports = {
     timeout: 20000,
   },
   server: {
-    // port: 8080, // default: 3000
+    port: 8080, // default: 3000
     port: 80,
-    // host: "192.168.1.97", // default: localhost
+    host: "192.168.1.97", // default: localhost
     // host: "103.104.119.144",
   },
   /* proxy: {
