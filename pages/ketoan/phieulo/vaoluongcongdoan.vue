@@ -855,7 +855,7 @@
               class="table is-responsive is-bordered is-narrow is-fullwidth"
             >
               <tr style="background-color: #feecf0">
-                <td colspan="7" style="font-weight: bold; font-size: small">
+                <td colspan="8" style="font-weight: bold; font-size: small">
                   Công nhật đã thực hiện
                 </td>
                 <td>
@@ -886,7 +886,7 @@
                     font-size: small;
                     text-align: center;
                     font-weight: bold;
-                    width: 15%;
+                    width: 20%;
                   "
                 >
                   Tên công nhật
@@ -909,6 +909,15 @@
                   "
                 >
                   Người thực hiện
+                </td>
+                <td
+                  style="
+                    font-size: small;
+                    text-align: center;
+                    font-weight: bold;
+                  "
+                >
+                  Ghi chú
                 </td>
                 <td
                   style="
@@ -958,15 +967,41 @@
                 <td style="font-size: small; text-align: center">
                   {{ index + 1 }}
                 </td>
-                <td style="font-size: small">
-                  {{ item.tencongnhat }}
-                </td>
-                <td style="font-size: small; text-align: right">
-                  {{ item.dongia | formatNumber }}
-                </td>
+                <template v-if="user_info.username === 'ngaht'">
+                  <td style="font-size: small">
+                    <div class="select is-small is-fullwidth">
+                      <select @change="set_congnhat_again($event, item)">
+                        <option selected>
+                          {{ item.tencongnhat }}
+                        </option>
+                        <option disabled>----------</option>
+                        <option
+                          v-for="item in congnhat_list"
+                          :value="item.tencn"
+                        >
+                          {{item.macn}} ; {{ item.tencn }} ; {{item.dongia}}         
+                        </option>
+                      </select>
+                    </div>               
+                  </td>
+                  <td style="font-size: small; text-align: right">
+                    {{ item.dongia | formatNumber }}
+                  </td>
+                </template>
+                <template v-else>
+                  <td style="font-size: small; text-align: right">
+                    {{ item.tencongnhat }}
+                  </td>
+                  <td style="font-size: small; text-align: right">
+                    {{ item.dongia | formatNumber }}
+                  </td>
+                </template>                
 
                 <td style="font-size: small">
                   {{ item.nguoithuchien }}
+                </td>
+                <td style="font-size: small">
+                  {{ item.ghichu }}
                 </td>
                 <td style="font-size: small; text-align: center">
                   {{ item.ngaythuchien | formatDate }}
@@ -979,7 +1014,7 @@
                   />
                 </td>
                 <td style="text-align: center; font-size: small">
-                  <a @click="onUpdateCn(item._id, item.sogiocong)">
+                  <a @click="onUpdateCn(item)">
                     <span style="color: green" class="icon is-small">
                       <i class="far fa-check-circle"></i>
                     </span>
@@ -1950,6 +1985,7 @@ export default {
       tonghonginlo: 0,
       tongdatinlo: "",
       isActive_loading: false,
+      user_info: {},
       form: {
         malonhamay: "",
         makhpx: "",
@@ -2009,6 +2045,9 @@ export default {
         { masta: 3, tensta: "HT" },
         { masta: 0, tensta: "0" },
       ],
+      congnhat_list: [],
+      reset_value_dongia_congnhat: 0,
+      reset_name_congnhat: "",
       multiSearch_masp: "",
       multiSearch_nhomsp: "",
       // hightligh
@@ -2335,6 +2374,8 @@ export default {
     this.deleteRow(0);
     this.deleteRowCn(0);
     this.maspinlsx();
+    this.getDscn()
+    this.get_user()
     // this.$store.dispatch('losanxuat/fetchLosanxuat')
   },
 
@@ -2467,6 +2508,16 @@ export default {
   },
 
   methods: {
+    get_user(){
+      if(this.$auth.user){
+        try {
+          this.user_info = this.$auth.user
+          // console.log(this.user_info);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    },
     // cập nhật mato và tento do lỗi đăng ký losx k copy mato tento từ lokhoachphanxuong xuống
     async hh() {
       const response = await this.$axios.get("/api/lokehoach/laydanhsachmlnm");
@@ -2673,6 +2724,42 @@ export default {
       }
     },
 
+    async set_congnhat_again(e, item){
+      this.reset_name_congnhat = ""
+      this.reset_value_dongia_congnhat = 0
+      var name = e.target.options[e.target.options.selectedIndex].text;
+      let position = name.split(";");
+      const macn = position[0].trim();
+      const tencn = position[1].trim();
+      const dongia = position[2].trim();
+      // console.log(tencn + '-' + dongia);
+      this.reset_name_congnhat = tencn
+      this.reset_value_dongia_congnhat = dongia
+      // console.log(this.reset_name_congnhat);
+      // console.log(this.reset_value_dongia_congnhat);
+      const data = {
+        macongnhat: macn,
+        tencongnhat: tencn,
+        dongia: dongia
+      }
+      await this.$axios.$patch(`/api/ketoan/updateloaicongnhat/${item._id}`, data);
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 1000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
+      Toast.fire({
+        icon: "success",
+        title: "Cập nhật thành công",
+      });
+    },
+
     // async fetchLosanxuats() {
     //     const response = await this.$axios.$get('/api/losanxuats')
     //     return response.data
@@ -2723,6 +2810,10 @@ export default {
       this.maspinlosanxuat = await this.$axios.$get(
         "/api/lokehoach/hmsanphamlosanxuat"
       );
+    },
+    // get all công nhật list
+    async getDscn() {
+      this.congnhat_list = await this.$axios.$get(`/api/phongban/alldmcongnhat`);
     },
 
     // --------------------------------------------------------------------------------------
@@ -4453,7 +4544,7 @@ export default {
       // } else if (this.filterOptions == 3) {
       //   await this.filterData1(3);
       // } else if (this.filterOptions == 4) {
-      //   await this.filterData1(4);
+      //   await this.filterData1(4);ateCn
       // } else if (this.filterOptions == 5) {
       //   await this.filterData1(5);
       // } else if (this.filterOptions == 6) {
@@ -4465,12 +4556,13 @@ export default {
       // }
     },
     // Hàm update lương công nhật
-    async onUpdateCn(id, sogiocong, ghichu) {
+    async onUpdateCn(item) {
+      // console.log(item);
       let data = {
-        sogiocong: sogiocong.trim(),
+        sogiocong: item.sogiocong.trim(),
       };
       //   console.log(data)
-      await this.$axios.$patch(`/api/ketoan/updateluongcongnhat/${id}`, data);
+      await this.$axios.$patch(`/api/ketoan/updateluongcongnhat/${item._id}`, data);
       const Toast = Swal.mixin({
         toast: true,
         position: "top-end",
