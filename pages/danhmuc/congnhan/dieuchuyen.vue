@@ -560,6 +560,8 @@ export default {
     async showmapx(e) {
       // console.log(this.mapx)
       this.tonhom_dieuchuyen = [];
+      this.mato = ""
+      this.tento = ""
       this.dataMacn = [];
       //   this.data_dieuchuyen.mapx = "";
       //   this.data_dieuchuyen.tenpx = "";

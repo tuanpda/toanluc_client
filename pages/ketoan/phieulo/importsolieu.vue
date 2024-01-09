@@ -281,7 +281,7 @@ export default {
         });
         const wsname = workbook.SheetNames[0]; //take the first sheet
         const ws = XLSX.utils.sheet_to_json(workbook.Sheets[wsname]); //Get the data in this table
-        // console.log(ws);
+        console.log(ws);
         this.dataPreview = ws;
         /* ws.forEach((value, index, ws) => {
                   console.log(value); // data for each line

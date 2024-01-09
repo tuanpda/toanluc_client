@@ -2325,7 +2325,7 @@ export default {
       // + 8 ở tọa độ y là thêm được 1 dòng nếu dùng vòng lặp
       // vậy đặt biến là tọa độ y
       // lặp cái mảng arrCongdoan
-      console.log(arrayCongdoan); // in ra 12 dòng bất kể chiều dài mảng
+      // console.log(arrayCongdoan); // in ra 12 dòng bất kể chiều dài mảng
       for (let i = 0; i < lengthPrint; i++) {
         textyPoint = textyPoint + 8;
         yPoint = yPoint + 8;
