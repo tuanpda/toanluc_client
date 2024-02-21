@@ -445,14 +445,17 @@ export default {
         {
           label: "Lương QLSP",
           field: "luongqlsp",
+          dataFormat: this.round,
         },
         {
           label: "Lương công đoạn",
           field: "luongcd",
+          dataFormat: this.round,
         },
         {
           label: "Lương công nhật",
           field: "luongps",
+          dataFormat: this.round,
         },
         {
           label: "Số ngày hỗ trợ",
@@ -461,18 +464,22 @@ export default {
         {
           label: "Thành tiền hỗ trợ",
           field: "tienhotro",
+          dataFormat: this.round,
         },
         {
           label: "Tổng lương",
           field: "tongluong",
+          dataFormat: this.round,
         },
         {
           label: "Ăn ca",
           field: "antrua",
+          dataFormat: this.round,
         },
         {
           label: "Lương CB",
           field: "luongcb",
+          dataFormat: this.round,
         },
         {
           label: "BHXH",
@@ -489,10 +496,12 @@ export default {
         {
           label: "Tổng trừ",
           field: "tongtru",
+          dataFormat: this.round,
         },
         {
           label: "Tổng nhận",
           field: "tongnhan",
+          dataFormat: this.round,
         },
       ],
     };
@@ -609,6 +618,13 @@ export default {
   },
 
   methods: {
+    round(value) {
+      if (!value) {
+        return "";
+      }
+      return Math.round(value);
+    },
+
     async getPhanxuong() {
       this.phanxuong = await this.$axios.$get(`/api/phongban/allphanxuong`);
     },
