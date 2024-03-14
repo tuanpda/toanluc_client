@@ -1671,7 +1671,7 @@
           <!-- Toggle class  -->
           <div :class="{ 'is-active': isActive_anCa }" class="modal">
             <div class="modal-background"></div>
-            <div class="modal-content modal-card-1">
+            <div class="modal-content modal-card-anca">
               <header
                 style="
                   background-color: #3e8ed0;
@@ -1844,6 +1844,77 @@
         </div>
       </div>
     </div>
+    <!-- Modal progress -->
+    <div class="">
+      <div :class="{ 'is-active': isActive_progress }" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-content modal-card-anca">
+          <header
+            style="
+              background-color: #3e8ed0;
+              border-top-left-radius: 8px;
+              border-top-right-radius: 8px;
+            "
+          >
+            <div class="columns">
+              <div class="column is-9">
+                <p
+                  style="
+                    font-size: small;
+                    font-weight: bold;
+                    color: white;
+                    padding: 15px;
+                  "
+                >
+                  <span class="icon is-small is-left">
+                    <i style="color: #ffd863ff" class="fas fa-battery-half"></i>
+                  </span>
+                  Tiến trình chốt và lưu lương đang chạy ...
+                </p>
+              </div>
+              <!-- <div class="column" style="text-align: right">
+                <a @click="isActive_progress = false">
+                  <span style="color: red; padding: 20px" class="icon is-small">
+                    <i class="fas fa-power-off"></i>
+                  </span>
+                </a>
+              </div> -->
+            </div>
+          </header>
+          <section class="modal-card-body">
+            <div class="column">
+              <div v-show="isshow == true" style="margin-bottom: 10px">
+                <div style="text-align: center">
+                  <span style="font-size: small; font-weight: bold; color: red"
+                    >{{ showcount }} / {{ showsuccess }}</span
+                  >
+                </div>
+                <div>
+                  <progress
+                    id="progress-bar"
+                    class="progress is-success is-small"
+                  ></progress>
+                </div>
+              </div>
+              <div v-show="isshow == false" style="text-align: center">
+                <div style="color: green; font-weight: bold">
+                  <span>Chốt và lưu lương thành công !</span>
+                </div>
+
+                <div style="margin-top: 20px">
+                  <button
+                    @click="xacnhanChotluu"
+                    class="button is-small is-success"
+                  >
+                    BẤM ĐỂ THOÁT
+                  </button>
+                </div>
+              </div>
+            </div>
+          </section>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -1930,6 +2001,13 @@ export default {
       // tỷ lệ lương quản lý
       tyletongluongql: 0,
       // tylequanly1: 0,
+
+      // progress
+      showcount: 0,
+      showsuccess: 0,
+      isshow: false,
+      progress: 0,
+      isActive_progress: false,
       columns: [
         {
           label: "Id Lô sản xuất",
@@ -2480,18 +2558,22 @@ export default {
       this.phanxuong = await this.$axios.$get(`/api/phongban/allphanxuong`);
     },
     async getWithPX(e) {
+      this.tonhomid = [];
       this.maxuong = "";
       this.mato = "";
       var name = e.target.options[e.target.options.selectedIndex].text;
-      // console.log(name)
+      // console.log(name);
       let position = name.split("--");
       let p1 = position[0].trim();
       let p2 = position[1].trim();
       this.maxuong = p1;
       this.tenxuong = p2;
-      this.tonhomid = await this.$axios.$get(
-        `/api/phongban/alltoinxuong?mapx=${p1}`
-      );
+      if (this.maxuong !== "PXLR") {
+        this.tonhomid = await this.$axios.$get(
+          `/api/phongban/alltoinxuong?mapx=${p1}`
+        );
+      }
+
       // console.log(this.maxuong);
       // console.log(this.mato);
     },
@@ -2659,6 +2741,7 @@ export default {
             const res = await this.$axios.$get(
               `/api/ketoan/getallluongcongdoanpx?nam=${this.nam}&thang=${this.thang}&mapx=${this.maxuong}`
             );
+            // console.log(res);
             this.dscongnhan = res.data;
             const result = [];
             for (let i = 0; i < this.dscongnhan.length; i++) {
@@ -2705,6 +2788,7 @@ export default {
               });
             }
           } else {
+            // console.log('abc');
             this.isActive_load_luong = true;
             this.isSaveSale = true;
             const res = await this.$axios.$get(
@@ -2721,7 +2805,7 @@ export default {
                 "-" +
                 this.keyThangnam;
               let found = false;
-              // console.log(_key);
+              console.log(_key);
               for (let j = 0; j < arrkeythangnam.length; j++) {
                 if (_key === arrkeythangnam[j]) {
                   found = true;
@@ -2780,6 +2864,29 @@ export default {
       );
     },
 
+    async xacnhanChotluu() {
+      this.isActive_progress = false;
+      this.isSaveSale = false;
+      this.showcount = 0;
+      this.showsuccess = 0;
+      this.selected = [];
+    },
+
+    // test việc chốt được 2 lần ngày 14 tháng 3 năm 2024
+    async onAddLuongthang1() {
+      this.isActive_progress = true;
+      this.isshow = true;
+      this.showsuccess = this.selected.length;
+      const progressBar = document.getElementById("progress-bar");
+      progressBar.value = this.showcount;
+      progressBar.max = this.showsuccess;
+      for (let i = 0; i < this.selected.length; i++) {
+        this.showcount++;
+        progressBar.value = this.showcount;
+      }
+      this.isshow = false;
+    },
+
     async onAddLuongthang() {
       const result = await Swal.fire({
         title: `Bạn chắc chắn tạo lương tại kỳ: ${this.thang}/${this.nam}`,
@@ -2807,6 +2914,12 @@ export default {
                 "Chưa lấy số liệu lương hoặc chưa tích chọn người cần vào lương !!!",
             });
           } else {
+            this.isshow = true;
+            this.showsuccess = this.selected.length;
+            const progressBar = document.getElementById("progress-bar");
+            progressBar.value = this.showcount;
+            progressBar.max = this.showsuccess;
+            this.isActive_progress = true;
             // check key thang nam chốt lương trong CSDL
             // khai báo mảng chứa key
             // console.log(this.selected[0].ngayhotro);
@@ -2893,24 +3006,14 @@ export default {
               };
               // console.log(data);
               const res = this.$axios.$post("/api/ketoan/themluongthang", data);
-
-              const Toast = Swal.mixin({
-                toast: true,
-                position: "top-end",
-                showConfirmButton: false,
-                timer: 3000,
-                timerProgressBar: true,
-                didOpen: (toast) => {
-                  toast.addEventListener("mouseenter", Swal.stopTimer);
-                  toast.addEventListener("mouseleave", Swal.resumeTimer);
-                },
-              });
-              Toast.fire({
-                icon: "success",
-                title: "Tạo số liệu lương thành công",
-              });
-              this.isSaveSale = false;
+              // console.log(res.success === true);
+              if (res.success === true) {
+                this.showcount++;
+                progressBar.value = this.showcount;
+              }
             }
+            this.isSaveSale = false;
+            this.isshow = false;
           }
         } catch (error) {
           const Toast = Swal.mixin({
@@ -2948,15 +3051,26 @@ export default {
   background-color: whitesmoke;
 }
 
-.modal-content,
+/* .modal-content,
 .modal-card {
   width: 920px;
   height: 560px;
+} */
+
+.modal-content,
+.modal-card {
+  width: 1124px;
+  height: auto
 }
 
 .modal-card-1 {
-  width: 50px;
-  height: 10px;
+  width: 500px;
+  height: auto
+}
+
+.modal-card-anca {
+  width: 870px;
+  height: auto
 }
 
 .table-height {
@@ -2973,12 +3087,6 @@ th {
   background: #feecf0;
   position: sticky;
   top: 0px;
-}
-
-.modal-content,
-.modal-card {
-  width: 1124px;
-  height: 850px;
 }
 
 #preview {
