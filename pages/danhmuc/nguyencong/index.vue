@@ -819,18 +819,19 @@ export default {
 
       const mapxList = this.selectedOptions;
       // console.log(this.selectedOptions);
-      const newmaxpList = mapxList.map((item) => {
+      for (let i = 0; i < mapxList.length; i++) {
+        // console.log(mapxList[i]);
         if (
-          item.includes("AL_PXD") ||
-          item.includes("DV_PXD") ||
-          item.includes("PXD")
+          mapxList[i] == "AL_PXD" ||
+          mapxList[i] == "DV_PXD" ||
+          mapxList[i] == "PXD"
         ) {
-          return "PXD";
+          mapxList[i] = "PXD";
         } else {
-          return item;
+          mapxList[i] = mapxList[i];
         }
-      });
-
+      }
+      const newmaxpList = mapxList;
       // console.log(newmaxpList);
 
       const mavt = this.search_masp;
