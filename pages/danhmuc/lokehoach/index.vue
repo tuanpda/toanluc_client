@@ -63,7 +63,7 @@
 <script>
 
 export default {
-  middleware: "auth",
+  middleware: "auth-luong",
   data() {
     return {
       kehoach: [],

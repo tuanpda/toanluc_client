@@ -301,7 +301,7 @@ import {
 } from "vuelidate/lib/validators";
 import { mapActions } from "vuex";
 export default {
-  middleware: "auth",
+  middleware: "auth-luong",
   data() {
     return {
       congnhat: [],

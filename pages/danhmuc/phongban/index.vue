@@ -215,7 +215,7 @@ import Swal from "sweetalert2";
 import { required } from "vuelidate/lib/validators";
 import XLSX from "xlsx";
 export default {
-  middleware: "auth",
+  middleware: "auth-luong",
   data() {
     return {
       phongban: [],
