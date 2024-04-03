@@ -69,15 +69,15 @@ module.exports = {
   axios: {
     // baseURL: "http://10.42.240.200:9999",
     // baseURL: "http://localhost:8888",
-    baseURL: "http://14.224.129.177:8888/",
+    baseURL: "http://103.104.118.155:8888/",
     // baseURL: "http://103.104.119.144:8888/",
     timeout: 20000,
   },
   server: {
-    port: 8080, // default: 3000
-    // port: 80,
-    host: "192.168.1.97", // default: localhost
-    // host: "103.104.119.144",
+    // port: 8080, // default: 3000
+    port: 80,
+    // host: "192.168.1.97", // default: localhost
+    host: "103.104.118.155",
   },
   /* proxy: {
     "/api": URL,
