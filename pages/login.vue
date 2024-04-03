@@ -73,6 +73,7 @@
 </template>
 <script>
 import { required, username } from "vuelidate/lib/validators";
+import Swal from "sweetalert2";
 export default {
   layout: "none",
   auth: "guest",
