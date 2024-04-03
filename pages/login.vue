@@ -124,73 +124,61 @@ export default {
         current.getSeconds();
       this.hisform.createdAt = date + " " + time;
     },
+    // async login() {
+    //   try {
+    //     this.$v.form.$touch();
+    //     if (this.isFormValid) {
+    //       const response = await this.$axios.post(
+    //         `/api/users/auth/login`,
+    //         this.form
+    //       );
+    //       // console.log(response.data);
+    //       if (response.data.success == 1) {
+    //         this.$toasted.error("Đăng nhập thất bại! Tài khoản không tồn tại", {
+    //           duration: 3000,
+    //         });
+    //       } else if (response.data.success == 2) {
+    //         this.$toasted.error("Đăng nhập thất bại! Tài khoản đã bị khóa", {
+    //           duration: 3000,
+    //         });
+    //       } else if (response.data.success == 3) {
+    //         this.$auth.loginWith("local", {
+    //           data: {
+    //             username: this.form.username,
+    //             password: this.form.password,
+    //           },
+    //         });
+    //         // save log
+    //         this.hisform.tenthaotac = `${this.form.username} đăng nhập`;
+    //         this.hisform.ghichu = `Đăng nhập lúc: ${this.hisform.createdAt}`;
+    //         this.$axios.$post(`/api/logsystem/record-action`, this.hisform);
+    //       } else {
+    //         this.$toasted.error("Đăng nhập thất bại! Sai mật khẩu", {
+    //           duration: 3000,
+    //         });
+    //       }
+    //     }
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // },
+
     async login() {
-      /* 
-              .catch(function (error) {
-              if (error.response) {
-                console.log(error.response.data.message);                
-                //console.log(error.response.status);
-                //console.log(error.response.headers);
-              }
-            });
-      
-      */
       try {
-        this.$v.form.$touch();
-        if (this.isFormValid) {
-          // let response = await this.$axios
-          //   .$post("/api/users/auth/login", this.form)
-          //   .then(() => {
-          //     this.$auth.loginWith("local", {
-          //       data: {
-          //         username: this.form.username,
-          //         password: this.form.password,
-          //       },
-          //     });
-          //     // save log
-          //     this.hisform.tenthaotac = `${this.form.username} đăng nhập`;
-          //     this.hisform.ghichu = `Đăng nhập lúc: ${this.hisform.createdAt}`;
-          //     this.$axios.$post(`/api/logsystem/record-action`, this.hisform);
-          //   })
-          //   .catch(() =>
-          //     this.$toasted.error(
-          //       "Đăng nhập thất bại! Kiểm tra lại tài khoản",
-          //       { duration: 3000 }
-          //     )
-          //   );
-          //console.log(response);
-          const response = await this.$axios.post(
-            `/api/users/auth/login`,
-            this.form
-          );
-          // console.log(response.data);
-          if (response.data.success == 1) {
-            this.$toasted.error("Đăng nhập thất bại! Tài khoản không tồn tại", {
-              duration: 3000,
-            });
-          } else if (response.data.success == 2) {
-            this.$toasted.error("Đăng nhập thất bại! Tài khoản đã bị khóa", {
-              duration: 3000,
-            });
-          } else if (response.data.success == 3) {
-            this.$auth.loginWith("local", {
-              data: {
-                username: this.form.username,
-                password: this.form.password,
-              },
-            });
-            // save log
-            this.hisform.tenthaotac = `${this.form.username} đăng nhập`;
-            this.hisform.ghichu = `Đăng nhập lúc: ${this.hisform.createdAt}`;
-            this.$axios.$post(`/api/logsystem/record-action`, this.hisform);
-          } else {
-            this.$toasted.error("Đăng nhập thất bại! Sai mật khẩu", {
-              duration: 3000,
-            });
-          }
-        }
+        await this.$auth.loginWith("custom", {
+          data: {
+            username: this.username,
+            password: this.password,
+          },
+        });
       } catch (error) {
-        console.log(error);
+        // Xử lý lỗi khi đăng nhập không thành công
+        // console.error("Đăng nhập thất bại:", error);
+        Swal.fire({
+          title: "Đăng nhập thất bại",
+          text: "Sai thông tin đăng nhập  !!!",
+          icon: "error",
+        });
       }
     },
   },

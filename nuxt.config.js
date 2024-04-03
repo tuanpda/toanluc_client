@@ -101,49 +101,38 @@ module.exports = {
     },
     transpile: [/^ag-grid-vue/],
   },
+  
   router: {
     middleware: ["auth"],
+
+    // Thêm route catch-all
+    extendRoutes(routes, resolve) {
+      routes.push({
+        name: 'catch-all',
+        path: '*',
+        component: resolve(__dirname, 'pages/404.vue'), // Đường dẫn đến trang "This page could not be found"
+      });
+    },
   },
+
   auth: {
     strategies: {
-      local: {
-        scheme: "refresh",
-        token: {
-          property: "access_token",
-          maxAge: 1800,
-          global: true,
-          // type: 'Bearer'
-        },
-        refreshToken: {
-          property: "refresh_token",
-          data: "refresh_token",
-          maxAge: 60 * 60 * 24 * 30,
-        },
+      custom: {
+        scheme: "~/nuxtAuthSchema/CustomScheme.js",
         endpoints: {
           login: {
-            url: "/api/users/auth/login",
+            url: "/auth/login/access/login",
             method: "post",
-            propertyName: "token",
-          },
-          logout: { url: "/api/users/auth/login", method: "post" },
-          user: {
-            url: "/api/users/auth/user",
-            method: "get",
             propertyName: false,
-          }, // propertyName: false đặc biệt quan trọng - Nếu không đặt false không logedin:true
+          },
+          // refresh: { url: '/api/auth/refresh', method: 'post' },
+          user: { url: "/api/users/auth/user", method: "get" },
         },
         user: {
           property: "user",
-          // autoFetch: true
+          autoFetch: true,
         },
       },
-    },
-
-    redirect: {
-      login: "/login",
-      logout: "/login",
-      callback: "/",
-      home: "/",
     },
   },
 };
