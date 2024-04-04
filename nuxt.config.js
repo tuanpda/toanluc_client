@@ -74,8 +74,8 @@ module.exports = {
     timeout: 20000,
   },
   server: {
-    // port: 8080, // default: 3000
-    port: 80,
+    port: 8080, // default: 3000
+    // port: 80,
     host: "192.168.1.97", // default: localhost
     // host: "103.104.118.155", // máy chủ thực tế của toàn lực
   },
