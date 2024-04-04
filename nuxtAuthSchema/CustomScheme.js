@@ -4,12 +4,12 @@ import { LocalScheme } from '~auth/runtime'
 export default class CustomScheme extends LocalScheme {
   // Override `fetchUser` method of `local` scheme
   async fetchUser(endpoint) {
-    console.log(endpoint);
+    // console.log(endpoint);
     // Gửi yêu cầu API để lấy thông tin người dùng từ máy chủ
     // const response = await this.$auth.requestWith(this.name, endpoint)
 
     // Token is required but not available
-    // console.log(this.check());
+    console.log(this.check());
     if (!this.check().valid) {
       return
     }

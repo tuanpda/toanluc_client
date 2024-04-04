@@ -125,6 +125,7 @@ export default {
         current.getSeconds();
       this.hisform.createdAt = date + " " + time;
     },
+
     // async login() {
     //   try {
     //     this.$v.form.$touch();
@@ -168,13 +169,14 @@ export default {
       try {
         await this.$auth.loginWith("custom", {
           data: {
-            username: this.username,
-            password: this.password,
+            username: this.form.username,
+            password: this.form.password,
           },
         });
       } catch (error) {
+        // console.log('login error: ' + error);
         // Xử lý lỗi khi đăng nhập không thành công
-        // console.error("Đăng nhập thất bại:", error);
+        console.error("Đăng nhập thất bại:", error);
         Swal.fire({
           title: "Đăng nhập thất bại",
           text: "Sai thông tin đăng nhập  !!!",

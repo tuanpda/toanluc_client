@@ -55,7 +55,7 @@ module.exports = {
     // Doc: https://axios.nuxtjs.org/usage
     "@nuxtjs/axios",
     "portal-vue/nuxt",
-    "@nuxtjs/auth",
+    "@nuxtjs/auth-next",
     // https://go.nuxtjs.dev/pwa
     "@nuxtjs/pwa",
   ],
@@ -69,7 +69,7 @@ module.exports = {
   axios: {
     // baseURL: "http://10.42.240.200:9999",
     // baseURL: "http://localhost:8888",
-    baseURL: "http://103.104.118.155:8888/",
+    baseURL: "http://103.104.118.155:8888/", // máy chủ thực tế của toàn lực
     // baseURL: "http://103.104.119.144:8888/",
     timeout: 20000,
   },
@@ -77,7 +77,7 @@ module.exports = {
     // port: 8080, // default: 3000
     port: 80,
     // host: "192.168.1.97", // default: localhost
-    host: "103.104.118.155",
+    host: "103.104.118.155", // máy chủ thực tế của toàn lực
   },
   /* proxy: {
     "/api": URL,

@@ -866,9 +866,9 @@ export default {
     },
 
     logout() {
-      // console.log('logout')
-      // console.log(this.$auth.$state.loggedIn)
+      this.isUser = false;
       this.$auth.$state.loggedIn = false;
+      this.$router.push("/login");
     },
   },
 };
