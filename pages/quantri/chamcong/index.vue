@@ -1315,7 +1315,6 @@ export default {
               // console.log(progressBar);
               progressBar.value = this.showcount;
               progressBar.max = this.showsuccess;
-
               for (let i = 0; i < this.selected.length; i++) {
                 const data = this.selected[i].value;
                 let res = await this.$axios.$post(
@@ -1435,18 +1434,18 @@ export default {
     },
 
     async onDeleteChamcongDay() {
+      // console.log(this.$auth.$state.user);
       this.acc = "";
       this.idacc = null;
       if (this.$auth.$state.user) {
         this.acc = this.$auth.$state.user.username;
-        this.idacc = this.$auth.$state.user._id;
       }
       // console.log(this.acc);
       // console.log(this.ngaychamcong);
       // console.log(this.form.mapx);
       // console.log(this.form.mato);
       // console.log(this.acc, this.idacc);
-      if (this.acc == "ngaht" && this.idacc == 2112) {
+      if (this.acc == "ngaht") {
         if (this.form.mapx == "") {
           const Toast = Swal.mixin({
             toast: true,
