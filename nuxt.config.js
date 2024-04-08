@@ -70,7 +70,7 @@ module.exports = {
     // baseURL: "http://10.42.240.200:9999",
     // baseURL: "http://localhost:8888",
     baseURL: "http://103.104.118.155:8888/", // máy chủ thực tế của toàn lực
-    // baseURL: "http://103.104.119.144:8888/",
+    // baseURL: "http://14.224.129.177:8888/ // máy chủ tuanpda
     timeout: 20000,
   },
   server: {
