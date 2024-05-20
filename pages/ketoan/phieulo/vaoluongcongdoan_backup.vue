@@ -152,7 +152,7 @@
           </div>
         </div>
 
-        <div v-if="showConponent" class="table_wrapper">
+        <div class="table_wrapper">
           <table class="table is-responsive is-bordered is-narrow is-fullwidth">
             <tr style="background-color: #f4f2f8">
               <td
@@ -513,7 +513,7 @@
                 <template v-if="item.soluongkhsx != 0">
                   <input
                     @change="updateStatus(item)"
-                    type="text"
+                    type="number"
                     class="input is-small is-success"
                     v-model="item.soluongkhsx"
                   />
@@ -521,7 +521,7 @@
                 <template v-else>
                   <input
                     @change="updateStatus(item)"
-                    type="text"
+                    type="number"
                     class="input is-small is-danger"
                     v-model="item.soluongkhsx"
                   />
@@ -669,16 +669,7 @@
                 >
                   Đơn giá
                 </td>
-                <td
-                  style="
-                    font-size: small;
-                    text-align: center;
-                    font-weight: bold;
-                    width: 7%;
-                  "
-                >
-                  Đơn giá
-                </td>
+
                 <td
                   style="
                     font-size: small;
@@ -864,7 +855,7 @@
               class="table is-responsive is-bordered is-narrow is-fullwidth"
             >
               <tr style="background-color: #feecf0">
-                <td colspan="7" style="font-weight: bold; font-size: small">
+                <td colspan="8" style="font-weight: bold; font-size: small">
                   Công nhật đã thực hiện
                 </td>
                 <td>
@@ -895,7 +886,7 @@
                     font-size: small;
                     text-align: center;
                     font-weight: bold;
-                    width: 15%;
+                    width: 20%;
                   "
                 >
                   Tên công nhật
@@ -918,6 +909,15 @@
                   "
                 >
                   Người thực hiện
+                </td>
+                <td
+                  style="
+                    font-size: small;
+                    text-align: center;
+                    font-weight: bold;
+                  "
+                >
+                  Ghi chú
                 </td>
                 <td
                   style="
@@ -967,15 +967,41 @@
                 <td style="font-size: small; text-align: center">
                   {{ index + 1 }}
                 </td>
-                <td style="font-size: small">
-                  {{ item.tencongnhat }}
-                </td>
-                <td style="font-size: small; text-align: right">
-                  {{ item.dongia | formatNumber }}
-                </td>
+                <template v-if="user_info.username === 'ngaht'">
+                  <td style="font-size: small">
+                    <div class="select is-small is-fullwidth">
+                      <select @change="set_congnhat_again($event, item)">
+                        <option selected>
+                          {{ item.tencongnhat }}
+                        </option>
+                        <option disabled>----------</option>
+                        <option
+                          v-for="item in congnhat_list"
+                          :value="item.tencn"
+                        >
+                          {{item.macn}} ; {{ item.tencn }} ; {{item.dongia}}         
+                        </option>
+                      </select>
+                    </div>               
+                  </td>
+                  <td style="font-size: small; text-align: right">
+                    {{ item.dongia | formatNumber }}
+                  </td>
+                </template>
+                <template v-else>
+                  <td style="font-size: small; text-align: right">
+                    {{ item.tencongnhat }}
+                  </td>
+                  <td style="font-size: small; text-align: right">
+                    {{ item.dongia | formatNumber }}
+                  </td>
+                </template>                
 
                 <td style="font-size: small">
                   {{ item.nguoithuchien }}
+                </td>
+                <td style="font-size: small">
+                  {{ item.ghichu }}
                 </td>
                 <td style="font-size: small; text-align: center">
                   {{ item.ngaythuchien | formatDate }}
@@ -988,7 +1014,7 @@
                   />
                 </td>
                 <td style="text-align: center; font-size: small">
-                  <a @click="onUpdateCn(item._id, item.sogiocong)">
+                  <a @click="onUpdateCn(item)">
                     <span style="color: green" class="icon is-small">
                       <i class="far fa-check-circle"></i>
                     </span>
@@ -1913,6 +1939,27 @@
           </div>
         </div>
       </div>
+      <!-- Modal progress-->
+      <div class="">
+        <div :class="{ 'is-active': isActive_loading }" class="modal">
+          <div class="modal-background"></div>
+          <div class="modal-content modal-card-predata">
+            <section class="modal-card-body">
+              <div>
+                <span
+                  style="font-size: small; font-weight: bold; color: #00947e"
+                  >Đang load dữ liệu - Xin chờ đợi ....</span
+                >
+              </div>
+              <div>
+                <progress class="progress is-small is-danger" max="100">
+                  15%
+                </progress>
+              </div>
+            </section>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -1937,6 +1984,8 @@ export default {
       isFilter: false,
       tonghonginlo: 0,
       tongdatinlo: "",
+      isActive_loading: false,
+      user_info: {},
       form: {
         malonhamay: "",
         makhpx: "",
@@ -1996,13 +2045,16 @@ export default {
         { masta: 3, tensta: "HT" },
         { masta: 0, tensta: "0" },
       ],
+      congnhat_list: [],
+      reset_value_dongia_congnhat: 0,
+      reset_name_congnhat: "",
       multiSearch_masp: "",
       multiSearch_nhomsp: "",
       // hightligh
       highlightedRow: null,
       tempData: [], // dữ liệu sau khi lọc
       filterOptions: 0,
-
+      loadData: false,
       // input suggest
       suggestions: [],
       suggestions_nhomsp: [],
@@ -2028,7 +2080,7 @@ export default {
       // nhóm nguyên công trong chi tiết lương
       groups: {},
       totals: {},
-      showConponent: true,
+      showConponent: false,
 
       ngayhoanthanh: "",
       items: [
@@ -2322,6 +2374,8 @@ export default {
     this.deleteRow(0);
     this.deleteRowCn(0);
     this.maspinlsx();
+    this.getDscn()
+    this.get_user()
     // this.$store.dispatch('losanxuat/fetchLosanxuat')
   },
 
@@ -2454,6 +2508,16 @@ export default {
   },
 
   methods: {
+    get_user(){
+      if(this.$auth.user){
+        try {
+          this.user_info = this.$auth.user
+          // console.log(this.user_info);
+        } catch (error) {
+          console.log(error);
+        }
+      }
+    },
     // cập nhật mato và tento do lỗi đăng ký losx k copy mato tento từ lokhoachphanxuong xuống
     async hh() {
       const response = await this.$axios.get("/api/lokehoach/laydanhsachmlnm");
@@ -2660,6 +2724,42 @@ export default {
       }
     },
 
+    async set_congnhat_again(e, item){
+      this.reset_name_congnhat = ""
+      this.reset_value_dongia_congnhat = 0
+      var name = e.target.options[e.target.options.selectedIndex].text;
+      let position = name.split(";");
+      const macn = position[0].trim();
+      const tencn = position[1].trim();
+      const dongia = position[2].trim();
+      // console.log(tencn + '-' + dongia);
+      this.reset_name_congnhat = tencn
+      this.reset_value_dongia_congnhat = dongia
+      // console.log(this.reset_name_congnhat);
+      // console.log(this.reset_value_dongia_congnhat);
+      const data = {
+        macongnhat: macn,
+        tencongnhat: tencn,
+        dongia: dongia
+      }
+      await this.$axios.$patch(`/api/ketoan/updateloaicongnhat/${item._id}`, data);
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 1000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
+      Toast.fire({
+        icon: "success",
+        title: "Cập nhật thành công",
+      });
+    },
+
     // async fetchLosanxuats() {
     //     const response = await this.$axios.$get('/api/losanxuats')
     //     return response.data
@@ -2676,7 +2776,13 @@ export default {
       this.isOpen = false;
       this.isOpenst = false;
       this.selectedOptions = [];
-      this.sllosx = await this.$axios.$get(`/api/ketoan/getallphieulocht`);
+      this.isActive_loading = true;
+      const res = await this.$axios.$get(`/api/ketoan/getallphieulocht`);
+      if (res.success == true) {
+        this.sllosx = res.data;
+        this.isActive_loading = false;
+      }
+      // console.log(res);
       if (this.sllosx.length <= 0) {
         const Toast = Swal.mixin({
           toast: true,
@@ -2705,6 +2811,10 @@ export default {
         "/api/lokehoach/hmsanphamlosanxuat"
       );
     },
+    // get all công nhật list
+    async getDscn() {
+      this.congnhat_list = await this.$axios.$get(`/api/phongban/alldmcongnhat`);
+    },
 
     // --------------------------------------------------------------------------------------
     // 2: Các Hàm chức năng
@@ -2713,21 +2823,10 @@ export default {
     async addCongdoan() {
       // console.log(this.getinfoplsx)
       let arrayCongdoan;
-      let px;
 
-      if (
-        this.getinfoplsx.mapx.trim() == "AL_PXD" ||
-        this.getinfoplsx.mapx.trim() == "DV_PXD"
-      ) {
-        px = "PXD";
-        arrayCongdoan = await this.$axios.$get(
-          `/api/ketoan/getnguyencong?khsp=${this.getinfoplsx.nhomluong}&px=${px}`
-        );
-      } else {
-        arrayCongdoan = await this.$axios.$get(
-          `/api/ketoan/getnguyencong?khsp=${this.getinfoplsx.nhomluong}&px=${this.getinfoplsx.mapx}`
-        );
-      }
+      arrayCongdoan = await this.$axios.$get(
+        `/api/ketoan/getnguyencong?khsp=${this.getinfoplsx.nhomluong}&px=${this.getinfoplsx.mapx}`
+      );
 
       if (this.getinfoplsx.mapx && !this.getinfoplsx.mato) {
         this.cong_nhan = await this.$axios.$get(
@@ -2881,18 +2980,10 @@ export default {
     // Copy công đoạn sản xuất
     async copyCongdoan(data, index) {
       let arrayCongdoan;
-      let px;
 
-      if (data.mapx.trim() == "AL_PXD" || data.mapx.trim() == "DV_PXD") {
-        px = "PXD";
-        arrayCongdoan = await this.$axios.$get(
-          `/api/ketoan/getnguyencong?khsp=${data.nhomluong}&px=${px}`
-        );
-      } else {
-        arrayCongdoan = await this.$axios.$get(
-          `/api/ketoan/getnguyencong?khsp=${data.nhomluong}&px=${data.mapx}`
-        );
-      }
+      arrayCongdoan = await this.$axios.$get(
+        `/api/ketoan/getnguyencong?khsp=${data.nhomluong}&px=${data.mapx}`
+      );
 
       if (data.mapx && !data.mato) {
         this.cong_nhan = await this.$axios.$get(
@@ -4453,7 +4544,7 @@ export default {
       // } else if (this.filterOptions == 3) {
       //   await this.filterData1(3);
       // } else if (this.filterOptions == 4) {
-      //   await this.filterData1(4);
+      //   await this.filterData1(4);ateCn
       // } else if (this.filterOptions == 5) {
       //   await this.filterData1(5);
       // } else if (this.filterOptions == 6) {
@@ -4465,12 +4556,13 @@ export default {
       // }
     },
     // Hàm update lương công nhật
-    async onUpdateCn(id, sogiocong, ghichu) {
+    async onUpdateCn(item) {
+      // console.log(item);
       let data = {
-        sogiocong: sogiocong.trim(),
+        sogiocong: item.sogiocong.trim(),
       };
       //   console.log(data)
-      await this.$axios.$patch(`/api/ketoan/updateluongcongnhat/${id}`, data);
+      await this.$axios.$patch(`/api/ketoan/updateluongcongnhat/${item._id}`, data);
       const Toast = Swal.mixin({
         toast: true,
         position: "top-end",
@@ -4510,7 +4602,7 @@ export default {
               title: "Lô sản xuất đã được chốt, muốn xóa phải hủy chốt!!!",
             });
           } else {
-            console.log(this.tempData);
+            // console.log(this.tempData);
             // xóa công đoạn khỏi bảng
             await this.$axios
               .$delete(`/api/lokehoach/luongcongnhan/${cd._id}`)
@@ -4726,15 +4818,9 @@ export default {
   height: 800px;
 }
 
-#preview {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-#preview img {
-  max-width: 90px;
-  max-height: 90px;
+.modal-card-predata {
+  width: 320px;
+  height: 200px;
 }
 
 .highlight {

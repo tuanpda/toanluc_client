@@ -457,8 +457,8 @@ export default {
       const selectedColumns = this.report.map((item) => {
         // const formattedDate = new Date(item.ngaybd).toLocaleDateString("en-GB");
         const tongnhan = parseFloat(item.tongnhan); // Chuyển đổi giá trị thành số
-        const ck1 = parseFloat(item.ck2);
-        const ck2 = parseFloat(item.ck1);
+        const ck1 = parseFloat(item.ck1);
+        const ck2 = parseFloat(item.ck2);
         const chuyenkhoan = parseFloat(item.chuyenkhoan);
         const tienmat = parseFloat(item.tienmat);
         return {

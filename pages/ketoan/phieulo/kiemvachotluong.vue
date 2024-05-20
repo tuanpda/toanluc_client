@@ -64,7 +64,7 @@
           </div>
         </div>
 
-        <div class="columns">
+        <!-- <div class="columns">
           <div class="column" style="display: flex; align-items: center">
             <label
               class="checkbox-label"
@@ -82,9 +82,9 @@
               >Có {{ sllosx.length }} phiếu</span
             >
           </div>
-        </div>
+        </div> -->
 
-        <div class="box" v-if="isFilter == true">
+        <div class="box">
           <div class="columns">
             <div class="column">
               <div class="select-wrapper" style="width: 100%; font-size: small">
@@ -133,15 +133,43 @@
             </div>
             <div class="column">
               <button
-                @click="filterData"
+                @click="filterData(1)"
                 class="button is-small is-fullwidth is-success"
               >
                 Lọc
               </button>
             </div>
+            <div class="column">
+              <vue-excel-xlsx
+                :data="sllosx"
+                :columns="columns_losx"
+                file-name="file_download"
+                :file-type="'xlsx'"
+                sheet-name="file_download"
+                style="width: 100%"
+              >
+                Download Excel
+              </vue-excel-xlsx>
+            </div>
+            <div class="column">
+              <input
+                v-model="search_maphieu_id"
+                type="number"
+                class="input is-small"
+                placeholder="Mã phiếu"
+              />
+            </div>
+            <div class="column">
+              <button
+                @click="searchPhieu()"
+                class="button is-small is-info is-fullwidth"
+              >
+                Tìm
+              </button>
+            </div>
           </div>
 
-          <div class="columns">
+          <!-- <div class="columns">
             <div class="column">
               <vue-excel-xlsx
                 :data="sllosx"
@@ -188,7 +216,7 @@
                 Refresh
               </button>
             </div>
-          </div>
+          </div> -->
         </div>
 
         <div v-if="showConponent" class="table_wrapper">
@@ -280,7 +308,7 @@
                   font-size: small;
                   text-align: center;
                   font-weight: 600;
-                  width: 17%;
+                  width: 10%;
                 "
               >
                 Nhóm lương
@@ -347,7 +375,7 @@
                   width: 5%;
                 "
               >
-                Tổng hỏng
+                T. Hỏng
               </td>
               <!-- <td @click="sortTable('ngaybatdautt')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 5%;">Ngày BĐTT
@@ -385,7 +413,7 @@
               </td> -->
             </tr>
             <tr
-              v-for="(item, index) in paginatedTable"
+              v-for="(item, index) in sllosx"
               :key="index + 'llllkiq'"
               :class="{ highlighted: item === highlightedRow }"
               @click="highlightRow(item)"
@@ -579,7 +607,7 @@
             </tr>
           </table>
         </div>
-        <div class="columns">
+        <!-- <div class="columns">
           <div class="column">
             <div class="pagination">
               <button
@@ -620,6 +648,67 @@
               </button>
             </div>
           </div>
+        </div> -->
+
+        <!-- phân trang -->
+        <div v-if="sllosx.length > 0" style="margin-top: 10px">
+          <nav
+            class="pagination is-centered is-rounded"
+            role="navigation"
+            aria-label="pagination"
+          >
+            <!-- Nút trang đầu tiên -->
+            <button
+              :disabled="currentPage === 1"
+              @click="goToPage(1)"
+              class="pagination-previous button is-info is-small"
+            >
+              Đầu tiên
+            </button>
+
+            <!-- Nút Previous -->
+            <button
+              :disabled="currentPage === 1"
+              @click="goToPreviousPage"
+              class="pagination-previous button is-info is-small"
+            >
+              Trang trước
+            </button>
+
+            <!-- Nút Next -->
+            <button
+              :disabled="currentPage === totalPages"
+              @click="goToNextPage"
+              class="pagination-next button is-danger is-small"
+            >
+              Trang tiếp
+            </button>
+
+            <!-- Nút trang cuối cùng -->
+            <button
+              :disabled="currentPage === totalPages"
+              @click="goToPage(totalPages)"
+              class="pagination-next button is-danger is-small"
+            >
+              Cuối cùng
+            </button>
+
+            <ul class="pagination-list">
+              <!-- Hiển thị các nút phân trang -->
+              <li v-for="page in visiblePages" :key="page">
+                <button
+                  :class="[
+                    'pagination-link',
+                    { 'is-current': page === currentPage },
+                    'is-small',
+                  ]"
+                  @click="goToPage(page)"
+                >
+                  {{ page }}
+                </button>
+              </li>
+            </ul>
+          </nav>
         </div>
 
         <br />
@@ -2080,7 +2169,7 @@ export default {
       pageSize: 10,
       currentPage: 1,
       filter: "",
-
+      loadingData: false,
       // tìm theo mã id và
       search_maphieu_id: "",
       search_ngayhttt: "",
@@ -2486,7 +2575,7 @@ export default {
   mounted() {
     this.currentDateTime();
     this.get_phanxuong();
-    this.getSolieuLSX_ALl_cht();
+    // this.getSolieuLSX_ALl_cht();
     this.deleteRow(0);
     this.deleteRowCn(0);
     this.maspinlsx();
@@ -2498,6 +2587,29 @@ export default {
   },
 
   computed: {
+    // phân trang code mới
+    visiblePages() {
+      const pages = [];
+      const maxVisiblePages = 5; // Số lượng trang hiển thị tối đa
+
+      // Xác định phạm vi của các trang hiển thị
+      let startPage = Math.max(
+        1,
+        this.currentPage - Math.floor(maxVisiblePages / 2)
+      );
+      let endPage = Math.min(this.totalPages, startPage + maxVisiblePages - 1);
+
+      if (endPage - startPage < maxVisiblePages - 1) {
+        startPage = Math.max(1, endPage - maxVisiblePages + 1);
+      }
+
+      for (let i = startPage; i <= endPage; i++) {
+        pages.push(i);
+      }
+
+      return pages;
+    },
+
     // Load dữ liệu lương công đoạn từ VUEX
     // load dữ liệu lô sản xuất có status = 2
     // ...mapState({
@@ -2622,6 +2734,25 @@ export default {
   },
 
   methods: {
+    // pagi
+    goToPreviousPage() {
+      if (this.currentPage > 1) {
+        // this.showAllLokhpx(this.currentPage - 1);
+        this.filterData(this.currentPage - 1);
+      }
+    },
+
+    goToNextPage() {
+      if (this.currentPage < this.totalPages) {
+        // this.showAllLokhpx(this.currentPage + 1);
+        this.filterData(this.currentPage + 1);
+      }
+    },
+
+    goToPage(page) {
+      // this.showAllLokhpx(page); // Di chuyển đến trang được chỉ định
+      this.filterData(page);
+    },
     // --------------------------------------------------------------------------------------
     // 1: Các hàm hỗ trợ tính toán; lọc ...
     // hàm lấy ngày giờ hiện tại
@@ -3720,7 +3851,7 @@ export default {
           }
         }
       }
-      this.filterData();
+      this.filterData(1);
     },
     // Hủy từng phiếu
     async xacnhanHuyChotphieu() {
@@ -3896,402 +4027,451 @@ export default {
     },
 
     // Hàm lọc dữ liệu
-    // Lọc nhiều tiêu chí
-    async filterData() {
-      this.allluongcongdoan = [];
-      this.allluongcongnhat = [];
-      // console.log(this.selectedOptions)
-      // console.log(this.Options_status)
-      // console.log(this.search_ngayhttt);
-      this.isOpen = false;
-      this.isOpenst = false;
+    async filterData(page) {
+      try {
+        this.allluongcongdoan = [];
+        this.allluongcongnhat = [];
 
-      const mapxList = this.selectedOptions;
-      const masp = this.multiSearch_masp;
-      const status = this.Options_status;
-      const dateFrom = this.search_ngayhttt;
-      const dateTo = this.search_ngayhtttend;
-      const search_chotphieu = this.search_chot;
-      // console.log(search_chotphieu);
+        this.isOpen = false;
+        this.isOpenst = false;
+        this.isActive_loading = true;
 
-      // console.log(this.search_ngayhttt, this.search_ngayhtttend);
-      if (
-        this.selectedOptions.length > 0 &&
-        this.search_ngayhttt != "" &&
-        this.search_ngayhtttend != "" &&
-        this.search_chot != ""
-      ) {
-        this.tempData = [];
-        this.tempData = await this.$axios.$get(
-          `/api/lokehoach/locphanxuonggiaidoanhoanthanhlochuachot`,
-          {
-            params: {
-              mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
-              dateFrom: dateFrom,
-              dateTo: dateTo,
-              status_tinhluong: search_chotphieu,
-            },
-          }
-        );
-        // console.log(this.tempData);
-        this.sllosx = this.tempData;
-      } else if (
-        this.selectedOptions.length > 0 &&
-        this.search_ngayhttt != "" &&
-        this.search_ngayhtttend != ""
-      ) {
-        this.tempData = [];
-        this.tempData = await this.$axios.$get(
-          `/api/lokehoach/locphanxuonggiaidoanhoanthanh`,
-          {
-            params: {
-              mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
-              dateFrom: dateFrom,
-              dateTo: dateTo,
-            },
-          }
-        );
-        // console.log(this.tempData);
-        this.sllosx = this.tempData;
-      } else if (
-        !this.selectedOptions.length &&
-        this.search_ngayhttt != "" &&
-        this.search_ngayhtttend != "" &&
-        this.search_chot != ""
-      ) {
-        this.tempData = [];
-        this.tempData = await this.$axios.$get(
-          `/api/lokehoach/locgiaidoanhoanthanhlochuachot`,
-          {
-            params: {
-              dateFrom: dateFrom,
-              dateTo: dateTo,
-              status_tinhluong: search_chotphieu,
-            },
-          }
-        );
-        this.sllosx = this.tempData;
-      } else if (
-        !this.selectedOptions.length &&
-        this.search_ngayhttt != "" &&
-        this.search_ngayhtttend != ""
-      ) {
-        this.tempData = [];
-        this.tempData = await this.$axios.$get(
-          `/api/lokehoach/locgiaidoanhoanthanh`,
-          {
-            params: {
-              dateFrom: dateFrom,
-              dateTo: dateTo,
-            },
-          }
-        );
-        this.sllosx = this.tempData;
-      } else if (
-        !this.selectedOptions.length &&
-        this.search_ngayhttt == "" &&
-        this.search_ngayhtttend == "" &&
-        this.search_chot != ""
-      ) {
-        this.tempData = [];
-        this.tempData = await this.$axios.$get(
-          `/api/lokehoach/loconlydachotlsx`,
-          {
-            params: {
-              status_tinhluong: search_chotphieu,
-            },
-          }
-        );
-        this.sllosx = this.tempData;
+        const mapxList = this.selectedOptions;
+        const dateFrom = this.search_ngayhttt;
+        const dateTo = this.search_ngayhtttend;
+        const search_chotphieu = this.search_chot; // nhân giá trị 0 hoặc 1
+
+        const params = {
+          mapx: mapxList.length > 0 ? mapxList : undefined,
+          dateFrom: dateFrom !== "" ? dateFrom : undefined,
+          dateTo: dateTo !== "" ? dateTo : undefined,
+          search_chotphieu: search_chotphieu,
+          page: page,
+        };
+
+        try {
+          const res = await this.$axios.$get(
+            "/api/lokehoach/filterKiemvachotphieu",
+            { params }
+          );
+          console.log(res);
+          this.sllosx = res.results;
+          this.totalPages = res.info.pages;
+          this.currentPage = page;
+          this.isActive_loading = false;
+        } catch (error) {
+          console.error(error);
+        }
+      } catch (error) {
+        console.error(error); // Xử lý lỗi tại đây
       }
-      // chọn lọc full 1
-      // if (
-      //   this.selectedOptions.length > 0 &&
-      //   this.Options_status.length > 0 &&
-      //   this.multiSearch_masp != "" &&
-      //   this.search_ngayhttt != ""
-      // ) {
-      //   this.tempData = [];
-      //   this.filterOptions = 8;
-      //   this.tempData = await this.$axios.$get(
-      //     `/api/lokehoach/filterfulldklosanxuatwithngayhttt`,
-      //     {
-      //       params: {
-      //         mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
-      //         masp: masp,
-      //         status: status,
-      //         ngayhoanthanh: ngayhoanthanh,
-      //       },
-      //     }
-      //   );
-      //   // console.log(this.tempData);
-      //   this.sllosx = this.tempData;
-      // }
-      // // mã px mã sản phẩm ngày hoàn thành
-      // else if (
-      //   this.selectedOptions.length > 0 &&
-      //   !this.Options_status.length &&
-      //   this.multiSearch_masp != "" &&
-      //   this.search_ngayhttt != ""
-      // ) {
-      //   this.tempData = [];
-      //   this.filterOptions = 8;
-      //   this.tempData = await this.$axios.$get(
-      //     `/api/lokehoach/mapxmaspngayhoanthanhlsx`,
-      //     {
-      //       params: {
-      //         mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
-      //         masp: masp,
-      //         ngayhoanthanh: ngayhoanthanh,
-      //       },
-      //     }
-      //   );
-      //   // console.log(this.tempData);
-      //   this.sllosx = this.tempData;
-      // }
-      // // mã px trạng thái ngày hoàn thành
-      // else if (
-      //   this.selectedOptions.length > 0 &&
-      //   this.Options_status.length > 0 &&
-      //   this.multiSearch_masp == "" &&
-      //   this.search_ngayhttt != ""
-      // ) {
-      //   this.tempData = [];
-      //   this.filterOptions = 8;
-      //   this.tempData = await this.$axios.$get(
-      //     `/api/lokehoach/mapxstatusngayhoanthanhlsx`,
-      //     {
-      //       params: {
-      //         mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
-      //         status: status,
-      //         ngayhoanthanh: ngayhoanthanh,
-      //       },
-      //     }
-      //   );
-      //   // console.log(this.tempData);
-      //   this.sllosx = this.tempData;
-      // }
-      // // sản phẩm trạng thái ngày hoàn thành
-      // else if (
-      //   !this.selectedOptions.length &&
-      //   this.Options_status.length > 0 &&
-      //   this.multiSearch_masp != "" &&
-      //   this.search_ngayhttt != ""
-      // ) {
-      //   this.tempData = [];
-      //   this.filterOptions = 8;
-      //   this.tempData = await this.$axios.$get(
-      //     `/api/lokehoach/maspstatusngayhoanthanhlsx`,
-      //     {
-      //       params: {
-      //         masp: masp, // Truyền danh sách mã phân xưởng lên server
-      //         status: status,
-      //         ngayhoanthanh: ngayhoanthanh,
-      //       },
-      //     }
-      //   );
-      //   // console.log(this.tempData);
-      //   this.sllosx = this.tempData;
-      // }
-      // // phân xưởng ngày hoàn thành
-      // else if (
-      //   this.selectedOptions.length > 0 &&
-      //   !this.Options_status.length &&
-      //   this.multiSearch_masp == "" &&
-      //   this.search_ngayhttt != ""
-      // ) {
-      //   this.tempData = [];
-      //   this.filterOptions = 8;
-      //   this.tempData = await this.$axios.$get(
-      //     `/api/lokehoach/filterphanxuongandngayhttt`,
-      //     {
-      //       params: {
-      //         mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
-      //         ngayhoanthanh: ngayhoanthanh,
-      //       },
-      //     }
-      //   );
-      //   // console.log(this.tempData);
-      //   this.sllosx = this.tempData;
-      // }
-      // // mã sp ngày hoàn thành
-      // else if (
-      //   !this.selectedOptions.length &&
-      //   !this.Options_status.length &&
-      //   this.multiSearch_masp != "" &&
-      //   this.search_ngayhttt != ""
-      // ) {
-      //   this.tempData = [];
-      //   this.filterOptions = 8;
-      //   this.tempData = await this.$axios.$get(
-      //     `/api/lokehoach/maspngayhoanthanhlsx`,
-      //     {
-      //       params: {
-      //         masp: masp, // Truyền danh sách mã phân xưởng lên server
-      //         ngayhoanthanh: ngayhoanthanh,
-      //       },
-      //     }
-      //   );
-      //   // console.log(this.tempData);
-      //   this.sllosx = this.tempData;
-      // }
-      // // status ngày hoàn thành
-      // else if (
-      //   !this.selectedOptions.length &&
-      //   this.Options_status.length > 0 &&
-      //   this.multiSearch_masp == "" &&
-      //   this.search_ngayhttt != ""
-      // ) {
-      //   this.tempData = [];
-      //   this.filterOptions = 8;
-      //   this.tempData = await this.$axios.$get(
-      //     `/api/lokehoach/statusngayhoanthanhlsx`,
-      //     {
-      //       params: {
-      //         status: status, // Truyền danh sách mã phân xưởng lên server
-      //         ngayhoanthanh: ngayhoanthanh,
-      //       },
-      //     }
-      //   );
-      //   // console.log(this.tempData);
-      //   this.sllosx = this.tempData;
-      // } else if (
-      //   this.selectedOptions.length > 0 &&
-      //   this.Options_status.length > 0 &&
-      //   this.multiSearch_masp != ""
-      // ) {
-      //   this.tempData = [];
-      //   this.filterOptions = 1;
-      //   this.tempData = await this.$axios.$get(
-      //     `/api/lokehoach/filterfulldklosanxuat`,
-      //     {
-      //       params: {
-      //         mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
-      //         masp: masp,
-      //         status: status,
-      //       },
-      //     }
-      //   );
-      //   // console.log(this.tempData);
-      //   this.sllosx = this.tempData;
-      // }
-      // // chỉ có mã px 2
-      // else if (
-      //   this.selectedOptions.length > 0 &&
-      //   !this.Options_status.length &&
-      //   this.multiSearch_masp == ""
-      // ) {
-      //   this.tempData = [];
-      //   this.filterOptions = 2;
-      //   this.tempData = [];
-      //   this.sllosx = [];
-      //   this.tempData = await this.$axios.$get(
-      //     `/api/lokehoach/filteronlymapxlosanxuat`,
-      //     {
-      //       params: {
-      //         mapx: mapxList,
-      //       },
-      //     }
-      //   );
-      //   this.sllosx = this.tempData;
-      // }
-      // // chỉ có mã px và mã sp 3
-      // else if (
-      //   this.selectedOptions.length > 0 &&
-      //   !this.Options_status.length &&
-      //   this.multiSearch_masp != ""
-      // ) {
-      //   this.tempData = [];
-      //   this.filterOptions = 3;
-      //   this.tempData = await this.$axios.$get(
-      //     `/api/lokehoach/filteronlymapxandmasplosanxuat`,
-      //     {
-      //       params: {
-      //         mapx: mapxList,
-      //         masp: masp,
-      //       },
-      //     }
-      //   );
-      //   this.sllosx = this.tempData;
-      // }
-      // // chỉ có mã px và status 4
-      // else if (
-      //   this.selectedOptions.length > 0 &&
-      //   this.Options_status.length > 0 &&
-      //   this.multiSearch_masp == ""
-      // ) {
-      //   this.tempData = [];
-      //   this.filterOptions = 4;
-      //   this.tempData = await this.$axios.$get(
-      //     `/api/lokehoach/filteronlymapxandstatuslosanxuat`,
-      //     {
-      //       params: {
-      //         mapx: mapxList,
-      //         status: status,
-      //       },
-      //     }
-      //   );
-      //   this.sllosx = this.tempData;
-      // }
-      // // lọc mỗi trạng thái 5
-      // else if (
-      //   !this.selectedOptions.length &&
-      //   this.Options_status.length > 0 &&
-      //   this.multiSearch_masp == ""
-      // ) {
-      //   this.tempData = [];
-      //   this.filterOptions = 5;
-      //   this.tempData = await this.$axios.$get(
-      //     `/api/lokehoach/filteronlystatuslosanxuat`,
-      //     {
-      //       params: {
-      //         status: status,
-      //       },
-      //     }
-      //   );
-      //   this.sllosx = this.tempData;
-      // }
-
-      // // lọc mỗi mã sản phẩm 6
-      // else if (
-      //   !this.selectedOptions.length &&
-      //   !this.Options_status.length &&
-      //   this.multiSearch_masp != ""
-      // ) {
-      //   this.tempData = [];
-      //   this.filterOptions = 6;
-      //   this.tempData = await this.$axios.$get(
-      //     `/api/lokehoach/filteronlymasplosanxuat`,
-      //     {
-      //       params: {
-      //         masp: masp,
-      //       },
-      //     }
-      //   );
-      //   this.sllosx = this.tempData;
-      // }
-
-      // // lọc sản phẩm + trạng thái 7
-      // else if (
-      //   !this.selectedOptions.length &&
-      //   this.Options_status.length > 0 &&
-      //   this.multiSearch_masp != ""
-      // ) {
-      //   this.tempData = [];
-      //   this.filterOptions = 7;
-      //   this.tempData = await this.$axios.$get(
-      //     `/api/lokehoach/filteronlymaspandstatuslosx`,
-      //     {
-      //       params: {
-      //         masp: masp,
-      //         status: status,
-      //       },
-      //     }
-      //   );
-      //   this.sllosx = this.tempData;
-      // }
-      // lọc thêm ngày hoàn thành
     },
+
+    // Lọc nhiều tiêu chí
+    // async filterData() {
+    //   this.allluongcongdoan = [];
+    //   this.allluongcongnhat = [];
+    //   // console.log(this.selectedOptions)
+    //   // console.log(this.Options_status)
+    //   // console.log(this.search_ngayhttt);
+    //   this.isOpen = false;
+    //   this.isOpenst = false;
+    //   this.isActive_loading = true;
+
+    //   const mapxList = this.selectedOptions;
+    //   const masp = this.multiSearch_masp;
+    //   const status = this.Options_status;
+    //   const dateFrom = this.search_ngayhttt;
+    //   const dateTo = this.search_ngayhtttend;
+    //   const search_chotphieu = this.search_chot;
+    //   // console.log(search_chotphieu);
+
+    //   try {
+    //     // console.log(this.search_ngayhttt, this.search_ngayhtttend);
+    //     if (
+    //       this.selectedOptions.length > 0 &&
+    //       this.search_ngayhttt != "" &&
+    //       this.search_ngayhtttend != "" &&
+    //       this.search_chot != ""
+    //     ) {
+    //       this.tempData = [];
+    //       this.tempData = await this.$axios.$get(
+    //         `/api/lokehoach/locphanxuonggiaidoanhoanthanhlochuachot`,
+    //         {
+    //           params: {
+    //             mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
+    //             dateFrom: dateFrom,
+    //             dateTo: dateTo,
+    //             status_tinhluong: search_chotphieu,
+    //           },
+    //         }
+    //       );
+    //       // console.log(this.tempData);
+    //       this.sllosx = this.tempData;
+    //     } else if (
+    //       this.selectedOptions.length > 0 &&
+    //       this.search_ngayhttt != "" &&
+    //       this.search_ngayhtttend != ""
+    //     ) {
+    //       this.tempData = [];
+    //       this.tempData = await this.$axios.$get(
+    //         `/api/lokehoach/locphanxuonggiaidoanhoanthanh`,
+    //         {
+    //           params: {
+    //             mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
+    //             dateFrom: dateFrom,
+    //             dateTo: dateTo,
+    //           },
+    //         }
+    //       );
+    //       // console.log(this.tempData);
+    //       this.sllosx = this.tempData;
+    //     } else if (
+    //       !this.selectedOptions.length &&
+    //       this.search_ngayhttt != "" &&
+    //       this.search_ngayhtttend != "" &&
+    //       this.search_chot != ""
+    //     ) {
+    //       this.tempData = [];
+    //       this.tempData = await this.$axios.$get(
+    //         `/api/lokehoach/locgiaidoanhoanthanhlochuachot`,
+    //         {
+    //           params: {
+    //             dateFrom: dateFrom,
+    //             dateTo: dateTo,
+    //             status_tinhluong: search_chotphieu,
+    //           },
+    //         }
+    //       );
+    //       this.sllosx = this.tempData;
+    //     } else if (
+    //       !this.selectedOptions.length &&
+    //       this.search_ngayhttt != "" &&
+    //       this.search_ngayhtttend != ""
+    //     ) {
+    //       this.tempData = [];
+    //       this.tempData = await this.$axios.$get(
+    //         `/api/lokehoach/locgiaidoanhoanthanh`,
+    //         {
+    //           params: {
+    //             dateFrom: dateFrom,
+    //             dateTo: dateTo,
+    //           },
+    //         }
+    //       );
+    //       this.sllosx = this.tempData;
+    //     } else if (
+    //       !this.selectedOptions.length &&
+    //       this.search_ngayhttt == "" &&
+    //       this.search_ngayhtttend == "" &&
+    //       this.search_chot != ""
+    //     ) {
+    //       this.tempData = [];
+    //       this.tempData = await this.$axios.$get(
+    //         `/api/lokehoach/loconlydachotlsx`,
+    //         {
+    //           params: {
+    //             status_tinhluong: search_chotphieu,
+    //           },
+    //         }
+    //       );
+    //       this.sllosx = this.tempData;
+    //     }
+
+    //     this.isActive_loading = false;
+    //   } catch (error) {
+    //     console.error("Error fetching data:", error);
+    //     this.isActive_loading = false; // Dừng hiển thị loading nếu có lỗi
+    //   }
+
+    //   // chọn lọc full 1
+    //   // if (
+    //   //   this.selectedOptions.length > 0 &&
+    //   //   this.Options_status.length > 0 &&
+    //   //   this.multiSearch_masp != "" &&
+    //   //   this.search_ngayhttt != ""
+    //   // ) {
+    //   //   this.tempData = [];
+    //   //   this.filterOptions = 8;
+    //   //   this.tempData = await this.$axios.$get(
+    //   //     `/api/lokehoach/filterfulldklosanxuatwithngayhttt`,
+    //   //     {
+    //   //       params: {
+    //   //         mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
+    //   //         masp: masp,
+    //   //         status: status,
+    //   //         ngayhoanthanh: ngayhoanthanh,
+    //   //       },
+    //   //     }
+    //   //   );
+    //   //   // console.log(this.tempData);
+    //   //   this.sllosx = this.tempData;
+    //   // }
+    //   // // mã px mã sản phẩm ngày hoàn thành
+    //   // else if (
+    //   //   this.selectedOptions.length > 0 &&
+    //   //   !this.Options_status.length &&
+    //   //   this.multiSearch_masp != "" &&
+    //   //   this.search_ngayhttt != ""
+    //   // ) {
+    //   //   this.tempData = [];
+    //   //   this.filterOptions = 8;
+    //   //   this.tempData = await this.$axios.$get(
+    //   //     `/api/lokehoach/mapxmaspngayhoanthanhlsx`,
+    //   //     {
+    //   //       params: {
+    //   //         mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
+    //   //         masp: masp,
+    //   //         ngayhoanthanh: ngayhoanthanh,
+    //   //       },
+    //   //     }
+    //   //   );
+    //   //   // console.log(this.tempData);
+    //   //   this.sllosx = this.tempData;
+    //   // }
+    //   // // mã px trạng thái ngày hoàn thành
+    //   // else if (
+    //   //   this.selectedOptions.length > 0 &&
+    //   //   this.Options_status.length > 0 &&
+    //   //   this.multiSearch_masp == "" &&
+    //   //   this.search_ngayhttt != ""
+    //   // ) {
+    //   //   this.tempData = [];
+    //   //   this.filterOptions = 8;
+    //   //   this.tempData = await this.$axios.$get(
+    //   //     `/api/lokehoach/mapxstatusngayhoanthanhlsx`,
+    //   //     {
+    //   //       params: {
+    //   //         mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
+    //   //         status: status,
+    //   //         ngayhoanthanh: ngayhoanthanh,
+    //   //       },
+    //   //     }
+    //   //   );
+    //   //   // console.log(this.tempData);
+    //   //   this.sllosx = this.tempData;
+    //   // }
+    //   // // sản phẩm trạng thái ngày hoàn thành
+    //   // else if (
+    //   //   !this.selectedOptions.length &&
+    //   //   this.Options_status.length > 0 &&
+    //   //   this.multiSearch_masp != "" &&
+    //   //   this.search_ngayhttt != ""
+    //   // ) {
+    //   //   this.tempData = [];
+    //   //   this.filterOptions = 8;
+    //   //   this.tempData = await this.$axios.$get(
+    //   //     `/api/lokehoach/maspstatusngayhoanthanhlsx`,
+    //   //     {
+    //   //       params: {
+    //   //         masp: masp, // Truyền danh sách mã phân xưởng lên server
+    //   //         status: status,
+    //   //         ngayhoanthanh: ngayhoanthanh,
+    //   //       },
+    //   //     }
+    //   //   );
+    //   //   // console.log(this.tempData);
+    //   //   this.sllosx = this.tempData;
+    //   // }
+    //   // // phân xưởng ngày hoàn thành
+    //   // else if (
+    //   //   this.selectedOptions.length > 0 &&
+    //   //   !this.Options_status.length &&
+    //   //   this.multiSearch_masp == "" &&
+    //   //   this.search_ngayhttt != ""
+    //   // ) {
+    //   //   this.tempData = [];
+    //   //   this.filterOptions = 8;
+    //   //   this.tempData = await this.$axios.$get(
+    //   //     `/api/lokehoach/filterphanxuongandngayhttt`,
+    //   //     {
+    //   //       params: {
+    //   //         mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
+    //   //         ngayhoanthanh: ngayhoanthanh,
+    //   //       },
+    //   //     }
+    //   //   );
+    //   //   // console.log(this.tempData);
+    //   //   this.sllosx = this.tempData;
+    //   // }
+    //   // // mã sp ngày hoàn thành
+    //   // else if (
+    //   //   !this.selectedOptions.length &&
+    //   //   !this.Options_status.length &&
+    //   //   this.multiSearch_masp != "" &&
+    //   //   this.search_ngayhttt != ""
+    //   // ) {
+    //   //   this.tempData = [];
+    //   //   this.filterOptions = 8;
+    //   //   this.tempData = await this.$axios.$get(
+    //   //     `/api/lokehoach/maspngayhoanthanhlsx`,
+    //   //     {
+    //   //       params: {
+    //   //         masp: masp, // Truyền danh sách mã phân xưởng lên server
+    //   //         ngayhoanthanh: ngayhoanthanh,
+    //   //       },
+    //   //     }
+    //   //   );
+    //   //   // console.log(this.tempData);
+    //   //   this.sllosx = this.tempData;
+    //   // }
+    //   // // status ngày hoàn thành
+    //   // else if (
+    //   //   !this.selectedOptions.length &&
+    //   //   this.Options_status.length > 0 &&
+    //   //   this.multiSearch_masp == "" &&
+    //   //   this.search_ngayhttt != ""
+    //   // ) {
+    //   //   this.tempData = [];
+    //   //   this.filterOptions = 8;
+    //   //   this.tempData = await this.$axios.$get(
+    //   //     `/api/lokehoach/statusngayhoanthanhlsx`,
+    //   //     {
+    //   //       params: {
+    //   //         status: status, // Truyền danh sách mã phân xưởng lên server
+    //   //         ngayhoanthanh: ngayhoanthanh,
+    //   //       },
+    //   //     }
+    //   //   );
+    //   //   // console.log(this.tempData);
+    //   //   this.sllosx = this.tempData;
+    //   // } else if (
+    //   //   this.selectedOptions.length > 0 &&
+    //   //   this.Options_status.length > 0 &&
+    //   //   this.multiSearch_masp != ""
+    //   // ) {
+    //   //   this.tempData = [];
+    //   //   this.filterOptions = 1;
+    //   //   this.tempData = await this.$axios.$get(
+    //   //     `/api/lokehoach/filterfulldklosanxuat`,
+    //   //     {
+    //   //       params: {
+    //   //         mapx: mapxList, // Truyền danh sách mã phân xưởng lên server
+    //   //         masp: masp,
+    //   //         status: status,
+    //   //       },
+    //   //     }
+    //   //   );
+    //   //   // console.log(this.tempData);
+    //   //   this.sllosx = this.tempData;
+    //   // }
+    //   // // chỉ có mã px 2
+    //   // else if (
+    //   //   this.selectedOptions.length > 0 &&
+    //   //   !this.Options_status.length &&
+    //   //   this.multiSearch_masp == ""
+    //   // ) {
+    //   //   this.tempData = [];
+    //   //   this.filterOptions = 2;
+    //   //   this.tempData = [];
+    //   //   this.sllosx = [];
+    //   //   this.tempData = await this.$axios.$get(
+    //   //     `/api/lokehoach/filteronlymapxlosanxuat`,
+    //   //     {
+    //   //       params: {
+    //   //         mapx: mapxList,
+    //   //       },
+    //   //     }
+    //   //   );
+    //   //   this.sllosx = this.tempData;
+    //   // }
+    //   // // chỉ có mã px và mã sp 3
+    //   // else if (
+    //   //   this.selectedOptions.length > 0 &&
+    //   //   !this.Options_status.length &&
+    //   //   this.multiSearch_masp != ""
+    //   // ) {
+    //   //   this.tempData = [];
+    //   //   this.filterOptions = 3;
+    //   //   this.tempData = await this.$axios.$get(
+    //   //     `/api/lokehoach/filteronlymapxandmasplosanxuat`,
+    //   //     {
+    //   //       params: {
+    //   //         mapx: mapxList,
+    //   //         masp: masp,
+    //   //       },
+    //   //     }
+    //   //   );
+    //   //   this.sllosx = this.tempData;
+    //   // }
+    //   // // chỉ có mã px và status 4
+    //   // else if (
+    //   //   this.selectedOptions.length > 0 &&
+    //   //   this.Options_status.length > 0 &&
+    //   //   this.multiSearch_masp == ""
+    //   // ) {
+    //   //   this.tempData = [];
+    //   //   this.filterOptions = 4;
+    //   //   this.tempData = await this.$axios.$get(
+    //   //     `/api/lokehoach/filteronlymapxandstatuslosanxuat`,
+    //   //     {
+    //   //       params: {
+    //   //         mapx: mapxList,
+    //   //         status: status,
+    //   //       },
+    //   //     }
+    //   //   );
+    //   //   this.sllosx = this.tempData;
+    //   // }
+    //   // // lọc mỗi trạng thái 5
+    //   // else if (
+    //   //   !this.selectedOptions.length &&
+    //   //   this.Options_status.length > 0 &&
+    //   //   this.multiSearch_masp == ""
+    //   // ) {
+    //   //   this.tempData = [];
+    //   //   this.filterOptions = 5;
+    //   //   this.tempData = await this.$axios.$get(
+    //   //     `/api/lokehoach/filteronlystatuslosanxuat`,
+    //   //     {
+    //   //       params: {
+    //   //         status: status,
+    //   //       },
+    //   //     }
+    //   //   );
+    //   //   this.sllosx = this.tempData;
+    //   // }
+
+    //   // // lọc mỗi mã sản phẩm 6
+    //   // else if (
+    //   //   !this.selectedOptions.length &&
+    //   //   !this.Options_status.length &&
+    //   //   this.multiSearch_masp != ""
+    //   // ) {
+    //   //   this.tempData = [];
+    //   //   this.filterOptions = 6;
+    //   //   this.tempData = await this.$axios.$get(
+    //   //     `/api/lokehoach/filteronlymasplosanxuat`,
+    //   //     {
+    //   //       params: {
+    //   //         masp: masp,
+    //   //       },
+    //   //     }
+    //   //   );
+    //   //   this.sllosx = this.tempData;
+    //   // }
+
+    //   // // lọc sản phẩm + trạng thái 7
+    //   // else if (
+    //   //   !this.selectedOptions.length &&
+    //   //   this.Options_status.length > 0 &&
+    //   //   this.multiSearch_masp != ""
+    //   // ) {
+    //   //   this.tempData = [];
+    //   //   this.filterOptions = 7;
+    //   //   this.tempData = await this.$axios.$get(
+    //   //     `/api/lokehoach/filteronlymaspandstatuslosx`,
+    //   //     {
+    //   //       params: {
+    //   //         masp: masp,
+    //   //         status: status,
+    //   //       },
+    //   //     }
+    //   //   );
+    //   //   this.sllosx = this.tempData;
+    //   // }
+    //   // lọc thêm ngày hoàn thành
+    // },
 
     async filterData1(filterOption) {
       const mapxList = this.selectedOptions;
@@ -4590,11 +4770,28 @@ export default {
           title: "Có lỗi xảy ra !!!",
         });
       }
-      this.filterData();
+      this.filterData(1);
     },
     // Hàm update số đạt lương công đoạn
     async onUpdateCd(item) {
       // console.log(item);
+      if (item.status == 1) {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 1000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+        Toast.fire({
+          icon: "error",
+          title: "Lô đã chốt bạn không thể sửa. Hãy hủy chốt trước đã.",
+        });
+      }
       try {
         await this.$axios.$patch(
           `/api/ketoan/updatesodatsohonglcd/${item._id}`,
@@ -4664,7 +4861,7 @@ export default {
           title: "Có lỗi xảy ra",
         });
       }
-      this.filterData();
+      this.filterData(1);
 
       //   this.getSolieuLSX_ALl_cht();
       // if (this.templateLosx.length > 0) {
@@ -4879,6 +5076,11 @@ export default {
         }
       });
     },
+
+    // sửa phiếu, chỉ có nga hoàng mới được sửa. code ngày 11/04/2024
+    async onEdit(item) {
+      console.log(item);
+    },
   },
 };
 </script>
@@ -4986,7 +5188,7 @@ tr:hover {
   display: block;
 }
 
-.pagination {
+/* .pagination {
   display: flex;
   justify-content: center;
   margin-top: 5px;
@@ -5004,7 +5206,7 @@ tr:hover {
 
 .pagination button.active {
   background-color: #cb4b10;
-}
+} */
 
 .autocomplete {
   position: relative;

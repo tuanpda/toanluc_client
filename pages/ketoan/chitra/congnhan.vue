@@ -736,8 +736,11 @@ export default {
         });
       }
 
+      // console.log(this.show_datasave);
+
       // tìm xem công nhân nào chưa có thông tin đầy đủ về tài khoản ngân hàng
       // tìm xong đẩy vào mảng show_needupudate
+      // console.log(this.report);
       for (let i = 0; i < this.report.length; i++) {
         if (
           this.report[i].stk == "" ||
@@ -775,7 +778,7 @@ export default {
             this.maxuong +
             "-" +
             this.mato;
-
+          // console.log(keytn);
           const lengtData = this.show_needupudate.length;
           // console.log(lengtData);
           this.showsuccess = lengtData;
