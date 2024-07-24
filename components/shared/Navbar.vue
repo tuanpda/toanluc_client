@@ -458,7 +458,7 @@
           <!-- Hệ thống -->
           <div class="navbar-item has-dropdown is-hoverable">
             <a class="navbar-link" @click="toggleDropdown_hethong">
-              <span style="color: #6e4dc3" class="icon is-small is-left">
+              <span style="color: #ff7f50" class="icon is-small is-left">
                 <i class="fas fa-dharmachakra"></i>
               </span>
               &ensp; Hệ thống
@@ -468,7 +468,7 @@
               class="navbar-dropdown is-boxed"
               v-show="isDropdownOpen_hethong"
             >
-              <div class="nested navbar-item dropdown">
+              <!-- <div class="nested navbar-item dropdown">
                 <div class="dropdown-trigger">
                   <button
                     class="button"
@@ -506,11 +506,18 @@
                     </nav-link>
                   </div>
                 </div>
-              </div>
-              <!-- chấm công -->
+              </div> -->
+              <!-- view admin -->
+              <!-- <hr class="navbar-divider" /> -->
+              <nav-link to="/quantri/viewadmin" class="navbar-item">
+                <span style="color: #ff7f50" class="icon is-small is-left">
+                  <i class="fas fa-chess-board"></i>
+                </span>
+                &ensp; View Admin
+              </nav-link>
               <hr class="navbar-divider" />
               <nav-link to="/quantri/chamcong/" class="navbar-item">
-                <span style="color: #6e4dc3" class="icon is-small is-left">
+                <span style="color: #ff7f50" class="icon is-small is-left">
                   <i class="fas fa-id-card-alt"></i>
                 </span>
                 &ensp; Chấm công hằng ngày
@@ -522,7 +529,7 @@
                     aria-haspopup="true"
                     aria-controls="dropdown-menu"
                   >
-                    <span style="color: #6e4dc3" class="icon is-small is-left">
+                    <span style="color: #ff7f50" class="icon is-small is-left">
                       <i class="fas fa-fingerprint"></i>
                     </span>
                     &ensp; Chấm công
@@ -535,7 +542,7 @@
                       class="navbar-item"
                     >
                       <span
-                        style="color: #6e4dc3"
+                        style="color: #ff7f50"
                         class="icon is-small is-left"
                       >
                         <i class="far fa-clock"></i>
@@ -547,7 +554,7 @@
                       class="navbar-item"
                     >
                       <span
-                        style="color: #6e4dc3"
+                        style="color: #ff7f50"
                         class="icon is-small is-left"
                       >
                         <i class="fab fa-elementor"></i>
@@ -559,7 +566,7 @@
                       class="navbar-item"
                     >
                       <span
-                        style="color: #6e4dc3"
+                        style="color: #ff7f50"
                         class="icon is-small is-left"
                       >
                         <i class="far fa-calendar-alt"></i>
@@ -571,7 +578,7 @@
                       class="navbar-item"
                     >
                       <span
-                        style="color: #6e4dc3"
+                        style="color: #ff7f50"
                         class="icon is-small is-left"
                       >
                         <i class="fas fa-clipboard-check"></i>
@@ -583,7 +590,7 @@
                       class="navbar-item"
                     >
                       <span
-                        style="color: #6e4dc3"
+                        style="color: #ff7f50"
                         class="icon is-small is-left"
                       >
                         <i class="far fa-calendar"></i>
@@ -602,7 +609,7 @@
                     aria-haspopup="true"
                     aria-controls="dropdown-menu"
                   >
-                    <span style="color: #6e4dc3" class="icon is-small is-left">
+                    <span style="color: #ff7f50" class="icon is-small is-left">
                       <i class="fas fa-candy-cane"></i>
                     </span>
                     &ensp; Hồ sơ vi phạm
@@ -615,7 +622,7 @@
                       class="navbar-item"
                     >
                       <span
-                        style="color: #6e4dc3"
+                        style="color: #ff7f50"
                         class="icon is-small is-left"
                       >
                         <i class="fas fa-fire-alt"></i>
@@ -627,7 +634,7 @@
                       class="navbar-item"
                     >
                       <span
-                        style="color: #6e4dc3"
+                        style="color: #ff7f50"
                         class="icon is-small is-left"
                       >
                         <i class="fa fa-book"></i>
@@ -638,13 +645,13 @@
                 </div>
               </div>
               <nav-link to="/quantri/admin/users/admin" class="navbar-item">
-                <span style="color: #6e4dc3" class="icon is-small is-left">
+                <span style="color: #ff7f50" class="icon is-small is-left">
                   <i class="far fa-address-card"></i>
                 </span>
                 &ensp; Người dùng
               </nav-link>
               <nav-link to="/quantri/history/" class="navbar-item">
-                <span style="color: #6e4dc3" class="icon is-small is-left">
+                <span style="color: #ff7f50" class="icon is-small is-left">
                   <i class="fas fa-cocktail"></i>
                 </span>
                 &ensp; Lịch sử thao tác

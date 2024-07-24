@@ -1,242 +1,238 @@
 <template>
-  <div class="columns is-mobile">
-    <div class="column is-10 is-offset-1">
-      <br />
-      <div class="box">
-        <div class="columns">
-          <div class="column">
-            <div class="control">
-              <span class="icon is-small is-left">
-                <i style="color: #f14668" class="fas fa-feather-alt"></i>
-              </span>
-              Lập phiếu ứng tiền
-            </div>
+  <div class="column is-10 is-offset-1">
+    <br />
+    <div class="box">
+      <div class="columns">
+        <div class="column">
+          <div class="control">
+            <span class="icon is-small is-left">
+              <i style="color: #f14668" class="fas fa-feather-alt"></i>
+            </span>
+            Lập phiếu ứng tiền
           </div>
         </div>
+      </div>
 
-        <div class="columns">
-          <div class="column is-8"></div>
-          <div class="column" style="text-align: right">
-            <button
-              @click="isActive = true"
-              class="button is-success is-fullwidth is-small"
-            >
-              Lập phiếu
-            </button>
-          </div>
-          <div class="column" style="text-align: right">
-            <nuxt-link :to="`/`">
-              <button class="button is-info is-fullwidth is-small">
-                Thoát
-              </button>
-            </nuxt-link>
-          </div>
-        </div>
-        <div>
-          <table
-            class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
+      <div class="columns">
+        <div class="column is-8"></div>
+        <div class="column" style="text-align: right">
+          <button
+            @click="isActive = true"
+            class="button is-success is-fullwidth is-small"
           >
-            <thead>
-              <tr class="is-selected">
-                <th style="text-align: center">STT</th>
-                <th style="text-align: center">Sửa</th>
-                <th style="text-align: center">Xóa</th>
-                <th style="text-align: center">Người ứng</th>
-                <th style="text-align: center">Tiền ứng</th>
-                <th style="text-align: center">Ngày ứng</th>
-                <th style="text-align: center">Nội dung</th>
-                <th style="text-align: center">Phòng ban</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(ut, index) in data_ung" :key="index">
-                <td style="text-align: center">{{ index + 1 }}</td>
-                <td style="text-align: center; color: green">
-                  <nuxt-link :to="`/ketoan/tamung/${ut._id}/manage`">
-                    <span class="icon is-small">
-                      <i class="far fa-check-circle"></i>
-                    </span>
-                  </nuxt-link>
-                </td>
-                <td style="text-align: center">
-                  <a
-                    @click="
-                      onDelete(
-                        ut._id,
-                        ut.nguoiung,
-                        ut.ngayung,
-                        ut.tienung,
-                        ut.phongban,
-                        ut.createdBy,
-                        ut.createdAt
-                      )
-                    "
-                  >
-                    <span style="color: red" class="icon is-small">
-                      <i class="fas fa-times"></i>
-                    </span>
-                  </a>
-                </td>
-                <td>{{ ut.nguoiung }}</td>
-                <td style="text-align: center">{{ ut.tienung }}</td>
-                <td style="text-align: center">{{ ut.ngayung }}</td>
-                <td>{{ ut.noidung }}</td>
-                <td>{{ ut.phongban }}</td>
-              </tr>
-            </tbody>
-          </table>
+            Lập phiếu
+          </button>
         </div>
+        <div class="column" style="text-align: right">
+          <nuxt-link :to="`/`">
+            <button class="button is-info is-fullwidth is-small">Thoát</button>
+          </nuxt-link>
+        </div>
+      </div>
+      <div>
+        <table
+          class="table is-bordered is-striped is-narrow is-hoverable is-fullwidth"
+        >
+          <thead>
+            <tr class="is-selected">
+              <th style="text-align: center">STT</th>
+              <th style="text-align: center">Sửa</th>
+              <th style="text-align: center">Xóa</th>
+              <th style="text-align: center">Người ứng</th>
+              <th style="text-align: center">Tiền ứng</th>
+              <th style="text-align: center">Ngày ứng</th>
+              <th style="text-align: center">Nội dung</th>
+              <th style="text-align: center">Phòng ban</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(ut, index) in data_ung" :key="index">
+              <td style="text-align: center">{{ index + 1 }}</td>
+              <td style="text-align: center; color: green">
+                <nuxt-link :to="`/ketoan/tamung/${ut._id}/manage`">
+                  <span class="icon is-small">
+                    <i class="far fa-check-circle"></i>
+                  </span>
+                </nuxt-link>
+              </td>
+              <td style="text-align: center">
+                <a
+                  @click="
+                    onDelete(
+                      ut._id,
+                      ut.nguoiung,
+                      ut.ngayung,
+                      ut.tienung,
+                      ut.phongban,
+                      ut.createdBy,
+                      ut.createdAt
+                    )
+                  "
+                >
+                  <span style="color: red" class="icon is-small">
+                    <i class="fas fa-times"></i>
+                  </span>
+                </a>
+              </td>
+              <td>{{ ut.nguoiung }}</td>
+              <td style="text-align: center">{{ ut.tienung }}</td>
+              <td style="text-align: center">{{ ut.ngayung }}</td>
+              <td>{{ ut.noidung }}</td>
+              <td>{{ ut.phongban }}</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
 
-        <!-- Modal Add nhân viên -->
-        <div class="">
-          <!-- Toggle class  -->
-          <div :class="{ 'is-active': isActive }" class="modal">
-            <div class="modal-background"></div>
-            <div class="modal-content modal-card">
-              <header class="modal-card-head" style="background-color: #ebfffc">
-                <p
-                  class="modal-card-title"
-                  style="font-size: 15px; font-weight: bold; color: red"
-                >
-                  Lập phiếu ứng tiền
-                </p>
-                <!-- close modal -->
-                <button
-                  @click="isActive = false"
-                  class="delete"
-                  aria-label="close"
-                ></button>
-              </header>
-              <section class="modal-card-body">
-                <table
-                  class="table is-responsive is-bordered is-narrow is-fullwidth"
-                >
-                  <tr class="is-selected">
-                    <th colspan="2">Phiếu ứng</th>
-                  </tr>
-                  <tr>
-                    <td>Người ứng tiền</td>
-                    <td>
-                      <multiselect
-                        v-model="dm_nhanvien"
-                        :options="ds_nhanvien"
-                        :custom-label="nameWithNhanvien"
-                        placeholder="Chọn người ứng"
-                        label="maphong"
-                        track-by="maphong"
-                        style="font-size: 12px; width: 100%"
-                      ></multiselect>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Số tiền ứng</td>
-                    <td>
-                      <input
-                        @blur="$v.form.tienung.$touch()"
-                        v-model="form.tienung"
-                        class="input is-small"
-                        type="text"
-                        v-mask="mask"
-                        placeholder="Nhập tiền ứng"
-                      />
-                      <div v-if="$v.form.tienung.$error" class="form-error">
-                        <span
-                          v-if="!$v.form.tienung.required"
-                          class="help is-danger"
-                          >Yêu cầu nhập tiền ứng</span
-                        >
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>Ngày ứng tiền</td>
-                    <td>
-                      <input
-                        v-model="form.ngayung"
-                        class="input is-small"
-                        type="date"
-                      />
-                      <div v-if="$v.form.ngayung.$error" class="form-error">
-                        <span
-                          v-if="!$v.form.ngayung.required"
-                          class="help is-danger"
-                          >Yêu cầu nhập ngày ứng tiền</span
-                        >
-                      </div>
-                    </td>
-                  </tr>
-                  <tr>
-                    <div class="control">
-                      <label class="radio">
-                        <input
-                          type="radio"
-                          v-model="form.typeung"
-                          value="ungluong"
-                          name="answer"
-                        />
-                        Ứng tiền lương
-                      </label>
-                      <label class="radio">
-                        <input
-                          type="radio"
-                          v-model="form.typeung"
-                          value="ungkhac"
-                          name="answer"
-                        />
-                        Ứng tiền khác
-                      </label>
+      <!-- Modal Add nhân viên -->
+      <div class="">
+        <!-- Toggle class  -->
+        <div :class="{ 'is-active': isActive }" class="modal">
+          <div class="modal-background"></div>
+          <div class="modal-content modal-card">
+            <header class="modal-card-head" style="background-color: #ebfffc">
+              <p
+                class="modal-card-title"
+                style="font-size: 15px; font-weight: bold; color: red"
+              >
+                Lập phiếu ứng tiền
+              </p>
+              <!-- close modal -->
+              <button
+                @click="isActive = false"
+                class="delete"
+                aria-label="close"
+              ></button>
+            </header>
+            <section class="modal-card-body">
+              <table
+                class="table is-responsive is-bordered is-narrow is-fullwidth"
+              >
+                <tr class="is-selected">
+                  <th colspan="2">Phiếu ứng</th>
+                </tr>
+                <tr>
+                  <td>Người ứng tiền</td>
+                  <td>
+                    <multiselect
+                      v-model="dm_nhanvien"
+                      :options="ds_nhanvien"
+                      :custom-label="nameWithNhanvien"
+                      placeholder="Chọn người ứng"
+                      label="maphong"
+                      track-by="maphong"
+                      style="font-size: 12px; width: 100%"
+                    ></multiselect>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Số tiền ứng</td>
+                  <td>
+                    <input
+                      @blur="$v.form.tienung.$touch()"
+                      v-model="form.tienung"
+                      class="input is-small"
+                      type="text"
+                      v-mask="mask"
+                      placeholder="Nhập tiền ứng"
+                    />
+                    <div v-if="$v.form.tienung.$error" class="form-error">
+                      <span
+                        v-if="!$v.form.tienung.required"
+                        class="help is-danger"
+                        >Yêu cầu nhập tiền ứng</span
+                      >
                     </div>
-                  </tr>
-                  <tr>
-                    <td>Ghi chú/ Diễn giải thêm</td>
-                    <td>
-                      <textarea
-                        v-model="form.noidung"
-                        @blur="$v.form.noidung.$touch()"
-                        class="textarea is-small"
-                        placeholder="Nhập vào lý do ứng tiền"
-                      ></textarea>
-                      <div v-if="$v.form.noidung.$error" class="form-error">
-                        <span
-                          v-if="!$v.form.noidung.required"
-                          class="help is-danger"
-                          >Yêu cầu nhập nội dung ứng tiền</span
-                        >
-                      </div>
-                    </td>
-                  </tr>
-                </table>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Ngày ứng tiền</td>
+                  <td>
+                    <input
+                      v-model="form.ngayung"
+                      class="input is-small"
+                      type="date"
+                    />
+                    <div v-if="$v.form.ngayung.$error" class="form-error">
+                      <span
+                        v-if="!$v.form.ngayung.required"
+                        class="help is-danger"
+                        >Yêu cầu nhập ngày ứng tiền</span
+                      >
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <div class="control">
+                    <label class="radio">
+                      <input
+                        type="radio"
+                        v-model="form.typeung"
+                        value="ungluong"
+                        name="answer"
+                      />
+                      Ứng tiền lương
+                    </label>
+                    <label class="radio">
+                      <input
+                        type="radio"
+                        v-model="form.typeung"
+                        value="ungkhac"
+                        name="answer"
+                      />
+                      Ứng tiền khác
+                    </label>
+                  </div>
+                </tr>
+                <tr>
+                  <td>Ghi chú/ Diễn giải thêm</td>
+                  <td>
+                    <textarea
+                      v-model="form.noidung"
+                      @blur="$v.form.noidung.$touch()"
+                      class="textarea is-small"
+                      placeholder="Nhập vào lý do ứng tiền"
+                    ></textarea>
+                    <div v-if="$v.form.noidung.$error" class="form-error">
+                      <span
+                        v-if="!$v.form.noidung.required"
+                        class="help is-danger"
+                        >Yêu cầu nhập nội dung ứng tiền</span
+                      >
+                    </div>
+                  </td>
+                </tr>
+              </table>
 
-                <div class="columns">
-                  <div class="column">
-                    <button
-                      @click.prevent="[getinfonv(), onTaophieuung()]"
-                      :disabled="$v.form.$invalid"
-                      class="button is-success is-fullwidth is-small"
-                    >
-                      Xác nhận lập phiếu ứng
-                    </button>
-                  </div>
-                  <div class="column">
-                    <button
-                      @click="isActive = false"
-                      class="button is-danger is-light is-fullwidth is-small"
-                    >
-                      Hủy bỏ
-                    </button>
-                  </div>
+              <div class="columns">
+                <div class="column">
+                  <button
+                    @click.prevent="[getinfonv(), onTaophieuung()]"
+                    :disabled="$v.form.$invalid"
+                    class="button is-success is-fullwidth is-small"
+                  >
+                    Xác nhận lập phiếu ứng
+                  </button>
                 </div>
-              </section>
-              <footer class="modal-card-foot">
-                <!-- close modal -->
-                <button
-                  @click="isActive = false"
-                  class="button is-outlined is-info is-small"
-                >
-                  Đóng
-                </button>
-              </footer>
-            </div>
+                <div class="column">
+                  <button
+                    @click="isActive = false"
+                    class="button is-danger is-light is-fullwidth is-small"
+                  >
+                    Hủy bỏ
+                  </button>
+                </div>
+              </div>
+            </section>
+            <footer class="modal-card-foot">
+              <!-- close modal -->
+              <button
+                @click="isActive = false"
+                class="button is-outlined is-info is-small"
+              >
+                Đóng
+              </button>
+            </footer>
           </div>
         </div>
       </div>

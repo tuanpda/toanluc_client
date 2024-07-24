@@ -1,22 +1,21 @@
 <template>
-  <div class="columns">
-    <div class="column">
-      <br />
-      <div class="box" style="margin-left: 3px; margin-right: 3px">
-        <div class="columns">
-          <div class="column">
-            <div class="control">
-              <span class="icon is-small is-left">
-                <i style="color: #ff55acee" class="fas fa-cubes"></i>
-              </span>
-              <span style="color: #3850b7; font-size: 15px; font-weight: bold"
-                >Tạo Lô sản xuất</span
-              >
-            </div>
+  <div class="column">
+    <br />
+    <div class="box" style="margin-left: 3px; margin-right: 3px">
+      <div class="columns">
+        <div class="column">
+          <div class="control">
+            <span class="icon is-small is-left">
+              <i style="color: #ff55acee" class="fas fa-cubes"></i>
+            </span>
+            <span style="color: #3850b7; font-size: 15px; font-weight: bold"
+              >Tạo Lô sản xuất</span
+            >
           </div>
         </div>
+      </div>
 
-        <!-- <div class="columns">
+      <!-- <div class="columns">
           <div class="column" style="display: flex; align-items: center">
             <label
               class="checkbox-label"
@@ -31,128 +30,124 @@
           </div>
         </div> -->
 
-        <div class="box">
-          <div class="columns">
-            <div class="column">
-              <div class="select-wrapper" style="width: 100%; font-size: small">
-                <div class="select-header" @click="isOpen = !isOpen">
-                  {{
-                    selectedOptions.length > 0
-                      ? selectedOptions.join(", ")
-                      : "Phân xưởng"
-                  }}
-                  <span class="arrow" :class="{ open: isOpen }"></span>
-                </div>
-                <div class="select-options" :class="{ open: isOpen }">
-                  <label v-for="option in phanxuong">
-                    <input
-                      type="checkbox"
-                      :value="option.mapx"
-                      v-model="selectedOptions"
-                    />
-                    {{ option.mapx }} &nbsp;
-                  </label>
-                </div>
+      <div class="box">
+        <div class="columns">
+          <div class="column">
+            <div class="select-wrapper" style="width: 100%; font-size: small">
+              <div class="select-header" @click="isOpen = !isOpen">
+                {{
+                  selectedOptions.length > 0
+                    ? selectedOptions.join(", ")
+                    : "Phân xưởng"
+                }}
+                <span class="arrow" :class="{ open: isOpen }"></span>
               </div>
-            </div>
-            <div class="column">
-              <div class="select-wrapper" style="width: 100%; font-size: small">
-                <div class="select-header" @click="isOpenst = !isOpenst">
-                  {{
-                    Options_status.length > 0
-                      ? Options_status.join(", ")
-                      : "Trạng thái"
-                  }}
-                  <span class="arrow" :class="{ open: isOpenst }"></span>
-                </div>
-                <div class="select-options" :class="{ open: isOpenst }">
-                  <label v-for="option in statusArr">
-                    <input
-                      type="checkbox"
-                      :value="option.masta"
-                      v-model="Options_status"
-                    />
-                    {{ option.tensta }} &nbsp;
-                  </label>
-                </div>
+              <div class="select-options" :class="{ open: isOpen }">
+                <label v-for="option in phanxuong">
+                  <input
+                    type="checkbox"
+                    :value="option.mapx"
+                    v-model="selectedOptions"
+                  />
+                  {{ option.mapx }} &nbsp;
+                </label>
               </div>
-            </div>
-            <div class="column">
-              <div class="autocomplete">
-                <input
-                  class="input is-small is-info"
-                  type="text"
-                  v-model="multiSearch_nhomtp"
-                  @input="onInput_nhomsp"
-                  placeholder="Nhóm thành phẩm"
-                />
-                <div
-                  class="autocomplete-items"
-                  v-if="suggestions_nhomtp.length"
-                >
-                  <div
-                    class="autocomplete-item"
-                    v-for="suggestion_nhomtp in suggestions_nhomtp"
-                    @click="selectSuggestion_nhomsp(suggestion_nhomtp)"
-                  >
-                    {{ suggestion_nhomtp }}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="column">
-              <div class="autocomplete">
-                <input
-                  class="input is-small is-danger"
-                  type="text"
-                  v-model="multiSearch_matp"
-                  @input="onInput_matp"
-                  placeholder="Mã thành phẩm"
-                />
-                <div class="autocomplete-items" v-if="suggestions_matp.length">
-                  <div
-                    class="autocomplete-item"
-                    v-for="suggestion_matp in suggestions_matp"
-                    @click="selectSuggestion_matp(suggestion_matp)"
-                  >
-                    {{ suggestion_matp }}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="column">
-              <button
-                @click="filterData"
-                class="button is-small is-success is-fullwidth"
-              >
-                Lọc dữ liệu
-              </button>
-            </div>
-            <div class="column">
-              <input
-                class="input is-danger is-small"
-                type="number"
-                id="itemsPerPage"
-                v-model.number="itemsPerPage"
-                min="1"
-                max="10"
-              />
             </div>
           </div>
-          <div class="columns">
-            <div
-              class="column"
-              style="font-size: small; font-weight: bold; text-align: left"
-            >
-              <span
-                >Có:
-                <span style="color: red">{{ lokehoachpx.length }}</span> bản
-                ghi</span
-              >
+          <div class="column">
+            <div class="select-wrapper" style="width: 100%; font-size: small">
+              <div class="select-header" @click="isOpenst = !isOpenst">
+                {{
+                  Options_status.length > 0
+                    ? Options_status.join(", ")
+                    : "Trạng thái"
+                }}
+                <span class="arrow" :class="{ open: isOpenst }"></span>
+              </div>
+              <div class="select-options" :class="{ open: isOpenst }">
+                <label v-for="option in statusArr">
+                  <input
+                    type="checkbox"
+                    :value="option.masta"
+                    v-model="Options_status"
+                  />
+                  {{ option.tensta }} &nbsp;
+                </label>
+              </div>
             </div>
-            <div class="column"></div>
-            <div class="column"></div>
-            <!-- <div class="column">
+          </div>
+          <div class="column">
+            <div class="autocomplete">
+              <input
+                class="input is-small is-info"
+                type="text"
+                v-model="multiSearch_nhomtp"
+                @input="onInput_nhomsp"
+                placeholder="Nhóm thành phẩm"
+              />
+              <div class="autocomplete-items" v-if="suggestions_nhomtp.length">
+                <div
+                  class="autocomplete-item"
+                  v-for="suggestion_nhomtp in suggestions_nhomtp"
+                  @click="selectSuggestion_nhomsp(suggestion_nhomtp)"
+                >
+                  {{ suggestion_nhomtp }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="autocomplete">
+              <input
+                class="input is-small is-danger"
+                type="text"
+                v-model="multiSearch_matp"
+                @input="onInput_matp"
+                placeholder="Mã thành phẩm"
+              />
+              <div class="autocomplete-items" v-if="suggestions_matp.length">
+                <div
+                  class="autocomplete-item"
+                  v-for="suggestion_matp in suggestions_matp"
+                  @click="selectSuggestion_matp(suggestion_matp)"
+                >
+                  {{ suggestion_matp }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <button
+              @click="filterData"
+              class="button is-small is-success is-fullwidth"
+            >
+              Lọc dữ liệu
+            </button>
+          </div>
+          <div class="column">
+            <input
+              class="input is-danger is-small"
+              type="number"
+              id="itemsPerPage"
+              v-model.number="itemsPerPage"
+              min="1"
+              max="10"
+            />
+          </div>
+        </div>
+        <div class="columns">
+          <div
+            class="column"
+            style="font-size: small; font-weight: bold; text-align: left"
+          >
+            <span
+              >Có: <span style="color: red">{{ lokehoachpx.length }}</span> bản
+              ghi</span
+            >
+          </div>
+          <div class="column"></div>
+          <div class="column"></div>
+          <!-- <div class="column">
               <button
                 @click="showAllLokhpx"
                 class="button is-small is-danger is-fullwidth"
@@ -160,880 +155,874 @@
                 Refresh
               </button>
             </div> -->
-          </div>
         </div>
+      </div>
 
-        <div class="table_wrapper">
-          <table class="table is-responsive is-bordered is-narrow is-fullwidth">
-            <tr style="background-color: linen">
-              <td
-                style="
-                  font-size: small;
-                  text-align: center;
-                  font-weight: 600;
-                  width: 3%;
-                "
-              >
-                --
-              </td>
-              <td
-                style="
-                  font-size: small;
-                  text-align: center;
-                  font-weight: 600;
-                  width: 3%;
-                "
-              >
-                STT
-              </td>
-              <td
-                style="
-                  font-size: small;
-                  text-align: center;
-                  font-weight: 600;
-                  width: 3%;
-                "
-              >
-                Mã LKH
-              </td>
-              <td
-                @click="sortTable('malonhamay')"
-                style="
-                  font-size: small;
-                  text-align: center;
-                  font-weight: 600;
-                  width: 5%;
-                "
-              >
-                Mã lô nhà máy
-              </td>
-              <td
-                @click="sortTable('mapx')"
-                style="
-                  font-size: small;
-                  text-align: center;
-                  font-weight: 600;
-                  width: 5%;
-                "
-              >
-                Mã PX
-              </td>
-              <td
-                @click="sortTable('nhomthanhpham')"
-                style="
-                  font-size: small;
-                  text-align: center;
-                  font-weight: 600;
-                  width: 7%;
-                "
-              >
-                Nhóm TP
-              </td>
-              <td
-                @click="sortTable('mathanhpham')"
-                style="
-                  font-size: small;
-                  text-align: center;
-                  font-weight: 600;
-                  width: 7%;
-                "
-              >
-                Mã TP
-              </td>
-              <td
-                @click="sortTable('nhomspkhpx')"
-                style="
-                  font-size: small;
-                  text-align: center;
-                  font-weight: 600;
-                  width: 7%;
-                "
-              >
-                Nhóm SP
-              </td>
-              <td
-                @click="sortTable('maspkhpx')"
-                style="
-                  font-size: small;
-                  text-align: center;
-                  font-weight: 600;
-                  width: 7%;
-                "
-              >
-                Mã sản phẩm
-              </td>
-              <!-- <td @click="sortTable('ngaybdkhpx')"
+      <div class="table_wrapper">
+        <table class="table is-responsive is-bordered is-narrow is-fullwidth">
+          <tr style="background-color: linen">
+            <td
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 3%;
+              "
+            >
+              --
+            </td>
+            <td
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 3%;
+              "
+            >
+              STT
+            </td>
+            <td
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 3%;
+              "
+            >
+              Mã LKH
+            </td>
+            <td
+              @click="sortTable('malonhamay')"
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 5%;
+              "
+            >
+              Mã lô nhà máy
+            </td>
+            <td
+              @click="sortTable('mapx')"
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 5%;
+              "
+            >
+              Mã PX
+            </td>
+            <td
+              @click="sortTable('nhomthanhpham')"
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 7%;
+              "
+            >
+              Nhóm TP
+            </td>
+            <td
+              @click="sortTable('mathanhpham')"
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 7%;
+              "
+            >
+              Mã TP
+            </td>
+            <td
+              @click="sortTable('nhomspkhpx')"
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 7%;
+              "
+            >
+              Nhóm SP
+            </td>
+            <td
+              @click="sortTable('maspkhpx')"
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 7%;
+              "
+            >
+              Mã sản phẩm
+            </td>
+            <!-- <td @click="sortTable('ngaybdkhpx')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 9%;">Ngày bắt đầu
                             </td>
                             <td @click="sortTable('ngayktkhpx')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 9%;">Ngày kết thúc
                             </td> -->
-              <td
-                @click="sortTable('tuanbd')"
-                style="
-                  font-size: small;
-                  text-align: center;
-                  font-weight: 600;
-                  width: 9%;
-                "
-              >
-                Tuần BĐ (T1)
-              </td>
-              <td
-                @click="sortTable('tuankt')"
-                style="
-                  font-size: small;
-                  text-align: center;
-                  font-weight: 600;
-                  width: 9%;
-                "
-              >
-                Tuần KT (T2)
-              </td>
-              <td
-                @click="sortTable('tuanexc')"
-                style="
-                  font-size: small;
-                  text-align: center;
-                  font-weight: 600;
-                  width: 9%;
-                "
-              >
-                Tuần chạy
-              </td>
-              <td
-                @click="sortTable('soluongkhpx')"
-                style="
-                  font-size: small;
-                  text-align: center;
-                  font-weight: 600;
-                  width: 7%;
-                "
-              >
-                Số lượng
-              </td>
-              <td
-                @click="sortTable('status')"
-                style="
-                  font-size: small;
-                  text-align: center;
-                  font-weight: 600;
-                  width: 5%;
-                "
-              >
-                Trạng thái
-              </td>
+            <td
+              @click="sortTable('tuanbd')"
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 9%;
+              "
+            >
+              Tuần BĐ (T1)
+            </td>
+            <td
+              @click="sortTable('tuankt')"
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 9%;
+              "
+            >
+              Tuần KT (T2)
+            </td>
+            <td
+              @click="sortTable('tuanexc')"
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 9%;
+              "
+            >
+              Tuần chạy
+            </td>
+            <td
+              @click="sortTable('soluongkhpx')"
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 7%;
+              "
+            >
+              Số lượng
+            </td>
+            <td
+              @click="sortTable('status')"
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 5%;
+              "
+            >
+              Trạng thái
+            </td>
 
-              <!-- <td @click="sort('soluongkhpx')"
+            <!-- <td @click="sort('soluongkhpx')"
                                 style="font-size: small; text-align: center; font-weight: 600; width: 7%;">Chọn Trạng thái
                             </td> -->
-              <td
-                style="
-                  font-size: small;
-                  text-align: center;
-                  font-weight: 600;
-                  width: 7%;
-                "
-              >
-                SL đã ĐK
-              </td>
-              <td
-                style="
-                  font-size: small;
-                  text-align: center;
-                  font-weight: 600;
-                  width: 7%;
-                "
-              >
-                SL thực hiện
-              </td>
-              <td
-                style="
-                  font-size: small;
-                  text-align: center;
-                  font-weight: 600;
-                  width: 7%;
-                "
-              >
-                Ngày BDTT
-              </td>
-              <td
-                style="
-                  font-size: small;
-                  text-align: center;
-                  font-weight: 600;
-                  width: 7%;
-                "
-              >
-                Ngày KTTT
-              </td>
-            </tr>
-            <!-- <template v-for="(item, index) in paginatedTable.filter(el => el.status !== 3)"> -->
-            <template v-for="(item, index) in paginatedTable">
-              <tr @click="watchDetail(index, item)">
-                <td>
-                  <div
-                    style="
-                      display: flex;
-                      gap: 10px;
-                      justify-content: space-around;
-                      align-items: center;
-                      width: 100%;
-                      height: 100%;
-                      margin-top: 5px;
-                    "
-                  >
-                    <span class="icon is-small is-left" style="color: #55acee">
-                      <i
-                        v-if="arrExpand[index]"
-                        class="far fa-arrow-alt-circle-down"
-                      ></i>
-                      <i v-else class="far fa-arrow-alt-circle-left"></i>
-                    </span>
-                  </div>
-                </td>
-                <td
+            <td
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 7%;
+              "
+            >
+              SL đã ĐK
+            </td>
+            <td
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 7%;
+              "
+            >
+              SL thực hiện
+            </td>
+            <td
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 7%;
+              "
+            >
+              Ngày BDTT
+            </td>
+            <td
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 7%;
+              "
+            >
+              Ngày KTTT
+            </td>
+          </tr>
+          <!-- <template v-for="(item, index) in paginatedTable.filter(el => el.status !== 3)"> -->
+          <template v-for="(item, index) in paginatedTable">
+            <tr @click="watchDetail(index, item)">
+              <td>
+                <div
                   style="
-                    font-size: small;
-                    text-align: center;
-                    background-color: #effaf5;
+                    display: flex;
+                    gap: 10px;
+                    justify-content: space-around;
+                    align-items: center;
+                    width: 100%;
+                    height: 100%;
+                    margin-top: 5px;
                   "
                 >
-                  {{ index + 1 }}
-                </td>
-                <td
-                  style="
-                    font-size: small;
-                    text-align: center;
-                    font-weight: bold;
-                    color: red;
-                  "
-                >
-                  {{ item._id }}
-                </td>
-                <td style="font-size: small">{{ item.malonhamay }}</td>
-                <td
-                  style="
-                    font-size: small;
-                    background-color: #effaf5;
-                    text-align: center;
-                  "
-                >
-                  {{ item.mapx }}
-                </td>
-                <!-- <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
+                  <span class="icon is-small is-left" style="color: #55acee">
+                    <i
+                      v-if="arrExpand[index]"
+                      class="far fa-arrow-alt-circle-down"
+                    ></i>
+                    <i v-else class="far fa-arrow-alt-circle-left"></i>
+                  </span>
+                </div>
+              </td>
+              <td
+                style="
+                  font-size: small;
+                  text-align: center;
+                  background-color: #effaf5;
+                "
+              >
+                {{ index + 1 }}
+              </td>
+              <td
+                style="
+                  font-size: small;
+                  text-align: center;
+                  font-weight: bold;
+                  color: red;
+                "
+              >
+                {{ item._id }}
+              </td>
+              <td style="font-size: small">{{ item.malonhamay }}</td>
+              <td
+                style="
+                  font-size: small;
+                  background-color: #effaf5;
+                  text-align: center;
+                "
+              >
+                {{ item.mapx }}
+              </td>
+              <!-- <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
                                     item.makhpx
                                 }}
                                 </td>
                                 <td style="font-size: small; background-color: #effaf5; text-align: center;">{{ item.ttqt }} 
                                 </td> -->
-                <td
-                  style="
-                    font-size: small;
-                    background-color: #effaf5;
-                    text-align: center;
-                  "
-                >
-                  {{ item.nhomthanhpham }}
-                </td>
-                <td
-                  style="
-                    font-size: small;
-                    background-color: #effaf5;
-                    text-align: center;
-                  "
-                >
-                  {{ item.mathanhpham }}
-                </td>
-                <td
-                  style="
-                    font-size: small;
-                    background-color: #effaf5;
-                    text-align: center;
-                  "
-                >
-                  {{ item.nhomspkhpx }}
-                </td>
-                <td
-                  style="
-                    font-size: small;
-                    background-color: #effaf5;
-                    text-align: center;
-                  "
-                >
-                  {{ item.maspkhpx }}
-                </td>
-                <!-- <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
+              <td
+                style="
+                  font-size: small;
+                  background-color: #effaf5;
+                  text-align: center;
+                "
+              >
+                {{ item.nhomthanhpham }}
+              </td>
+              <td
+                style="
+                  font-size: small;
+                  background-color: #effaf5;
+                  text-align: center;
+                "
+              >
+                {{ item.mathanhpham }}
+              </td>
+              <td
+                style="
+                  font-size: small;
+                  background-color: #effaf5;
+                  text-align: center;
+                "
+              >
+                {{ item.nhomspkhpx }}
+              </td>
+              <td
+                style="
+                  font-size: small;
+                  background-color: #effaf5;
+                  text-align: center;
+                "
+              >
+                {{ item.maspkhpx }}
+              </td>
+              <!-- <td style="font-size: small; background-color: #effaf5; text-align: center;">{{
                                     item.ngaybdkhpx | formatDate
                                 }}</td>
                                 <td style="font-size: small; text-align: center; background-color: #fffaeb;">{{
                                     item.ngayktkhpx | formatDate
                                 }}</td> -->
-                <td
-                  style="
-                    font-size: small;
-                    text-align: center;
-                    background-color: #effaf5;
-                  "
-                >
-                  {{ item.tuanbdkhpx }}
-                </td>
-                <td
-                  style="
-                    font-size: small;
-                    text-align: center;
-                    background-color: #effaf5;
-                  "
-                >
-                  {{ item.tuanktkhpx }}
-                </td>
-                <td
-                  style="
-                    font-size: small;
-                    text-align: center;
-                    background-color: #effaf5;
-                  "
-                >
-                  {{ item.tuanexc }}
-                </td>
-                <td
-                  style="
-                    font-size: small;
-                    text-align: center;
-                    background-color: #effaf5;
-                  "
-                >
-                  {{ item.soluongkhpx | formatNumber }}
-                </td>
-                <template>
-                  <td
-                    v-if="item.status == 0"
-                    style="
-                      font-size: small;
-                      text-align: center;
-                      background-color: whitesmoke;
-                    "
-                  >
-                    0
-                  </td>
-                  <td
-                    v-else-if="item.status == 1"
-                    style="font-size: small; text-align: center"
-                  >
-                    <span
-                      style="
-                        color: white;
-                        font-weight: bold;
-                        background-color: red;
-                        padding-left: 7px;
-                        padding-right: 7px;
-                      "
-                      >DK</span
-                    >
-                  </td>
-                  <td
-                    v-else-if="item.status == 2"
-                    style="
-                      font-size: small;
-                      text-align: center;
-                      vertical-align: middle;
-                    "
-                  >
-                    <span
-                      style="
-                        color: red;
-                        font-weight: bold;
-                        background-color: yellow;
-                        padding-left: 7px;
-                        padding-right: 7px;
-                      "
-                      >SX</span
-                    >
-                  </td>
-                  <td
-                    v-if="item.status == 3"
-                    style="
-                      font-size: small;
-                      text-align: center;
-                      vertical-align: middle;
-                    "
-                  >
-                    <span
-                      style="
-                        color: white;
-                        font-weight: bold;
-                        background-color: green;
-                        padding-left: 7px;
-                        padding-right: 7px;
-                      "
-                      >HT</span
-                    >
-                  </td>
-                </template>
-                <td
-                  style="
-                    font-size: small;
-                    text-align: center;
-                    background-color: #effaf5;
-                  "
-                >
-                  {{ item.tong_soluong }}
-                </td>
-                <td
-                  style="
-                    font-size: small;
-                    text-align: center;
-                    background-color: #effaf5;
-                  "
-                >
-                  {{ item.tongso_luongnhanh }}
-                </td>
-                <td
-                  style="
-                    font-size: small;
-                    text-align: center;
-                    background-color: #effaf5;
-                  "
-                >
-                  {{ item.ngaybdthucte | formatDate }}
-                </td>
-                <td
-                  style="
-                    font-size: small;
-                    text-align: center;
-                    background-color: #effaf5;
-                  "
-                ></td>
-              </tr>
-              <!-- open row -->
-              <tr
-                :style="{
-                  display: arrExpand[index] ? 'table-row' : 'none',
-                }"
+              <td
+                style="
+                  font-size: small;
+                  text-align: center;
+                  background-color: #effaf5;
+                "
               >
+                {{ item.tuanbdkhpx }}
+              </td>
+              <td
+                style="
+                  font-size: small;
+                  text-align: center;
+                  background-color: #effaf5;
+                "
+              >
+                {{ item.tuanktkhpx }}
+              </td>
+              <td
+                style="
+                  font-size: small;
+                  text-align: center;
+                  background-color: #effaf5;
+                "
+              >
+                {{ item.tuanexc }}
+              </td>
+              <td
+                style="
+                  font-size: small;
+                  text-align: center;
+                  background-color: #effaf5;
+                "
+              >
+                {{ item.soluongkhpx | formatNumber }}
+              </td>
+              <template>
                 <td
-                  colspan="19"
-                  style="padding: 10px 46px; background: #209cee0f"
+                  v-if="item.status == 0"
+                  style="
+                    font-size: small;
+                    text-align: center;
+                    background-color: whitesmoke;
+                  "
                 >
-                  <table
-                    class="table is-responsive is-bordered is-narrow is-fullwidth"
+                  0
+                </td>
+                <td
+                  v-else-if="item.status == 1"
+                  style="font-size: small; text-align: center"
+                >
+                  <span
+                    style="
+                      color: white;
+                      font-weight: bold;
+                      background-color: red;
+                      padding-left: 7px;
+                      padding-right: 7px;
+                    "
+                    >DK</span
                   >
-                    <tr style="background-color: #f4f2f8">
-                      <td
-                        style="
-                          text-align: center;
-                          font-size: small;
-                          font-weight: 600;
-                          width: 3.53%;
-                          color: red;
-                        "
-                      >
-                        STT
-                      </td>
-                      <td
-                        style="
-                          text-align: center;
-                          font-size: small;
-                          font-weight: 600;
-                          width: 20%;
-                          color: red;
-                        "
-                      >
-                        Tổ / nhóm
-                      </td>
-                      <td
-                        style="
-                          text-align: center;
-                          font-size: small;
-                          font-weight: 600;
-                          width: 16.7%;
-                          color: red;
-                        "
-                      >
-                        Mã Lô sản xuất
-                      </td>
-                      <td
-                        style="
-                          text-align: center;
-                          font-size: small;
-                          font-weight: 600;
-                          width: 8.2%;
-                          color: red;
-                        "
-                      >
-                        Số lượng
-                      </td>
-                      <td
-                        style="
-                          text-align: center;
-                          font-size: small;
-                          font-weight: 600;
-                          width: 8%;
-                          color: red;
-                        "
-                      >
-                        Ngày BĐ
-                      </td>
-                      <td
-                        style="
-                          text-align: center;
-                          font-size: small;
-                          font-weight: 600;
-                          width: 5%;
-                          color: red;
-                        "
-                      >
-                        Ngày KT
-                      </td>
-                      <td
-                        style="
-                          text-align: center;
-                          font-size: small;
-                          font-weight: 600;
-                          width: 5%;
-                          color: red;
-                        "
-                      >
-                        Trạng thái
-                      </td>
-                      <td
-                        style="
-                          text-align: center;
-                          font-size: small;
-                          font-weight: 600;
-                          width: 4%;
-                          color: red;
-                        "
-                      >
-                        Cập nhật
-                      </td>
-                      <td
-                        style="
-                          text-align: center;
-                          font-size: small;
-                          font-weight: 600;
-                          width: 4.1%;
-                          color: red;
-                        "
-                      >
-                        Xóa
-                      </td>
-                      <td
-                        style="
-                          text-align: center;
-                          font-size: small;
-                          font-weight: 600;
-                          width: 4.1%;
-                          color: red;
-                        "
-                      >
-                        Copy
-                      </td>
-                      <td
-                        style="
-                          text-align: center;
-                          font-size: small;
-                          font-weight: 600;
-                          width: 4.1%;
-                          color: red;
-                        "
-                      >
-                        <button
-                          @click="addLosanxuat(item, index)"
-                          class="button is-small is-danger"
-                        >
-                          Đăng ký
-                        </button>
-                      </td>
-                      <td
-                        style="
-                          text-align: center;
-                          font-size: small;
-                          font-weight: 600;
-                          width: 4.1%;
-                          color: red;
-                        "
-                      >
-                        <button
-                          @click="ghidulieu(item)"
-                          class="button is-small is-success"
-                        >
-                          Ghi dữ liệu
-                        </button>
-                      </td>
-                      <!-- <td></td> -->
-                    </tr>
-                    <template
-                      v-if="
-                        arrRowWatchDetail.length > 0 &&
-                        arrRowWatchDetail.findIndex((el) => el.key === index) >
-                          -1
+                </td>
+                <td
+                  v-else-if="item.status == 2"
+                  style="
+                    font-size: small;
+                    text-align: center;
+                    vertical-align: middle;
+                  "
+                >
+                  <span
+                    style="
+                      color: red;
+                      font-weight: bold;
+                      background-color: yellow;
+                      padding-left: 7px;
+                      padding-right: 7px;
+                    "
+                    >SX</span
+                  >
+                </td>
+                <td
+                  v-if="item.status == 3"
+                  style="
+                    font-size: small;
+                    text-align: center;
+                    vertical-align: middle;
+                  "
+                >
+                  <span
+                    style="
+                      color: white;
+                      font-weight: bold;
+                      background-color: green;
+                      padding-left: 7px;
+                      padding-right: 7px;
+                    "
+                    >HT</span
+                  >
+                </td>
+              </template>
+              <td
+                style="
+                  font-size: small;
+                  text-align: center;
+                  background-color: #effaf5;
+                "
+              >
+                {{ item.tong_soluong }}
+              </td>
+              <td
+                style="
+                  font-size: small;
+                  text-align: center;
+                  background-color: #effaf5;
+                "
+              >
+                {{ item.tongso_luongnhanh }}
+              </td>
+              <td
+                style="
+                  font-size: small;
+                  text-align: center;
+                  background-color: #effaf5;
+                "
+              >
+                {{ item.ngaybdthucte | formatDate }}
+              </td>
+              <td
+                style="
+                  font-size: small;
+                  text-align: center;
+                  background-color: #effaf5;
+                "
+              ></td>
+            </tr>
+            <!-- open row -->
+            <tr
+              :style="{
+                display: arrExpand[index] ? 'table-row' : 'none',
+              }"
+            >
+              <td
+                colspan="19"
+                style="padding: 10px 46px; background: #209cee0f"
+              >
+                <table
+                  class="table is-responsive is-bordered is-narrow is-fullwidth"
+                >
+                  <tr style="background-color: #f4f2f8">
+                    <td
+                      style="
+                        text-align: center;
+                        font-size: small;
+                        font-weight: 600;
+                        width: 3.53%;
+                        color: red;
                       "
                     >
-                      <template
-                        v-for="(item, indexRow) in arrRowWatchDetail.find(
-                          (el) => el.key === index
-                        ).dataChildren || []"
+                      STT
+                    </td>
+                    <td
+                      style="
+                        text-align: center;
+                        font-size: small;
+                        font-weight: 600;
+                        width: 20%;
+                        color: red;
+                      "
+                    >
+                      Tổ / nhóm
+                    </td>
+                    <td
+                      style="
+                        text-align: center;
+                        font-size: small;
+                        font-weight: 600;
+                        width: 16.7%;
+                        color: red;
+                      "
+                    >
+                      Mã Lô sản xuất
+                    </td>
+                    <td
+                      style="
+                        text-align: center;
+                        font-size: small;
+                        font-weight: 600;
+                        width: 8.2%;
+                        color: red;
+                      "
+                    >
+                      Số lượng
+                    </td>
+                    <td
+                      style="
+                        text-align: center;
+                        font-size: small;
+                        font-weight: 600;
+                        width: 8%;
+                        color: red;
+                      "
+                    >
+                      Ngày BĐ
+                    </td>
+                    <td
+                      style="
+                        text-align: center;
+                        font-size: small;
+                        font-weight: 600;
+                        width: 5%;
+                        color: red;
+                      "
+                    >
+                      Ngày KT
+                    </td>
+                    <td
+                      style="
+                        text-align: center;
+                        font-size: small;
+                        font-weight: 600;
+                        width: 5%;
+                        color: red;
+                      "
+                    >
+                      Trạng thái
+                    </td>
+                    <td
+                      style="
+                        text-align: center;
+                        font-size: small;
+                        font-weight: 600;
+                        width: 4%;
+                        color: red;
+                      "
+                    >
+                      Cập nhật
+                    </td>
+                    <td
+                      style="
+                        text-align: center;
+                        font-size: small;
+                        font-weight: 600;
+                        width: 4.1%;
+                        color: red;
+                      "
+                    >
+                      Xóa
+                    </td>
+                    <td
+                      style="
+                        text-align: center;
+                        font-size: small;
+                        font-weight: 600;
+                        width: 4.1%;
+                        color: red;
+                      "
+                    >
+                      Copy
+                    </td>
+                    <td
+                      style="
+                        text-align: center;
+                        font-size: small;
+                        font-weight: 600;
+                        width: 4.1%;
+                        color: red;
+                      "
+                    >
+                      <button
+                        @click="addLosanxuat(item, index)"
+                        class="button is-small is-danger"
                       >
-                        <tr>
-                          <td style="font-size: small; text-align: center">
-                            {{ indexRow + 1 }}
-                          </td>
-                          <td style="font-size: small">
-                            {{ item.tento }}
+                        Đăng ký
+                      </button>
+                    </td>
+                    <td
+                      style="
+                        text-align: center;
+                        font-size: small;
+                        font-weight: 600;
+                        width: 4.1%;
+                        color: red;
+                      "
+                    >
+                      <button
+                        @click="ghidulieu(item)"
+                        class="button is-small is-success"
+                      >
+                        Ghi dữ liệu
+                      </button>
+                    </td>
+                    <!-- <td></td> -->
+                  </tr>
+                  <template
+                    v-if="
+                      arrRowWatchDetail.length > 0 &&
+                      arrRowWatchDetail.findIndex((el) => el.key === index) > -1
+                    "
+                  >
+                    <template
+                      v-for="(item, indexRow) in arrRowWatchDetail.find(
+                        (el) => el.key === index
+                      ).dataChildren || []"
+                    >
+                      <tr>
+                        <td style="font-size: small; text-align: center">
+                          {{ indexRow + 1 }}
+                        </td>
+                        <td style="font-size: small">
+                          {{ item.tento }}
+                        </td>
+                        <td
+                          style="
+                            font-size: small;
+                            text-align: center;
+                            font-weight: 600;
+                          "
+                        >
+                          <input
+                            type="text"
+                            v-model="item.malosx"
+                            class="input is-small"
+                          />
+                        </td>
+                        <td style="font-size: small; text-align: center">
+                          <input
+                            type="number"
+                            v-model="item.soluonglsx"
+                            class="input is-small"
+                          />
+                        </td>
+                        <td style="font-size: small; text-align: center">
+                          <input
+                            class="input is-small"
+                            type="date"
+                            v-bind:value="item.ngaybd | inputDateFilter"
+                            v-on:input="
+                              item.ngaybd = getDate($event.target.value)
+                            "
+                          />
+                        </td>
+                        <td style="font-size: small; text-align: center">
+                          <input
+                            class="input is-small"
+                            type="date"
+                            v-bind:value="item.ngaykt | inputDateFilter"
+                            v-on:input="
+                              item.ngaykt = getDate($event.target.value)
+                            "
+                          />
+                        </td>
+                        <template>
+                          <td
+                            v-if="item.status == 1"
+                            style="font-size: small; text-align: center"
+                          >
+                            <span
+                              style="
+                                color: white;
+                                font-weight: bold;
+                                background-color: red;
+                                padding-left: 7px;
+                                padding-right: 7px;
+                              "
+                              >DK</span
+                            >
                           </td>
                           <td
-                            style="
-                              font-size: small;
-                              text-align: center;
-                              font-weight: 600;
-                            "
+                            v-else-if="item.status == 2"
+                            style="font-size: small; text-align: center"
                           >
-                            <input
-                              type="text"
-                              v-model="item.malosx"
-                              class="input is-small"
-                            />
-                          </td>
-                          <td style="font-size: small; text-align: center">
-                            <input
-                              type="number"
-                              v-model="item.soluonglsx"
-                              class="input is-small"
-                            />
-                          </td>
-                          <td style="font-size: small; text-align: center">
-                            <input
-                              class="input is-small"
-                              type="date"
-                              v-bind:value="item.ngaybd | inputDateFilter"
-                              v-on:input="
-                                item.ngaybd = getDate($event.target.value)
+                            <span
+                              style="
+                                color: red;
+                                font-weight: bold;
+                                background-color: yellow;
+                                padding-left: 7px;
+                                padding-right: 7px;
                               "
-                            />
+                              >SX</span
+                            >
                           </td>
-                          <td style="font-size: small; text-align: center">
-                            <input
-                              class="input is-small"
-                              type="date"
-                              v-bind:value="item.ngaykt | inputDateFilter"
-                              v-on:input="
-                                item.ngaykt = getDate($event.target.value)
+                          <td
+                            v-else-if="item.status == 3"
+                            style="font-size: small; text-align: center"
+                          >
+                            <span
+                              style="
+                                color: white;
+                                font-weight: bold;
+                                background-color: green;
+                                padding-left: 7px;
+                                padding-right: 7px;
                               "
-                            />
-                          </td>
-                          <template>
-                            <td
-                              v-if="item.status == 1"
-                              style="font-size: small; text-align: center"
+                              >HT</span
                             >
-                              <span
-                                style="
-                                  color: white;
-                                  font-weight: bold;
-                                  background-color: red;
-                                  padding-left: 7px;
-                                  padding-right: 7px;
-                                "
-                                >DK</span
-                              >
-                            </td>
-                            <td
-                              v-else-if="item.status == 2"
-                              style="font-size: small; text-align: center"
-                            >
-                              <span
-                                style="
-                                  color: red;
-                                  font-weight: bold;
-                                  background-color: yellow;
-                                  padding-left: 7px;
-                                  padding-right: 7px;
-                                "
-                                >SX</span
-                              >
-                            </td>
-                            <td
-                              v-else-if="item.status == 3"
-                              style="font-size: small; text-align: center"
-                            >
-                              <span
-                                style="
-                                  color: white;
-                                  font-weight: bold;
-                                  background-color: green;
-                                  padding-left: 7px;
-                                  padding-right: 7px;
-                                "
-                                >HT</span
-                              >
-                            </td>
-                            <td
-                              v-else
-                              style="font-size: small; text-align: center"
-                            >
-                              <span
-                                style="
-                                  color: white;
-                                  font-weight: bold;
-                                  background-color: grey;
-                                  padding-left: 7px;
-                                  padding-right: 7px;
-                                "
-                                >0</span
-                              >
-                            </td>
-                          </template>
-                          <td style="font-size: small; text-align: center">
-                            <a @click="onUpdate(item)">
-                              <span style="color: green" class="icon is-small">
-                                <i class="far fa-check-circle"></i>
-                              </span>
-                            </a>
                           </td>
-                          <td style="font-size: small; text-align: center">
-                            <a @click="onDeleteLsx(item)">
-                              <span style="color: red" class="icon is-small">
-                                <i class="fas fa-times"></i>
-                              </span>
-                            </a>
+                          <td
+                            v-else
+                            style="font-size: small; text-align: center"
+                          >
+                            <span
+                              style="
+                                color: white;
+                                font-weight: bold;
+                                background-color: grey;
+                                padding-left: 7px;
+                                padding-right: 7px;
+                              "
+                              >0</span
+                            >
                           </td>
-                          <td style="font-size: small; text-align: center">
-                            <a @click="copyadd(item)">
-                              <span
-                                style="color: blueviolet"
-                                class="icon is-small"
-                              >
-                                <i class="fas fa-check-double"></i>
-                              </span>
-                            </a>
-                          </td>
-                          <td colspan="2"></td>
-                        </tr>
-                      </template>
+                        </template>
+                        <td style="font-size: small; text-align: center">
+                          <a @click="onUpdate(item)">
+                            <span style="color: green" class="icon is-small">
+                              <i class="far fa-check-circle"></i>
+                            </span>
+                          </a>
+                        </td>
+                        <td style="font-size: small; text-align: center">
+                          <a @click="onDeleteLsx(item)">
+                            <span style="color: red" class="icon is-small">
+                              <i class="fas fa-times"></i>
+                            </span>
+                          </a>
+                        </td>
+                        <td style="font-size: small; text-align: center">
+                          <a @click="copyadd(item)">
+                            <span
+                              style="color: blueviolet"
+                              class="icon is-small"
+                            >
+                              <i class="fas fa-check-double"></i>
+                            </span>
+                          </a>
+                        </td>
+                        <td colspan="2"></td>
+                      </tr>
                     </template>
+                  </template>
 
-                    <tr v-for="(item, index) in items" :key="index + 'kjkji'">
-                      <td style="font-size: small; text-align: center">
-                        {{ index + 1 }}
-                      </td>
-                      <td style=""></td>
-                      <td style="font-weight: 700">
-                        <input
-                          v-model.trim="item.malosx"
-                          type="text"
-                          class="input is-small is-danger"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          v-model.trim="item.soluonglsx"
-                          type="text"
-                          class="input is-small"
-                        />
-                      </td>
-                      <td>
-                        <input
-                          class="input is-small"
-                          type="date"
-                          v-bind:value="item.ngaybd | inputDateFilter"
-                          v-on:input="
-                            item.ngaybd = getDate($event.target.value)
-                          "
-                        />
-                      </td>
-                      <td>
-                        <input
-                          class="input is-small"
-                          type="date"
-                          v-bind:value="item.ngaykt | inputDateFilter"
-                          v-on:input="
-                            item.ngaykt = getDate($event.target.value)
-                          "
-                        />
-                      </td>
+                  <tr v-for="(item, index) in items" :key="index + 'kjkji'">
+                    <td style="font-size: small; text-align: center">
+                      {{ index + 1 }}
+                    </td>
+                    <td style=""></td>
+                    <td style="font-weight: 700">
+                      <input
+                        v-model.trim="item.malosx"
+                        type="text"
+                        class="input is-small is-danger"
+                      />
+                    </td>
+                    <td>
+                      <input
+                        v-model.trim="item.soluonglsx"
+                        type="text"
+                        class="input is-small"
+                      />
+                    </td>
+                    <td>
+                      <input
+                        class="input is-small"
+                        type="date"
+                        v-bind:value="item.ngaybd | inputDateFilter"
+                        v-on:input="item.ngaybd = getDate($event.target.value)"
+                      />
+                    </td>
+                    <td>
+                      <input
+                        class="input is-small"
+                        type="date"
+                        v-bind:value="item.ngaykt | inputDateFilter"
+                        v-on:input="item.ngaykt = getDate($event.target.value)"
+                      />
+                    </td>
 
-                      <td></td>
-                      <td></td>
-                      <td style="font-size: small; text-align: center">
-                        <a @click="deleteRow(index)">
-                          <span style="color: red" class="icon is-small">
-                            <i class="fas fa-times"></i>
-                          </span>
-                        </a>
-                      </td>
-                      <td></td>
-                      <td colspan="2"></td>
-                    </tr>
-                  </table>
-                </td>
-              </tr>
-            </template>
-          </table>
-        </div>
-        <!-- phân trang -->
-        <div class="columns">
-          <div class="column">
-            <div class="pagination">
-              <button
-                class="button is-small is-success"
-                @click="changePage(1)"
-                :disabled="currentPage === 1"
-              >
-                Đầu tiên
-              </button>
-              <button
-                class="button is-small is-info"
-                @click="changePage(currentPage - 1)"
-                :disabled="currentPage === 1"
-              >
-                Trước
-              </button>
-              <button
-                class="button is-small"
-                v-for="page in pages"
-                @click="changePage(page)"
-                :class="{ active: page === currentPage }"
-              >
-                {{ page }}
-              </button>
-              <button
-                class="button is-small is-info"
-                @click="changePage(currentPage + 1)"
-                :disabled="currentPage === pageCount"
-              >
-                Sau
-              </button>
-              <button
-                class="button is-small is-success"
-                @click="changePage(pageCount)"
-                :disabled="currentPage === pageCount"
-              >
-                Cuối
-              </button>
-            </div>
+                    <td></td>
+                    <td></td>
+                    <td style="font-size: small; text-align: center">
+                      <a @click="deleteRow(index)">
+                        <span style="color: red" class="icon is-small">
+                          <i class="fas fa-times"></i>
+                        </span>
+                      </a>
+                    </td>
+                    <td></td>
+                    <td colspan="2"></td>
+                  </tr>
+                </table>
+              </td>
+            </tr>
+          </template>
+        </table>
+      </div>
+      <!-- phân trang -->
+      <div class="columns">
+        <div class="column">
+          <div class="pagination">
+            <button
+              class="button is-small is-success"
+              @click="changePage(1)"
+              :disabled="currentPage === 1"
+            >
+              Đầu tiên
+            </button>
+            <button
+              class="button is-small is-info"
+              @click="changePage(currentPage - 1)"
+              :disabled="currentPage === 1"
+            >
+              Trước
+            </button>
+            <button
+              class="button is-small"
+              v-for="page in pages"
+              @click="changePage(page)"
+              :class="{ active: page === currentPage }"
+            >
+              {{ page }}
+            </button>
+            <button
+              class="button is-small is-info"
+              @click="changePage(currentPage + 1)"
+              :disabled="currentPage === pageCount"
+            >
+              Sau
+            </button>
+            <button
+              class="button is-small is-success"
+              @click="changePage(pageCount)"
+              :disabled="currentPage === pageCount"
+            >
+              Cuối
+            </button>
           </div>
         </div>
+      </div>
 
-        <!-- Modal progress-->
-        <div class="">
-          <div :class="{ 'is-active': isActive_loading }" class="modal">
-            <div class="modal-background"></div>
-            <div class="modal-content modal-card-predata">
-              <section class="modal-card-body">
-                <div>
-                  <span
-                    style="font-size: small; font-weight: bold; color: #00947e"
-                    >Đang load dữ liệu - Xin chờ đợi ....</span
-                  >
-                </div>
-                <div>
-                  <progress class="progress is-small is-danger" max="100">
-                    15%
-                  </progress>
-                </div>
-              </section>
-            </div>
+      <!-- Modal progress-->
+      <div class="">
+        <div :class="{ 'is-active': isActive_loading }" class="modal">
+          <div class="modal-background"></div>
+          <div class="modal-content modal-card-predata">
+            <section class="modal-card-body">
+              <div>
+                <span
+                  style="font-size: small; font-weight: bold; color: #00947e"
+                  >Đang load dữ liệu - Xin chờ đợi ....</span
+                >
+              </div>
+              <div>
+                <progress class="progress is-small is-danger" max="100">
+                  15%
+                </progress>
+              </div>
+            </section>
           </div>
         </div>
       </div>

@@ -24,6 +24,12 @@ module.exports = {
         href: "/fontawesome-free-6.4.0-web/css/all.css",
       },
     ],
+    script: [
+      {
+        src: "https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js",
+        type: "text/javascript",
+      },
+    ],
   },
   /*
    ** Customize the progress-bar color
@@ -68,16 +74,16 @@ module.exports = {
   }, */
   axios: {
     // baseURL: "http://10.42.240.200:9999",
-    // baseURL: "http://localhost:8888",
-    baseURL: "http://103.104.118.155:8888/", // máy chủ thực tế của toàn lực
+    baseURL: "http://localhost:8888",
+    // baseURL: "http://103.104.118.155:8888/", // máy chủ thực tế của toàn lực
     // baseURL: "http://14.224.129.177:8888/ // máy chủ tuanpda
     timeout: 20000,
   },
   server: {
     // port: 8080, // default: 3000
-    port: 80,
+    // port: 80,
     // host: "192.168.1.97", // default: localhost
-    host: "103.104.118.155", // máy chủ thực tế của toàn lực
+    // host: "103.104.118.155", // máy chủ thực tế của toàn lực
   },
   /* proxy: {
     "/api": URL,
@@ -101,16 +107,16 @@ module.exports = {
     },
     transpile: [/^ag-grid-vue/],
   },
-  
+
   router: {
     middleware: ["auth"],
 
     // Thêm route catch-all
     extendRoutes(routes, resolve) {
       routes.push({
-        name: 'catch-all',
-        path: '*',
-        component: resolve(__dirname, 'pages/404.vue'), // Đường dẫn đến trang "This page could not be found"
+        name: "catch-all",
+        path: "*",
+        component: resolve(__dirname, "pages/404.vue"), // Đường dẫn đến trang "This page could not be found"
       });
     },
   },

@@ -1,22 +1,21 @@
 <template>
-  <div class="columns">
-    <div class="column">
-      <br />
-      <div class="box" style="margin-left: 2px; margin-right: 2px">
-        <div class="columns">
-          <div class="column">
-            <div class="control">
-              <span class="icon is-small is-left">
-                <i style="color: #ff55acee" class="fas fa-calendar-alt"></i>
-              </span>
-              <span style="color: #3850b7; font-size: 15px; font-weight: bold"
-                >Chọn lô kế hoạch để sản xuất</span
-              >
-            </div>
+  <div class="column">
+    <br />
+    <div class="box" style="margin-left: 2px; margin-right: 2px">
+      <div class="columns">
+        <div class="column">
+          <div class="control">
+            <span class="icon is-small is-left">
+              <i style="color: #ff55acee" class="fas fa-calendar-alt"></i>
+            </span>
+            <span style="color: #3850b7; font-size: 15px; font-weight: bold"
+              >Chọn lô kế hoạch để sản xuất</span
+            >
           </div>
         </div>
+      </div>
 
-        <!-- <div class="columns">
+      <!-- <div class="columns">
           <div class="column" style="display: flex; align-items: center">
             <label
               class="checkbox-label"
@@ -31,141 +30,137 @@
           </div>
         </div> -->
 
-        <div class="box">
-          <div class="columns">
-            <div class="column">
-              <div class="select-wrapper" style="width: 100%; font-size: small">
-                <div class="select-header" @click="isOpen = !isOpen">
-                  {{
-                    selectedOptions.length > 0
-                      ? selectedOptions.join(", ")
-                      : "Phân xưởng"
-                  }}
-                  <span class="arrow" :class="{ open: isOpen }"></span>
-                </div>
-                <div class="select-options" :class="{ open: isOpen }">
-                  <label v-for="option in phanxuong">
-                    <input
-                      type="checkbox"
-                      :value="option.mapx"
-                      v-model="selectedOptions"
-                    />
-                    {{ option.mapx }} &nbsp;
-                  </label>
-                </div>
+      <div class="box">
+        <div class="columns">
+          <div class="column">
+            <div class="select-wrapper" style="width: 100%; font-size: small">
+              <div class="select-header" @click="isOpen = !isOpen">
+                {{
+                  selectedOptions.length > 0
+                    ? selectedOptions.join(", ")
+                    : "Phân xưởng"
+                }}
+                <span class="arrow" :class="{ open: isOpen }"></span>
               </div>
-            </div>
-            <div class="column">
-              <div class="select-wrapper" style="width: 100%; font-size: small">
-                <div class="select-header" @click="isOpenst = !isOpenst">
-                  {{
-                    Options_status.length > 0
-                      ? Options_status.join(", ")
-                      : "Trạng thái"
-                  }}
-                  <span class="arrow" :class="{ open: isOpenst }"></span>
-                </div>
-                <div class="select-options" :class="{ open: isOpenst }">
-                  <label v-for="option in statusArr">
-                    <input
-                      type="checkbox"
-                      :value="option.masta"
-                      v-model="Options_status"
-                    />
-                    {{ option.tensta }} &nbsp;
-                  </label>
-                </div>
+              <div class="select-options" :class="{ open: isOpen }">
+                <label v-for="option in phanxuong">
+                  <input
+                    type="checkbox"
+                    :value="option.mapx"
+                    v-model="selectedOptions"
+                  />
+                  {{ option.mapx }} &nbsp;
+                </label>
               </div>
-            </div>
-            <div class="column">
-              <div class="autocomplete">
-                <input
-                  class="input is-small is-info"
-                  type="text"
-                  v-model="multiSearch_nhomtp"
-                  @input="onInput_nhomsp"
-                  placeholder="Nhóm thành phẩm"
-                />
-                <div
-                  class="autocomplete-items"
-                  v-if="suggestions_nhomtp.length"
-                >
-                  <div
-                    class="autocomplete-item"
-                    v-for="suggestion_nhomtp in suggestions_nhomtp"
-                    @click="selectSuggestion_nhomsp(suggestion_nhomtp)"
-                  >
-                    {{ suggestion_nhomtp }}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="column">
-              <div class="autocomplete">
-                <input
-                  class="input is-small is-danger"
-                  type="text"
-                  v-model="multiSearch_matp"
-                  @input="onInput_matp"
-                  placeholder="Mã thành phẩm"
-                />
-                <div class="autocomplete-items" v-if="suggestions_matp.length">
-                  <div
-                    class="autocomplete-item"
-                    v-for="suggestion_matp in suggestions_matp"
-                    @click="selectSuggestion_matp(suggestion_matp)"
-                  >
-                    {{ suggestion_matp }}
-                  </div>
-                </div>
-              </div>
-            </div>
-            <div class="column">
-              <button
-                @click="filterData"
-                class="button is-small is-success is-fullwidth"
-              >
-                Lọc dữ liệu
-              </button>
-            </div>
-            <div class="column">
-              <input
-                class="input is-danger is-small"
-                type="number"
-                id="itemsPerPage"
-                v-model.number="itemsPerPage"
-                min="1"
-                max="10"
-              />
-            </div>
-            <div class="column">
-              <vue-excel-xlsx
-                :data="lokehoachpx"
-                :columns="columns"
-                :file-name="'lokehoachphanxuong'"
-                :file-type="'xlsx'"
-                :sheet-name="'Lô kế hoạch phân xưởng'"
-                style="width: 100%"
-              >
-                Download Excel
-              </vue-excel-xlsx>
             </div>
           </div>
-
-          <div class="columns">
-            <div
-              class="column"
-              style="font-size: small; font-weight: bold; text-align: left"
-            >
-              <span
-                >Có:
-                <span style="color: red">{{ lokehoachpx.length }}</span> bản
-                ghi</span
-              >
+          <div class="column">
+            <div class="select-wrapper" style="width: 100%; font-size: small">
+              <div class="select-header" @click="isOpenst = !isOpenst">
+                {{
+                  Options_status.length > 0
+                    ? Options_status.join(", ")
+                    : "Trạng thái"
+                }}
+                <span class="arrow" :class="{ open: isOpenst }"></span>
+              </div>
+              <div class="select-options" :class="{ open: isOpenst }">
+                <label v-for="option in statusArr">
+                  <input
+                    type="checkbox"
+                    :value="option.masta"
+                    v-model="Options_status"
+                  />
+                  {{ option.tensta }} &nbsp;
+                </label>
+              </div>
             </div>
-            <div class="column"></div>
-            
-            <!-- <div class="column">
+          </div>
+          <div class="column">
+            <div class="autocomplete">
+              <input
+                class="input is-small is-info"
+                type="text"
+                v-model="multiSearch_nhomtp"
+                @input="onInput_nhomsp"
+                placeholder="Nhóm thành phẩm"
+              />
+              <div class="autocomplete-items" v-if="suggestions_nhomtp.length">
+                <div
+                  class="autocomplete-item"
+                  v-for="suggestion_nhomtp in suggestions_nhomtp"
+                  @click="selectSuggestion_nhomsp(suggestion_nhomtp)"
+                >
+                  {{ suggestion_nhomtp }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <div class="autocomplete">
+              <input
+                class="input is-small is-danger"
+                type="text"
+                v-model="multiSearch_matp"
+                @input="onInput_matp"
+                placeholder="Mã thành phẩm"
+              />
+              <div class="autocomplete-items" v-if="suggestions_matp.length">
+                <div
+                  class="autocomplete-item"
+                  v-for="suggestion_matp in suggestions_matp"
+                  @click="selectSuggestion_matp(suggestion_matp)"
+                >
+                  {{ suggestion_matp }}
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="column">
+            <button
+              @click="filterData"
+              class="button is-small is-success is-fullwidth"
+            >
+              Lọc dữ liệu
+            </button>
+          </div>
+          <div class="column">
+            <input
+              class="input is-danger is-small"
+              type="number"
+              id="itemsPerPage"
+              v-model.number="itemsPerPage"
+              min="1"
+              max="10"
+            />
+          </div>
+          <div class="column">
+            <vue-excel-xlsx
+              :data="lokehoachpx"
+              :columns="columns"
+              :file-name="'lokehoachphanxuong'"
+              :file-type="'xlsx'"
+              :sheet-name="'Lô kế hoạch phân xưởng'"
+              style="width: 100%"
+            >
+              Download Excel
+            </vue-excel-xlsx>
+          </div>
+        </div>
+
+        <div class="columns">
+          <div
+            class="column"
+            style="font-size: small; font-weight: bold; text-align: left"
+          >
+            <span
+              >Có: <span style="color: red">{{ lokehoachpx.length }}</span> bản
+              ghi</span
+            >
+          </div>
+          <div class="column"></div>
+
+          <!-- <div class="column">
               <button
                 @click="showAllLokhpx"
                 class="button is-small is-danger is-fullwidth"
@@ -173,467 +168,459 @@
                 Refresh
               </button>
             </div> -->
-          </div>
         </div>
+      </div>
 
-        <div class="table_wrapper">
-          <table class="table is-responsive is-bordered is-narrow is-fullwidth">
-            <tr style="background-color: linen">
-              <td
-                style="
-                  font-size: small;
-                  text-align: center;
-                  font-weight: 600;
-                  width: 3%;
-                "
-              >
-                STT
-              </td>
-              <td
-                @click="sortTable('malonhamay')"
-                style="
-                  font-size: small;
-                  text-align: center;
-                  font-weight: 600;
-                  width: 5%;
-                "
-              >
-                Mã lô nhà máy
-              </td>
-              <td
-                @click="sortTable('mapx')"
-                style="
-                  font-size: small;
-                  text-align: center;
-                  font-weight: 600;
-                  width: 5%;
-                "
-              >
-                Mã PX
-              </td>
-              <td
-                @click="sortTable('nhomthanhpham')"
-                style="
-                  font-size: small;
-                  text-align: center;
-                  font-weight: 600;
-                  width: 4%;
-                "
-              >
-                Nhóm TP
-              </td>
-              <td
-                @click="sortTable('mathanhpham')"
-                style="
-                  font-size: small;
-                  text-align: center;
-                  font-weight: 600;
-                  width: 4%;
-                "
-              >
-                Mã TP
-              </td>
-              <td
-                @click="sortTable('nhomsp')"
-                style="
-                  font-size: small;
-                  text-align: center;
-                  font-weight: 600;
-                  width: 7%;
-                "
-              >
-                Nhóm SP
-              </td>
-              <td
-                @click="sortTable('maspkhpx')"
-                style="
-                  font-size: small;
-                  text-align: center;
-                  font-weight: 600;
-                  width: 7%;
-                "
-              >
-                Mã sản phẩm
-              </td>
-              <td
-                @click="sortTable('tuanbdkhpx')"
-                style="
-                  font-size: small;
-                  text-align: center;
-                  font-weight: 600;
-                  width: 8%;
-                "
-              >
-                T1
-              </td>
-              <td
-                @click="sortTable('tuanktkhpx')"
-                style="
-                  font-size: small;
-                  text-align: center;
-                  font-weight: 600;
-                  width: 8%;
-                "
-              >
-                T2
-              </td>
-              <td
-                @click="sortTable('soluongkhpx')"
-                style="
-                  font-size: small;
-                  text-align: center;
-                  font-weight: 600;
-                  width: 7%;
-                "
-              >
-                Số lượng
-              </td>
-              <td
-                @click="sortTable('ttqt')"
-                style="
-                  font-size: small;
-                  text-align: center;
-                  font-weight: 600;
-                  width: 7%;
-                "
-              >
-                TTQT
-              </td>
-              <td
-                @click="sortTable('status')"
-                style="
-                  font-size: small;
-                  text-align: center;
-                  font-weight: 600;
-                  width: 5%;
-                "
-              >
-                Status
-              </td>
-              <td
-                style="
-                  font-size: small;
-                  text-align: center;
-                  font-weight: 600;
-                  width: 7%;
-                "
-              >
-                Chọn TT
-              </td>
-              <td
-                style="
-                  font-size: small;
-                  text-align: center;
-                  font-weight: 600;
-                  width: 7%;
-                "
-              >
-                Tuần Chạy
-              </td>
-              <td
-                style="
-                  font-size: small;
-                  text-align: center;
-                  font-weight: 600;
-                  width: 7%;
-                "
-              >
-                Đã ĐK
-              </td>
-              <td
-                style="
-                  font-size: small;
-                  text-align: center;
-                  font-weight: 600;
-                  width: 7%;
-                "
-              >
-                SL TH
-              </td>
-              <td
-                style="
-                  font-size: small;
-                  text-align: center;
-                  font-weight: 600;
-                  width: 7%;
-                "
-              >
-                Tổng đạt
-              </td>
-              <td
-                style="
-                  font-size: small;
-                  text-align: center;
-                  font-weight: 600;
-                  width: 7%;
-                "
-              >
-                Tổng hỏng
-              </td>
-              <td
-                style="
-                  font-size: small;
-                  text-align: center;
-                  font-weight: 600;
-                  width: 7%;
-                "
-              >
-                Ngày BDTT
-              </td>
-              <td
-                style="
-                  font-size: small;
-                  text-align: center;
-                  font-weight: 600;
-                  width: 5%;
-                "
-              >
-                Ngày KTTT
-              </td>
-              <td
-                style="
-                  font-size: small;
-                  text-align: center;
-                  font-weight: 600;
-                  width: 7%;
-                "
-              >
-                Ghi
-              </td>
-            </tr>
-            <tr
-              v-for="(item, index) in paginatedTable"
-              :key="index + 'llllkiq'"
+      <div class="table_wrapper">
+        <table class="table is-responsive is-bordered is-narrow is-fullwidth">
+          <tr style="background-color: linen">
+            <td
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 3%;
+              "
             >
-              <td style="font-size: small; text-align: center">
-                {{ index + 1 }}
-              </td>
-              <td style="font-size: small">{{ item.malonhamay }}</td>
-              <td style="font-size: small; text-align: center">
-                {{ item.mapx }}
-              </td>
-              <td style="font-size: small; text-align: center">
-                {{ item.nhomthanhpham }}
-              </td>
-              <td style="font-size: small; text-align: center">
-                {{ item.mathanhpham }}
-              </td>
-              <td style="font-size: small; text-align: center">
-                {{ item.nhomspkhpx }}
-              </td>
-              <td style="font-size: small; text-align: center">
-                {{ item.maspkhpx }}
-              </td>
-              <td style="font-size: small; text-align: center">
-                {{ item.tuanbdkhpx }}
-              </td>
-              <td style="font-size: small; text-align: center">
-                {{ item.tuanktkhpx }}
-              </td>
-              <td style="font-size: small; text-align: center">
-                {{ item.soluongkhpx | formatNumber }}
-              </td>
-              <td style="font-size: small; text-align: center">
-                {{ item.ttqt }}
-              </td>
-              <template>
-                <td
-                  v-if="item.status == 1"
+              STT
+            </td>
+            <td
+              @click="sortTable('malonhamay')"
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 5%;
+              "
+            >
+              Mã lô nhà máy
+            </td>
+            <td
+              @click="sortTable('mapx')"
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 5%;
+              "
+            >
+              Mã PX
+            </td>
+            <td
+              @click="sortTable('nhomthanhpham')"
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 4%;
+              "
+            >
+              Nhóm TP
+            </td>
+            <td
+              @click="sortTable('mathanhpham')"
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 4%;
+              "
+            >
+              Mã TP
+            </td>
+            <td
+              @click="sortTable('nhomsp')"
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 7%;
+              "
+            >
+              Nhóm SP
+            </td>
+            <td
+              @click="sortTable('maspkhpx')"
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 7%;
+              "
+            >
+              Mã sản phẩm
+            </td>
+            <td
+              @click="sortTable('tuanbdkhpx')"
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 8%;
+              "
+            >
+              T1
+            </td>
+            <td
+              @click="sortTable('tuanktkhpx')"
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 8%;
+              "
+            >
+              T2
+            </td>
+            <td
+              @click="sortTable('soluongkhpx')"
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 7%;
+              "
+            >
+              Số lượng
+            </td>
+            <td
+              @click="sortTable('ttqt')"
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 7%;
+              "
+            >
+              TTQT
+            </td>
+            <td
+              @click="sortTable('status')"
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 5%;
+              "
+            >
+              Status
+            </td>
+            <td
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 7%;
+              "
+            >
+              Chọn TT
+            </td>
+            <td
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 7%;
+              "
+            >
+              Tuần Chạy
+            </td>
+            <td
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 7%;
+              "
+            >
+              Đã ĐK
+            </td>
+            <td
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 7%;
+              "
+            >
+              SL TH
+            </td>
+            <td
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 7%;
+              "
+            >
+              Tổng đạt
+            </td>
+            <td
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 7%;
+              "
+            >
+              Tổng hỏng
+            </td>
+            <td
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 7%;
+              "
+            >
+              Ngày BDTT
+            </td>
+            <td
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 5%;
+              "
+            >
+              Ngày KTTT
+            </td>
+            <td
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 7%;
+              "
+            >
+              Ghi
+            </td>
+          </tr>
+          <tr v-for="(item, index) in paginatedTable" :key="index + 'llllkiq'">
+            <td style="font-size: small; text-align: center">
+              {{ index + 1 }}
+            </td>
+            <td style="font-size: small">{{ item.malonhamay }}</td>
+            <td style="font-size: small; text-align: center">
+              {{ item.mapx }}
+            </td>
+            <td style="font-size: small; text-align: center">
+              {{ item.nhomthanhpham }}
+            </td>
+            <td style="font-size: small; text-align: center">
+              {{ item.mathanhpham }}
+            </td>
+            <td style="font-size: small; text-align: center">
+              {{ item.nhomspkhpx }}
+            </td>
+            <td style="font-size: small; text-align: center">
+              {{ item.maspkhpx }}
+            </td>
+            <td style="font-size: small; text-align: center">
+              {{ item.tuanbdkhpx }}
+            </td>
+            <td style="font-size: small; text-align: center">
+              {{ item.tuanktkhpx }}
+            </td>
+            <td style="font-size: small; text-align: center">
+              {{ item.soluongkhpx | formatNumber }}
+            </td>
+            <td style="font-size: small; text-align: center">
+              {{ item.ttqt }}
+            </td>
+            <template>
+              <td
+                v-if="item.status == 1"
+                style="
+                  font-size: small;
+                  text-align: center;
+                  vertical-align: middle;
+                "
+              >
+                <span
                   style="
-                    font-size: small;
-                    text-align: center;
-                    vertical-align: middle;
+                    color: white;
+                    font-weight: bold;
+                    background-color: red;
+                    padding-left: 7px;
+                    padding-right: 7px;
                   "
+                  >DK</span
                 >
-                  <span
-                    style="
-                      color: white;
-                      font-weight: bold;
-                      background-color: red;
-                      padding-left: 7px;
-                      padding-right: 7px;
-                    "
-                    >DK</span
-                  >
-                </td>
-                <td
-                  v-else-if="item.status == 2"
+              </td>
+              <td
+                v-else-if="item.status == 2"
+                style="
+                  font-size: small;
+                  text-align: center;
+                  vertical-align: middle;
+                "
+              >
+                <span
                   style="
-                    font-size: small;
-                    text-align: center;
-                    vertical-align: middle;
+                    color: red;
+                    font-weight: bold;
+                    background-color: yellow;
+                    padding-left: 7px;
+                    padding-right: 7px;
                   "
+                  >SX</span
                 >
-                  <span
-                    style="
-                      color: red;
-                      font-weight: bold;
-                      background-color: yellow;
-                      padding-left: 7px;
-                      padding-right: 7px;
-                    "
-                    >SX</span
-                  >
-                </td>
-                <td
-                  v-else-if="item.status == 3"
+              </td>
+              <td
+                v-else-if="item.status == 3"
+                style="
+                  font-size: small;
+                  text-align: center;
+                  vertical-align: middle;
+                "
+              >
+                <span
                   style="
-                    font-size: small;
-                    text-align: center;
-                    vertical-align: middle;
+                    color: white;
+                    font-weight: bold;
+                    background-color: green;
+                    padding-left: 7px;
+                    padding-right: 7px;
                   "
+                  >HT</span
                 >
-                  <span
-                    style="
-                      color: white;
-                      font-weight: bold;
-                      background-color: green;
-                      padding-left: 7px;
-                      padding-right: 7px;
-                    "
-                    >HT</span
-                  >
-                </td>
-                <td
-                  v-else-if="item.status == 0"
+              </td>
+              <td
+                v-else-if="item.status == 0"
+                style="
+                  font-size: small;
+                  text-align: center;
+                  vertical-align: middle;
+                "
+              >
+                <span
                   style="
-                    font-size: small;
-                    text-align: center;
-                    vertical-align: middle;
+                    color: white;
+                    font-weight: bold;
+                    background-color: gray;
+                    padding-left: 7px;
+                    padding-right: 7px;
                   "
+                  >0</span
                 >
-                  <span
-                    style="
-                      color: white;
-                      font-weight: bold;
-                      background-color: gray;
-                      padding-left: 7px;
-                      padding-right: 7px;
-                    "
-                    >0</span
-                  >
-                </td>
-              </template>
+              </td>
+            </template>
 
-              <td style="font-size: small">
-                <div
-                  v-if="item.status != 3"
-                  class="select is-small is-fullwidth"
+            <td style="font-size: small">
+              <div v-if="item.status != 3" class="select is-small is-fullwidth">
+                <select
+                  id=""
+                  @change="onChange_status($event, item)"
+                  v-model="item.status"
                 >
-                  <select
-                    id=""
-                    @change="onChange_status($event, item)"
-                    v-model="item.status"
-                  >
-                    <!-- <option value="3">HT</option> -->
-                    <option value="2">SX</option>
-                    <option value="1">DK</option>
-                    <option value="0">0</option>
-                  </select>
-                </div>
-              </td>
-              <td style="font-size: small; text-align: center">
-                <input
-                  v-model="item.tuanexc"
-                  type="number"
-                  class="input is-danger is-small"
-                />
-              </td>
-              <td style="font-size: small; text-align: center">
-                {{ item.tong_soluong }}
-              </td>
-              <td style="font-size: small; text-align: center">
-                {{ item.tongso_luongnhanh }}
-              </td>
-              <td style="font-size: small; text-align: center">
-                {{ item.tongso_dat }}
-              </td>
-              <td style="font-size: small; text-align: center">
-                {{ item.tongso_hong }}
-              </td>
-              <td style="font-size: small; text-align: center">
-                {{ item.ngaybdthucte | formatDate }}
-              </td>
-              <td style="font-size: small; text-align: center">
-                <input
-                  @blur="updateHoanthanh($event.target.value, item)"
-                  :value="formattedNgayhoanthanhtt(item)"
-                  type="date"
-                  class="input is-small"
-                />
-              </td>
-              <td>
-                <a @click="onUpdate_lokhpx(item)">
-                  <span style="color: green" class="icon is-small">
-                    <i class="far fa-check-circle"></i>
-                  </span>
-                </a>
-              </td>
-            </tr>
-          </table>
-        </div>
-        <div class="columns">
-          <div class="column">
-            <div class="pagination">
-              <button
-                class="button is-small is-success"
-                @click="changePage(1)"
-                :disabled="currentPage === 1"
-              >
-                Đầu tiên
-              </button>
-              <button
-                class="button is-small is-info"
-                @click="changePage(currentPage - 1)"
-                :disabled="currentPage === 1"
-              >
-                Trước
-              </button>
-              <button
-                class="button is-small"
-                v-for="page in pages"
-                @click="changePage(page)"
-                :class="{ active: page === currentPage }"
-              >
-                {{ page }}
-              </button>
-              <button
-                class="button is-small is-info"
-                @click="changePage(currentPage + 1)"
-                :disabled="currentPage === pageCount"
-              >
-                Sau
-              </button>
-              <button
-                class="button is-small is-success"
-                @click="changePage(pageCount)"
-                :disabled="currentPage === pageCount"
-              >
-                Cuối
-              </button>
-            </div>
+                  <!-- <option value="3">HT</option> -->
+                  <option value="2">SX</option>
+                  <option value="1">DK</option>
+                  <option value="0">0</option>
+                </select>
+              </div>
+            </td>
+            <td style="font-size: small; text-align: center">
+              <input
+                v-model="item.tuanexc"
+                type="number"
+                class="input is-danger is-small"
+              />
+            </td>
+            <td style="font-size: small; text-align: center">
+              {{ item.tong_soluong }}
+            </td>
+            <td style="font-size: small; text-align: center">
+              {{ item.tongso_luongnhanh }}
+            </td>
+            <td style="font-size: small; text-align: center">
+              {{ item.tongso_dat }}
+            </td>
+            <td style="font-size: small; text-align: center">
+              {{ item.tongso_hong }}
+            </td>
+            <td style="font-size: small; text-align: center">
+              {{ item.ngaybdthucte | formatDate }}
+            </td>
+            <td style="font-size: small; text-align: center">
+              <input
+                @blur="updateHoanthanh($event.target.value, item)"
+                :value="formattedNgayhoanthanhtt(item)"
+                type="date"
+                class="input is-small"
+              />
+            </td>
+            <td>
+              <a @click="onUpdate_lokhpx(item)">
+                <span style="color: green" class="icon is-small">
+                  <i class="far fa-check-circle"></i>
+                </span>
+              </a>
+            </td>
+          </tr>
+        </table>
+      </div>
+      <div class="columns">
+        <div class="column">
+          <div class="pagination">
+            <button
+              class="button is-small is-success"
+              @click="changePage(1)"
+              :disabled="currentPage === 1"
+            >
+              Đầu tiên
+            </button>
+            <button
+              class="button is-small is-info"
+              @click="changePage(currentPage - 1)"
+              :disabled="currentPage === 1"
+            >
+              Trước
+            </button>
+            <button
+              class="button is-small"
+              v-for="page in pages"
+              @click="changePage(page)"
+              :class="{ active: page === currentPage }"
+            >
+              {{ page }}
+            </button>
+            <button
+              class="button is-small is-info"
+              @click="changePage(currentPage + 1)"
+              :disabled="currentPage === pageCount"
+            >
+              Sau
+            </button>
+            <button
+              class="button is-small is-success"
+              @click="changePage(pageCount)"
+              :disabled="currentPage === pageCount"
+            >
+              Cuối
+            </button>
           </div>
         </div>
       </div>
-      <!-- Modal progress-->
-      <div class="">
-        <div :class="{ 'is-active': isActive_loading }" class="modal">
-          <div class="modal-background"></div>
-          <div class="modal-content modal-card-predata">
-            <section class="modal-card-body">
-              <div>
-                <span
-                  style="font-size: small; font-weight: bold; color: #00947e"
-                  >Đang load dữ liệu - Xin chờ đợi ....</span
-                >
-              </div>
-              <div>
-                <progress class="progress is-small is-danger" max="100">
-                  15%
-                </progress>
-              </div>
-            </section>
-          </div>
+    </div>
+    <!-- Modal progress-->
+    <div class="">
+      <div :class="{ 'is-active': isActive_loading }" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-content modal-card-predata">
+          <section class="modal-card-body">
+            <div>
+              <span style="font-size: small; font-weight: bold; color: #00947e"
+                >Đang load dữ liệu - Xin chờ đợi ....</span
+              >
+            </div>
+            <div>
+              <progress class="progress is-small is-danger" max="100">
+                15%
+              </progress>
+            </div>
+          </section>
         </div>
       </div>
     </div>
@@ -1114,7 +1101,7 @@ export default {
         `/api/lokehoach/getallkehoachphanxuong_chonlkhdesx_pagi`
       );
       // console.log(res.results);
-      if (res.results.length >0) {
+      if (res.results.length > 0) {
         this.lokehoachpx = res.results;
         this.isActive_loading = false;
       }

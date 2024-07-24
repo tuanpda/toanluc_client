@@ -1,400 +1,376 @@
 <template>
-  <div class="columns">
-    <div class="column container">
-      <br />
-      <div class="box" style="margin-left: 3px; margin-right: 3px">
-        <div class="columns">
-          <div class="column">
-            <div class="control">
-              <span class="icon is-small is-left">
-                <i style="color: #00d1b2" class="far fa-calendar-alt"></i>
-              </span>
-              <span style="color: #3850b7; font-size: 15px; font-weight: bold"
-                >Chi trả lương Văn phòng</span
-              >
-            </div>
+  <div class="column container">
+    <br />
+    <div class="box" style="margin-left: 3px; margin-right: 3px">
+      <div class="columns">
+        <div class="column">
+          <div class="control">
+            <span class="icon is-small is-left">
+              <i style="color: #00d1b2" class="far fa-calendar-alt"></i>
+            </span>
+            <span style="color: #3850b7; font-size: 15px; font-weight: bold"
+              >Chi trả lương Văn phòng</span
+            >
           </div>
         </div>
-        <div class="box">
-          <div class="columns">
-            <div class="column">
-              <div class="select is-small is-fullwidth">
-                <select id="" @change="onChange_Thang($event)">
-                  <option selected>-- Chọn tháng --</option>
-                  <option value="01">Tháng 1</option>
-                  <option value="02">Tháng 2</option>
-                  <option value="03">Tháng 3</option>
-                  <option value="04">Tháng 4</option>
-                  <option value="05">Tháng 5</option>
-                  <option value="06">Tháng 6</option>
-                  <option value="07">Tháng 7</option>
-                  <option value="08">Tháng 8</option>
-                  <option value="09">Tháng 9</option>
-                  <option value="10">Tháng 10</option>
-                  <option value="11">Tháng 11</option>
-                  <option value="12">Tháng 12</option>
-                </select>
-              </div>
-            </div>
-            <div class="column">
-              <div class="select is-small is-fullwidth">
-                <select id="" @change="onChange_Nam($event)">
-                  <option selected>-- Chọn năm --</option>
-                  <option value="2022">Tháng 2022</option>
-                  <option value="2023">Tháng 2023</option>
-                  <option value="2024">Tháng 2024</option>
-                  <option value="2025">Tháng 2025</option>
-                  <option value="2026">Tháng 2026</option>
-                  <option value="2027">Tháng 2027</option>
-                  <option value="2028">Tháng 2028</option>
-                  <option value="2029">Tháng 2029</option>
-                  <option value="2030">Tháng 2030</option>
-                  <option value="2031">Tháng 2031</option>
-                  <option value="2032">Tháng 2032</option>
-                  <option value="2033">Tháng 2033</option>
-                </select>
-              </div>
+      </div>
+      <div class="box">
+        <div class="columns">
+          <div class="column">
+            <div class="select is-small is-fullwidth">
+              <select id="" @change="onChange_Thang($event)">
+                <option selected>-- Chọn tháng --</option>
+                <option value="01">Tháng 1</option>
+                <option value="02">Tháng 2</option>
+                <option value="03">Tháng 3</option>
+                <option value="04">Tháng 4</option>
+                <option value="05">Tháng 5</option>
+                <option value="06">Tháng 6</option>
+                <option value="07">Tháng 7</option>
+                <option value="08">Tháng 8</option>
+                <option value="09">Tháng 9</option>
+                <option value="10">Tháng 10</option>
+                <option value="11">Tháng 11</option>
+                <option value="12">Tháng 12</option>
+              </select>
             </div>
           </div>
-
-          <div class="columns">
-            <div class="column">
-              <div class="select is-small is-fullwidth">
-                <select id="" @change="onChangeVanphong($event)">
-                  <option disabled selected>-- Chọn Loại văn phòng --</option>
-                  <option value="VPBP">Văn phòng bộ phận</option>
-                  <option value="VPGT1">Văn phòng gián tiếp 1</option>
-                  <option value="VPGT2">Văn phòng gián tiếp 2</option>
-                </select>
-              </div>
+          <div class="column">
+            <div class="select is-small is-fullwidth">
+              <select id="" @change="onChange_Nam($event)">
+                <option selected>-- Chọn năm --</option>
+                <option value="2022">Tháng 2022</option>
+                <option value="2023">Tháng 2023</option>
+                <option value="2024">Tháng 2024</option>
+                <option value="2025">Tháng 2025</option>
+                <option value="2026">Tháng 2026</option>
+                <option value="2027">Tháng 2027</option>
+                <option value="2028">Tháng 2028</option>
+                <option value="2029">Tháng 2029</option>
+                <option value="2030">Tháng 2030</option>
+                <option value="2031">Tháng 2031</option>
+                <option value="2032">Tháng 2032</option>
+                <option value="2033">Tháng 2033</option>
+              </select>
             </div>
-            <div class="column"></div>
           </div>
         </div>
 
         <div class="columns">
           <div class="column">
-            <button
-              @click="[reportBangluong(), reportSum()]"
-              class="button is-small is-success is-fullwidth"
-            >
-              <span class="icon is-small">
-                <i class="fas fa-file-alt"></i>
-              </span>
-              <span>Xem bảng lương</span>
-            </button>
+            <div class="select is-small is-fullwidth">
+              <select id="" @change="onChangeVanphong($event)">
+                <option disabled selected>-- Chọn Loại văn phòng --</option>
+                <option value="VPBP">Văn phòng bộ phận</option>
+                <option value="VPGT1">Văn phòng gián tiếp 1</option>
+                <option value="VPGT2">Văn phòng gián tiếp 2</option>
+              </select>
+            </div>
           </div>
-          <div class="column">
-            <button
-              :disabled="!isSaveChitra"
-              @click="onSaveChitra"
-              class="button is-small is-info is-fullwidth"
-            >
-              <span class="icon is-small">
-                <i class="far fa-file-pdf"></i>
-              </span>
-              <span>Chi trả</span>
-            </button>
-          </div>
-          <div class="column">
-            <button
-              :disabled="!isUpdateBank"
-              @click="preShowUpdate"
-              class="button is-small is-danger is-fullwidth"
-            >
-              <span class="icon is-small">
-                <i class="far fa-file-pdf"></i>
-              </span>
-              <span>Cập nhật thông tin ngân hàng</span>
-            </button>
-          </div>
+          <div class="column"></div>
         </div>
+      </div>
 
-        <div v-if="report.length > 0" class="table_wrapper">
-          <table
-            class="table is-responsive is-bordered is-striped is-narrow is-hoverable is-fullwidth"
+      <div class="columns">
+        <div class="column">
+          <button
+            @click="[reportBangluong(), reportSum()]"
+            class="button is-small is-success is-fullwidth"
           >
-            <tr style="background-color: blanchedalmond">
-              <td
-                style="
-                  text-align: center;
-                  font-weight: bold;
-                  font-size: small;
-                  width: 1%;
-                "
-              >
-                <input type="checkbox" v-model="selectAll" />
-              </td>
-              <td
-                style="
-                  text-align: center;
-                  font-weight: bold;
-                  font-size: small;
-                  width: 3%;
-                "
-              >
-                STT
-              </td>
-              <td
-                style="text-align: center; font-weight: bold; font-size: small"
-              >
-                Họ tên
-              </td>
-              <td
-                style="text-align: center; font-weight: bold; font-size: small"
-              >
-                Lương nhận
-              </td>
-              <td
-                style="text-align: center; font-weight: bold; font-size: small"
-              >
-                Chuyển khoản 1
-              </td>
-              <td
-                style="text-align: center; font-weight: bold; font-size: small"
-              >
-                Chuyển khoản 2
-              </td>
-              <td
-                style="
-                  text-align: center;
-                  font-weight: bold;
-                  font-size: small;
-                  width: 10%;
-                "
-              >
-                Tiền mặt
-              </td>
-              <td
-                style="text-align: center; font-weight: bold; font-size: small"
-              >
-                Số tài khoản
-              </td>
-              <td
-                style="text-align: center; font-weight: bold; font-size: small"
-              >
-                Tên ngân hàng
-              </td>
-              <td
-                style="text-align: center; font-weight: bold; font-size: small"
-              >
-                Chủ tài khoản
-              </td>
-              <td
-                style="
-                  text-align: center;
-                  font-weight: bold;
-                  font-size: small;
-                  width: 30%;
-                "
-              >
-                Ghi chú
-              </td>
-            </tr>
-            <tr v-for="(nv, index) in report" :key="index">
-              <td style="text-align: center">
-                <input v-model="selected" :value="nv" type="checkbox" />
-              </td>
-              <td style="text-align: center; font-size: small">
-                {{ index + 1 }}
-              </td>
-              <td style="font-size: small">{{ nv.hotennv }}</td>
-              <td
-                style="
-                  text-align: right;
-                  font-size: small;
-                  color: #f14668;
-                  font-weight: bold;
-                "
-              >
-                {{ nv.luongnhan | formatNumber }}
-              </td>
-              <!-- gõ tiền chuyển khoản -->
-              <td style="text-align: center; font-size: small">
-                <input
-                  v-model="nv.nhanl1"
-                  class="input is-small"
-                  type="text"
-                  v-mask="mask"
-                  @blur="updateNhanl2(nv)"
-                />
-              </td>
+            <span class="icon is-small">
+              <i class="fas fa-file-alt"></i>
+            </span>
+            <span>Xem bảng lương</span>
+          </button>
+        </div>
+        <div class="column">
+          <button
+            :disabled="!isSaveChitra"
+            @click="onSaveChitra"
+            class="button is-small is-info is-fullwidth"
+          >
+            <span class="icon is-small">
+              <i class="far fa-file-pdf"></i>
+            </span>
+            <span>Chi trả</span>
+          </button>
+        </div>
+        <div class="column">
+          <button
+            :disabled="!isUpdateBank"
+            @click="preShowUpdate"
+            class="button is-small is-danger is-fullwidth"
+          >
+            <span class="icon is-small">
+              <i class="far fa-file-pdf"></i>
+            </span>
+            <span>Cập nhật thông tin ngân hàng</span>
+          </button>
+        </div>
+      </div>
 
-              <template v-if="nv.stk != ''">
-                <td
-                  style="font-size: small; text-align: right; font-weight: bold"
-                >
-                  <!-- <input
+      <div v-if="report.length > 0" class="table_wrapper">
+        <table
+          class="table is-responsive is-bordered is-striped is-narrow is-hoverable is-fullwidth"
+        >
+          <tr style="background-color: blanchedalmond">
+            <td
+              style="
+                text-align: center;
+                font-weight: bold;
+                font-size: small;
+                width: 1%;
+              "
+            >
+              <input type="checkbox" v-model="selectAll" />
+            </td>
+            <td
+              style="
+                text-align: center;
+                font-weight: bold;
+                font-size: small;
+                width: 3%;
+              "
+            >
+              STT
+            </td>
+            <td style="text-align: center; font-weight: bold; font-size: small">
+              Họ tên
+            </td>
+            <td style="text-align: center; font-weight: bold; font-size: small">
+              Lương nhận
+            </td>
+            <td style="text-align: center; font-weight: bold; font-size: small">
+              Chuyển khoản 1
+            </td>
+            <td style="text-align: center; font-weight: bold; font-size: small">
+              Chuyển khoản 2
+            </td>
+            <td
+              style="
+                text-align: center;
+                font-weight: bold;
+                font-size: small;
+                width: 10%;
+              "
+            >
+              Tiền mặt
+            </td>
+            <td style="text-align: center; font-weight: bold; font-size: small">
+              Số tài khoản
+            </td>
+            <td style="text-align: center; font-weight: bold; font-size: small">
+              Tên ngân hàng
+            </td>
+            <td style="text-align: center; font-weight: bold; font-size: small">
+              Chủ tài khoản
+            </td>
+            <td
+              style="
+                text-align: center;
+                font-weight: bold;
+                font-size: small;
+                width: 30%;
+              "
+            >
+              Ghi chú
+            </td>
+          </tr>
+          <tr v-for="(nv, index) in report" :key="index">
+            <td style="text-align: center">
+              <input v-model="selected" :value="nv" type="checkbox" />
+            </td>
+            <td style="text-align: center; font-size: small">
+              {{ index + 1 }}
+            </td>
+            <td style="font-size: small">{{ nv.hotennv }}</td>
+            <td
+              style="
+                text-align: right;
+                font-size: small;
+                color: #f14668;
+                font-weight: bold;
+              "
+            >
+              {{ nv.luongnhan | formatNumber }}
+            </td>
+            <!-- gõ tiền chuyển khoản -->
+            <td style="text-align: center; font-size: small">
+              <input
+                v-model="nv.nhanl1"
+                class="input is-small"
+                type="text"
+                v-mask="mask"
+                @blur="updateNhanl2(nv)"
+              />
+            </td>
+
+            <template v-if="nv.stk != ''">
+              <td
+                style="font-size: small; text-align: right; font-weight: bold"
+              >
+                <!-- <input
                     type="text"
                     class="input is-small"
                     v-model="nv.tongnhan"
                     v-mask="mask"
                   /> -->
-                  {{ computedNhanl2(nv) | formatNumber }}
-                </td>
-              </template>
-              <template v-else>
-                <td>
-                  <!-- <input
+                {{ computedNhanl2(nv) | formatNumber }}
+              </td>
+            </template>
+            <template v-else>
+              <td>
+                <!-- <input
                     type="number"
                     class="input is-small"
                     v-model="nv.nhanl2"
                   /> -->
-                </td>
-              </template>
+              </td>
+            </template>
 
-              <!-- gõ tiền mặt -->
-              <template v-if="nv.stk == ''">
-                <td
-                  style="text-align: right; font-size: small; font-weight: bold"
-                >
-                  <!-- <input
+            <!-- gõ tiền mặt -->
+            <template v-if="nv.stk == ''">
+              <td
+                style="text-align: right; font-size: small; font-weight: bold"
+              >
+                <!-- <input
                     v-model="nv.tongnhan"
                     type="text"
                     class="input is-small"
                     v-mask="mask"
                   /> -->
-                  {{ nv.tienmat | formatNumber }}
-                </td>
-              </template>
-              <template v-else>
-                <td style="text-align: center; font-size: small">
-                  <!-- <input
+                {{ nv.tienmat | formatNumber }}
+              </td>
+            </template>
+            <template v-else>
+              <td style="text-align: center; font-size: small">
+                <!-- <input
                     v-model="nv.tienmat"
                     type="text"
                     class="input is-small"
                     v-mask="mask"
                   /> -->
-                </td>
-              </template>
+              </td>
+            </template>
 
-              <td style="text-align: center; font-size: small">
-                {{ nv.stk }}
-              </td>
-              <td style="text-align: center; font-size: small">
-                {{ nv.tennganhang }}
-              </td>
-              <td style="font-size: small; font-weight: 700">
-                {{ nv.chutaikhoan }}
-              </td>
+            <td style="text-align: center; font-size: small">
+              {{ nv.stk }}
+            </td>
+            <td style="text-align: center; font-size: small">
+              {{ nv.tennganhang }}
+            </td>
+            <td style="font-size: small; font-weight: 700">
+              {{ nv.chutaikhoan }}
+            </td>
 
-              <td>
-                <input type="text" class="input is-small" v-model="nv.ghichu" />
-              </td>
-            </tr>
-            <tr>
-              <td
-                style="text-align: center; font-weight: bold; font-size: small"
-                colspan="3"
-              >
-                Tổng
-              </td>
-              <td
-                style="text-align: right; font-weight: bold; font-size: small"
-              >
-                {{ sum_tongluongnhan | formatNumber }}
-              </td>
-            </tr>
-          </table>
-        </div>
+            <td>
+              <input type="text" class="input is-small" v-model="nv.ghichu" />
+            </td>
+          </tr>
+          <tr>
+            <td
+              style="text-align: center; font-weight: bold; font-size: small"
+              colspan="3"
+            >
+              Tổng
+            </td>
+            <td style="text-align: right; font-weight: bold; font-size: small">
+              {{ sum_tongluongnhan | formatNumber }}
+            </td>
+          </tr>
+        </table>
       </div>
-      <!-- Modal update-->
-      <div class="">
-        <div :class="{ 'is-active': isActive }" class="modal">
-          <div class="modal-background"></div>
-          <div class="modal-content modal-card">
-            <section class="modal-card-body">
-              <div>
-                <div class="columns">
-                  <div class="column">
-                    <span
-                      style="font-size: small; font-weight: bold; color: red"
-                      >I. Có tất cả {{ show_needupudate.length }} nhân viên cần
-                      cập nhật thông tin ngân hàng.
-                    </span>
-                    <div
-                      class="table_wrapper table-height"
-                      style="margin-top: 5px"
+    </div>
+    <!-- Modal update-->
+    <div class="">
+      <div :class="{ 'is-active': isActive }" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-content modal-card">
+          <section class="modal-card-body">
+            <div>
+              <div class="columns">
+                <div class="column">
+                  <span style="font-size: small; font-weight: bold; color: red"
+                    >I. Có tất cả {{ show_needupudate.length }} nhân viên cần
+                    cập nhật thông tin ngân hàng.
+                  </span>
+                  <div
+                    class="table_wrapper table-height"
+                    style="margin-top: 5px"
+                  >
+                    <table
+                      class="table is-responsive is-bordered is-striped is-narrow is-hoverable is-fullwidth"
                     >
-                      <table
-                        class="table is-responsive is-bordered is-striped is-narrow is-hoverable is-fullwidth"
+                      <tr style="font-size: small; font-weight: bold">
+                        <td style="text-align: center">STT</td>
+                        <td style="text-align: center">Mã NV</td>
+                        <td style="text-align: center">Tên NV</td>
+                        <td style="text-align: center">Chủ tài khoản</td>
+                        <td style="text-align: center">Tên ngân hàng</td>
+                        <td style="text-align: center">Số tài khoản</td>
+                      </tr>
+                      <tr
+                        v-for="(item, index) in show_needupudate"
+                        style="font-size: small"
                       >
-                        <tr style="font-size: small; font-weight: bold">
-                          <td style="text-align: center">STT</td>
-                          <td style="text-align: center">Mã NV</td>
-                          <td style="text-align: center">Tên NV</td>
-                          <td style="text-align: center">Chủ tài khoản</td>
-                          <td style="text-align: center">Tên ngân hàng</td>
-                          <td style="text-align: center">Số tài khoản</td>
-                        </tr>
-                        <tr
-                          v-for="(item, index) in show_needupudate"
-                          style="font-size: small"
-                        >
-                          <td style="text-align: center">{{ index + 1 }}</td>
-                          <td>{{ item.manv }}</td>
-                          <td>{{ item.hotennv }}</td>
-                          <td>{{ item.chutaikhoan }}</td>
-                          <td>{{ item.tennganhang }}</td>
-                          <td>{{ item.stk }}</td>
-                        </tr>
-                      </table>
+                        <td style="text-align: center">{{ index + 1 }}</td>
+                        <td>{{ item.manv }}</td>
+                        <td>{{ item.hotennv }}</td>
+                        <td>{{ item.chutaikhoan }}</td>
+                        <td>{{ item.tennganhang }}</td>
+                        <td>{{ item.stk }}</td>
+                      </tr>
+                    </table>
+                  </div>
+                </div>
+              </div>
+              <div class="columns">
+                <div class="column">
+                  <span style="font-size: small; font-weight: bold; color: red"
+                    >II. Bấm nút cập nhật ngay bên dưới để cập nhật lại tất cả
+                    thông tin về tài khoản ngân hàng cho nhân viên.
+                  </span>
+                </div>
+              </div>
+              <div class="columns">
+                <div class="column">
+                  <button
+                    @click="onUpdateInfoBank"
+                    class="button is-success is-small is-fullwidth"
+                  >
+                    Cập nhật thông tin ngân hàng
+                  </button>
+                </div>
+                <div class="column">
+                  <button
+                    @click="isActive = false"
+                    class="button is-info is-small is-fullwidth"
+                  >
+                    Đóng
+                  </button>
+                </div>
+              </div>
+              <div class="columns">
+                <div class="column">
+                  <div v-show="isshow == true">
+                    <div style="text-align: center">
+                      <span
+                        style="font-size: small; font-weight: bold; color: red"
+                        >{{ showcount }} / {{ showsuccess }} Công nhân cần cập
+                        nhật</span
+                      >
                     </div>
-                  </div>
-                </div>
-                <div class="columns">
-                  <div class="column">
-                    <span
-                      style="font-size: small; font-weight: bold; color: red"
-                      >II. Bấm nút cập nhật ngay bên dưới để cập nhật lại tất cả
-                      thông tin về tài khoản ngân hàng cho nhân viên.
-                    </span>
-                  </div>
-                </div>
-                <div class="columns">
-                  <div class="column">
-                    <button
-                      @click="onUpdateInfoBank"
-                      class="button is-success is-small is-fullwidth"
-                    >
-                      Cập nhật thông tin ngân hàng
-                    </button>
-                  </div>
-                  <div class="column">
-                    <button
-                      @click="isActive = false"
-                      class="button is-info is-small is-fullwidth"
-                    >
-                      Đóng
-                    </button>
-                  </div>
-                </div>
-                <div class="columns">
-                  <div class="column">
-                    <div v-show="isshow == true">
-                      <div style="text-align: center">
-                        <span
-                          style="
-                            font-size: small;
-                            font-weight: bold;
-                            color: red;
-                          "
-                          >{{ showcount }} / {{ showsuccess }} Công nhân cần cập
-                          nhật</span
-                        >
-                      </div>
-                      <div>
-                        <progress
-                          id="progress-bar"
-                          class="progress is-success"
-                        ></progress>
-                      </div>
+                    <div>
+                      <progress
+                        id="progress-bar"
+                        class="progress is-success"
+                      ></progress>
                     </div>
                   </div>
                 </div>
               </div>
-            </section>
-          </div>
+            </div>
+          </section>
         </div>
       </div>
     </div>
