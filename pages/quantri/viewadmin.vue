@@ -3861,11 +3861,7 @@
 
 <script>
 import Swal from "sweetalert2";
-import Treeselect from "@riophae/vue-treeselect"; // tạm thời chưa sử dụng
-import "@riophae/vue-treeselect/dist/vue-treeselect.css"; // tạm thời chưa sử dụng
 export default {
-  // register the component
-  components: { Treeselect }, // tạm thời chưa sử dụng
   data() {
     return {
       selected: [],
