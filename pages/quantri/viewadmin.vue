@@ -269,10 +269,10 @@
             <tr
               v-for="(pl, index) in paginatedTable"
               :key="index + 'a'"
-              :class="{ highlighted: pl === highlightedRow }"
+              :class="{ highlighted: pl._id === highlightedRow }"
               @click="
                 [
-                  highlightRow(pl),
+                  highlightRow(pl._id),
                   showLokenhamay(pl._id, pl.mathanhpham, pl.nhomthanhpham),
                 ]
               "
@@ -741,10 +741,12 @@
             <tr
               v-for="(pl, index) in paginatedTable3"
               :key="index + 'a'"
-              :class="{ highlighted_lonhamay: pl === highlightedRow_lonhamay }"
+              :class="{
+                highlighted_lonhamay: pl._id === highlightedRow_lonhamay,
+              }"
               @click="
                 [
-                  highlightRow_lonhamay(pl),
+                  highlightRow_lonhamay(pl._id),
                   showLokehoachphanxuong(
                     pl._id,
                     pl.mathanhpham,
@@ -1228,10 +1230,10 @@
             <tr
               v-for="(pl, index) in paginatedTable2"
               :key="index + 'a'"
-              :class="{ highlighted_lokhpx: pl === highlightedRow_lokhpx }"
+              :class="{ highlighted_lokhpx: pl._id === highlightedRow_lokhpx }"
               @click="
                 [
-                  highlightRow_khpx(pl),
+                  highlightRow_khpx(pl._id),
                   showLosanxuat(pl._id_khnam, pl._id_lonhamay, pl._id, pl.mapx),
                 ]
               "
@@ -1748,8 +1750,8 @@
             <tr
               v-for="(pl, index) in losanxuat"
               :key="index + 'a'"
-              :class="{ highlighted_losx: pl === highlightedRow_losx }"
-              @click="[highlightRow_losanxuat(pl)]"
+              :class="{ highlighted_losx: pl._id === highlightedRow_losx }"
+              @click="[highlightRow_losanxuat(pl._id)]"
             >
               <td
                 style="
@@ -4274,6 +4276,7 @@ export default {
 
     // 4. Kết hợp lọc
     async filterCombined() {
+      this.lokehoachnhamay = [];
       this.lokehoachphanxuong = [];
       this.losanxuat = [];
       let baseUrl = "/api/lokehoach/getdatakehoachnamlonhamaycombined";
@@ -4318,12 +4321,24 @@ export default {
     },
 
     async showLokehoachphanxuong(_id_lonhamay, mathanhpham, nhomthanhpham) {
-      // console.log(_id_lonhamay);
       this.losanxuat = [];
       const res = await this.$axios.get(
         `/api/lokehoach/getlokehoachphanxuongtheonamkh?_id_lonhamay=${_id_lonhamay}&mathanhpham=${mathanhpham}&nhomthanhpham=${nhomthanhpham}`
       );
-      // console.log(res.data);
+      // console.log(res);
+      this.lokehoachphanxuong = res.data;
+      // console.log(this.lokehoachphanxuong);
+    },
+
+    async showLokehoachphanxuongAfterUpdatefromLSX(
+      _id_lonhamay,
+      mathanhpham,
+      nhomthanhpham
+    ) {
+      const res = await this.$axios.get(
+        `/api/lokehoach/getlokehoachphanxuongtheonamkh?_id_lonhamay=${_id_lonhamay}&mathanhpham=${mathanhpham}&nhomthanhpham=${nhomthanhpham}`
+      );
+      // console.log(res);
       this.lokehoachphanxuong = res.data;
       // console.log(this.lokehoachphanxuong);
     },
@@ -4633,6 +4648,11 @@ export default {
 
     // cập nhật tổng hỏng đạt vào lô KHPX từ bảng lô sản xuất
     async updateSodathongtoLokehoachpx() {
+      // console.log(this.lokehoachphanxuong);
+      // console.log(this.lokehoachphanxuong[0]._id_lonhamay);
+      // console.log(this.lokehoachphanxuong[0].mathanhpham);
+      // console.log(this.lokehoachphanxuong[0].nhomthanhpham);
+
       // console.log(this.selected);
       // Tính tổng cột "tổng hỏng"
       if (this.selected.length > 0) {
@@ -4754,6 +4774,15 @@ export default {
                 title: `Đã cập nhật Lô kế hoạch phân xưởng: ${idlokehoach}`,
               });
               this.isLoading = false;
+
+              // tái hiển thị lô kế hoạch phân xưởng
+              const idlnm = this.lokehoachphanxuong[0]._id_lonhamay;
+              const mtp = this.lokehoachphanxuong[0].mathanhpham;
+              const ntp = this.lokehoachphanxuong[0].nhomthanhpham;
+              this.showLokehoachphanxuongAfterUpdatefromLSX(idlnm, mtp, ntp);
+              // console.log(this.lokehoachphanxuong);
+              // console.log(this.selected[0]._id_khpx);
+              this.highlightRow_khpx(this.selected[0]._id_khpx);
             }
           }
         } catch (error) {
