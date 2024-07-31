@@ -355,20 +355,66 @@
               >
                 {{ pl.soluong | formatNumber }}
               </td>
-              <td
-                style="
-                  font-size: small;
-                  text-align: center;
-                  vertical-align: middle;
-                "
-              >
-                <span v-if="pl.status == false">
-                  <i style="color: #ffd863" class="fa fa-circle"></i>
-                </span>
-                <span v-else
-                  ><i style="color: #00947e" class="fa fa-circle"></i>
-                </span>
-              </td>
+              <template>
+                <td
+                  v-if="pl.status == 1"
+                  style="
+                    font-size: small;
+                    text-align: center;
+                    vertical-align: middle;
+                  "
+                >
+                  <span
+                    style="
+                      color: white;
+                      font-weight: bold;
+                      background-color: red;
+                      padding-left: 7px;
+                      padding-right: 7px;
+                    "
+                    >DK</span
+                  >
+                </td>
+                <td
+                  v-else-if="pl.status == 2"
+                  style="
+                    font-size: small;
+                    text-align: center;
+                    vertical-align: middle;
+                  "
+                >
+                  <span
+                    style="
+                      color: red;
+                      font-weight: bold;
+                      background-color: yellow;
+                      padding-left: 7px;
+                      padding-right: 7px;
+                    "
+                    >SX</span
+                  >
+                </td>
+                <td
+                  v-else-if="pl.status == 3"
+                  style="
+                    font-size: small;
+                    text-align: center;
+                    vertical-align: middle;
+                  "
+                >
+                  <span
+                    style="
+                      color: white;
+                      font-weight: bold;
+                      background-color: green;
+                      padding-left: 7px;
+                      padding-right: 7px;
+                    "
+                    >HT</span
+                  >
+                </td>
+                <td v-else style="font-size: small; text-align: center"></td>
+              </template>
               <td
                 style="
                   font-size: small;
@@ -700,6 +746,42 @@
                 ></a>
               </th>
               <th
+                @click="sortTable('table3', 'tonghong')"
+                style="
+                  text-align: center;
+                  font-size: small;
+                  font-weight: bold;
+                  width: 5%;
+                "
+              >
+                Tổng hỏng
+                <a
+                  ><i
+                    style="margin-left: 10px; color: green"
+                    class="fas fa-filter"
+                    title="Bấm để sắp xếp"
+                  ></i
+                ></a>
+              </th>
+              <th
+                @click="sortTable('table3', 'tongdat')"
+                style="
+                  text-align: center;
+                  font-size: small;
+                  font-weight: bold;
+                  width: 5%;
+                "
+              >
+                Tổng đạt
+                <a
+                  ><i
+                    style="margin-left: 10px; color: green"
+                    class="fas fa-filter"
+                    title="Bấm để sắp xếp"
+                  ></i
+                ></a>
+              </th>
+              <th
                 @click="sortTable('table3', 'ngaybatdautt')"
                 style="
                   text-align: center;
@@ -857,6 +939,67 @@
               >
                 {{ pl.nhomthanhpham }}
               </td>
+              <template>
+                <td
+                  v-if="pl.status == 1"
+                  style="
+                    font-size: small;
+                    text-align: center;
+                    vertical-align: middle;
+                  "
+                >
+                  <span
+                    style="
+                      color: white;
+                      font-weight: bold;
+                      background-color: red;
+                      padding-left: 7px;
+                      padding-right: 7px;
+                    "
+                    >DK</span
+                  >
+                </td>
+                <td
+                  v-else-if="pl.status == 2"
+                  style="
+                    font-size: small;
+                    text-align: center;
+                    vertical-align: middle;
+                  "
+                >
+                  <span
+                    style="
+                      color: red;
+                      font-weight: bold;
+                      background-color: yellow;
+                      padding-left: 7px;
+                      padding-right: 7px;
+                    "
+                    >SX</span
+                  >
+                </td>
+                <td
+                  v-else-if="pl.status == 3"
+                  style="
+                    font-size: small;
+                    text-align: center;
+                    vertical-align: middle;
+                  "
+                >
+                  <span
+                    style="
+                      color: white;
+                      font-weight: bold;
+                      background-color: green;
+                      padding-left: 7px;
+                      padding-right: 7px;
+                    "
+                    >HT</span
+                  >
+                </td>
+                <td v-else style="font-size: small; text-align: center"></td>
+              </template>
+
               <td
                 style="
                   font-size: small;
@@ -864,7 +1007,16 @@
                   vertical-align: middle;
                 "
               >
-                {{ pl.status }}
+                {{ pl.tonghong }}
+              </td>
+              <td
+                style="
+                  font-size: small;
+                  text-align: center;
+                  vertical-align: middle;
+                "
+              >
+                {{ pl.tongdat }}
               </td>
 
               <td style="font-size: small; text-align: center">
@@ -1432,6 +1584,40 @@
                 </div>
               </td>
             </tr>
+            <tr>
+              <td colspan="12"></td>
+
+              <td
+                style="
+                  text-align: center;
+                  font-size: small;
+                  vertical-align: middle;
+                  font-weight: bold;
+                  color: #00947e;
+                "
+              >
+                {{ sumTonghongLoKHPX }}
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  font-size: small;
+                  vertical-align: middle;
+                  font-weight: bold;
+                  color: #00947e;
+                "
+              >
+                {{ sumTongdatLoKHPX }}
+              </td>
+              <td colspan="3">
+                <button
+                  @click="updateSodathongtoLokehoachnhamay"
+                  class="button is-small is-danger is-fullwidth"
+                >
+                  Cập nhật vào lô nhà máy
+                </button>
+              </td>
+            </tr>
           </tbody>
         </table>
       </div>
@@ -1722,6 +1908,25 @@
                 tổng đạt <input type="checkbox" v-model="selectAll" />
               </td>
               <th
+                @click="sortTable('slhtghinhan')"
+                style="
+                  text-align: center;
+                  font-size: small;
+                  font-weight: bold;
+                  width: 7%;
+                "
+              >
+                Số lượng HT <br />
+                đã ghi nhận
+                <a
+                  ><i
+                    style="margin-left: 10px; color: green"
+                    class="fas fa-filter"
+                    title="Bấm để sắp xếp"
+                  ></i
+                ></a>
+              </th>
+              <th
                 @click="sortTable('ngayhoanthanhtt')"
                 style="
                   text-align: center;
@@ -1950,6 +2155,20 @@
                   vertical-align: middle;
                 "
               >
+                <template v-if="pl.slhtghinhan === pl.tongdat">
+                  {{ pl.slhtghinhan | formatNumber }}
+                </template>
+                <template v-else>
+                  <span style="background-color: #ffd863">Không ghi nhận</span>
+                </template>
+              </td>
+              <td
+                style="
+                  font-size: small;
+                  text-align: center;
+                  vertical-align: middle;
+                "
+              >
                 {{ pl.ngayhoanthanhtt | formatDate }}
               </td>
               <td
@@ -1974,10 +2193,32 @@
                   font-weight: bold;
                   font-size: small;
                 "
-                colspan="11"
+                colspan="9"
               >
                 Tổng đạt - Tổng hỏng
               </th>
+              <td
+                style="
+                  text-align: center;
+                  font-size: small;
+                  vertical-align: middle;
+                  font-weight: bold;
+                  color: #00947e;
+                "
+              >
+                {{ sumTongsoluonglosanxuat }}
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  font-size: small;
+                  vertical-align: middle;
+                  font-weight: bold;
+                  color: #00947e;
+                "
+              >
+                {{ sumTongsoluongkhpx }}
+              </td>
               <th style="font-size: small; color: #f97583; text-align: center">
                 {{ sumTonghong | formatNumber }}
               </th>
@@ -3862,6 +4103,7 @@
 </template>
 
 <script>
+import { all, log } from "async";
 import Swal from "sweetalert2";
 export default {
   data() {
@@ -4147,6 +4389,34 @@ export default {
         return total + (isNaN(value) ? 0 : value);
       }, 0);
     },
+
+    // tổng đạt hỏng trong lô khpx
+    sumTongdatLoKHPX() {
+      return this.lokehoachphanxuong.reduce((total, lkhpx) => {
+        const value = parseInt(lkhpx.tongdat, 10);
+        return total + (isNaN(value) ? 0 : value);
+      }, 0);
+    },
+    sumTonghongLoKHPX() {
+      return this.lokehoachphanxuong.reduce((total, lkhpx) => {
+        const value = parseInt(lkhpx.tonghong, 10);
+        return total + (isNaN(value) ? 0 : value);
+      }, 0);
+    },
+
+    // tổng số lượng lô sx và lô khpx
+    sumTongsoluonglosanxuat() {
+      return this.losanxuat.reduce((total, lsx) => {
+        const value = parseInt(lsx.soluonglsx, 10);
+        return total + (isNaN(value) ? 0 : value);
+      }, 0);
+    },
+    sumTongsoluongkhpx() {
+      return this.losanxuat.reduce((total, lsx) => {
+        const value = parseInt(lsx.soluongkhsx, 10);
+        return total + (isNaN(value) ? 0 : value);
+      }, 0);
+    },
   },
 
   filters: {
@@ -4341,6 +4611,20 @@ export default {
       // console.log(res);
       this.lokehoachphanxuong = res.data;
       // console.log(this.lokehoachphanxuong);
+    },
+
+    async showLokenhamayAfterUpdatefromLoKHPX(
+      idkhnam,
+      mathanhpham,
+      nhomthanhpham
+    ) {
+      // console.log(idkhnam);
+      const res = await this.$axios.get(
+        `/api/lokehoach/getlonhamayinkhnam?_id_khnam=${idkhnam}&mathanhpham=${mathanhpham}&nhomthanhpham=${nhomthanhpham}`
+      );
+      // console.log(res.data);
+      this.lokehoachnhamay = res.data;
+      // console.log(this.lokehoachnhamay);
     },
 
     // 5. hiển thị tất cả lô sản xuất phân xưởng
@@ -4646,7 +4930,7 @@ export default {
       return `${day}/${month}/${year}`;
     },
 
-    // cập nhật tổng hỏng đạt vào lô KHPX từ bảng lô sản xuất
+    // cập nhật tổng hỏng đạt, ngày bd, kt thực tế, trạng thái vào lô KHPX từ bảng lô sản xuất
     async updateSodathongtoLokehoachpx() {
       // console.log(this.lokehoachphanxuong);
       // console.log(this.lokehoachphanxuong[0]._id_lonhamay);
@@ -4669,7 +4953,7 @@ export default {
           // console.log(ids);
 
           const idlokehoach = this.selected[0]._id_khpx;
-          const totalHong = this.selected.reduce((total, item) => {
+          const totalHong = this.losanxuat.reduce((total, item) => {
             return total + (parseFloat(item.tonghong) || 0); // kiểm tra nếu item.tongHong là undefined hoặc null
           }, 0);
 
@@ -4724,7 +5008,7 @@ export default {
             <div>
               <div style="font-size: small; color: red; text-align: left; font-weight: bold;">Xác nhận cập nhật Lô Kế hoạch phân xưởng có mã số: ${idlokehoach}</div>
               <div style="font-size: small; text-align: left; font-weight: bold;"><li>Cập nhật ngày bắt đầu thực tế: ${lokehoachpxUpdateInfo.ngaybatdautt}</li></div>
-              <div style="font-size: small; text-align: left; font-weight: bold;"><li>Cập nhật ngày kết  thực tế: ${lokehoachpxUpdateInfo.ngayketthuctt}</li></div>
+              <div style="font-size: small; text-align: left; font-weight: bold;"><li>Cập nhật ngày kết thúc thực tế: ${lokehoachpxUpdateInfo.ngayketthuctt}</li></div>
               <div style="font-size: small; text-align: left; font-weight: bold;"><li>Cập nhật tổng hỏng: ${lokehoachpxUpdateInfo.tonghong}</li></div>
               <div style="font-size: small; text-align: left; font-weight: bold;"><li>Cập nhật tổng đạt: ${lokehoachpxUpdateInfo.tongdat}</li></div>
             </div>
@@ -4746,7 +5030,7 @@ export default {
             // 2. cập nhật từng lô sản xuất để lấy tổng đạt ghi nhận
             // 2.1. cập nhật this.selected sldatghinhan = tongdat
             for (let i = 0; i < this.selected.length; i++) {
-              console.log(this.selected[i]._id, this.selected[i].tongdat);
+              // console.log(this.selected[i]._id, this.selected[i].tongdat);
               const resDuocchon = await this.$axios.get(
                 `/api/lokehoach/soluongdatghinhanloduocchon?_id=${this.selected[i]._id}&slhtghinhan=${this.selected[i].tongdat}`
               );
@@ -4804,6 +5088,197 @@ export default {
         Toast.fire({
           icon: "error",
           title: "Bạn chưa tích chọn tổng đạt của Lô sản xuất nào",
+        });
+      }
+    },
+
+    // cập nhật tổng hỏng đạt, ngày bd, kt thực tế, trạng thái vào lô KHPX từ bảng lô sản xuất
+    async updateSodathongtoLokehoachnhamay() {
+      const Toast = Swal.mixin({
+        toast: true,
+        position: "top-end",
+        showConfirmButton: false,
+        timer: 3000,
+        timerProgressBar: true,
+        didOpen: (toast) => {
+          toast.addEventListener("mouseenter", Swal.stopTimer);
+          toast.addEventListener("mouseleave", Swal.resumeTimer);
+        },
+      });
+      Toast.fire({
+        icon: "error",
+        title: "Chờ phê duyệt hoạt động!",
+      });
+    },
+    async updateSodathongtoLokehoachnhamay11111() {
+      // console.log(this.lokehoachphanxuong);
+      // console.log(this.lokehoachphanxuong[0]._id_lonhamay);
+      // console.log(this.lokehoachphanxuong[0].mathanhpham);
+      // console.log(this.lokehoachphanxuong[0].nhomthanhpham);
+
+      // console.log(this.lokehoachphanxuong);
+      const idlokehoachnhamay = this.lokehoachphanxuong[0]._id_lonhamay;
+      // Kiểm tra xem tất cả các status của lô kế hoạch phân xưởng có giá trị là 3 hay không?
+      // kiểm tra xem tất cả các status của lô kế hoạch sản xuất có giá trị là 3 hay không?
+      // đảm bảo cả 2 điều kiện mới được chạy
+      // lấy ra toàn bộ lô sản xuất của kh nhà máy này
+      const resAlllosxinkhnm = await this.$axios.get(
+        `/api/lokehoach/getalllsxinlokhnhamay?_id_lonhamay=${idlokehoachnhamay}`
+      );
+      // console.log(idlokehoachnhamay);
+      // console.log(resAlllosxinkhnm);
+      const alllosx = resAlllosxinkhnm.data;
+      const allStatusAreThree_lokhpx = this.lokehoachphanxuong.every(
+        (item) => item.status === 3
+      );
+      const allStatusAreThree_losanxuat = alllosx.every(
+        (item) => item.status === 3
+      );
+
+      if (allStatusAreThree_lokhpx & allStatusAreThree_losanxuat) {
+        const totalHong = this.lokehoachphanxuong.reduce((total, item) => {
+          return total + (parseFloat(item.tonghong) || 0); // kiểm tra nếu item.tongHong là undefined hoặc null
+        }, 0);
+
+        // Tính tổng cột "tổng đạt"
+        const totalDat = this.lokehoachphanxuong.reduce((total, item) => {
+          return total + (parseFloat(item.tongdat) || 0); // kiểm tra nếu item.tongDat là undefined hoặc null
+        }, 0);
+
+        // Lấy ra ngaybdthucte nhỏ nhất
+        const minNgayBdThucTe = this.lokehoachphanxuong.reduce((min, item) => {
+          const date = new Date(item.ngaybdthucte);
+          return date < min ? date : min;
+        }, new Date(this.lokehoachphanxuong[0].ngaybdthucte));
+
+        // Lấy ra ngayhoanthanhtt lớn nhất
+        const maxNgayHoanThanhTt = this.lokehoachphanxuong.reduce(
+          (max, item) => {
+            const date = new Date(item.ngayhoanthanhtt);
+            return date > max ? date : max;
+          },
+          new Date(this.lokehoachphanxuong[0].ngayhoanthanhtt)
+        );
+
+        const lokehoachnhamayUpdateInfo = {
+          idlokehoachnhamay: idlokehoachnhamay,
+          ngaybatdautt: this.formatDate(minNgayBdThucTe),
+          ngayketthuctt: this.formatDate(maxNgayHoanThanhTt),
+          tonghong: totalHong,
+          tongdat: totalDat,
+          status: 3,
+        };
+
+        const lokehoachnhamayUpdateToDB = {
+          idlokehoachnhamay: idlokehoachnhamay,
+          ngaybatdautt: minNgayBdThucTe,
+          ngayketthuctt: maxNgayHoanThanhTt,
+          tonghong: totalHong,
+          tongdat: totalDat,
+          status: 3,
+        };
+
+        const htmlContent = `
+            <div>
+              <div style="font-size: small; color: red; text-align: left; font-weight: bold;">Xác nhận cập nhật Lô Kế hoạch nhà máy có mã số: ${idlokehoachnhamay}</div>
+               <div style="font-size: small; text-align: left; font-weight: bold;"><li>Cập nhật ngày bắt đầu thực tế: ${lokehoachnhamayUpdateInfo.ngaybatdautt}</li></div>
+               <div style="font-size: small; text-align: left; font-weight: bold;"><li>Cập nhật ngày kết thúc thực tế: ${lokehoachnhamayUpdateInfo.ngayketthuctt}</li></div>
+              <div style="font-size: small; text-align: left; font-weight: bold;"><li>Cập nhật tổng hỏng: ${lokehoachnhamayUpdateInfo.tonghong}</li></div>
+              <div style="font-size: small; text-align: left; font-weight: bold;"><li>Cập nhật tổng đạt: ${lokehoachnhamayUpdateInfo.tongdat}</li></div>
+            </div>
+          `;
+
+        const result = await Swal.fire({
+          html: htmlContent,
+          showDenyButton: true,
+          confirmButtonText: "Chắc chắn",
+          denyButtonText: `Hủy`,
+        });
+        if (result.isConfirmed) {
+          this.isLoading = true;
+          // 1. cập nhật thông tin lô kế hoạch nhà máy
+          const res = await this.$axios.post(
+            `/api/lokehoach/updateLokehoachnhamay`,
+            lokehoachnhamayUpdateToDB
+          );
+
+          if (res.status == 200) {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+              },
+            });
+            Toast.fire({
+              icon: "success",
+              title: `Đã cập nhật Lô kế hoạch nhà máy: ${idlokehoachnhamay}`,
+            });
+
+            this.isLoading = false;
+
+            // tái hiển thị lô kế hoạch nhà máy
+            const idkhnam = this.lokehoachphanxuong[0]._id_khnam;
+            const mtp = this.lokehoachphanxuong[0].mathanhpham;
+            const ntp = this.lokehoachphanxuong[0].nhomthanhpham;
+            this.showLokenhamayAfterUpdatefromLoKHPX(idkhnam, mtp, ntp);
+            // kế hoạch năm nhóm tp mã tp
+            // console.log(this.lokehoachphanxuong);
+            // console.log(this.selected[0]._id_khpx);
+            this.highlightRow_lonhamay(this.lokehoachphanxuong[0]._id_lonhamay);
+          }
+        }
+      } else if (!allStatusAreThree_lokhpx) {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+        Toast.fire({
+          icon: "error",
+          title: "Tất cả các lô KHPX phải hoàn thành mới được cập nhật",
+        });
+      } else if (!allStatusAreThree_losanxuat) {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+        Toast.fire({
+          icon: "error",
+          title: "Tất cả các lô sản xuất phải hoàn thành mới được cập nhật",
+        });
+      } else {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+        Toast.fire({
+          icon: "error",
+          title: "Tất cả các lô KHPX và Lô sản xuất đều chưa hoàn thành hết",
         });
       }
     },
