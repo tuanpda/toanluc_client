@@ -1,172 +1,170 @@
 <template>
-  <div class="columns">
-    <div class="column">
-      <br />
-      <div class="box" style="margin-left: 20px; margin-right: 20px">
-        <div class="columns">
-          <div class="column is-11">
-            <div class="control">
-              <span class="icon is-small is-left">
-                <i style="color: #f14668" class="fa fa-calendar"></i>
-              </span>
-              Báo cáo quân số hàng ngày
-            </div>
-          </div>
-          <div class="column" style="text-align: right">
-            <nuxt-link :to="`/`">
-              <button class="button is-info is-fullwidth is-small">
-                <span class="icon is-small">
-                  <i class="fas fa-angle-double-left"></i>
-                </span>
-                <span>Thoát</span>
-              </button>
-            </nuxt-link>
-          </div>
+  <div class="box" style="margin: 10px">
+    <div class="columns">
+      <div class="column is-11">
+        <div class="control">
+          <span class="icon is-small is-left">
+            <i style="color: #f14668" class="fa fa-calendar"></i>
+          </span>
+          Báo cáo quân số hàng ngày
         </div>
+      </div>
+      <div class="column" style="text-align: right">
+        <nuxt-link :to="`/`">
+          <button class="button is-info is-fullwidth is-small">
+            <span class="icon is-small">
+              <i class="fas fa-angle-double-left"></i>
+            </span>
+            <span>Thoát</span>
+          </button>
+        </nuxt-link>
+      </div>
+    </div>
 
-        <div>
-          <table class="table is-responsive is-bordered is-narrow is-fullwidth">
-            <tr>
-              <td colspan="3" style="text-align: center; font-weight: bold">
-                BÁO CÁO QUÂN SỐ TOÀN CÔNG TY
-              </td>
-            </tr>
-            <tr>
-              <td style="width: 45%"></td>
-              <td>
-                <input
-                  @blur="baocaoquanso"
-                  v-model="ngaychamcong"
-                  type="date"
-                  class="input is-success is-small"
-                />
-              </td>
-              <td style="width: 45%"></td>
-            </tr>
-          </table>
-          <table class="table is-responsive is-bordered is-narrow is-fullwidth">
-            <tr style="background-color: beige">
-              <td
-                style="
-                  text-align: center;
-                  font-weight: bold;
-                  font-size: small;
-                  width: 5%;
-                "
-              >
-                STT
-              </td>
-              <td
-                style="
-                  text-align: center;
-                  font-weight: bold;
-                  font-size: small;
-                  width: 10%;
-                "
-              >
-                Mã phân xưởng
-              </td>
-              <!-- <td
+    <table class="table is-responsive is-bordered is-narrow">
+      <tr>
+        <td colspan="3" style="text-align: center; font-weight: bold">
+          BÁO CÁO QUÂN SỐ TOÀN CÔNG TY
+        </td>
+      </tr>
+      <tr>
+        <td style="width: 45%"></td>
+        <td>
+          <input
+            @blur="baocaoquanso"
+            v-model="ngaychamcong"
+            type="date"
+            class="input is-success is-small"
+          />
+        </td>
+        <td style="width: 45%"></td>
+      </tr>
+    </table>
+
+    <div class="table_wrapper">
+      <table class="table is-responsive is-bordered is-narrow is-fullwidth">
+        <tr style="background-color: beige">
+          <td
+            style="
+              text-align: center;
+              font-weight: bold;
+              font-size: small;
+              width: 5%;
+            "
+          >
+            STT
+          </td>
+          <td
+            style="
+              text-align: center;
+              font-weight: bold;
+              font-size: small;
+              width: 10%;
+            "
+          >
+            Mã phân xưởng
+          </td>
+          <!-- <td
                 style="text-align: center; font-weight: bold; font-size: small"
               >
                 Tên phân xưởng
               </td> -->
-              <td
-                style="
-                  text-align: center;
-                  font-weight: bold;
-                  font-size: small;
-                  width: 10%;
-                "
-              >
-                Mã tổ
-              </td>
-              <!-- <td
+          <td
+            style="
+              text-align: center;
+              font-weight: bold;
+              font-size: small;
+              width: 10%;
+            "
+          >
+            Mã tổ
+          </td>
+          <!-- <td
                 style="text-align: center; font-weight: bold; font-size: small"
               >
                 Tên tổ
               </td> -->
-              <td
-                style="
-                  text-align: center;
-                  font-weight: bold;
-                  font-size: small;
-                  width: 7%;
-                "
-              >
-                Tổng người
-              </td>
-              <td
-                style="
-                  text-align: center;
-                  font-weight: bold;
-                  font-size: small;
-                  width: 6%;
-                "
-              >
-                Ca 1 + HC
-              </td>
-              <td
-                style="
-                  text-align: center;
-                  font-weight: bold;
-                  font-size: small;
-                  width: 6%;
-                "
-              >
-                Ca 2 / 3
-              </td>
-              <td
-                style="
-                  text-align: center;
-                  font-weight: bold;
-                  font-size: small;
-                  width: 5%;
-                "
-              >
-                Nghỉ P
-              </td>
-              <td
-                style="
-                  text-align: center;
-                  font-weight: bold;
-                  font-size: small;
-                  width: 5%;
-                "
-              >
-                Nghỉ M
-              </td>
-              <td
-                style="
-                  text-align: center;
-                  font-weight: bold;
-                  font-size: small;
-                  width: 5%;
-                "
-              >
-                Nghỉ K
-              </td>
-              <td
-                style="
-                  text-align: center;
-                  font-weight: bold;
-                  font-size: small;
-                  width: 5%;
-                "
-              >
-                Nghỉ X
-              </td>
-              <td
-                style="
-                  text-align: center;
-                  font-weight: bold;
-                  font-size: small;
-                  width: 5%;
-                "
-              >
-                Nghỉ L
-              </td>
-              <td
+          <td
+            style="
+              text-align: center;
+              font-weight: bold;
+              font-size: small;
+              width: 7%;
+            "
+          >
+            Tổng người
+          </td>
+          <td
+            style="
+              text-align: center;
+              font-weight: bold;
+              font-size: small;
+              width: 6%;
+            "
+          >
+            Ca 1 + HC
+          </td>
+          <td
+            style="
+              text-align: center;
+              font-weight: bold;
+              font-size: small;
+              width: 6%;
+            "
+          >
+            Ca 2 / 3
+          </td>
+          <td
+            style="
+              text-align: center;
+              font-weight: bold;
+              font-size: small;
+              width: 5%;
+            "
+          >
+            Nghỉ P
+          </td>
+          <td
+            style="
+              text-align: center;
+              font-weight: bold;
+              font-size: small;
+              width: 5%;
+            "
+          >
+            Nghỉ M
+          </td>
+          <td
+            style="
+              text-align: center;
+              font-weight: bold;
+              font-size: small;
+              width: 5%;
+            "
+          >
+            Nghỉ K
+          </td>
+          <td
+            style="
+              text-align: center;
+              font-weight: bold;
+              font-size: small;
+              width: 5%;
+            "
+          >
+            Nghỉ X
+          </td>
+          <td
+            style="
+              text-align: center;
+              font-weight: bold;
+              font-size: small;
+              width: 5%;
+            "
+          >
+            Nghỉ L
+          </td>
+          <!-- <td
                 style="text-align: center; font-weight: bold; font-size: small"
               >
                 Ghi chú
@@ -180,51 +178,51 @@
                 "
               >
                 Xác nhận
-              </td>
-            </tr>
-            <tr
-              v-for="(item, index) in sortedTableData"
-              :key="index + 'hfsajdhfkdsafh'"
-              :class="{ highlighted: item === highlightedRow }"
-              @click="[highlightRow(item), detail(item)]"
-            >
-              <td style="font-size: smaller">
-                <input
-                  type="number"
-                  v-model="item.sort"
-                  class="input is-small"
-                  @blur="sortTable"
-                />
-              </td>
-              <td style="font-size: smaller">{{ item.mapx }}</td>
-              <!-- <td style="font-size: smaller">{{ item.tenpx }}</td> -->
-              <td style="font-size: smaller">{{ item.mato }}</td>
-              <!-- <td style="font-size: smaller">{{ item.tento }}</td> -->
-              <td style="font-size: smaller; text-align: center">
-                {{ item.tong_nguoi }}
-              </td>
-              <td style="font-size: smaller; text-align: center">
-                {{ item.ca_1 }}
-              </td>
-              <td style="font-size: smaller; text-align: center">
-                {{ item.ca_2_3 }}
-              </td>
-              <td style="font-size: smaller; text-align: center">
-                {{ item.nghip }}
-              </td>
-              <td style="font-size: smaller; text-align: center">
-                {{ item.nghim }}
-              </td>
-              <td style="font-size: smaller; text-align: center">
-                {{ item.nghik }}
-              </td>
-              <td style="font-size: smaller; text-align: center">
-                {{ item.nghix }}
-              </td>
-              <td style="font-size: smaller; text-align: center">
-                {{ item.nghil }}
-              </td>
-              <td style="font-size: smaller; text-align: center">
+              </td> -->
+        </tr>
+        <tr
+          v-for="(item, index) in sortedTableData"
+          :key="index + 'hfsajdhfkdsafh'"
+          :class="{ highlighted: item === highlightedRow }"
+          @click="[highlightRow(item), detail(item)]"
+        >
+          <td style="font-size: smaller">
+            <input
+              type="number"
+              v-model="item.sort"
+              class="input is-small"
+              @blur="sortTable"
+            />
+          </td>
+          <td style="font-size: smaller">{{ item.mapx }}</td>
+          <!-- <td style="font-size: smaller">{{ item.tenpx }}</td> -->
+          <td style="font-size: smaller">{{ item.mato }}</td>
+          <!-- <td style="font-size: smaller">{{ item.tento }}</td> -->
+          <td style="font-size: smaller; text-align: center">
+            {{ item.tong_nguoi }}
+          </td>
+          <td style="font-size: smaller; text-align: center">
+            {{ item.ca_1 }}
+          </td>
+          <td style="font-size: smaller; text-align: center">
+            {{ item.ca_2_3 }}
+          </td>
+          <td style="font-size: smaller; text-align: center">
+            {{ item.nghip }}
+          </td>
+          <td style="font-size: smaller; text-align: center">
+            {{ item.nghim }}
+          </td>
+          <td style="font-size: smaller; text-align: center">
+            {{ item.nghik }}
+          </td>
+          <td style="font-size: smaller; text-align: center">
+            {{ item.nghix }}
+          </td>
+          <td style="font-size: smaller; text-align: center">
+            {{ item.nghil }}
+          </td>
+          <!-- <td style="font-size: smaller; text-align: center">
                 <input
                   v-model="item.ghichu"
                   type="text"
@@ -236,62 +234,95 @@
                   ><span>
                     <i style="color: red" class="fa fa-check-circle"></i> </span
                 ></a>
-              </td>
-            </tr>
-          </table>
+              </td> -->
+        </tr>
+      </table>
 
-          <table
-            v-if="this.detailData.length > 0"
-            class="table is-responsive is-bordered is-narrow is-fullwidth"
+      <table
+        v-if="this.detailData.length > 0"
+        class="table is-responsive is-bordered is-narrow is-fullwidth"
+      >
+        <tr style="background-color: beige">
+          <td
+            style="
+              text-align: center;
+              font-weight: bold;
+              font-size: small;
+              width: 3%;
+            "
           >
-            <tr style="background-color: beige">
-              <td
-                style="
-                  text-align: center;
-                  font-weight: bold;
-                  font-size: small;
-                  width: 3%;
-                "
-              >
-                STT
-              </td>
-              <td
-                style="
-                  text-align: center;
-                  font-weight: bold;
-                  font-size: small;
-                  width: 10%;
-                "
-              >
-                Chấm công
-              </td>
-              <td
-                style="
-                  text-align: center;
-                  font-weight: bold;
-                  font-size: small;
-                  width: 15%;
-                "
-              >
-                Công nhân / Nhân viên
-              </td>
-              <td
-                style="text-align: center; font-weight: bold; font-size: small"
-              >
-                Ghi chú
-              </td>
-            </tr>
-            <tr v-for="(item, index) in detailData" :key="index + 'lkkoko'">
-              <td style="font-size: small; text-align: center">
-                {{ index + 1 }}
-              </td>
-              <td style="font-size: small">{{ item.chamcong }}</td>
-              <td style="font-size: small">{{ item.tencn }}</td>
-              <td style="font-size: small">{{ item.ghichu }}</td>
-            </tr>
-          </table>
-        </div>
-      </div>
+            STT
+          </td>
+          <td
+            style="
+              text-align: center;
+              font-weight: bold;
+              font-size: small;
+              width: 10%;
+            "
+          >
+            Chấm công
+          </td>
+          <td
+            style="
+              text-align: center;
+              font-weight: bold;
+              font-size: small;
+              width: 15%;
+            "
+          >
+            Công nhân / Nhân viên
+          </td>
+          <td
+            style="
+              text-align: center;
+              font-weight: bold;
+              font-size: small;
+              width: 15%;
+            "
+          >
+            Phân xưởng
+          </td>
+          <td
+            style="
+              text-align: center;
+              font-weight: bold;
+              font-size: small;
+              width: 15%;
+            "
+          >
+            Tổ
+          </td>
+          <td style="text-align: center; font-weight: bold; font-size: small">
+            Diễn giải
+          </td>
+          <td style="text-align: center; font-weight: bold; font-size: small">
+            Ghi chú
+          </td>
+        </tr>
+        <tr v-for="(item, index) in detailData" :key="index + 'lkkoko'">
+          <td style="font-size: small; text-align: center">
+            {{ index + 1 }}
+          </td>
+          <td style="font-size: small">{{ item.chamcong }}</td>
+          <td style="font-size: small">{{ item.tencn }}</td>
+          <td style="font-size: small">{{ item.mapx }}</td>
+          <td style="font-size: small">{{ item.mato }}</td>
+          <td style="font-size: small">{{ item.diengiai }}</td>
+          <td style="font-size: small">{{ item.ghichu }}</td>
+        </tr>
+        <tr>
+          <td
+            colspan="2"
+            style="font-size: small; font-weight: bold; color: #f14668"
+          >
+            Tổng làm: {{ tonglam }}
+          </td>
+          <td style="font-size: small; font-weight: bold; color: #f14668">
+            Tổng nghỉ: {{ tongnghi }}
+          </td>
+        </tr>
+      </table>
     </div>
   </div>
 </template>
@@ -333,6 +364,8 @@ export default {
         createdAt: "",
         createdBy: this.$auth.$state.user.username,
       },
+      tongnghi: 0,
+      tonglam: 0,
     };
   },
 
@@ -406,6 +439,8 @@ export default {
       // console.log(data);
       const tongnghi =
         data.nghip + data.nghim + data.nghik + data.nghix + data.nghil;
+      this.tongnghi = tongnghi;
+      this.tonglam = data.tong_nguoi - tongnghi;
       (this.form_data.ngaychamcong = data.ngaychamcong),
         (this.form_data.mapx = data.mapx),
         (this.form_data.tenpx = data.tenpx),
@@ -494,6 +529,13 @@ export default {
 </script>
 
 <style scoped>
+.table_wrapper {
+  overflow-x: auto;
+  display: block;
+  white-space: nowrap;
+  position: sticky;
+}
+
 .modal-content,
 .modal-card {
   width: 820px;

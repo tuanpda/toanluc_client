@@ -585,7 +585,7 @@
                       </span>
                       &ensp; Chi tiết chấm công
                     </nav-link>
-                    <nav-link
+                    <!-- <nav-link
                       to="/quantri/chamcong/xemlaibaocaohangngay"
                       class="navbar-item"
                     >
@@ -596,7 +596,7 @@
                         <i class="far fa-calendar"></i>
                       </span>
                       &ensp; Xem lại quân số hằng ngày
-                    </nav-link>
+                    </nav-link> -->
                   </div>
                 </div>
               </div>

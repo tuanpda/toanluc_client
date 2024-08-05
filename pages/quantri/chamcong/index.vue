@@ -1,263 +1,251 @@
 <template>
-  <div class="columns">
-    <div class="column container">
-      <br />
-      <div class="box" style="margin-left: 3px; margin-right: 3px">
-        <div class="columns">
-          <div class="column">
-            <div class="control has-icons-left">
-              <div class="select is-small is-fullwidth">
-                <select
-                  @change="loadCongnhan($event)"
-                  :disabled="!isSelectsEnabled"
-                >
-                  <option selected>-- Chọn phân xưởng --</option>
-                  <option v-for="item in phanxuong" :value="item.mapx">
-                    {{ item.mapx }} -- {{ item.tenpx }}
-                  </option>
-                </select>
-              </div>
-              <span class="icon is-small is-left">
-                <i style="color: #48c78e" class="fas fa-kaaba"></i>
-              </span>
-            </div>
+  <div class="box" style="margin: 10px">
+    <div class="columns">
+      <div class="column">
+        <div class="control has-icons-left">
+          <div class="select is-small is-fullwidth">
+            <select
+              @change="loadCongnhan($event)"
+              :disabled="!isSelectsEnabled"
+            >
+              <option selected>-- Chọn phân xưởng --</option>
+              <option v-for="item in phanxuong" :value="item.mapx">
+                {{ item.mapx }} -- {{ item.tenpx }}
+              </option>
+            </select>
           </div>
-          <div class="column">
-            <div class="control has-icons-left">
-              <div class="select is-small is-fullwidth">
-                <select
-                  @change="getWithTo($event)"
-                  :disabled="!isSelectsEnabled"
-                >
-                  <option selected>-- Chọn tổ --</option>
-                  <option v-for="item in tonhomid" :value="item.mapx">
-                    {{ item.mato }} -- {{ item.tento }}
-                  </option>
-                </select>
-              </div>
-              <span class="icon is-small is-left">
-                <i style="color: #48c78e" class="fas fa-kaaba"></i>
-              </span>
-            </div>
+          <span class="icon is-small is-left">
+            <i style="color: #48c78e" class="fas fa-kaaba"></i>
+          </span>
+        </div>
+      </div>
+      <div class="column">
+        <div class="control has-icons-left">
+          <div class="select is-small is-fullwidth">
+            <select @change="getWithTo($event)" :disabled="!isSelectsEnabled">
+              <option selected>-- Chọn tổ --</option>
+              <option v-for="item in tonhomid" :value="item.mapx">
+                {{ item.mato }} -- {{ item.tento }}
+              </option>
+            </select>
           </div>
-          <div class="column">
-            <!-- <button
+          <span class="icon is-small is-left">
+            <i style="color: #48c78e" class="fas fa-kaaba"></i>
+          </span>
+        </div>
+      </div>
+      <div class="column">
+        <!-- <button
               :disabled="!isSelectsEnabled_VP"
               @click="vanphong"
               class="button is-small is-success"
             >
               Văn phòng
             </button> -->
-            <div class="control has-icons-left">
-              <div class="select is-small is-fullwidth">
-                <select
-                  @change="vanphong($event)"
-                  :disabled="!isSelectsEnabled_VP"
-                >
-                  <option selected>-- Xem theo khối --</option>
-                  <option v-for="item in khoivp" :value="item.makhoi">
-                    {{ item.makhoi }} -- {{ item.tenkhoi }}
-                  </option>
-                </select>
-              </div>
-              <span class="icon is-small is-left">
-                <i style="color: #48c78e" class="fas fa-kaaba"></i>
-              </span>
-            </div>
+        <div class="control has-icons-left">
+          <div class="select is-small is-fullwidth">
+            <select @change="vanphong($event)" :disabled="!isSelectsEnabled_VP">
+              <option selected>-- Xem theo khối --</option>
+              <option v-for="item in khoivp" :value="item.makhoi">
+                {{ item.makhoi }} -- {{ item.tenkhoi }}
+              </option>
+            </select>
           </div>
+          <span class="icon is-small is-left">
+            <i style="color: #48c78e" class="fas fa-kaaba"></i>
+          </span>
         </div>
+      </div>
+    </div>
 
-        <div v-show="isshow == true" style="margin-bottom: 10px">
-          <div style="text-align: center">
-            <span style="font-size: small; font-weight: bold; color: red"
-              >{{ showcount }} / {{ showsuccess }}</span
+    <div v-show="isshow == true" style="margin-bottom: 10px">
+      <div style="text-align: center">
+        <span style="font-size: small; font-weight: bold; color: red"
+          >{{ showcount }} / {{ showsuccess }}</span
+        >
+      </div>
+      <div>
+        <progress id="progress-bar" class="progress is-success"></progress>
+      </div>
+    </div>
+
+    <div class="table_wrapper">
+      <table class="table is-responsive is-bordered is-narrow">
+        <tr style="background-color: aliceblue">
+          <td style="width: 5%">
+            <input
+              type="date"
+              v-model="ngaychamcong"
+              class="input is-small is-danger"
+              @blur="lockChoosee"
+            />
+          </td>
+          <td style="width: 5%">
+            <span style="font-size: small; font-weight: bold"
+              >Tuần: {{ weekNumber }}</span
             >
-          </div>
-          <div>
-            <progress id="progress-bar" class="progress is-success"></progress>
-          </div>
-        </div>
+          </td>
+          <td style="width: 5%">
+            <div class="select is-small">
+              <select
+                @change="chamcong($event)"
+                :disabled="!isSelectsEnabled_Chamcong"
+              >
+                <option selected disabled>-- Chấm công --</option>
+                <option v-for="item in chamcongList" :value="item.machamcong">
+                  {{ item.machamcong }} -- {{ item.chamcong }}
+                </option>
+              </select>
+            </div>
+          </td>
+          <td style="width: 5%">
+            <div class="select is-small">
+              <select
+                @change="changeAnca($event)"
+                :disabled="!isSelectsEnabled_Chamcong"
+              >
+                <option selected disabled>-- Ăn ca --</option>
+                <option v-for="item in tienanca" :value="item.anca">
+                  {{ item.anca }} -- {{ item.tienan }}
+                </option>
+              </select>
+            </div>
+          </td>
+          <td style="width: 7%">
+            <button @click="onChamcong()" class="button is-small is-info">
+              Chấm công
+            </button>
+          </td>
+          <td style="width: 7%">
+            <button
+              @click="onDeleteChamcongDay()"
+              class="button is-small is-danger"
+              :disabled="!isDisbeButton_ngaychamcong"
+            >
+              Xóa Chấm công ngày
+            </button>
+          </td>
+          <td></td>
+        </tr>
+      </table>
+    </div>
 
-        <div class="table_wrapper">
-          <table class="table is-responsive is-bordered is-narrow is-fullwidth">
-            <tr style="background-color: aliceblue">
-              <td style="width: 5%">
-                <input
-                  type="date"
-                  v-model="ngaychamcong"
-                  class="input is-small is-danger"
-                  @blur="lockChoosee"
-                />
-              </td>
-              <td style="width: 5%">
-                <span style="font-size: small; font-weight: bold"
-                  >Tuần: {{ weekNumber }}</span
-                >
-              </td>
-              <td style="width: 5%">
-                <div class="select is-small">
-                  <select
-                    @change="chamcong($event)"
-                    :disabled="!isSelectsEnabled_Chamcong"
-                  >
-                    <option selected disabled>-- Chấm công --</option>
-                    <option
-                      v-for="item in chamcongList"
-                      :value="item.machamcong"
-                    >
-                      {{ item.machamcong }} -- {{ item.chamcong }}
-                    </option>
-                  </select>
-                </div>
-              </td>
-              <td style="width: 5%">
-                <div class="select is-small">
-                  <select
-                    @change="changeAnca($event)"
-                    :disabled="!isSelectsEnabled_Chamcong"
-                  >
-                    <option selected disabled>-- Ăn ca --</option>
-                    <option v-for="item in tienanca" :value="item.anca">
-                      {{ item.anca }} -- {{ item.tienan }}
-                    </option>
-                  </select>
-                </div>
-              </td>
-              <td style="width: 7%">
-                <button @click="onChamcong()" class="button is-small is-info">
-                  Chấm công
-                </button>
-              </td>
-              <td style="width: 7%">
-                <button
-                  @click="onDeleteChamcongDay()"
-                  class="button is-small is-danger"
-                  :disabled="!isDisbeButton_ngaychamcong"
-                >
-                  Xóa Chấm công ngày
-                </button>
-              </td>
-              <td></td>
-            </tr>
-          </table>
-        </div>
-
-        <div class="table_wrapper">
-          <table
-            v-if="items.length > 0"
-            class="table is-responsive is-bordered is-narrow is-fullwidth"
+    <div class="table_wrapper">
+      <table
+        v-if="items.length > 0"
+        class="table is-responsive is-bordered is-narrow is-fullwidth"
+      >
+        <tr style="background-color: antiquewhite">
+          <td
+            style="
+              font-size: small;
+              font-weight: bold;
+              text-align: center;
+              width: 2%;
+            "
           >
-            <tr style="background-color: antiquewhite">
-              <td
-                style="
-                  font-size: small;
-                  font-weight: bold;
-                  text-align: center;
-                  width: 2%;
-                "
-              >
-                <input type="checkbox" v-model="selectAll" />
-              </td>
-              <td
-                style="
-                  font-size: small;
-                  font-weight: bold;
-                  text-align: center;
-                  width: 3%;
-                "
-              >
-                STT
-              </td>
-              <td
-                style="
-                  font-size: small;
-                  font-weight: bold;
-                  text-align: center;
-                  width: 5%;
-                "
-              >
-                Mã CN
-              </td>
-              <td
-                style="
-                  font-size: small;
-                  font-weight: bold;
-                  text-align: center;
-                  width: 13%;
-                "
-              >
-                Tên CN
-              </td>
-              <td
-                style="
-                  font-size: small;
-                  font-weight: bold;
-                  text-align: center;
-                  width: 5%;
-                "
-              >
-                STT CN
-              </td>
-              <td
-                style="
-                  font-size: small;
-                  font-weight: bold;
-                  text-align: center;
-                  width: 7%;
-                "
-              >
-                Mã CC
-              </td>
-              <td
-                style="
-                  font-size: small;
-                  font-weight: bold;
-                  text-align: center;
-                  width: 7%;
-                "
-              >
-                Ăn ca
-              </td>
-              <td
-                style="
-                  font-size: small;
-                  font-weight: bold;
-                  text-align: center;
-                  width: 20%;
-                "
-              >
-                Diễn giải
-              </td>
-              <td
-                style="
-                  font-size: small;
-                  font-weight: bold;
-                  text-align: center;
-                  width: 20%;
-                "
-              >
-                Ghi chú
-              </td>
-              <td></td>
-            </tr>
-            <tr v-for="(cn, index) in items" :key="index + 'jhjl'">
-              <td style="text-align: center">
-                <input
-                  v-model="selected"
-                  :value="{ index: index, value: cn }"
-                  type="checkbox"
-                />
-              </td>
-              <td style="font-size: small; text-align: center">
-                {{ index + 1 }}
-              </td>
-              <td style="font-size: small">{{ cn.macn }}</td>
-              <td style="font-size: small">{{ cn.tencn }}</td>
-              <td style="font-size: small; text-align: center">
-                {{ cn.sttchon }}
-              </td>
-              <td style="font-size: small; text-align: center">
-                <!-- <div class="select is-small">
+            <input type="checkbox" v-model="selectAll" />
+          </td>
+          <td
+            style="
+              font-size: small;
+              font-weight: bold;
+              text-align: center;
+              width: 3%;
+            "
+          >
+            STT
+          </td>
+          <td
+            style="
+              font-size: small;
+              font-weight: bold;
+              text-align: center;
+              width: 5%;
+            "
+          >
+            Mã CN
+          </td>
+          <td
+            style="
+              font-size: small;
+              font-weight: bold;
+              text-align: center;
+              width: 13%;
+            "
+          >
+            Tên CN
+          </td>
+          <td
+            style="
+              font-size: small;
+              font-weight: bold;
+              text-align: center;
+              width: 5%;
+            "
+          >
+            STT CN
+          </td>
+          <td
+            style="
+              font-size: small;
+              font-weight: bold;
+              text-align: center;
+              width: 7%;
+            "
+          >
+            Mã CC
+          </td>
+          <td
+            style="
+              font-size: small;
+              font-weight: bold;
+              text-align: center;
+              width: 7%;
+            "
+          >
+            Ăn ca
+          </td>
+          <td
+            style="
+              font-size: small;
+              font-weight: bold;
+              text-align: center;
+              width: 20%;
+            "
+          >
+            Diễn giải
+          </td>
+          <td
+            style="
+              font-size: small;
+              font-weight: bold;
+              text-align: center;
+              width: 20%;
+            "
+          >
+            Ghi chú
+          </td>
+          <td></td>
+        </tr>
+        <tr v-for="(cn, index) in items" :key="index + 'jhjl'">
+          <td style="text-align: center">
+            <input
+              v-model="selected"
+              :value="{ index: index, value: cn }"
+              type="checkbox"
+            />
+          </td>
+          <td style="font-size: small; text-align: center">
+            {{ index + 1 }}
+          </td>
+          <td style="font-size: small">{{ cn.macn }}</td>
+          <td style="font-size: small">{{ cn.tencn }}</td>
+          <td style="font-size: small; text-align: center">
+            {{ cn.sttchon }}
+          </td>
+          <td style="font-size: small; text-align: center">
+            <!-- <div class="select is-small">
                   <select @change="chamcong($event, cn, index)">
                     <option selected>-- Chấm công --</option>
                     <option
@@ -268,289 +256,263 @@
                     </option>
                   </select>
                 </div> -->
-                <input
-                  type="text"
-                  v-model="cn.machamcong"
-                  class="input is-small is-danger"
-                  disabled
-                />
-              </td>
-              <td style="font-size: small; text-align: center">
-                <input
-                  type="text"
-                  v-model="cn.anca"
-                  class="input is-small is-info"
-                  disabled
-                />
-              </td>
-              <td style="font-size: small; text-align: center">
-                <input type="text" class="input is-small" />
-              </td>
-              <td style="font-size: small; text-align: center">
-                <input type="text" class="input is-small" />
-              </td>
-              <td></td>
-            </tr>
-          </table>
-          <table
-            v-if="showNgaychamcong.length > 0"
-            class="table is-responsive is-bordered is-narrow is-fullwidth"
-          >
-            <tr style="background-color: floralwhite">
-              <td
-                style="font-size: small; font-weight: bold; text-align: center"
-              >
-                STT
-              </td>
-              <td
-                style="font-size: small; font-weight: bold; text-align: center"
-              >
-                Mã CN
-              </td>
-              <td
-                style="font-size: small; font-weight: bold; text-align: center"
-              >
-                Tên CN
-              </td>
-              <td
-                style="font-size: small; font-weight: bold; text-align: center"
-              >
-                Mã PX
-              </td>
-              <!-- <td
+            <input
+              type="text"
+              v-model="cn.machamcong"
+              class="input is-small is-danger"
+              disabled
+            />
+          </td>
+          <td style="font-size: small; text-align: center">
+            <input
+              type="text"
+              v-model="cn.anca"
+              class="input is-small is-info"
+              disabled
+            />
+          </td>
+          <td style="font-size: small; text-align: center">
+            <input v-model="cn.diengiai" type="text" class="input is-small" />
+          </td>
+          <td style="font-size: small; text-align: center">
+            <input v-model="cn.ghichu" type="text" class="input is-small" />
+          </td>
+          <td></td>
+        </tr>
+      </table>
+      <table
+        v-if="showNgaychamcong.length > 0"
+        class="table is-responsive is-bordered is-narrow is-fullwidth"
+      >
+        <tr style="background-color: floralwhite">
+          <td style="font-size: small; font-weight: bold; text-align: center">
+            STT
+          </td>
+          <td style="font-size: small; font-weight: bold; text-align: center">
+            Mã CN
+          </td>
+          <td style="font-size: small; font-weight: bold; text-align: center">
+            Tên CN
+          </td>
+          <td style="font-size: small; font-weight: bold; text-align: center">
+            Mã PX
+          </td>
+          <!-- <td
                 style="font-size: small; font-weight: bold; text-align: center"
               >
                 Tên PX
               </td> -->
-              <td
-                style="font-size: small; font-weight: bold; text-align: center"
-              >
-                Mã chấm công
-              </td>
-              <td
-                style="font-size: small; font-weight: bold; text-align: center"
-              >
-                Chấm công
-              </td>
-              <td
-                style="font-size: small; font-weight: bold; text-align: center"
-              >
-                Ăn ca
-              </td>
-              <!-- <td
-                style="font-size: small; font-weight: bold; text-align: center"
-              >
-                Ăn ca
-              </td> -->
-              <td
-                style="font-size: small; font-weight: bold; text-align: center"
-              >
-                Ngày chấm công
-              </td>
-              <td
-                style="font-size: small; font-weight: bold; text-align: center"
-              >
-                Tuần
-              </td>
-              <td
-                style="font-size: small; font-weight: bold; text-align: center"
-              >
-                Ngày tạo
-              </td>
-              <td
-                style="font-size: small; font-weight: bold; text-align: center"
-              >
-                User tạo
-              </td>
-              <td
-                style="font-size: small; font-weight: bold; text-align: center"
-              >
-                Xóa
-              </td>
-            </tr>
-            <tr v-for="(item, index) in showNgaychamcong" :key="index">
-              <td style="font-size: small; text-align: center">
-                {{ index + 1 }}
-              </td>
-              <td style="font-size: small; text-align: center">
-                {{ item.macn }}
-              </td>
-              <td style="font-size: small">
-                {{ item.tencn }}
-              </td>
-              <td style="font-size: small; text-align: center">
-                {{ item.mapx }}
-              </td>
-              <!-- <td style="font-size: small">
+          <td style="font-size: small; font-weight: bold; text-align: center">
+            Mã chấm công
+          </td>
+          <td style="font-size: small; font-weight: bold; text-align: center">
+            Chấm công
+          </td>
+          <td style="font-size: small; font-weight: bold; text-align: center">
+            Ăn ca
+          </td>
+          <td style="font-size: small; font-weight: bold; text-align: center">
+            Diễn giải
+          </td>
+          <td style="font-size: small; font-weight: bold; text-align: center">
+            Ghi chú
+          </td>
+          <td style="font-size: small; font-weight: bold; text-align: center">
+            Ngày chấm công
+          </td>
+          <td style="font-size: small; font-weight: bold; text-align: center">
+            Tuần
+          </td>
+          <td style="font-size: small; font-weight: bold; text-align: center">
+            Ngày tạo
+          </td>
+          <td style="font-size: small; font-weight: bold; text-align: center">
+            User tạo
+          </td>
+          <td style="font-size: small; font-weight: bold; text-align: center">
+            Xóa
+          </td>
+        </tr>
+        <tr v-for="(item, index) in showNgaychamcong" :key="index">
+          <td style="font-size: small; text-align: center">
+            {{ index + 1 }}
+          </td>
+          <td style="font-size: small; text-align: center">
+            {{ item.macn }}
+          </td>
+          <td style="font-size: small">
+            {{ item.tencn }}
+          </td>
+          <td style="font-size: small; text-align: center">
+            {{ item.mapx }}
+          </td>
+          <!-- <td style="font-size: small">
                 {{ item.tenpx }}
               </td> -->
-              <td style="font-size: small; text-align: center">
-                <!-- <input
+          <td style="font-size: small; text-align: center">
+            <!-- <input
                   type="text"
                   class="input is-small"
                   v-model="item.machamcong"
                 /> -->
-                {{ item.machamcong }}
-              </td>
-              <td style="font-size: small; text-align: center">
-                <div class="select is-small is-fullwidth">
-                  <select @change="chamconglai($event, item)">
-                    <option selected>
-                      {{ item.machamcong }} -- {{ item.chamcong }}
-                    </option>
-                    <option disabled>----------</option>
-                    <option
-                      v-for="item in chamcongList"
-                      :value="item.machamcong"
-                    >
-                      {{ item.machamcong }} -- {{ item.chamcong }}
-                    </option>
-                  </select>
-                </div>
-              </td>
-              <td style="font-size: small; text-align: center">
-                <div class="select is-small is-fullwidth">
-                  <select @change="chamlaianca($event, item)">
-                    <option selected>
-                      {{ item.anca }} -- {{ item.tienan }}
-                    </option>
-                    <option disabled>----------</option>
-                    <option
-                      v-for="(selectdata, index) in tienanca"
-                      :value="selectdata.anca"
-                      :key="index + 'afjl'"
-                    >
-                      {{ selectdata.anca }} -- {{ selectdata.tienan }}
-                    </option>
-                  </select>
-                </div>
-              </td>
-              <!-- <td style="font-size: small; text-align: center">
-                {{ item.anca }}
-              </td> -->
-              <td style="font-size: small; text-align: center">
-                {{ item.ngaychamcong | formatDate }}
-              </td>
-              <td style="font-size: small; text-align: center">
-                {{ item.tuanchamcong }}
-              </td>
-              <td style="font-size: small; text-align: center">
-                {{ item.createdAt | formatDate }}
-              </td>
-              <td style="font-size: small; text-align: center">
-                {{ item.createdBy }}
-              </td>
-              <td style="text-align: center">
-                <a @click="onDelete(item)"
-                  ><span> <i style="color: red" class="fas fa-times"></i> </span
-                ></a>
-              </td>
-            </tr>
-          </table>
-        </div>
-      </div>
-      <!-- Modal 3 - chamcong -->
-      <div class="">
-        <!-- Toggle class  -->
-        <div :class="{ 'is-active': isActive }" class="modal">
-          <div class="modal-background"></div>
-          <div class="modal-content modal-card-1">
-            <section class="modal-card-body">
-              <div class="columns">
-                <div class="column">
-                  <span
-                    style="font-size: small; font-weight: bold; color: #48c78e"
-                    >Tiến trình chấm công</span
-                  >
-                </div>
-                <div class="column" style="text-align: right">
-                  <a @click="isActive = false">
-                    <span style="color: red" class="icon is-small">
-                      <i class="fas fa-times"></i>
-                    </span>
-                  </a>
-                </div>
+            {{ item.machamcong }}
+          </td>
+          <td style="font-size: small; text-align: center">
+            <div class="select is-small is-fullwidth">
+              <select @change="chamconglai($event, item)">
+                <option selected>
+                  {{ item.machamcong }} -- {{ item.chamcong }}
+                </option>
+                <option disabled>----------</option>
+                <option v-for="item in chamcongList" :value="item.machamcong">
+                  {{ item.machamcong }} -- {{ item.chamcong }}
+                </option>
+              </select>
+            </div>
+          </td>
+          <td style="font-size: small; text-align: center">
+            <div class="select is-small is-fullwidth">
+              <select @change="chamlaianca($event, item)">
+                <option selected>{{ item.anca }} -- {{ item.tienan }}</option>
+                <option disabled>----------</option>
+                <option
+                  v-for="(selectdata, index) in tienanca"
+                  :value="selectdata.anca"
+                  :key="index + 'afjl'"
+                >
+                  {{ selectdata.anca }} -- {{ selectdata.tienan }}
+                </option>
+              </select>
+            </div>
+          </td>
+          <td style="font-size: small; text-align: center">
+            {{ item.diengiai }}
+          </td>
+          <td style="font-size: small; text-align: center">
+            {{ item.ghichu }}
+          </td>
+          <td style="font-size: small; text-align: center">
+            {{ item.ngaychamcong | formatDate }}
+          </td>
+          <td style="font-size: small; text-align: center">
+            {{ item.tuanchamcong }}
+          </td>
+          <td style="font-size: small; text-align: center">
+            {{ item.createdAt | formatDate }}
+          </td>
+          <td style="font-size: small; text-align: center">
+            {{ item.createdBy }}
+          </td>
+          <td style="text-align: center">
+            <a @click="onDelete(item)"
+              ><span> <i style="color: red" class="fas fa-times"></i> </span
+            ></a>
+          </td>
+        </tr>
+      </table>
+    </div>
+
+    <!-- Modal 3 - chamcong -->
+    <div class="">
+      <!-- Toggle class  -->
+      <div :class="{ 'is-active': isActive }" class="modal">
+        <div class="modal-background"></div>
+        <div class="modal-content modal-card-1">
+          <section class="modal-card-body">
+            <div class="columns">
+              <div class="column">
+                <span
+                  style="font-size: small; font-weight: bold; color: #48c78e"
+                  >Tiến trình chấm công</span
+                >
               </div>
-              <table
-                class="table is-responsive is-bordered is-narrow is-fullwidth"
-              >
-                <tr style="background-color: antiquewhite">
+              <div class="column" style="text-align: right">
+                <a @click="isActive = false">
+                  <span style="color: red" class="icon is-small">
+                    <i class="fas fa-times"></i>
+                  </span>
+                </a>
+              </div>
+            </div>
+            <table
+              class="table is-responsive is-bordered is-narrow is-fullwidth"
+            >
+              <tr style="background-color: antiquewhite">
+                <td
+                  style="
+                    font-size: small;
+                    font-weight: bold;
+                    text-align: center;
+                    width: 3%;
+                  "
+                >
+                  STT
+                </td>
+                <td
+                  style="
+                    font-size: small;
+                    font-weight: bold;
+                    text-align: center;
+                  "
+                >
+                  Mã CN / NV
+                </td>
+                <td
+                  style="
+                    font-size: small;
+                    font-weight: bold;
+                    text-align: center;
+                  "
+                >
+                  Họ tên
+                </td>
+                <td
+                  style="
+                    font-size: small;
+                    font-weight: bold;
+                    text-align: center;
+                  "
+                >
+                  Trạng thái ghi dữ liệu chấm công
+                </td>
+              </tr>
+              <tr v-for="(item, index) in detail_chamcong_action">
+                <td style="font-size: small; text-align: center">
+                  {{ index + 1 }}
+                </td>
+                <td style="font-size: small; text-align: center">
+                  {{ item.macn }}
+                </td>
+                <td style="font-size: small">
+                  {{ item.tencn }}
+                </td>
+                <template>
                   <td
+                    v-if="item.status == true"
                     style="
                       font-size: small;
-                      font-weight: bold;
                       text-align: center;
-                      width: 3%;
+                      color: green;
+                      font-weight: bold;
                     "
                   >
-                    STT
+                    Đã ghi dữ liệu chấm công thành công
                   </td>
                   <td
+                    v-else
                     style="
                       font-size: small;
-                      font-weight: bold;
                       text-align: center;
+                      color: red;
+                      font-weight: bold;
                     "
                   >
-                    Mã CN / NV
+                    Ghi dữ liệu chưa thành công. Xem lại chấm công
                   </td>
-                  <td
-                    style="
-                      font-size: small;
-                      font-weight: bold;
-                      text-align: center;
-                    "
-                  >
-                    Họ tên
-                  </td>
-                  <td
-                    style="
-                      font-size: small;
-                      font-weight: bold;
-                      text-align: center;
-                    "
-                  >
-                    Trạng thái ghi dữ liệu chấm công
-                  </td>
-                </tr>
-                <tr v-for="(item, index) in detail_chamcong_action">
-                  <td style="font-size: small; text-align: center">
-                    {{ index + 1 }}
-                  </td>
-                  <td style="font-size: small; text-align: center">
-                    {{ item.macn }}
-                  </td>
-                  <td style="font-size: small">
-                    {{ item.tencn }}
-                  </td>
-                  <template>
-                    <td
-                      v-if="item.status == true"
-                      style="
-                        font-size: small;
-                        text-align: center;
-                        color: green;
-                        font-weight: bold;
-                      "
-                    >
-                      Đã ghi dữ liệu chấm công thành công
-                    </td>
-                    <td
-                      v-else
-                      style="
-                        font-size: small;
-                        text-align: center;
-                        color: red;
-                        font-weight: bold;
-                      "
-                    >
-                      Ghi dữ liệu chưa thành công. Xem lại chấm công
-                    </td>
-                  </template>
-                </tr>
-              </table>
-            </section>
-          </div>
+                </template>
+              </tr>
+            </table>
+          </section>
         </div>
       </div>
     </div>
@@ -1651,16 +1613,12 @@ export default {
 
 <style scoped>
 .table_wrapper {
-  display: block;
   overflow-x: auto;
+  display: block;
   white-space: nowrap;
+  position: sticky;
 }
 
-.table_wrapper {
-  position: sticky;
-  left: 0;
-  background-color: whitesmoke;
-}
 .modal-content,
 .modal-card {
   width: 720px;
