@@ -74,16 +74,16 @@ module.exports = {
   }, */
   axios: {
     // baseURL: "http://10.42.240.200:9999",
-    // baseURL: "http://localhost:5555",
-    baseURL: "http://103.104.118.155:5555/", // máy chủ thực tế của toàn lực
+    baseURL: "http://localhost:5555",
+    // baseURL: "http://103.104.118.155:5555/", // máy chủ thực tế của toàn lực
     // baseURL: "http://14.224.129.177:8888/ // máy chủ tuanpda
     timeout: 20000,
   },
   server: {
     // port: 8080, // default: 3000
-    port: 80,
+    // port: 80,
     // host: "192.168.1.97", // default: localhost
-    host: "103.104.118.155", // máy chủ thực tế của toàn lực
+    // host: "103.104.118.155", // máy chủ thực tế của toàn lực
   },
   /* proxy: {
     "/api": URL,
