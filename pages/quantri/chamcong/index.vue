@@ -226,6 +226,16 @@
           >
             Ghi chú
           </td>
+          <td
+            style="
+              font-size: small;
+              font-weight: bold;
+              text-align: center;
+              width: 20%;
+            "
+          >
+            Ghi chú HCNS
+          </td>
           <td></td>
         </tr>
         <tr v-for="(cn, index) in items" :key="index + 'jhjl'">
@@ -276,6 +286,9 @@
           </td>
           <td style="font-size: small; text-align: center">
             <input v-model="cn.ghichu" type="text" class="input is-small" />
+          </td>
+          <td style="font-size: small; text-align: center">
+            <input v-model="cn.ghichuhcns" type="text" class="input is-small" />
           </td>
           <td></td>
         </tr>

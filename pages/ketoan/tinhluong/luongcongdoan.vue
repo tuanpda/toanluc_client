@@ -461,15 +461,16 @@
                 "
               >
                 {{
-                  (parseFloat(dsl.luongqlsp) +
-                    dsl.luongcd +
-                    dsl.luongcn +
-                    dsl.thanhtien +
-                    parseFloat(dsl.ngayhotro) * parseFloat(dsl.luongmem) -
-                    (dsl.bhxh +
-                      parseFloat(dsl.congdoan) +
-                      parseFloat(dsl.antrua)))
-                    | formatNumber
+                  roundToThousands(
+                    parseFloat(dsl.luongqlsp) +
+                      dsl.luongcd +
+                      dsl.luongcn +
+                      dsl.thanhtien +
+                      parseFloat(dsl.ngayhotro) * parseFloat(dsl.luongmem) -
+                      (dsl.bhxh +
+                        parseFloat(dsl.congdoan) +
+                        parseFloat(dsl.antrua))
+                  ) | formatNumber
                 }}
               </td>
             </tr>
@@ -2392,6 +2393,10 @@ export default {
   },
 
   methods: {
+    roundToThousands(value) {
+      return Math.floor(value / 1000) * 1000;
+    },
+
     // format date
     prefixformatDate(value) {
       if (!value) {
@@ -2855,11 +2860,12 @@ export default {
                 bhxh: this.selected[i].bhxh,
                 congdoan: this.selected[i].congdoan,
                 tamung: this.selected[i].tienung,
-                tongtru:
+                tongtru_chualamtron:
                   parseFloat(this.selected[i].congdoan) +
                   this.selected[i].bhxh +
                   parseFloat(this.selected[i].antrua),
-                tongnhan:
+                tongtru: Math.floor(tongtru_chualamtron / 1000) * 1000,
+                tongnhan_chualamtron:
                   parseFloat(this.selected[i].luongqlsp) +
                   this.selected[i].luongcd +
                   this.selected[i].luongcn +
@@ -2869,6 +2875,7 @@ export default {
                   (this.selected[i].bhxh +
                     parseFloat(this.selected[i].congdoan) +
                     parseFloat(this.selected[i].antrua)),
+                tongnhan: Math.floor(tongnhan_chualamtron / 1000) * 1000,
                 tienphat: this.selected[i].antrua,
                 createdAt: this.createdAt,
                 createdBy: this.createdBy,
@@ -2887,7 +2894,6 @@ export default {
                 nhanl6: 0,
                 sttchon: this.selected[i].sttchon,
               };
-              // console.log(data);
               const res = this.$axios.$post("/api/ketoan/themluongthang", data);
               // console.log(res.success === true);
               if (res.success === true) {
