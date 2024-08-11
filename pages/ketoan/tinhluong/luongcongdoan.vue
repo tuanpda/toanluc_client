@@ -2833,6 +2833,27 @@ export default {
             // console.log(this.selected);
 
             for (let i = 0; i < this.selected.length; i++) {
+              // Tính toán các giá trị trước
+              let tongtru_chualamtron =
+                parseFloat(this.selected[i].congdoan) +
+                this.selected[i].bhxh +
+                parseFloat(this.selected[i].antrua);
+
+              let tongtru = Math.floor(tongtru_chualamtron / 1000) * 1000;
+
+              let tongnhan_chualamtron =
+                parseFloat(this.selected[i].luongqlsp) +
+                this.selected[i].luongcd +
+                this.selected[i].luongcn +
+                this.selected[i].thanhtien +
+                parseFloat(this.selected[i].ngayhotro) *
+                  parseFloat(this.selected[i].luongmem) -
+                (this.selected[i].bhxh +
+                  parseFloat(this.selected[i].congdoan) +
+                  parseFloat(this.selected[i].antrua));
+
+              let tongnhan = Math.floor(tongnhan_chualamtron / 1000) * 1000;
+
               let data = {
                 mapb: this.dscongnhan[0].mapx,
                 tenpb: this.dscongnhan[0].tenpx,
@@ -2860,22 +2881,8 @@ export default {
                 bhxh: this.selected[i].bhxh,
                 congdoan: this.selected[i].congdoan,
                 tamung: this.selected[i].tienung,
-                tongtru_chualamtron:
-                  parseFloat(this.selected[i].congdoan) +
-                  this.selected[i].bhxh +
-                  parseFloat(this.selected[i].antrua),
-                tongtru: Math.floor(tongtru_chualamtron / 1000) * 1000,
-                tongnhan_chualamtron:
-                  parseFloat(this.selected[i].luongqlsp) +
-                  this.selected[i].luongcd +
-                  this.selected[i].luongcn +
-                  this.selected[i].thanhtien +
-                  parseFloat(this.selected[i].ngayhotro) *
-                    parseFloat(this.selected[i].luongmem) -
-                  (this.selected[i].bhxh +
-                    parseFloat(this.selected[i].congdoan) +
-                    parseFloat(this.selected[i].antrua)),
-                tongnhan: Math.floor(tongnhan_chualamtron / 1000) * 1000,
+                tongtru,
+                tongnhan,
                 tienphat: this.selected[i].antrua,
                 createdAt: this.createdAt,
                 createdBy: this.createdBy,
@@ -2894,8 +2901,11 @@ export default {
                 nhanl6: 0,
                 sttchon: this.selected[i].sttchon,
               };
-              const res = this.$axios.$post("/api/ketoan/themluongthang", data);
-              // console.log(res.success === true);
+              const res = await this.$axios.$post(
+                "/api/ketoan/themluongthang",
+                data
+              );
+              console.log(res);
               if (res.success === true) {
                 this.showcount++;
                 progressBar.value = this.showcount;
@@ -2903,6 +2913,8 @@ export default {
             }
             this.isSaveSale = false;
             this.isshow = false;
+
+            // console.log(data);
           }
         } catch (error) {
           const Toast = Swal.mixin({

@@ -298,11 +298,12 @@
             </tr>
             <tr>
               <td
+                colspan="3"
                 style="text-align: center; font-weight: bold; font-size: small"
               >
                 Tổng
               </td>
-              <td></td>
+
               <td
                 style="text-align: right; font-weight: bold; font-size: small"
               >
