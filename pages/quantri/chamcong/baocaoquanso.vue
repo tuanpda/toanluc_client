@@ -42,7 +42,7 @@
     </table>
 
     <div class="table_wrapper">
-      <table class="table is-responsive is-bordered is-narrow is-fullwidth">
+      <table class="table is-responsive is-bordered is-narrow">
         <tr style="background-color: beige">
           <td
             style="
@@ -240,7 +240,7 @@
 
       <table
         v-if="this.detailData.length > 0"
-        class="table is-responsive is-bordered is-narrow is-fullwidth"
+        class="table is-responsive is-bordered is-narrow"
       >
         <tr style="background-color: beige">
           <td
@@ -293,6 +293,86 @@
           >
             Tổ
           </td>
+          <td
+            style="
+              text-align: center;
+              font-weight: bold;
+              font-size: small;
+              width: 5%;
+            "
+          >
+            Ca 1
+          </td>
+          <td
+            style="
+              text-align: center;
+              font-weight: bold;
+              font-size: small;
+              width: 5%;
+            "
+          >
+            Ca 2
+          </td>
+          <td
+            style="
+              text-align: center;
+              font-weight: bold;
+              font-size: small;
+              width: 5%;
+            "
+          >
+            Ca 3
+          </td>
+          <td
+            style="
+              text-align: center;
+              font-weight: bold;
+              font-size: small;
+              width: 5%;
+            "
+          >
+            Nghỉ P
+          </td>
+          <td
+            style="
+              text-align: center;
+              font-weight: bold;
+              font-size: small;
+              width: 5%;
+            "
+          >
+            Nghỉ M
+          </td>
+          <td
+            style="
+              text-align: center;
+              font-weight: bold;
+              font-size: small;
+              width: 5%;
+            "
+          >
+            Nghỉ K
+          </td>
+          <td
+            style="
+              text-align: center;
+              font-weight: bold;
+              font-size: small;
+              width: 5%;
+            "
+          >
+            Nghỉ X
+          </td>
+          <td
+            style="
+              text-align: center;
+              font-weight: bold;
+              font-size: small;
+              width: 5%;
+            "
+          >
+            Nghỉ L
+          </td>
           <td style="text-align: center; font-weight: bold; font-size: small">
             Diễn giải
           </td>
@@ -308,6 +388,62 @@
           <td style="font-size: small">{{ item.tencn }}</td>
           <td style="font-size: small">{{ item.mapx }}</td>
           <td style="font-size: small">{{ item.mato }}</td>
+          <td
+            v-if="item.machamcong == 1"
+            style="font-size: small; text-align: center"
+          >
+            {{ item.machamcong }}
+          </td>
+          <td v-else style="font-size: small; text-align: center"></td>
+          <td
+            v-if="item.machamcong == 2"
+            style="font-size: small; text-align: center"
+          >
+            {{ item.machamcong }}
+          </td>
+          <td v-else style="font-size: small; text-align: center"></td>
+          <td
+            v-if="item.machamcong == 3"
+            style="font-size: small; text-align: center"
+          >
+            {{ item.machamcong }}
+          </td>
+          <td v-else style="font-size: small; text-align: center"></td>
+          <td
+            v-if="item.machamcong == 'P'"
+            style="font-size: small; text-align: center"
+          >
+            {{ item.machamcong }}
+          </td>
+          <td v-else style="font-size: small; text-align: center"></td>
+          <td
+            v-if="item.machamcong == 'M'"
+            style="font-size: small; text-align: center"
+          >
+            {{ item.machamcong }}
+          </td>
+          <td v-else style="font-size: small; text-align: center"></td>
+          <td
+            v-if="item.machamcong == 'K'"
+            style="font-size: small; text-align: center"
+          >
+            {{ item.machamcong }}
+          </td>
+          <td v-else style="font-size: small; text-align: center"></td>
+          <td
+            v-if="item.machamcong == 'X'"
+            style="font-size: small; text-align: center"
+          >
+            {{ item.machamcong }}
+          </td>
+          <td v-else style="font-size: small; text-align: center"></td>
+          <td
+            v-if="item.machamcong == 'L'"
+            style="font-size: small; text-align: center"
+          >
+            {{ item.machamcong }}
+          </td>
+          <td v-else style="font-size: small; text-align: center"></td>
           <td style="font-size: small">{{ item.diengiai }}</td>
           <td style="font-size: small">{{ item.ghichu }}</td>
         </tr>
@@ -328,6 +464,7 @@
 </template>
 
 <script>
+import { template } from "lodash";
 import Swal from "sweetalert2";
 export default {
   middleware: "auth",

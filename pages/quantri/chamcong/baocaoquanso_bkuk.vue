@@ -44,6 +44,14 @@
     <div class="columns">
       <div class="column table_wrapper">
         <table class="table is-responsive is-bordered is-narrow">
+          <tr v-if="ngaychamcong">
+            <td
+              style="font-size: small; font-weight: 600; color: #f14668"
+              colspan="4"
+            >
+              Thông tin
+            </td>
+          </tr>
           <tr style="background-color: beige">
             <td
               style="
@@ -92,13 +100,16 @@
             :class="{ highlighted: item === highlightedRow }"
             @click="[highlightRow(item), detail(item)]"
           >
-            <td style="font-size: smaller">
-              <input
-                type="number"
-                v-model="item.sort"
-                class="input is-small"
-                @blur="sortTable"
-              />
+            <!-- <td style="font-size: smaller">
+            <input
+              type="number"
+              v-model="item.sort"
+              class="input is-small"
+              @blur="sortTable"
+            />
+          </td> -->
+            <td style="font-size: smaller; text-align: center">
+              {{ index + 1 }}
             </td>
             <td style="font-size: smaller">{{ item.mapx }}</td>
             <td style="font-size: smaller">{{ item.mato }}</td>
@@ -108,8 +119,23 @@
           </tr>
         </table>
       </div>
+
+      <!-- ngày hôm qua (ngày - 1) -->
       <div class="column table_wrapper">
         <table class="table is-responsive is-bordered is-narrow">
+          <tr v-if="ngaychamcong">
+            <td
+              style="
+                font-size: small;
+                font-weight: 600;
+                color: cornflowerblue;
+                text-align: right;
+              "
+              colspan="4"
+            >
+              Ngày: {{ subtractOneDay(ngaychamcong) | formatDate }}
+            </td>
+          </tr>
           <tr style="background-color: beige">
             <td
               style="
@@ -174,8 +200,22 @@
         </table>
       </div>
 
+      <!-- ngày cần lấy báo cáo -->
       <div class="column table_wrapper">
         <table class="table is-responsive is-bordered is-narrow">
+          <tr v-if="ngaychamcong">
+            <td
+              style="
+                font-size: small;
+                font-weight: 600;
+                color: #f14668;
+                text-align: right;
+              "
+              colspan="4"
+            >
+              Ngày: {{ ngaychamcong | formatDate }}
+            </td>
+          </tr>
           <tr style="background-color: beige">
             <td
               style="
@@ -319,6 +359,7 @@
 </template>
 
 <script>
+import { formats } from "dayjs/locale/vi";
 import Swal from "sweetalert2";
 export default {
   middleware: "auth",
@@ -378,6 +419,18 @@ export default {
     // hàm highlight để đánh dấu row nào được chọn
     highlightRow(row) {
       this.highlightedRow = row;
+    },
+
+    subtractOneDay(date) {
+      const dateObj = new Date(date);
+      dateObj.setDate(dateObj.getDate() - 1);
+      return dateObj;
+
+      // const day = String(dateObj.getDate()).padStart(2, '0');
+      // const month = String(dateObj.getMonth() + 1).padStart(2, '0'); // Tháng bắt đầu từ 0
+      // const year = dateObj.getFullYear();
+
+      // return `${day}/${month}/${year}`;
     },
 
     currentDateTime() {

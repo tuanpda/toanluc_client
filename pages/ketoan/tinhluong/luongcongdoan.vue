@@ -2557,9 +2557,10 @@ export default {
     // },
 
     async countLuongqlsp(data) {
-      // console.log(data);
-      const luongqlsp = parseFloat(data.tyleqlsp) * this.tongLuongQuanLy;
-      // console.log(luongqlsp);
+      const luongqlsp =
+        Math.round((parseFloat(data.tyleqlsp) * this.tongLuongQuanLy) / 1000) *
+        1000;
+
       for (let i = 0; i < this.dscongnhan.length; i++) {
         if (this.dscongnhan[i].macn === data.macn) {
           this.dscongnhan[i].luongqlsp = luongqlsp;
