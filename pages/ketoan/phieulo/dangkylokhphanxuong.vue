@@ -1806,6 +1806,7 @@ export default {
           });
           return;
         } else {
+          console.log(this.dataLonm);
           // kiểm tra lô nhà máy đang ở trạng thái nào?
           const resStatusLNM = await this.$axios.$get(
             `/api/lokehoach/checkstatuslonhamay?_id=${this.dataLonm._id}`
