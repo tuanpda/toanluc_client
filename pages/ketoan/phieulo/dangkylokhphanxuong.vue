@@ -1810,7 +1810,7 @@ export default {
           const resStatusLNM = await this.$axios.$get(
             `/api/lokehoach/checkstatuslonhamay?_id=${this.dataLonm._id}`
           );
-          // console.log(resStatusLNM); = 0
+          console.log(resStatusLNM);
           const statusLnm = resStatusLNM;
           // nếu lô nhà máy chưa có lô khpx nào thì ngay sau khi tạo mới lô đầu sẽ chuyển trạng thái lô nm thành DK
           const resLokhpx = await this.$axios.$get(
