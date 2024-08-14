@@ -514,8 +514,6 @@
                   @change="onChange_status($event, item)"
                   v-model="item.status"
                 >
-                  <!-- <option value="3">HT</option> -->
-                  <option value="2">SX</option>
                   <option value="1">DK</option>
                   <option value="0">0</option>
                 </select>
@@ -1167,40 +1165,54 @@ export default {
       // TÓM LẠI LÀ CHỖ NÀY CHỈ CHO PHÉP ĐỔI SANG ĐĂNG KÝ. CÒN PHẦN SẢN XUẤT SẼ TỰ ĐỘNG ĐỔI KHI LÔ SẢN XUẤT ĐƯỢC
       // CHUYỂN THÀNH SX
       // tìm xem có bao nhiêu lô sản xuất trong lô kế hoạch phân xưởng
-      const losxs = await this.$axios.$get(
-        `/api/ketoan/checklosanxuatstussx?_id_khpx=${
-          data._id
-        }&random=${Math.random()}`
-      );
+
+      // const losxs = await this.$axios.$get(
+      //   `/api/ketoan/checklosanxuatstussx?_id_khpx=${
+      //     data._id
+      //   }&random=${Math.random()}`
+      // );
       // console.log(losxs);
       // check xem trong toàn bộ lô sinh ra từ mã kế hoạch phân xưởng đó
       // có lô nào đang sx không? nếu có thì chuyển trạng thái lô kế hoạch phân xưởng thành sx luôn
-      const hasStatusTwo = losxs.some((item) => item.status === 2);
+      // const hasStatusTwo = losxs.some((item) => item.status === 2);
       // console.log(isAllStatus3); // false
       // console.log(hasStatusTwo);
-      if (hasStatusTwo == true) {
-        const Toast = Swal.mixin({
-          toast: true,
-          position: "top-end",
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.addEventListener("mouseenter", Swal.stopTimer);
-            toast.addEventListener("mouseleave", Swal.resumeTimer);
-          },
-        });
-        Toast.fire({
-          icon: "error",
-          title:
-            "Lô phân xưởng này đang có Lô sản xuất thực hiện không thể chuyển về trạng thái ĐK !!!",
-        });
-      } else {
-        this.$axios.$patch(
-          `/api/lokehoach/updatelokehoachpxatdangkylodesanxuat/${data._id}`,
-          data
-        );
-      }
+      // if (hasStatusTwo == true) {
+      //   const Toast = Swal.mixin({
+      //     toast: true,
+      //     position: "top-end",
+      //     showConfirmButton: false,
+      //     timer: 3000,
+      //     timerProgressBar: true,
+      //     didOpen: (toast) => {
+      //       toast.addEventListener("mouseenter", Swal.stopTimer);
+      //       toast.addEventListener("mouseleave", Swal.resumeTimer);
+      //     },
+      //   });
+      //   Toast.fire({
+      //     icon: "error",
+      //     title:
+      //       "Lô phân xưởng này đang có Lô sản xuất thực hiện không thể chuyển về trạng thái ĐK !!!",
+      //   });
+      // } else {
+      //   this.$axios.$patch(
+      //     `/api/lokehoach/updatelokehoachpxatdangkylodesanxuat/${data._id}`,
+      //     data
+      //   );
+      // }
+
+      // ĐIỀU CHỈNH CHẾ ĐỘ CẬP NHẬT TRẠNG THÁI Ở LÔ KHPX NGÀY 13 THÁNG 8 NĂM 2024 (THEO YC ANH TIẾN)
+      // BỎ VIỆC CHUYỂN TRẠNG THÁI TỪ ĐK SANG SX MÀ Ở ĐÂY CHỈ CHỌN ĐĂNG KÝ MÀ THÔI
+      // VIỆC CHUYỂN SANG SẢN XUẤT LÀ KHI CÓ LÔ SX ĐẦU TIÊN ĐƯỢC SX THÌ CẢ LÔ KHPX SẼ THÀNH SX
+      // ĐƯƠNG NHIÊN LÔ NHÀ MÁY CŨNG ĐI THEO THÀNH SX
+      // TÓM LẠI: VIỆC CHUYỂN TRẠNG THÁI SẢN XUẤT CỦA LÔ KHPX VÀ LÔ NM SẼ THỰC HIỆN Ở VIỆC TẠO RA LÔ SX (MÀN HÌNH TẠO LÔ SX)
+      // VIỆC CHUYỂN TỪ 0 THÀNH ĐK THÌ ĐÃ THỰC HIỆN Ở MENU ĐĂNG KÝ LÔ KHPX VÀ MENU CHỌN LÔKH ĐỂ SX RỒI
+      // CHUYỂN TRẠNG THÁI TỪ 0 THÀNH 1 LUÔN CHO LÔ KHPX (tắt combox SX chỉ để DK thôi)
+      const res = await this.$axios.$patch(
+        `/api/lokehoach/updatelokehoachpxatdangkylodesanxuat/${data._id}`,
+        data
+      );
+      console.log(res);
     },
 
     // update trạng thái hoàn thành cho lô KHPX

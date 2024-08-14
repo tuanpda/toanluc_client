@@ -37,7 +37,15 @@
             class="input is-success is-small"
           />
         </td>
-        <td style="width: 45%"></td>
+        <td style="width: 45%; text-align: right">
+          <button
+            v-if="chamcong.length > 0"
+            @click="exportExcel"
+            class="button is-small is-danger"
+          >
+            Download Execl
+          </button>
+        </td>
       </tr>
     </table>
 
@@ -79,11 +87,6 @@
           >
             Mã tổ
           </td>
-          <!-- <td
-                style="text-align: center; font-weight: bold; font-size: small"
-              >
-                Tên tổ
-              </td> -->
           <td
             style="
               text-align: center;
@@ -112,7 +115,17 @@
               width: 6%;
             "
           >
-            Ca 2 / 3
+            Ca 2
+          </td>
+          <td
+            style="
+              text-align: center;
+              font-weight: bold;
+              font-size: small;
+              width: 6%;
+            "
+          >
+            Ca 3
           </td>
           <td
             style="
@@ -164,21 +177,6 @@
           >
             Nghỉ L
           </td>
-          <!-- <td
-                style="text-align: center; font-weight: bold; font-size: small"
-              >
-                Ghi chú
-              </td>
-              <td
-                style="
-                  text-align: center;
-                  font-weight: bold;
-                  font-size: small;
-                  width: 5%;
-                "
-              >
-                Xác nhận
-              </td> -->
         </tr>
         <tr
           v-for="(item, index) in sortedTableData"
@@ -186,13 +184,14 @@
           :class="{ highlighted: item === highlightedRow }"
           @click="[highlightRow(item), detail(item)]"
         >
-          <td style="font-size: smaller">
-            <input
+          <td style="font-size: smaller; text-align: center">
+            <!-- <input
               type="number"
               v-model="item.sort"
               class="input is-small"
               @blur="sortTable"
-            />
+            /> -->
+            {{ index + 1 }}
           </td>
           <td style="font-size: smaller">{{ item.mapx }}</td>
           <!-- <td style="font-size: smaller">{{ item.tenpx }}</td> -->
@@ -205,7 +204,10 @@
             {{ item.ca_1 }}
           </td>
           <td style="font-size: smaller; text-align: center">
-            {{ item.ca_2_3 }}
+            {{ item.ca_2 }}
+          </td>
+          <td style="font-size: smaller; text-align: center">
+            {{ item.ca_3 }}
           </td>
           <td style="font-size: smaller; text-align: center">
             {{ item.nghip }}
@@ -388,34 +390,42 @@
           <td style="font-size: small">{{ item.tencn }}</td>
           <td style="font-size: small">{{ item.mapx }}</td>
           <td style="font-size: small">{{ item.mato }}</td>
-          <td
-            v-if="item.machamcong == 1"
-            style="font-size: small; text-align: center"
-          >
-            {{ item.machamcong }}
-          </td>
-          <td v-else style="font-size: small; text-align: center"></td>
-          <td
-            v-if="item.machamcong == 2"
-            style="font-size: small; text-align: center"
-          >
-            {{ item.machamcong }}
-          </td>
-          <td v-else style="font-size: small; text-align: center"></td>
-          <td
-            v-if="item.machamcong == 3"
-            style="font-size: small; text-align: center"
-          >
-            {{ item.machamcong }}
-          </td>
-          <td v-else style="font-size: small; text-align: center"></td>
-          <td
-            v-if="item.machamcong == 'P'"
-            style="font-size: small; text-align: center"
-          >
-            {{ item.machamcong }}
-          </td>
-          <td v-else style="font-size: small; text-align: center"></td>
+          <template>
+            <td
+              v-if="item.machamcong == 1"
+              style="font-size: small; text-align: center"
+            >
+              {{ item.machamcong }}
+            </td>
+            <td v-else style="font-size: small; text-align: center"></td>
+          </template>
+          <template>
+            <td
+              v-if="item.machamcong == 2"
+              style="font-size: small; text-align: center"
+            >
+              {{ item.machamcong }}
+            </td>
+            <td v-else style="font-size: small; text-align: center"></td>
+          </template>
+          <template>
+            <td
+              v-if="item.machamcong == 3"
+              style="font-size: small; text-align: center"
+            >
+              {{ item.machamcong }}
+            </td>
+            <td v-else style="font-size: small; text-align: center"></td>
+          </template>
+          <template>
+            <td
+              v-if="item.machamcong == 'P'"
+              style="font-size: small; text-align: center"
+            >
+              {{ item.machamcong }}
+            </td>
+            <td v-else style="font-size: small; text-align: center"></td>
+          </template>
           <td
             v-if="item.machamcong == 'M'"
             style="font-size: small; text-align: center"
@@ -464,7 +474,7 @@
 </template>
 
 <script>
-import { template } from "lodash";
+import XLSX from "xlsx";
 import Swal from "sweetalert2";
 export default {
   middleware: "auth",
@@ -525,6 +535,14 @@ export default {
     highlightRow(row) {
       this.highlightedRow = row;
     },
+    // Hàm chuyển đổi định dạng ngày
+    formatDate(dateString) {
+      const dateObj = new Date(dateString);
+      const day = String(dateObj.getDate()).padStart(2, "0");
+      const month = String(dateObj.getMonth() + 1).padStart(2, "0");
+      const year = dateObj.getFullYear();
+      return `${day}/${month}/${year}`;
+    },
 
     currentDateTime() {
       const current = new Date();
@@ -553,6 +571,7 @@ export default {
       this.chamcong = await this.$axios.$get(
         `/api/congnhan/baocaoquanso?ngaychamcong=${this.ngaychamcong}`
       );
+      // console.log(this.chamcong);
       if (this.chamcong.length < 0) {
         const Toast = Swal.mixin({
           toast: true,
@@ -570,6 +589,110 @@ export default {
           title: "Không có số liệu",
         });
       }
+    },
+    // xuất execl
+    exportExcel() {
+      const selectedColumns = this.chamcong.map((item) => {
+        return {
+          stt: item.sort_order,
+          mapx: item.mapx,
+          tenpx: item.tenpx,
+          mato: item.mato,
+          tento: item.tento,
+          ngaychamcong: this.formatDate(item.ngaychamcong),
+          tong_nguoi: item.tong_nguoi,
+          ca_1: item.ca_1,
+          ca_2: item.ca_2,
+          ca_3: item.ca_3,
+          nghip: item.nghip,
+          nghim: item.nghim,
+          nghik: item.nghik,
+          nghix: item.nghix,
+          nghil: item.nghil,
+        };
+      });
+
+      // Tính tổng cho các cột
+      // const totalTongnhan = this.report.reduce((sum, item) => {
+      //   return sum + item.tongnhan;
+      // }, 0);
+      // const totalCk1 = this.report.reduce((sum, item) => {
+      //   return sum + item.ck1;
+      // }, 0);
+      // const totalCk2 = this.report.reduce((sum, item) => {
+      //   return sum + item.ck2;
+      // }, 0);
+      // const totalTongck = this.report.reduce((sum, item) => {
+      //   return sum + item.chuyenkhoan;
+      // }, 0);
+      // const totalTm = this.report.reduce((sum, item) => {
+      //   return sum + item.tienmat;
+      // }, 0);
+
+      const data_export = [...selectedColumns];
+
+      // Thêm dòng tổng vào dữ liệu
+      // const data_export = [
+      //   ...selectedColumns,
+      //   {
+      //     hotennv: "Tổng cộng",
+      //     tongnhan: formatNumber(totalTongnhan),
+      //     ck1: formatNumber(totalCk1),
+      //     ck2: formatNumber(totalCk2),
+      //     chuyenkhoan: formatNumber(totalTongck),
+      //     tienmat: formatNumber(totalTm),
+      //     ghichu: "",
+      //   },
+      // ];
+
+      const columnNames = [
+        { header: "STT", key: "stt" },
+        { header: "Mã phân xưởng", key: "mapx" },
+        { header: "Tên phân xưởng", key: "tenpx" },
+        { header: "Mã tổ", key: "mato" },
+        { header: "Tên tổ", key: "tento" },
+        { header: "Ngày chấm công", key: "ngaychamcong" },
+        { header: "Tổng người", key: "tong_nguoi" },
+        { header: "Ca 1", key: "ca_1" },
+        { header: "Ca 2", key: "ca_2" },
+        { header: "Ca 3", key: "ca_3" },
+        { header: "Nghỉ P (Phép)", key: "nghip" },
+        { header: "Nghỉ M (Ốm)", key: "nghim" },
+        { header: "Nghỉ K (Không phép)", key: "nghik" },
+        { header: "Nghỉ X (Kế hoạch)", key: "nghix" },
+        { header: "Nghỉ L (Lễ)", key: "nghil" },
+      ];
+
+      const data = data_export.map((item) => {
+        const row = {};
+        columnNames.forEach((column) => {
+          row[column.header] = item[column.key];
+        });
+        return row;
+      });
+
+      const filenameyc = `baocaoquansotheongay_${this.ngaychamcong}`;
+      const worksheet = XLSX.utils.json_to_sheet(data);
+      // const workbook = { Sheets: { data: worksheet }, SheetNames: ["data"] };
+      const workbook = {
+        Sheets: { [filenameyc]: worksheet },
+        SheetNames: [filenameyc],
+      };
+      const excelBuffer = XLSX.write(workbook, {
+        bookType: "xlsx",
+        type: "array",
+      });
+      const fileName = `${filenameyc}`;
+      const blob = new Blob([excelBuffer], {
+        type: "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet;charset=UTF-8",
+      });
+      const url = URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.setAttribute("download", filenameyc + ".xlsx");
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
     },
 
     async detail(data) {
