@@ -3423,26 +3423,26 @@ export default {
           `/api/lokehoach/howmuchlosxfromlokhpx?_id_khpx=${data._id_khpx}`
         );
 
-        // this.$axios.$patch(
-        //   `/api/lokehoach/losanxuat/soluongcnnandststus/${data._id}`,
-        //   data
-        // );
+        this.$axios.$patch(
+          `/api/lokehoach/losanxuat/soluongcnnandststus/${data._id}`,
+          data
+        );
 
-        // const Toast = Swal.mixin({
-        //   toast: true,
-        //   position: "top-end",
-        //   showConfirmButton: false,
-        //   timer: 3000,
-        //   timerProgressBar: true,
-        //   didOpen: (toast) => {
-        //     toast.addEventListener("mouseenter", Swal.stopTimer);
-        //     toast.addEventListener("mouseleave", Swal.resumeTimer);
-        //   },
-        // });
-        // Toast.fire({
-        //   icon: "success",
-        //   title: "Đã cập nhật",
-        // });
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+        Toast.fire({
+          icon: "success",
+          title: "Đã cập nhật",
+        });
       } catch (error) {
         // console.log(error);
         const Toast = Swal.mixin({

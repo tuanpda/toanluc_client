@@ -2073,9 +2073,39 @@ export default {
       }).then((willDelete) => {
         if (willDelete) {
           if (arrlosanxuat.length > 0) {
-            alert("da co lo sx dc tao");
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+              },
+            });
+            Toast.fire({
+              icon: "error",
+              title:
+                "Đã có lô sản xuất phát sinh từ lô KHPX này, không thể xóa!!!",
+            });
           } else if (trangthai !== 0) {
-            alert("trang thai lo chua trả về 0");
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+              },
+            });
+            Toast.fire({
+              icon: "error",
+              title:
+                "Chỉ có thể xoá lô nhà máy có trạng thái = 0, không thể xóa!!!",
+            });
           } else {
             this.$axios
               .$delete(`/api/lokehoach/kehoachphanxuong/${pl._id}`)

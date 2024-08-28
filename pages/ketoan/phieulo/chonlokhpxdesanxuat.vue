@@ -1143,7 +1143,7 @@ export default {
     // 3: Các hàm chức năng
     // Đổi trạng thái cho lô kế hoạch phân xưởng (sau này yêu cầu đổi toàn bộ lô cùng mã hiệu)
     async onChange_status(e, data) {
-      console.log(data.status);
+      // console.log(data.status);
     },
 
     async onChange_status1(e, data) {
@@ -1158,7 +1158,7 @@ export default {
       // console.log(dt)
       this.status = dt;
       const previousStatus = data.status; // Lưu giá trị trước đó
-      console.log(data);
+      // console.log(data);
 
       const newStatus = e.target.value;
       // console.log(data);

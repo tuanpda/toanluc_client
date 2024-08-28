@@ -124,6 +124,16 @@
                 STT
               </th>
               <th
+                style="
+                  text-align: center;
+                  font-size: small;
+                  font-weight: bold;
+                  width: 3%;
+                "
+              >
+                _ID
+              </th>
+              <th
                 @click="sortTable('makh')"
                 style="
                   text-align: center;
@@ -287,6 +297,15 @@
                 "
               >
                 {{ index + 1 }}
+              </td>
+              <td
+                style="
+                  text-align: center;
+                  font-size: small;
+                  background-color: whitesmoke;
+                "
+              >
+                {{ pl._id }}
               </td>
               <td @click="getdatakhnhamay(pl)" style="font-size: small">
                 <!-- <input type="text" class="input is-small" v-model="pl.makh"> -->
@@ -869,6 +888,11 @@
               <th
                 style="text-align: center; font-size: small; font-weight: bold"
               >
+                _ID
+              </th>
+              <th
+                style="text-align: center; font-size: small; font-weight: bold"
+              >
                 Kế hoạch năm
               </th>
               <th
@@ -933,6 +957,11 @@
                 Trạng thái
               </th>
               <th
+                style="text-align: center; font-size: small; font-weight: bold"
+              >
+                Change Status
+              </th>
+              <th
                 style="
                   text-align: center;
                   font-size: small;
@@ -961,6 +990,9 @@
             >
               <td style="text-align: center; font-size: small">
                 {{ index + 1 }}
+              </td>
+              <td style="text-align: center; font-size: small">
+                {{ item._id }}
               </td>
               <td style="text-align: center; font-size: small">
                 {{ item.kehoachnam }}
@@ -1054,6 +1086,22 @@
                 </td>
                 <td v-else style="font-size: small; text-align: center"></td>
               </template>
+              <td
+                v-if="checkRole == 'admin' && item.status !== 0"
+                style="font-size: small"
+              >
+                <div class="select is-small is-fullwidth">
+                  <select
+                    id=""
+                    @change="onChange_status($event, item)"
+                    v-model="item.status"
+                  >
+                    <option value="0">0</option>
+                    <option value="1">DK</option>
+                  </select>
+                </div>
+              </td>
+              <td v-else></td>
               <td>
                 <button
                   @click="onUpdateKhnm(item)"
@@ -1239,6 +1287,7 @@ export default {
         createdBy: this.$auth.$state.user.username,
         updatedAt: "",
       },
+      checkRole: this.$auth.$state.user.role,
       phieulokh: {},
       phieulosx: {},
       isActive: false,
@@ -1909,6 +1958,10 @@ export default {
       );
     },
 
+    async onChange_status(e, data) {
+      console.log(data.status);
+    },
+
     async ghidulieu() {
       // console.log(this.items_khpx)
       // console.log(this.mark_kehoachnam)
@@ -2345,7 +2398,12 @@ export default {
       arrLokehoachphanxuong = await this.$axios.$get(
         `/api/lokehoach/predelete_lonhamay?_id=${pl._id}`
       );
-      console.log(arrLokehoachphanxuong);
+      // console.log(arrLokehoachphanxuong);
+
+      // nếu không tồn tại lô sản xuất thì status phải bằng 0
+      let trangthai = pl.status;
+      // console.log(trangthai);
+
       swal({
         title: "Bạn muốn xóa?",
         text: "Chỉ được xóa lô nhà máy chưa phát sinh lô kế hoạch phân xưởng!",
@@ -2353,18 +2411,7 @@ export default {
         dangerMode: true,
       }).then((willDelete) => {
         if (willDelete) {
-          if (arrLokehoachphanxuong.length <= 0) {
-            this.$axios
-              .$delete(`/api/lokehoach/kehoachnhamay/${pl._id}`)
-              .then((response) => {
-                const index = this.kehoachphanxuong.findIndex(
-                  (khnm) => khnm._id === pl._id
-                ); // find the post index
-                if (~index)
-                  // if the post exists in array
-                  this.kehoachphanxuong.splice(index, 1); //delete the post
-              });
-          } else {
+          if (arrLokehoachphanxuong.length > 0) {
             const Toast = Swal.mixin({
               toast: true,
               position: "top-end",
@@ -2380,6 +2427,48 @@ export default {
               icon: "error",
               title:
                 "Đã có lô kế hoạch phân xưởng phát sinh từ lô nhà máy này, không thể xóa!!!",
+            });
+          } else if (trangthai !== 0) {
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+              },
+            });
+            Toast.fire({
+              icon: "error",
+              title: "Lô nhà máy chưa ở trạng thái = 0, không thể xóa!!!",
+            });
+          } else {
+            this.$axios
+              .$delete(`/api/lokehoach/kehoachnhamay/${pl._id}`)
+              .then((response) => {
+                const index = this.kehoachphanxuong.findIndex(
+                  (khnm) => khnm._id === pl._id
+                ); // find the post index
+                if (~index)
+                  // if the post exists in array
+                  this.kehoachphanxuong.splice(index, 1); //delete the post
+              });
+            const Toast = Swal.mixin({
+              toast: true,
+              position: "top-end",
+              showConfirmButton: false,
+              timer: 3000,
+              timerProgressBar: true,
+              didOpen: (toast) => {
+                toast.addEventListener("mouseenter", Swal.stopTimer);
+                toast.addEventListener("mouseleave", Swal.resumeTimer);
+              },
+            });
+            Toast.fire({
+              icon: "success",
+              title: "Đã xóa dữ liệu lô nhà máy",
             });
           }
         } else {
