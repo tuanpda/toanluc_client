@@ -508,7 +508,7 @@
             </template>
 
             <td style="font-size: small">
-              <div v-if="item.status != 3" class="select is-small is-fullwidth">
+              <div class="select is-small is-fullwidth">
                 <select
                   id=""
                   @change="onChange_status($event, item)"
@@ -1143,6 +1143,10 @@ export default {
     // 3: Các hàm chức năng
     // Đổi trạng thái cho lô kế hoạch phân xưởng (sau này yêu cầu đổi toàn bộ lô cùng mã hiệu)
     async onChange_status(e, data) {
+      console.log(data.status);
+    },
+
+    async onChange_status1(e, data) {
       // console.log(data)
       // 0: chưa đk; 1: dự kiến đăng ký (DK); 2: sản xuất (SX); 3: hoàn thành (HT)
       var id = e.target.value;
@@ -1153,6 +1157,10 @@ export default {
       let dt = id;
       // console.log(dt)
       this.status = dt;
+      const previousStatus = data.status; // Lưu giá trị trước đó
+      console.log(data);
+
+      const newStatus = e.target.value;
       // console.log(data);
       // ĐOẠN NÀY LẬP LUẬN NHƯ SAU: CÓ CÁC TRH NÀY XẢY RA
       // muốn đổi trạng thái của lô kế hoạch phân xưởng cần phải đáp ứng các điều kiện như sau
@@ -1208,18 +1216,75 @@ export default {
       // TÓM LẠI: VIỆC CHUYỂN TRẠNG THÁI SẢN XUẤT CỦA LÔ KHPX VÀ LÔ NM SẼ THỰC HIỆN Ở VIỆC TẠO RA LÔ SX (MÀN HÌNH TẠO LÔ SX)
       // VIỆC CHUYỂN TỪ 0 THÀNH ĐK THÌ ĐÃ THỰC HIỆN Ở MENU ĐĂNG KÝ LÔ KHPX VÀ MENU CHỌN LÔKH ĐỂ SX RỒI
       // CHUYỂN TRẠNG THÁI TỪ 0 THÀNH 1 LUÔN CHO LÔ KHPX (tắt combox SX chỉ để DK thôi)
-      const res = await this.$axios.$patch(
-        `/api/lokehoach/updatelokehoachpxatdangkylodesanxuat/${data._id}`,
-        data
-      );
-      console.log(res);
+
+      // ** Vậy thì việc chuyển từ ĐK thành 0 cần được kiểm soát
+      // nếu 1 lô KHPX đã có phát sinh lô SX thì không được chuyển về 0
+      // if có tồn tại lô sản xuất thì không được về 0
+      // if (newStatus == 0) {
+      //   const resLsx = await this.$axios.get(
+      //     `/api/lokehoach/howmuchlosxfromlokhpx?_id_khpx=${data._id}`
+      //   );
+
+      //   if (resLsx.data.length > 0) {
+      //     // Đã phát sinh Lô sản xuất, không cho phép chuyển về 0
+      //     data.status = previousStatus;
+
+      //     const Toast = Swal.mixin({
+      //       toast: true,
+      //       position: "top-end",
+      //       showConfirmButton: false,
+      //       timer: 1000,
+      //       timerProgressBar: true,
+      //       didOpen: (toast) => {
+      //         toast.addEventListener("mouseenter", Swal.stopTimer);
+      //         toast.addEventListener("mouseleave", Swal.resumeTimer);
+      //       },
+      //     });
+      //     Toast.fire({
+      //       icon: "error",
+      //       title: `Đã phát sinh Lô sản xuất không thể chuyển về trạng thái 0`,
+      //     });
+      //     return; // Kết thúc hàm tại đây
+      //   }
+      // } else {
+      //   const res = await this.$axios.$patch(
+      //     `/api/lokehoach/updatelokehoachpxatdangkylodesanxuat/${data._id}`,
+      //     data
+      //   );
+      // }
+
+      // const resLsx = await this.$axios.get(
+      //   `/api/lokehoach/howmuchlosxfromlokhpx?_id_khpx=${data._id}`
+      // );
+
+      // if (resLsx.data.length <= 0) {
+      //   const Toast = Swal.mixin({
+      //     toast: true,
+      //     position: "top-end",
+      //     showConfirmButton: false,
+      //     timer: 1000,
+      //     timerProgressBar: true,
+      //     didOpen: (toast) => {
+      //       toast.addEventListener("mouseenter", Swal.stopTimer);
+      //       toast.addEventListener("mouseleave", Swal.resumeTimer);
+      //     },
+      //   });
+      //   Toast.fire({
+      //     icon: "error",
+      //     title: `Đã phát sinh Lô sản xuất không thể chuyển về trạng thái 0`,
+      //   });
+      // } else {
+      //   const res = await this.$axios.$patch(
+      //     `/api/lokehoach/updatelokehoachpxatdangkylodesanxuat/${data._id}`,
+      //     data
+      //   );
+      // }
     },
 
     // update trạng thái hoàn thành cho lô KHPX
     async updateHoanthanh(value, data) {
       // cập nhật ngày hoàn thành thực tế và status=3
       //   console.log(data.ngayhoanthanhtt);
-      console.log(value);
       try {
         if (value == "") {
           const data_update = {

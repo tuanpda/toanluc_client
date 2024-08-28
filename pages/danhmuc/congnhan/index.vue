@@ -432,6 +432,33 @@
                   </div>
                 </div>
 
+                <div class="columns">
+                  <div class="column">
+                    <div class="field">
+                      <label class="label">Ngày vào công ty</label>
+                      <div class="control">
+                        <input
+                          v-model.trim="form.ngayvaocongty"
+                          class="input is-small"
+                          type="date"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="column">
+                    <div class="field">
+                      <label class="label">Ngày nghỉ việc</label>
+                      <div class="control">
+                        <input
+                          v-model.trim="form.ngaynghiviec"
+                          class="input is-small"
+                          type="date"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 <div class="columns" style="margin-top: 10px">
                   <div class="column">
                     <button
@@ -678,6 +705,49 @@
                     </div>
                   </div>
 
+                  <div class="columns">
+                    <div class="column">
+                      <div class="field">
+                        <label class="label">Ngày vào công ty</label>
+                        <div class="control">
+                          <input
+                            class="input is-small"
+                            type="date"
+                            :value="
+                              formattedNgayvaocongty(form_update.ngayvaocongty)
+                            "
+                            @blur="
+                              updateNgayvaocongty(
+                                $event.target.value,
+                                form_update.ngayvaocongty
+                              )
+                            "
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="column">
+                      <div class="field">
+                        <label class="label">Ngày nghỉ việc</label>
+                        <div class="control">
+                          <input
+                            class="input is-small"
+                            type="date"
+                            :value="
+                              formattedNgaynghiviec(form_update.ngaynghiviec)
+                            "
+                            @blur="
+                              updateNgaynghiviec(
+                                $event.target.value,
+                                form_update.ngaynghiviec
+                              )
+                            "
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                   <div class="columns" style="margin-top: 10px">
                     <div class="column">
                       <button
@@ -770,6 +840,8 @@ export default {
         congdoan: 50000,
         createdAt: "",
         createdBy: this.$auth.$state.user.username,
+        ngayvaocongty: "",
+        ngaynghiviec: "",
         // updatedAt: new Date().toISOString().substr(0, 10),
       },
       checkGhichu: false,
@@ -916,6 +988,30 @@ export default {
     },
   },
 
+  computed: {
+    formattedNgayvaocongty() {
+      return function (ngayvaocongty) {
+        if (!ngayvaocongty) return "";
+        const date = new Date(ngayvaocongty);
+        const year = date.getFullYear();
+        const month = ("0" + (date.getMonth() + 1)).slice(-2);
+        const day = ("0" + date.getDate()).slice(-2);
+        return `${year}-${month}-${day}`;
+      };
+    },
+
+    formattedNgaynghiviec() {
+      return function (ngaynghiviec) {
+        if (!ngaynghiviec) return "";
+        const date = new Date(ngaynghiviec);
+        const year = date.getFullYear();
+        const month = ("0" + (date.getMonth() + 1)).slice(-2);
+        const day = ("0" + date.getDate()).slice(-2);
+        return `${year}-${month}-${day}`;
+      };
+    },
+  },
+
   mounted() {
     this.getDmcn();
     this.currentDateTime();
@@ -979,6 +1075,18 @@ export default {
 
     async getPhanxuong() {
       this.phanxuong = await this.$axios.$get(`/api/phongban/allphanxuong`);
+    },
+
+    updateNgayvaocongty(ngayvaocongty) {
+      // console.log(ngayvaocongty);
+      this.form_update.ngayvaocongty = ngayvaocongty;
+      // console.log(this.form_update);
+    },
+
+    updateNgaynghiviec(ngaynghiviec) {
+      console.log(ngaynghiviec);
+      this.form_update.ngaynghiviec = ngaynghiviec;
+      console.log(this.form_update);
     },
 
     async showmapx(e) {

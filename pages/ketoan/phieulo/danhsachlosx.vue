@@ -1991,6 +1991,10 @@ export default {
     // 3: Các hàm chức năng
     // thay đổi status
     async onChange_status(e, item) {
+      // code ngày 25/8/2024
+      // khi đổi trạng thái lô sx từ 0 -> 1 hoặc là 2
+      // khi đổi sang 1 (DK) thì không có sự kiện gì xảy ra
+      // khi đổi sang 2 (SX) thì phải kiểm tra để tự động biến lô kế hoạch phân xưởng thành SX (và lưu ý )
       // 0: chưa đk; 1: dự kiến đăng ký (DK); 2: sản xuất (SX); 3: hoàn thành (HT)
       var id = e.target.value;
       // var name = e.target.options[e.target.options.selectedIndex].text;
@@ -2037,6 +2041,8 @@ export default {
       } else {
         this.$axios.$patch(`/api/lokehoach/losanxuat/status/${item._id}`, item);
       }
+
+      // điều chỉnh lại ngày 15 tháng 8 năm 2024
     },
 
     // in PDF

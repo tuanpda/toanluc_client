@@ -238,6 +238,36 @@
                 ></a>
               </td> -->
         </tr>
+        <tr style="font-size: small">
+          <td colspan="3" style="font-weight: bold">Tổng cộng</td>
+          <td style="font-weight: bold; text-align: center">
+            {{ sumTongnguoi }}
+          </td>
+          <td style="font-weight: bold; text-align: center">
+            {{ sumTongca1 }}
+          </td>
+          <td style="font-weight: bold; text-align: center">
+            {{ sumTongca2 }}
+          </td>
+          <td style="font-weight: bold; text-align: center">
+            {{ sumTongca3 }}
+          </td>
+          <td style="font-weight: bold; text-align: center">
+            {{ sumTongnghip }}
+          </td>
+          <td style="font-weight: bold; text-align: center">
+            {{ sumTongnghim }}
+          </td>
+          <td style="font-weight: bold; text-align: center">
+            {{ sumTongnghik }}
+          </td>
+          <td style="font-weight: bold; text-align: center">
+            {{ sumTongnghix }}
+          </td>
+          <td style="font-weight: bold; text-align: center">
+            {{ sumTongnghil }}
+          </td>
+        </tr>
       </table>
 
       <table
@@ -520,6 +550,70 @@ export default {
     sortedTableData() {
       return [...this.chamcong];
     },
+
+    // 1. tổng số người
+    sumTongnguoi() {
+      return this.chamcong.reduce((total, cc) => {
+        const value = parseInt(cc.tong_nguoi, 10);
+        return total + (isNaN(value) ? 0 : value);
+      }, 0);
+    },
+    // 2. tổng số ca 1
+    sumTongca1() {
+      return this.chamcong.reduce((total, cc) => {
+        const value = parseInt(cc.ca_1, 10);
+        return total + (isNaN(value) ? 0 : value);
+      }, 0);
+    },
+    // tổng số ca 2
+    sumTongca2() {
+      return this.chamcong.reduce((total, cc) => {
+        const value = parseInt(cc.ca_2, 10);
+        return total + (isNaN(value) ? 0 : value);
+      }, 0);
+    },
+    // tổng số ca 3
+    sumTongca3() {
+      return this.chamcong.reduce((total, cc) => {
+        const value = parseInt(cc.ca_3, 10);
+        return total + (isNaN(value) ? 0 : value);
+      }, 0);
+    },
+    // tổng số nghỉ p
+    sumTongnghip() {
+      return this.chamcong.reduce((total, cc) => {
+        const value = parseInt(cc.nghip, 10);
+        return total + (isNaN(value) ? 0 : value);
+      }, 0);
+    },
+    // tổng số nghỉ m
+    sumTongnghim() {
+      return this.chamcong.reduce((total, cc) => {
+        const value = parseInt(cc.nghim, 10);
+        return total + (isNaN(value) ? 0 : value);
+      }, 0);
+    },
+    // tổng số nghỉ K
+    sumTongnghik() {
+      return this.chamcong.reduce((total, cc) => {
+        const value = parseInt(cc.nghik, 10);
+        return total + (isNaN(value) ? 0 : value);
+      }, 0);
+    },
+    // tổng số người
+    sumTongnghix() {
+      return this.chamcong.reduce((total, cc) => {
+        const value = parseInt(cc.nghix, 10);
+        return total + (isNaN(value) ? 0 : value);
+      }, 0);
+    },
+    // tổng số nghỉ l
+    sumTongnghil() {
+      return this.chamcong.reduce((total, cc) => {
+        const value = parseInt(cc.nghil, 10);
+        return total + (isNaN(value) ? 0 : value);
+      }, 0);
+    },
   },
 
   mounted() {
@@ -592,6 +686,12 @@ export default {
     },
     // xuất execl
     exportExcel() {
+      function formatNumber(number) {
+        const parts = number.toString().split(".");
+        parts[0] = parts[0].replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        return parts.join(".");
+      }
+
       const selectedColumns = this.chamcong.map((item) => {
         return {
           stt: item.sort_order,
@@ -613,12 +713,12 @@ export default {
       });
 
       // Tính tổng cho các cột
-      // const totalTongnhan = this.report.reduce((sum, item) => {
-      //   return sum + item.tongnhan;
-      // }, 0);
-      // const totalCk1 = this.report.reduce((sum, item) => {
-      //   return sum + item.ck1;
-      // }, 0);
+      const totalTongnguoichamcong = this.chamcong.reduce((sum, item) => {
+        return sum + item.tong_nguoi;
+      }, 0);
+      const totalCa1 = this.chamcong.reduce((sum, item) => {
+        return sum + item.ca_1;
+      }, 0);
       // const totalCk2 = this.report.reduce((sum, item) => {
       //   return sum + item.ck2;
       // }, 0);
@@ -629,21 +729,15 @@ export default {
       //   return sum + item.tienmat;
       // }, 0);
 
-      const data_export = [...selectedColumns];
-
       // Thêm dòng tổng vào dữ liệu
-      // const data_export = [
-      //   ...selectedColumns,
-      //   {
-      //     hotennv: "Tổng cộng",
-      //     tongnhan: formatNumber(totalTongnhan),
-      //     ck1: formatNumber(totalCk1),
-      //     ck2: formatNumber(totalCk2),
-      //     chuyenkhoan: formatNumber(totalTongck),
-      //     tienmat: formatNumber(totalTm),
-      //     ghichu: "",
-      //   },
-      // ];
+      const data_export = [
+        ...selectedColumns,
+        {
+          stt: "Tổng cộng",
+          tong_nguoi: formatNumber(totalTongnguoichamcong),
+          ca_1: formatNumber(totalCa1),
+        },
+      ];
 
       const columnNames = [
         { header: "STT", key: "stt" },

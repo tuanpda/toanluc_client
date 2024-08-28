@@ -3398,6 +3398,10 @@ export default {
     },
     // Hàm cập nhật nhanh khi gõ số lượng hoàn thành vào sẽ đổi trạng thái Lô sản xuất
     async updateStatus(data) {
+      // NGÀY 25 THÁNG 8 NĂM 2024
+      // XEM LẠI PHẦN CẬP NHẬT THÀNH SX KHI CHỌN SLNHANH=0
+      // CHƯA LƯU DB
+
       // yêu cầu là khi sửa số lượng cập nhật nhanh thì nếu > 0 thì update mỗi soluongkhsx
       // còn nếu <=0 thì soluongkhsx = 0 và ngayhoanthanhtt == null và status == 2
       try {
@@ -3407,26 +3411,38 @@ export default {
           data.ngayhoanthanhtt = null;
           data.status = 2;
         }
-        this.$axios.$patch(
-          `/api/lokehoach/losanxuat/soluongcnnandststus/${data._id}`,
-          data
+
+        // yêu cầu mới từ đối tác là khi nhập slnhanh chỗ này thì:
+        // 1: kiểm tra xem lô sản xuất này có lô khpx cha và lô nhà máy cha nào?? getinfofatheroflosx
+        const res = await this.$axios.get(
+          `/api/lokehoach/getinfofatheroflosx?_id=${data._id_khpx}`
         );
 
-        const Toast = Swal.mixin({
-          toast: true,
-          position: "top-end",
-          showConfirmButton: false,
-          timer: 3000,
-          timerProgressBar: true,
-          didOpen: (toast) => {
-            toast.addEventListener("mouseenter", Swal.stopTimer);
-            toast.addEventListener("mouseleave", Swal.resumeTimer);
-          },
-        });
-        Toast.fire({
-          icon: "success",
-          title: "Đã cập nhật",
-        });
+        // 2: biết được rồi thì xem lô khpx này đã có bao nhiêu lô sx được sinh ra
+        const resLsx = await this.$axios.get(
+          `/api/lokehoach/howmuchlosxfromlokhpx?_id_khpx=${data._id_khpx}`
+        );
+
+        // this.$axios.$patch(
+        //   `/api/lokehoach/losanxuat/soluongcnnandststus/${data._id}`,
+        //   data
+        // );
+
+        // const Toast = Swal.mixin({
+        //   toast: true,
+        //   position: "top-end",
+        //   showConfirmButton: false,
+        //   timer: 3000,
+        //   timerProgressBar: true,
+        //   didOpen: (toast) => {
+        //     toast.addEventListener("mouseenter", Swal.stopTimer);
+        //     toast.addEventListener("mouseleave", Swal.resumeTimer);
+        //   },
+        // });
+        // Toast.fire({
+        //   icon: "success",
+        //   title: "Đã cập nhật",
+        // });
       } catch (error) {
         // console.log(error);
         const Toast = Swal.mixin({
@@ -3449,6 +3465,14 @@ export default {
 
     // cập nhật ngày hoàn thành thực tế
     async updateNgayhoanttt(value, item) {
+      // logic ngày 25/8/2024
+      // họp cùng anh tiến
+      // KHI LÔ SẢN XUẤT ĐƯỢC CẬP NHẬT NGÀY HOÀN THÀNH THỰC TẾ (TẠM THỜI) THÌ LÔ TRỞ THÀNH TRẠNG THÁI HOÀN THÀNH
+      // * YÊU CẦU:
+      // 1: LÔ KẾ HOẠCH PHÂN XƯỞNG (CHA CỦA LÔ SX NÀY) PHẢI TRỞ THÀNH TRẠNG THÁI SẢN XUẤT (STATUS=2)
+      // 2: LÔ NHÀ MÁY (CHA CỦA LÔ KẾ HOẠCH PHÂN XƯỞNG - ÔNG CỦA LÔ SX) PHẢI TRỞ THÀNH TRẠNG THÁI SẢN XUẤT (STATUS=2)
+
+      // logic cũ
       // yêu cầu là nếu cập nhật ngày hoàn thành tt thì thay đổi status=3
       // và nếu muốn ngày này bằng null thì thay đổi số lượng cập nhật nhanh thành 0
       try {

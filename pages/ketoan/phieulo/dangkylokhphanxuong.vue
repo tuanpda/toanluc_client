@@ -1806,7 +1806,7 @@ export default {
           });
           return;
         } else {
-          console.log(this.dataLonm);
+          // console.log(this.dataLonm);
           // kiểm tra lô nhà máy đang ở trạng thái nào?
           const resStatusLNM = await this.$axios.$get(
             `/api/lokehoach/checkstatuslonhamay?_id=${this.dataLonm._id}`
@@ -2049,10 +2049,22 @@ export default {
       // lấy ra _id, mã kế hoạch, mã lô nhà máy để xác định là duy nhất
       // console.log(pl)
       let arrlosanxuat;
+      // arrlosanxuat = await this.$axios.$get(
+      //   `/api/lokehoach/predelete_lokehoachpx?_id=${pl._id}`
+      // );
+
+      // code lại ngày 25 tháng 8 năm 2024
+      // đoạn này chỉ cần xem nếu có lô kế hoạch phân xưởng tồn tại thì không cho xoá. ngược lại thì cho
+      // 1. tìm xem có lô sản xuất nào tồn tại có _id của lô kế hoạch phân xưởng này không
       arrlosanxuat = await this.$axios.$get(
         `/api/lokehoach/predelete_lokehoachpx?_id=${pl._id}`
       );
-      // console.log(arrlosanxuat)
+      // console.log(arrlosanxuat);
+
+      // nếu không tồn tại lô sản xuất thì status phải bằng 0
+      let trangthai = pl.status;
+      // console.log(trangthai);
+
       swal({
         title: "Bạn muốn xóa?",
         text: "Chỉ được xóa lô kế hoạch phân xưởng khi chưa có lô sản xuất được giao!",
@@ -2060,7 +2072,11 @@ export default {
         dangerMode: true,
       }).then((willDelete) => {
         if (willDelete) {
-          if (arrlosanxuat.length <= 0) {
+          if (arrlosanxuat.length > 0) {
+            alert("da co lo sx dc tao");
+          } else if (trangthai !== 0) {
+            alert("trang thai lo chua trả về 0");
+          } else {
             this.$axios
               .$delete(`/api/lokehoach/kehoachphanxuong/${pl._id}`)
               .then((response) => {
@@ -2086,23 +2102,6 @@ export default {
             Toast.fire({
               icon: "success",
               title: "Đã xóa dữ liệu kế hoạch phân xưởng",
-            });
-          } else {
-            const Toast = Swal.mixin({
-              toast: true,
-              position: "top-end",
-              showConfirmButton: false,
-              timer: 3000,
-              timerProgressBar: true,
-              didOpen: (toast) => {
-                toast.addEventListener("mouseenter", Swal.stopTimer);
-                toast.addEventListener("mouseleave", Swal.resumeTimer);
-              },
-            });
-            Toast.fire({
-              icon: "error",
-              title:
-                "Đã có lô sản xuất phát sinh từ lô Kế hoạch PX này, không thể xóa!!!",
             });
           }
         } else {

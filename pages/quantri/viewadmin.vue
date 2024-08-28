@@ -5173,8 +5173,8 @@ export default {
           idlokehoachnhamay: idlokehoachnhamay,
           ngaybatdautt: minNgayBdThucTe,
           ngayketthuctt: maxNgayHoanThanhTt,
-          tonghong: totalHong,
-          tongdat: totalDat,
+          // tonghong: totalHong,
+          // tongdat: totalDat,
           status: 3,
         };
 
