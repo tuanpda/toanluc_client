@@ -484,6 +484,34 @@
                     </div>
                   </div>
                 </div>
+
+                <div class="columns">
+                  <div class="column">
+                    <div class="field">
+                      <label class="label">Ngày vào công ty</label>
+                      <div class="control">
+                        <input
+                          v-model.trim="form.ngayvaocongty"
+                          class="input is-small"
+                          type="date"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                  <div class="column">
+                    <div class="field">
+                      <label class="label">Ngày nghỉ việc</label>
+                      <div class="control">
+                        <input
+                          v-model.trim="form.ngaynghiviec"
+                          class="input is-small"
+                          type="date"
+                        />
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
                 <div class="columns">
                   <div class="column is-8">
                     <div class="field">
@@ -846,6 +874,50 @@
                       </div>
                     </div>
                   </div>
+
+                  <div class="columns">
+                    <div class="column">
+                      <div class="field">
+                        <label class="label">Ngày vào công ty</label>
+                        <div class="control">
+                          <input
+                            class="input is-small"
+                            type="date"
+                            :value="
+                              formattedNgayvaocongty(form_update.ngayvaocongty)
+                            "
+                            @blur="
+                              updateNgayvaocongty(
+                                $event.target.value,
+                                form_update.ngayvaocongty
+                              )
+                            "
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div class="column">
+                      <div class="field">
+                        <label class="label">Ngày nghỉ việc</label>
+                        <div class="control">
+                          <input
+                            class="input is-small"
+                            type="date"
+                            :value="
+                              formattedNgaynghiviec(form_update.ngaynghiviec)
+                            "
+                            @blur="
+                              updateNgaynghiviec(
+                                $event.target.value,
+                                form_update.ngaynghiviec
+                              )
+                            "
+                          />
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                   <div class="columns" style="margin-top: 5px">
                     <div class="column">
                       <div class="field">
@@ -988,6 +1060,8 @@ export default {
         thuongdoanhthu: 0,
         ngaycong: 0,
         luongthemgio: 0,
+        ngayvaocongty: "",
+        ngaynghiviec: "",
       },
       hisform: {
         tenthaotac: null,
@@ -1148,6 +1222,28 @@ export default {
         return `${year}-${month}-${day}`;
       };
     },
+
+    formattedNgayvaocongty() {
+      return function (ngayvaocongty) {
+        if (!ngayvaocongty) return "";
+        const date = new Date(ngayvaocongty);
+        const year = date.getFullYear();
+        const month = ("0" + (date.getMonth() + 1)).slice(-2);
+        const day = ("0" + date.getDate()).slice(-2);
+        return `${year}-${month}-${day}`;
+      };
+    },
+
+    formattedNgaynghiviec() {
+      return function (ngaynghiviec) {
+        if (!ngaynghiviec) return "";
+        const date = new Date(ngaynghiviec);
+        const year = date.getFullYear();
+        const month = ("0" + (date.getMonth() + 1)).slice(-2);
+        const day = ("0" + date.getDate()).slice(-2);
+        return `${year}-${month}-${day}`;
+      };
+    },
   },
 
   mounted() {
@@ -1230,6 +1326,18 @@ export default {
 
     async getphongban() {
       this.phongban = await this.$axios.$get(`/api/phongban/allphongban`);
+    },
+
+    updateNgayvaocongty(ngayvaocongty) {
+      // console.log(ngayvaocongty);
+      this.form_update.ngayvaocongty = ngayvaocongty;
+      // console.log(this.form_update);
+    },
+
+    updateNgaynghiviec(ngaynghiviec) {
+      // console.log(ngaynghiviec);
+      this.form_update.ngaynghiviec = ngaynghiviec;
+      // console.log(this.form_update);
     },
 
     async checkManv() {
@@ -1338,7 +1446,7 @@ export default {
       });
       if (result.isConfirmed) {
         try {
-          console.log(this.form_update.chutaikhoan);
+          // console.log(this.form_update.chutaikhoan);
           if (this.form_update.ngaysinh == "") {
             const Toast = Swal.mixin({
               toast: true,
@@ -1382,6 +1490,8 @@ export default {
           data.append("trangthai", this.form_update.trangthai);
           data.append("updatedAt", this.form.createdAt);
           data.append("chutaikhoan", this.form_update.chutaikhoan);
+          data.append("ngayvaocongty", this.form_update.ngayvaocongty);
+          data.append("ngaynghiviec", this.form_update.ngaynghiviec);
 
           const res = await this.$axios.$patch(
             `/api/nhanvien/${this.form_update._id}`,
@@ -1509,6 +1619,8 @@ export default {
             data.append("thuongdoanhthu", this.form.thuongdoanhthu);
             data.append("ngaycong", this.form.ngaycong);
             data.append("luongthemgio", this.form.luongthemgio);
+            data.append("ngayvaocongty", this.form.ngayvaocongty);
+            data.append("ngaynghiviec", this.form.ngaynghiviec);
             data.append("sogiongoaigio", 0);
             data.append("sogiongoaigiochunhat", 0);
             const res = await this.$axios.$post(

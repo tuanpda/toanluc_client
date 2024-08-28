@@ -1084,9 +1084,9 @@ export default {
     },
 
     updateNgaynghiviec(ngaynghiviec) {
-      console.log(ngaynghiviec);
+      // console.log(ngaynghiviec);
       this.form_update.ngaynghiviec = ngaynghiviec;
-      console.log(this.form_update);
+      // console.log(this.form_update);
     },
 
     async showmapx(e) {
