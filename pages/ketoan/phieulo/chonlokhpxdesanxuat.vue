@@ -185,6 +185,16 @@
               STT
             </td>
             <td
+              style="
+                font-size: small;
+                text-align: center;
+                font-weight: 600;
+                width: 3%;
+              "
+            >
+              _ID
+            </td>
+            <td
               @click="sortTable('malonhamay')"
               style="
                 font-size: small;
@@ -399,6 +409,9 @@
           <tr v-for="(item, index) in paginatedTable" :key="index + 'llllkiq'">
             <td style="font-size: small; text-align: center">
               {{ index + 1 }}
+            </td>
+            <td style="font-size: small; text-align: center">
+              {{ item._id }}
             </td>
             <td style="font-size: small">{{ item.malonhamay }}</td>
             <td style="font-size: small; text-align: center">
@@ -1144,6 +1157,10 @@ export default {
     // Đổi trạng thái cho lô kế hoạch phân xưởng (sau này yêu cầu đổi toàn bộ lô cùng mã hiệu)
     async onChange_status(e, data) {
       // console.log(data.status);
+      const res = await this.$axios.$patch(
+        `/api/lokehoach/updatelokehoachpxatdangkylodesanxuat/${data._id}`,
+        data
+      );
     },
 
     async onChange_status1(e, data) {

@@ -40,7 +40,9 @@
           </td>
         </tr>
         <tr>
-          <td style="width: 45%"></td>
+          <td style="width: 45%; font-size: small">
+            <input type="checkbox" v-model="checkKhoivp" /> Khối văn phòng
+          </td>
           <td>
             <input
               v-model="startDate"
@@ -55,26 +57,40 @@
               class="input is-success is-small"
             />
           </td>
-          <td>
-            <div class="select is-small">
-              <select @change="getTo($event)">
-                <option selected>-- Chọn phân xưởng --</option>
-                <option v-for="item in phanxuong" :value="item.mapx">
-                  {{ item.mapx }} -- {{ item.tenpx }}
-                </option>
-              </select>
-            </div>
-          </td>
-          <td>
-            <div class="select is-small">
-              <select @change="loadBc($event)">
-                <option selected>-- Chọn tổ --</option>
-                <option v-for="item in tonhomid" :value="item.mapx">
-                  {{ item.mato }} -- {{ item.tento }}
-                </option>
-              </select>
-            </div>
-          </td>
+          <template v-if="checkKhoivp == false">
+            <td>
+              <div class="select is-small">
+                <select @change="getTo($event)">
+                  <option selected>-- Chọn phân xưởng --</option>
+                  <option v-for="item in phanxuong" :value="item.mapx">
+                    {{ item.mapx }} -- {{ item.tenpx }}
+                  </option>
+                </select>
+              </div>
+            </td>
+            <td>
+              <div class="select is-small">
+                <select @change="loadBc($event)">
+                  <option selected>-- Chọn tổ --</option>
+                  <option v-for="item in tonhomid" :value="item.mapx">
+                    {{ item.mato }} -- {{ item.tento }}
+                  </option>
+                </select>
+              </div>
+            </td>
+          </template>
+          <template v-else>
+            <td>
+              <div class="select is-small">
+                <select @change="getBCVP($event)">
+                  <option selected>-- Chọn bộ phận Văn phòng --</option>
+                  <option>VPBP</option>
+                  <option>VPGT1</option>
+                  <option>VPGT2</option>
+                </select>
+              </div>
+            </td>
+          </template>
           <td style="width: 45%; text-align: right">
             <vue-excel-xlsx
               :data="dataChamcong"
@@ -206,23 +222,28 @@
           <td></td>
         </tr>
         <tr>
-          <td colspan="3" style="font-size: small; text-align: left; font-weight: bold;">Tổng cộng</td>
-          <td style="font-size: small; text-align: center; font-weight: bold;">
+          <td
+            colspan="3"
+            style="font-size: small; text-align: left; font-weight: bold"
+          >
+            Tổng cộng
+          </td>
+          <td style="font-size: small; text-align: center; font-weight: bold">
             {{ sumTonglam }}
           </td>
-          <td style="font-size: small; text-align: center; font-weight: bold;">
+          <td style="font-size: small; text-align: center; font-weight: bold">
             {{ sumTongphep }}
           </td>
-          <td style="font-size: small; text-align: center; font-weight: bold;">
+          <td style="font-size: small; text-align: center; font-weight: bold">
             {{ sumTongom }}
           </td>
-          <td style="font-size: small; text-align: center; font-weight: bold;">
+          <td style="font-size: small; text-align: center; font-weight: bold">
             {{ sumTongkhongphep }}
           </td>
-          <td style="font-size: small; text-align: center; font-weight: bold;">
+          <td style="font-size: small; text-align: center; font-weight: bold">
             {{ sumTongkehoachlecuoituan }}
           </td>
-          <td style="font-size: small; text-align: center; font-weight: bold;">
+          <td style="font-size: small; text-align: center; font-weight: bold">
             {{ sumTongdanghi }}
           </td>
           <td></td>
@@ -247,6 +268,7 @@ export default {
       namcc: "",
       phanxuongcc: "",
       tocc: "",
+      checkKhoivp: false,
       columns: [
         {
           label: "Mã công nhân",
@@ -313,10 +335,7 @@ export default {
       );
     },
     sumTongdanghi() {
-      return this.dataChamcong.reduce(
-        (total, cc) => total + cc.tongnghi,
-        0
-      );
+      return this.dataChamcong.reduce((total, cc) => total + cc.tongnghi, 0);
     },
   },
 
@@ -416,6 +435,16 @@ export default {
       );
       // console.log(response.data);
       this.dataChamcong = response.data;
+    },
+
+    async getBCVP(e) {
+      var name = e.target.options[e.target.options.selectedIndex].text;
+      // console.log(name);
+      const response = await this.$axios.get(
+        `/api/congnhan/baocaotonghoptheophanxuong?mapx=${name}&tungay=${this.startDate}&denngay=${this.endDate}`
+      );
+      this.dataChamcong = response.data;
+      // console.log(this.dataChamcong);
     },
   },
 };

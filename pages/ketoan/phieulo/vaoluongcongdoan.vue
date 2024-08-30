@@ -3400,7 +3400,7 @@ export default {
     async updateStatus(data) {
       // NGÀY 25 THÁNG 8 NĂM 2024
       // XEM LẠI PHẦN CẬP NHẬT THÀNH SX KHI CHỌN SLNHANH=0
-      // CHƯA LƯU DB
+      // CHƯA LƯU DB (Đã lưu được, lý do là comment câu lệnh update phía bên dưới)
 
       // yêu cầu là khi sửa số lượng cập nhật nhanh thì nếu > 0 thì update mỗi soluongkhsx
       // còn nếu <=0 thì soluongkhsx = 0 và ngayhoanthanhtt == null và status == 2
@@ -3414,14 +3414,14 @@ export default {
 
         // yêu cầu mới từ đối tác là khi nhập slnhanh chỗ này thì:
         // 1: kiểm tra xem lô sản xuất này có lô khpx cha và lô nhà máy cha nào?? getinfofatheroflosx
-        const res = await this.$axios.get(
-          `/api/lokehoach/getinfofatheroflosx?_id=${data._id_khpx}`
-        );
+        // const res = await this.$axios.get(
+        //   `/api/lokehoach/getinfofatheroflosx?_id=${data._id_khpx}`
+        // );
 
-        // 2: biết được rồi thì xem lô khpx này đã có bao nhiêu lô sx được sinh ra
-        const resLsx = await this.$axios.get(
-          `/api/lokehoach/howmuchlosxfromlokhpx?_id_khpx=${data._id_khpx}`
-        );
+        // // 2: biết được rồi thì xem lô khpx này đã có bao nhiêu lô sx được sinh ra
+        // const resLsx = await this.$axios.get(
+        //   `/api/lokehoach/howmuchlosxfromlokhpx?_id_khpx=${data._id_khpx}`
+        // );
 
         this.$axios.$patch(
           `/api/lokehoach/losanxuat/soluongcnnandststus/${data._id}`,
@@ -3471,6 +3471,32 @@ export default {
       // * YÊU CẦU:
       // 1: LÔ KẾ HOẠCH PHÂN XƯỞNG (CHA CỦA LÔ SX NÀY) PHẢI TRỞ THÀNH TRẠNG THÁI SẢN XUẤT (STATUS=2)
       // 2: LÔ NHÀ MÁY (CHA CỦA LÔ KẾ HOẠCH PHÂN XƯỞNG - ÔNG CỦA LÔ SX) PHẢI TRỞ THÀNH TRẠNG THÁI SẢN XUẤT (STATUS=2)
+
+      // CODE ngày 29 tháng 8 năm 2024
+      // YÊU CẦU LÀ KHI CẬP NHẬT TRẠNG THÁI CỦA LÔ SẢN XUẤT (LÔ ĐẦU TIÊN CỦA KẾ HOẠCH NĂM VÀ KHPX)
+      // THÌ SẼ CHUYỂN LÔ NHÀ MÁY VÀ LÔ KHPX THÀNH SẢN XUẤT
+      // 1. Nếu LNM và LKHPX mà vẫn chưa phải là status=2 thì đổi thành 2 (đơn giản chỉ vậy thôi)
+      // đổi lô nhà máy
+      const resStatusLnm = await this.$axios.get(
+        `/api/lokehoach/gettrangthailonhamay?_id=${item._id_lonhamay}`
+      );
+      if (resStatusLnm.data !== 2) {
+        // update trạng thái lô nhà máy về sản xuất
+        await this.$axios.get(
+          `/api/lokehoach/updatestatuslonhamayto2?_id=${item._id_lonhamay}`
+        );
+      }
+
+      // đổi lô khpx
+      const resStatusLKHPX = await this.$axios.get(
+        `/api/lokehoach/gettrangthailokehoachphanxuong?_id=${item._id_khpx}`
+      );
+      if (resStatusLKHPX.data !== 2) {
+        // update trạng thái lô nhà máy về sản xuất
+        await this.$axios.get(
+          `/api/lokehoach/updatestatuslokhpxto2?_id=${item._id_khpx}`
+        );
+      }
 
       // logic cũ
       // yêu cầu là nếu cập nhật ngày hoàn thành tt thì thay đổi status=3

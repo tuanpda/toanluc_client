@@ -2225,7 +2225,7 @@
               <th style="font-size: small; color: #f97583; text-align: center">
                 {{ sumTongdat | formatNumber }}
               </th>
-              <th colspan="3">
+              <th colspan="4">
                 <button
                   @click="updateSodathongtoLokehoachpx()"
                   class="button is-small is-danger is-fullwidth"
@@ -5093,7 +5093,7 @@ export default {
     },
 
     // cập nhật tổng hỏng đạt, ngày bd, kt thực tế, trạng thái vào lô KHPX từ bảng lô sản xuất
-    async updateSodathongtoLokehoachnhamay() {
+    async updateSodathongtoLokehoachnhamay1111() {
       const Toast = Swal.mixin({
         toast: true,
         position: "top-end",
@@ -5110,7 +5110,7 @@ export default {
         title: "Chờ phê duyệt hoạt động!",
       });
     },
-    async updateSodathongtoLokehoachnhamay11111() {
+    async updateSodathongtoLokehoachnhamay() {
       // console.log(this.lokehoachphanxuong);
       // console.log(this.lokehoachphanxuong[0]._id_lonhamay);
       // console.log(this.lokehoachphanxuong[0].mathanhpham);

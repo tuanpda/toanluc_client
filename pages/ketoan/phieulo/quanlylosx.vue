@@ -298,13 +298,7 @@
               >
                 {{ index + 1 }}
               </td>
-              <td
-                style="
-                  text-align: center;
-                  font-size: small;
-                  background-color: whitesmoke;
-                "
-              >
+              <td style="text-align: center; font-size: small">
                 {{ pl._id }}
               </td>
               <td @click="getdatakhnhamay(pl)" style="font-size: small">
@@ -1087,7 +1081,7 @@
                 <td v-else style="font-size: small; text-align: center"></td>
               </template>
               <td
-                v-if="checkRole == 'admin' && item.status !== 0"
+                v-if="checkRole == 'admin' && item.status <= 2"
                 style="font-size: small"
               >
                 <div class="select is-small is-fullwidth">
@@ -1959,7 +1953,28 @@ export default {
     },
 
     async onChange_status(e, data) {
-      console.log(data.status);
+      // console.log(data.status);
+      const res = await this.$axios.get(
+        `/api/lokehoach/updatetrangthailonhamay?_id=${data._id}&status=${data.status}`
+      );
+      // console.log(res);
+      if (res.status == 200) {
+        const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.addEventListener("mouseenter", Swal.stopTimer);
+            toast.addEventListener("mouseleave", Swal.resumeTimer);
+          },
+        });
+        Toast.fire({
+          icon: "success",
+          title: "Đã cập nhật lại trạng thái",
+        });
+      }
     },
 
     async ghidulieu() {

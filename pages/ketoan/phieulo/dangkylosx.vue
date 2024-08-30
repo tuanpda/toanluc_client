@@ -630,6 +630,17 @@
                         text-align: center;
                         font-size: small;
                         font-weight: 600;
+                        width: 3.53%;
+                        color: red;
+                      "
+                    >
+                      _ID
+                    </td>
+                    <td
+                      style="
+                        text-align: center;
+                        font-size: small;
+                        font-weight: 600;
                         width: 20%;
                         color: red;
                       "
@@ -773,6 +784,10 @@
                         <td style="font-size: small; text-align: center">
                           {{ indexRow + 1 }}
                         </td>
+
+                        <td style="font-size: small; text-align: center">
+                          {{ item._id }}
+                        </td>
                         <td style="font-size: small">
                           {{ item.tento }}
                         </td>
@@ -911,6 +926,7 @@
                     <td style="font-size: small; text-align: center">
                       {{ index + 1 }}
                     </td>
+                    <td style=""></td>
                     <td style=""></td>
                     <td style="font-weight: 700">
                       <input

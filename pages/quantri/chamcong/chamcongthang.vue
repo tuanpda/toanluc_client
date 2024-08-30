@@ -40,7 +40,9 @@
           </td>
         </tr>
         <tr>
-          <td style="width: 45%"></td>
+          <td style="width: 45%; font-size: small">
+            <input type="checkbox" v-model="checkKhoivp" /> Khối văn phòng
+          </td>
           <td>
             <input
               v-model="startDate"
@@ -55,26 +57,41 @@
               class="input is-success is-small"
             />
           </td>
-          <td>
-            <div class="select is-small">
-              <select @change="getTo($event)">
-                <option selected>-- Chọn phân xưởng --</option>
-                <option v-for="item in phanxuong" :value="item.mapx">
-                  {{ item.mapx }} -- {{ item.tenpx }}
-                </option>
-              </select>
-            </div>
-          </td>
-          <td>
-            <div class="select is-small">
-              <select @change="loadBc($event)">
-                <option selected>-- Chọn tổ --</option>
-                <option v-for="item in tonhomid" :value="item.mapx">
-                  {{ item.mato }} -- {{ item.tento }}
-                </option>
-              </select>
-            </div>
-          </td>
+          <template v-if="checkKhoivp == false">
+            <td>
+              <div class="select is-small">
+                <select @change="getTo($event)">
+                  <option selected>-- Chọn phân xưởng --</option>
+                  <option v-for="item in phanxuong" :value="item.mapx">
+                    {{ item.mapx }} -- {{ item.tenpx }}
+                  </option>
+                </select>
+              </div>
+            </td>
+            <td>
+              <div class="select is-small">
+                <select @change="loadBc($event)">
+                  <option selected>-- Chọn tổ --</option>
+                  <option v-for="item in tonhomid" :value="item.mapx">
+                    {{ item.mato }} -- {{ item.tento }}
+                  </option>
+                </select>
+              </div>
+            </td>
+          </template>
+          <template v-else>
+            <td>
+              <div class="select is-small">
+                <select @change="getBCVP($event)">
+                  <option selected>-- Chọn bộ phận Văn phòng --</option>
+                  <option>VPBP</option>
+                  <option>VPGT1</option>
+                  <option>VPGT2</option>
+                </select>
+              </div>
+            </td>
+          </template>
+
           <td style="width: 45%; text-align: right">
             <vue-excel-xlsx
               :data="dataChamcong"
@@ -169,6 +186,7 @@ export default {
       namcc: "",
       phanxuongcc: "",
       tocc: "",
+      checkKhoivp: false,
       columns: [
         {
           label: "Mã công nhân",
@@ -178,7 +196,6 @@ export default {
           label: "Tên công nhân",
           field: "tencn",
         },
-        
       ],
     };
   },
@@ -219,7 +236,7 @@ export default {
         `/api/congnhan/baocaothangtheopx?mapx=${this.mapx}&startDate=${this.startDate}&endDate=${this.endDate}`
       );
       //   this.dataChamcong.
-      console.log(response);
+      // console.log(response);
       this.dataChamcong = response.data;
     },
     createDays() {
@@ -273,7 +290,7 @@ export default {
         const response = await this.$axios.get(
           `/api/congnhan/baocaochamcongthangphanxuong?mapx=${mapx}&startDate=${this.startDate}&endDate=${this.endDate}`
         );
-        console.log(response.data);
+        // console.log(response.data);
         this.dataChamcong = response.data;
 
         // const firstDayOfMonth = new Date(
@@ -376,6 +393,16 @@ export default {
       // //   this.dataChamcong.
       // //   console.log(response);
       // this.dataChamcong = response.data;
+    },
+
+    async getBCVP(e) {
+      var name = e.target.options[e.target.options.selectedIndex].text;
+      // console.log(name);
+      const response = await this.$axios.get(
+        `/api/congnhan/baocaochamcongthangphanxuong?mapx=${name}&startDate=${this.startDate}&endDate=${this.endDate}`
+      );
+      this.dataChamcong = response.data;
+      // console.log(this.dataChamcong);
     },
   },
 };

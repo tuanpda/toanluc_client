@@ -481,7 +481,7 @@
       <div v-if="checkViewluong == true">
         <table class="table is-responsive is-bordered is-narrow">
           <tr style="background-color: #feecf0">
-            <td colspan="10" style="font-weight: bold; font-size: small">
+            <td colspan="11" style="font-weight: bold; font-size: small">
               <span>Mã lô nhà máy: </span>
               <span style="color: red">{{ dataLonm.malonhamay }}</span>
               |
@@ -522,8 +522,16 @@
             >
               STT
             </td>
-            <!-- <td style="text-align: center; font-size:small; font-weight:700; width: 15%">Mã lô nhà
-                                    máy</td> -->
+            <td
+              style="
+                text-align: center;
+                font-size: small;
+                font-weight: 700;
+                width: 2%;
+              "
+            >
+              _ID
+            </td>
             <td
               style="
                 text-align: center;
@@ -644,6 +652,9 @@
               {{ index + 1 }}
             </td>
             <td style="font-size: small">
+              {{ item._id }}
+            </td>
+            <td style="font-size: small">
               {{ item.tenpx }}
             </td>
             <td style="font-size: small">{{ item.tento }}</td>
@@ -759,6 +770,7 @@
               <td style="font-size: small; text-align: center">
                 {{ index + 1 }}
               </td>
+              <td></td>
               <!-- <td style="font-size: small;">{{ item.malonhamay }}</td> -->
               <td>
                 <div class="control has-icons-left">

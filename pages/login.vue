@@ -10,7 +10,7 @@
               <div class="field">
                 <div class="control has-icons-left has-icons-right">
                   <input
-                    class="input is-normal"
+                    class="input is-normal is-primary"
                     type="username"
                     placeholder="Tên đăng nhập"
                     v-model="form.username"
@@ -37,7 +37,7 @@
                   <input
                     v-model="form.password"
                     @blur="$v.form.password.$touch()"
-                    class="input is-normal"
+                    class="input is-normal is-primary"
                     type="password"
                     placeholder="Mật khẩu"
                     autocomplete="current-password"
@@ -191,7 +191,7 @@ export default {
 <style scoped>
 .hero.is-success {
   background: #f2f6fa;
-  background-image: url("../assets/image/working3.jpg");
+  background-image: url("../assets/image/login100.jpg");
   background-size: cover;
 }
 .hero .nav,
@@ -202,7 +202,7 @@ export default {
 .box {
   margin-top: 5rem;
   background-color: transparent;
-  border: 2px solid white;
+  border: 1px solid white;
 }
 .avatar {
   margin-top: -70px;
