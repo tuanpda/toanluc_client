@@ -713,7 +713,7 @@
                 {{ item.nguyencong }}
               </td>
               <td style="font-size: small; text-align: right">
-                {{ item.dongia | formatNumber }}
+                <!-- {{ item.dongia | formatNumber }} -->
               </td>
               <template>
                 <td
@@ -787,7 +787,7 @@
               <td style="text-align: center; font-size: small"></td>
               <td style="font-size: small">{{ nguyencong }}</td>
               <td style="text-align: right; font-size: small">
-                {{ group.dongia | formatNumber }}
+                <!-- {{ group.dongia | formatNumber }} -->
               </td>
               <td></td>
               <td></td>
@@ -931,7 +931,7 @@
                   </div>
                 </td>
                 <td style="font-size: small; text-align: right">
-                  {{ item.dongia | formatNumber }}
+                  <!-- {{ item.dongia | formatNumber }} -->
                 </td>
               </template>
               <template v-else>

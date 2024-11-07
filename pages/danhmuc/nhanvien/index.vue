@@ -1052,7 +1052,7 @@ export default {
         luongngay: 0,
         bacluong: 0,
         luongtrachnhiem: 0,
-        congdoan: 50000,
+        congdoan: 70000,
         trangthai: 1,
         chutaikhoan: "",
         phucaptn: 0,
@@ -1623,6 +1623,7 @@ export default {
             data.append("ngaynghiviec", this.form.ngaynghiviec);
             data.append("sogiongoaigio", 0);
             data.append("sogiongoaigiochunhat", 0);
+
             const res = await this.$axios.$post(
               "/api/nhanvien/addnhanvien",
               data

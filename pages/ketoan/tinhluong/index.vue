@@ -298,15 +298,20 @@
               </td>
               <td style="text-align: center; font-size: small">
                 {{
-                  ((parseFloat(nv.luongngay) / 26 / 8) *
-                    parseInt(nv.sogiongoaigio) *
-                    1.5 +
-                    (parseFloat(nv.luongngay) / 26) *
-                      parseInt(nv.sogiongoaigiochunhat) *
-                      2)
+                  (Math.round(
+                    ((parseFloat(nv.luongngay) / 26 / 8) *
+                      parseInt(nv.sogiongoaigio) *
+                      1.5 +
+                      (parseFloat(nv.luongngay) / 26) *
+                        parseInt(nv.sogiongoaigiochunhat) *
+                        2) /
+                      1000
+                  ) *
+                    1000)
                     | formatNumber
                 }}
               </td>
+
               <td>
                 <input
                   v-model="nv.thuong"
@@ -323,18 +328,22 @@
                 "
               >
                 {{
-                  (parseFloat(nv.luongtrachnhiem) +
-                    (parseFloat(nv.luongngay) +
-                      parseFloat(nv.dt_dieuchinh) +
-                      parseFloat(nv.dt_thuong) +
-                      parseFloat(nv.thuong) +
-                      ((parseFloat(nv.luongngay) / 26 / 8) *
-                        parseInt(nv.sogiongoaigio) *
-                        1.5 +
-                        (parseFloat(nv.luongngay) / 26) *
-                          parseInt(nv.sogiongoaigiochunhat) *
-                          2) -
-                      parseFloat(nv.dt_phat)))
+                  (Math.round(
+                    (parseFloat(nv.luongtrachnhiem) +
+                      (parseFloat(nv.luongngay) +
+                        parseFloat(nv.dt_dieuchinh) +
+                        parseFloat(nv.dt_thuong) +
+                        parseFloat(nv.thuong) +
+                        ((parseFloat(nv.luongngay) / 26 / 8) *
+                          parseInt(nv.sogiongoaigio) *
+                          1.5 +
+                          (parseFloat(nv.luongngay) / 26) *
+                            parseInt(nv.sogiongoaigiochunhat) *
+                            2) -
+                        parseFloat(nv.dt_phat))) /
+                      1000
+                  ) *
+                    1000)
                     | formatNumber
                 }}
               </td>
@@ -367,19 +376,23 @@
                   "
                 >
                   {{
-                    (parseFloat(nv.luongtrachnhiem) +
-                      (parseFloat(nv.luongngay) +
-                        parseFloat(nv.dt_dieuchinh) +
-                        parseFloat(nv.dt_thuong) +
-                        parseFloat(nv.thuong) +
-                        ((parseFloat(nv.luongngay) / 26 / 8) *
-                          parseInt(nv.sogiongoaigio) *
-                          1.5 +
-                          (parseFloat(nv.luongngay) / 26) *
-                            parseInt(nv.sogiongoaigiochunhat) *
-                            2) -
-                        parseFloat(nv.dt_phat)) -
-                      (parseFloat(nv.bhxh) + parseFloat(nv.congdoan)))
+                    (Math.round(
+                      (parseFloat(nv.luongtrachnhiem) +
+                        (parseFloat(nv.luongngay) +
+                          parseFloat(nv.dt_dieuchinh) +
+                          parseFloat(nv.dt_thuong) +
+                          parseFloat(nv.thuong) +
+                          ((parseFloat(nv.luongngay) / 26 / 8) *
+                            parseInt(nv.sogiongoaigio) *
+                            1.5 +
+                            (parseFloat(nv.luongngay) / 26) *
+                              parseInt(nv.sogiongoaigiochunhat) *
+                              2) -
+                          parseFloat(nv.dt_phat)) -
+                        (parseFloat(nv.bhxh) + parseFloat(nv.congdoan))) /
+                        1000
+                    ) *
+                      1000)
                       | formatNumber
                   }}
                 </td>

@@ -837,7 +837,7 @@ export default {
         ngayhotro: 0,
         tienhotro: 0,
         antrua: 0,
-        congdoan: 50000,
+        congdoan: 70000,
         createdAt: "",
         createdBy: this.$auth.$state.user.username,
         ngayvaocongty: "",

@@ -190,53 +190,93 @@
                   công nhân đến. 3 - Sau khi bấm điều chuyển thì công nhân sẽ
                   được điều chuyển về xưởng/tổ mới, với mã công nhân vừa gõ vào.
                 </div>
-                <div class="columns">
-                  <div class="column">
-                    <div class="field">
-                      <label class="label">Phân xưởng</label>
-                      <div class="control has-icons-left">
-                        <div class="select is-small is-fullwidth">
-                          <select @change="showmapx($event)">
-                            <option selected>-- Chọn phân xưởng --</option>
-                            <option
-                              v-for="item in phanxuong_dieuchuyen"
-                              :value="item.mapx"
-                            >
-                              {{ item.mapx }} -- {{ item.tenpx }}
-                            </option>
-                          </select>
-                        </div>
-                        <span class="icon is-small is-left">
-                          <i style="color: #48c78e" class="fas fa-kaaba"></i>
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </div>
 
-                <div class="columns">
+                <!-- <div class="columns">
                   <div class="column">
-                    <div class="field">
-                      <label class="label">Tổ</label>
-                      <div class="control has-icons-left">
-                        <div class="select is-small is-fullwidth">
-                          <select @change="showmato($event)">
-                            <option selected>-- Chọn tổ --</option>
-                            <option
-                              v-for="item in tonhom_dieuchuyen"
-                              :value="item.mato"
-                            >
-                              {{ item.mato }} -- {{ item.tento }}
-                            </option>
-                          </select>
+                    <label class="checkbox">
+                      <input v-model="isNhanvien" type="checkbox" />
+                      Khối văn phòng
+                    </label>
+                  </div>
+                </div> -->
+
+                <!-- Công nhân - Xưởng -->
+                <template v-if="isNhanvien == false">
+                  <div class="columns">
+                    <div class="column">
+                      <div class="field">
+                        <label class="label">Phân xưởng</label>
+                        <div class="control has-icons-left">
+                          <div class="select is-small is-fullwidth">
+                            <select @change="showmapx($event)">
+                              <option selected>-- Chọn phân xưởng --</option>
+                              <option
+                                v-for="item in phanxuong_dieuchuyen"
+                                :value="item.mapx"
+                              >
+                                {{ item.mapx }} -- {{ item.tenpx }}
+                              </option>
+                            </select>
+                          </div>
+                          <span class="icon is-small is-left">
+                            <i style="color: #48c78e" class="fas fa-kaaba"></i>
+                          </span>
                         </div>
-                        <span class="icon is-small is-left">
-                          <i style="color: #48c78e" class="fas fa-kaaba"></i>
-                        </span>
                       </div>
                     </div>
                   </div>
-                </div>
+
+                  <div class="columns">
+                    <div class="column">
+                      <div class="field">
+                        <label class="label">Tổ</label>
+                        <div class="control has-icons-left">
+                          <div class="select is-small is-fullwidth">
+                            <select @change="showmato($event)">
+                              <option selected>-- Chọn tổ --</option>
+                              <option
+                                v-for="item in tonhom_dieuchuyen"
+                                :value="item.mato"
+                              >
+                                {{ item.mato }} -- {{ item.tento }}
+                              </option>
+                            </select>
+                          </div>
+                          <span class="icon is-small is-left">
+                            <i style="color: #48c78e" class="fas fa-kaaba"></i>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </template>
+
+                <!-- khối văn phòng -->
+                <template v-else>
+                  <div class="columns">
+                    <div class="column">
+                      <div class="field">
+                        <label class="label">Phòng ban</label>
+                        <div class="control has-icons-left">
+                          <div class="select is-small is-fullwidth">
+                            <select @change="showmapb($event)">
+                              <option selected>-- Chọn phòng ban --</option>
+                              <option
+                                v-for="item in phongban"
+                                :value="item.maphong"
+                              >
+                                {{ item.maphong }} -- {{ item.tenphong }}
+                              </option>
+                            </select>
+                          </div>
+                          <span class="icon is-small is-left">
+                            <i style="color: #48c78e" class="fas fa-kaaba"></i>
+                          </span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </template>
 
                 <div class="columns">
                   <div class="column">
@@ -318,7 +358,10 @@ export default {
       tenxuong: "",
       mato: "",
       tento: "",
+      phongban: [],
       checkGhichu: false,
+
+      isNhanvien: false,
       hisform: {
         tenthaotac: null,
         createdAt: null,
@@ -473,6 +516,7 @@ export default {
     this.getDmcn();
     this.currentDateTime();
     this.getPhanxuong();
+    this.getphongban();
     // this.getmapx();
   },
 
@@ -531,6 +575,10 @@ export default {
       this.phanxuong = await this.$axios.$get(`/api/phongban/allphanxuong`);
     },
 
+    async getphongban() {
+      this.phongban = await this.$axios.$get(`/api/phongban/allphongban`);
+    },
+
     // tổ xưởng filter
     async getWithPX(e) {
       // console.log(this.mapx)
@@ -560,8 +608,8 @@ export default {
     async showmapx(e) {
       // console.log(this.mapx)
       this.tonhom_dieuchuyen = [];
-      this.mato = ""
-      this.tento = ""
+      this.mato = "";
+      this.tento = "";
       this.dataMacn = [];
       //   this.data_dieuchuyen.mapx = "";
       //   this.data_dieuchuyen.tenpx = "";
@@ -602,6 +650,15 @@ export default {
         `/api/congnhan/showmacninto?mato=${this.mato}`
       );
       this.dataMacn = dataMacn;
+    },
+
+    async showmapb(e) {
+      // console.log(this.mapx)
+      var name = e.target.options[e.target.options.selectedIndex].text;
+      console.log(name);
+      let position = name.split("--");
+      this.form.mapb = position[0].trim();
+      this.form.tenphong = position[1].trim();
     },
 
     onAddCongnhan() {
