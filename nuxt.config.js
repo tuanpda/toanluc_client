@@ -74,7 +74,8 @@ module.exports = {
   }, */
   axios: {
     // baseURL: "http://localhost:5555",
-    baseURL: "http://103.104.118.155:5555/", // máy chủ thực tế của toàn lực
+    baseURL: "http://14.224.129.177:5555", // tạm thời chạy server qua đây để xem lỗi cors trên máy chủ toàn lực
+    // baseURL: "http://103.104.118.155:5555/", // máy chủ thực tế của toàn lực
     timeout: 20000,
   },
   server: {
