@@ -24,7 +24,7 @@ export default class CustomScheme extends LocalScheme {
     return this.$auth
       .requestWith(this.name, endpoint, this.options.endpoints.user)
       .then((response) => {
-        // console.log(response.data);
+        console.log(response.data);
         const user = {
           email: response.data.email,
           username: response.data.username,

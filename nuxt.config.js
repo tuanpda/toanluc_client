@@ -138,5 +138,12 @@ module.exports = {
         },
       },
     },
+
+    redirect: {
+      login: "/login", // Trang sẽ chuyển tới nếu chưa đăng nhập
+      logout: "/login", // Trang sẽ chuyển tới sau khi đăng xuất
+      callback: "/login", // Trang callback sau khi xác thực (OAuth)
+      home: "/", // Trang sẽ chuyển tới sau khi đăng nhập thành công
+    },
   },
 };
